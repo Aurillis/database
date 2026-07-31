@@ -9,7 +9,7 @@ META = json.loads((BASE / 'reports_meta.json').read_text(encoding='utf-8'))
 
 # Vercel serverless function URL (set empty; fill after deploying upload-api).
 # The GitHub token lives ONLY on that server — never embedded in this page.
-UPLOAD_API_PLACEHOLDER = ''
+UPLOAD_API_PLACEHOLDER = 'https://report-portal-m2lnxphol-chenbiyin1770-5040s-projects.vercel.app/api/upload'
 
 # ===== CATEGORY TREE =====
 TREE = [
