@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>哺乳按摩器历史销售数据分析（整体市场）· Amazon US</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bf:#2563eb;--bg:#f5f7fa;--card:#fff;--ink:#1f2937;--mut:#6b7280;--line:#e5e7eb}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+header{background:linear-gradient(120deg,#1e3a8a,#0ea5e9);color:#fff;padding:30px 40px}
+header h1{margin:0 0 6px;font-size:26px}
+header p{margin:0;opacity:.9;font-size:14px}
+.wrap{max-width:1200px;margin:0 auto;padding:24px 20px 60px}
+.section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.section h2{margin:0 0 4px;font-size:19px;display:flex;align-items:center;gap:8px}
+.section h2::before{content:'';width:5px;height:20px;background:var(--bf);border-radius:3px}
+.note{font-size:13px;color:var(--mut);margin:2px 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;border-top:4px solid var(--bf)}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.kpi-num{display:block;font-size:20px;font-weight:800}
+.kpi-num.big{font-size:26px;color:var(--bf)}
+.kpi-lab{font-size:12px;color:var(--mut)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.chart-box{position:relative;height:330px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{background:#f8fafc;font-weight:600;color:var(--mut)}
+.tl{max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.insight{background:#eff6ff;border-left:4px solid var(--bf);padding:14px 16px;border-radius:8px;margin:10px 0;font-size:14px}
+.big{font-size:30px;font-weight:800;color:var(--bf)}
+ul.cl{margin:8px 0;padding-left:20px} ul.cl li{margin:6px 0}
+footer{text-align:center;color:var(--mut);font-size:12px;padding:20px}
+@media(max-width:800px){.kpi-grid,.grid2{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header>
+  <h1>哺乳按摩器（Lactation / Breast Massager）历史销售数据分析</h1>
+  <p>Amazon 美国站 · 整体市场（不区分类目）· 数据区间 2024-06 ~ 2026-06（25 个月度快照·连续无缺月）· 来源：卖家精灵 历史BSR/销量追踪 · 共 130 个 ASIN</p>
+</header>
+<div class="wrap">
+
+<div class="section">
+  <h2>核心结论</h2>
+  <div class="insight"><b>市场规模：</b>整体哺乳按摩器市场累计销量 <b>309,966</b> 件、销售额 <b>$10,950,087.71</b>，覆盖 130 个 ASIN、58 个品牌（与用户真值完全一致）。</div>
+  <div class="insight"><b>增长：</b>区间销量 <b>+16.3%</b>（10,065 件 → 11,709 件），整体<b>稳中有升</b>；月度在 0.5–1.9 万件间波动，呈夏秋季节性高峰，2025 年 4–5 月存在明显数据空洞（见下）。</div>
+  <div class="insight"><b>高度集中：</b>CR5 = <b>72.05%</b>、CR10 = <b>90.06%</b>。头部三强 Momcozy(53.38%) + Frida Mom(23.21%) + LaVie(16.53%) 合计 <b>93.1%</b>，长尾高度分散。</div>
+  <div class="insight"><b>进入窗口：</b>41 个 ASIN（占总量 32%）于 2025–2026 首次出现，赛道仍在持续吸新；incumbent 以<b>变体裂变 + 捆绑套装</b>防守（Momcozy 2026 密集推 Rolling Lactation Massager、与吸奶器/储奶袋捆绑）。<b>红光照护（Red Light）</b>是热+震主流之外的新差异化卖点（4 款，2025H2–2026 上市）。</div>
+</div>
+
+<div class="card">
+<div class="kpi-grid">
+  <div><span class="kpi-num">130</span><span class="kpi-lab">在售产品(ASIN)</span></div>
+  <div><span class="kpi-num">58</span><span class="kpi-lab">品牌数</span></div>
+  <div><span class="kpi-num big">309,966</span><span class="kpi-lab">累计销量(件)</span></div>
+  <div><span class="kpi-num big">$10,950,087.71</span><span class="kpi-lab">累计销售额</span></div>
+  <div><span class="kpi-num">72.05%</span><span class="kpi-lab">CR5 集中度</span></div>
+  <div><span class="kpi-num">90.06%</span><span class="kpi-lab">CR10 集中度</span></div>
+  <div><span class="kpi-num" style="color:#1e8e3e">+16.3%</span><span class="kpi-lab">区间增长</span></div>
+  <div><span class="kpi-num">10,065→11,709</span><span class="kpi-lab">首月→末月销量</span></div>
+</div></div>
+
+<div class="section">
+  <h2>月度销量趋势</h2>
+  <p class="note">单位：件/月（逐行汇总，未去重）。⚠️ <b>2025-04、2025-05 销量异常偏低</b>（相邻月份 3–4 倍且产品/品牌数正常），判定为抓取缺失的数据空洞，趋势解读请忽略这两点（红色标记）。</p>
+  <div class="chart-box"><canvas id="salesChart"></canvas></div>
+</div>
+
+<div class="section">
+  <h2>月度销售额趋势</h2>
+  <p class="note">单位：美元/月（销量 × 加权均价估算）。</p>
+  <div class="chart-box"><canvas id="revChart"></canvas></div>
+</div>
+
+<div class="section">
+  <h2>加权均价走势</h2>
+  <p class="note">月度均价 = 当月销售额 ÷ 当月销量（销量加权）。整体稳定在 $33–$39 区间，无显著价格战信号。</p>
+  <div class="chart-box"><canvas id="priceChart"></canvas></div>
+</div>
+
+<div class="grid2">
+  <div class="section">
+    <h2>品牌销量榜（Top15）</h2>
+    <p class="note">按累计销量</p>
+    <div class="chart-box" style="height:380px"><canvas id="brandChart"></canvas></div>
+  </div>
+  <div class="section">
+    <h2>在售产品数 / 品牌数</h2>
+    <p class="note">月度活跃 ASIN 与品牌数量（按去重 ASIN 计）</p>
+    <div class="chart-box" style="height:380px"><canvas id="countChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Top15 产品（按累计销量）</h2>
+  <p class="note">类目参考仅作标注，未用于拆分</p>
+  <table><thead><tr><th>#</th><th>ASIN</th><th>品牌</th><th>标题</th><th>累计销量</th><th>累计销售额</th><th>价格$</th><th>评分</th></tr></thead><tbody><tr><td>1</td><td>B09N6SYCFN</td><td>Momcozy</td><td class='tl'>Momcozy Warming Lactation Massager 2-in-1, Sof…</td><td>62,019</td><td>$1,839,025</td><td>32.99</td><td>4.4</td></tr><tr><td>2</td><td>B0DM5YGBMS</td><td>Momcozy</td><td class='tl'>Momcozy A1Pro Lactation Massager, Deep Vibrati…</td><td>61,295</td><td>$2,055,835</td><td>34.99</td><td>4.4</td></tr><tr><td>3</td><td>B093J85L4W</td><td>Frida Mom</td><td class='tl'>Frida Mom 2-in-1 Lactation Massager, Multiple …</td><td>48,353</td><td>$1,067,874</td><td>26.8</td><td>None</td></tr><tr><td>4</td><td>B0BNVZD21C</td><td>Momcozy</td><td class='tl'>Momcozy Rolling Lactation Massager with Heat, …</td><td>28,083</td><td>$1,093,311</td><td>39.99</td><td>4.2</td></tr><tr><td>5</td><td>B08QTBJMDR</td><td>Frida Mom</td><td class='tl'>Frida Mom 9pc Breastfeeding Essentials Kit for…</td><td>23,585</td><td>$971,955</td><td>49.99</td><td>None</td></tr><tr><td>6</td><td>B07MZD5GVZ</td><td>LaVie</td><td class='tl'>LaVie 2-in-1 Warming Lactation Massager, 2 Pac…</td><td>21,410</td><td>$1,584,391</td><td>77.99</td><td>4.4</td></tr><tr><td>7</td><td>B0BNJTPHQM</td><td>LaVie</td><td class='tl'>LaVie Warming Lactation Massager 3-in-1 Adjust…</td><td>19,191</td><td>$725,997</td><td>39.99</td><td>4.0</td></tr><tr><td>8</td><td>B079HFSYKX</td><td>LaVie</td><td class='tl'>LaVie Lactation Massager - Patented Breastfeed…</td><td>6,411</td><td>$218,982</td><td>39.99</td><td>4.5</td></tr><tr><td>9</td><td>B0B76JNQKQ</td><td>Momcozy</td><td class='tl'>Momcozy Warming Lactation Massager 2-in-1, Sof…</td><td>4,613</td><td>$152,182</td><td>32.99</td><td>4.4</td></tr><tr><td>10</td><td>B079H84FFY</td><td>LaVie</td><td class='tl'>Lactation Massager - Patented Breastfeeding Re…</td><td>4,197</td><td>$125,866</td><td>29.99</td><td>4.5</td></tr><tr><td>11</td><td>B0CL6BD55F</td><td>Momcozy</td><td class='tl'>Momcozy Hands-Free Lactation Massager, Enhance…</td><td>2,336</td><td>$163,480</td><td>69.99</td><td>3.7</td></tr><tr><td>12</td><td>B0BPMQM53W</td><td>Munchkin</td><td class='tl'>Munchkin Warm Touch Lactation Massager with He…</td><td>2,076</td><td>$55,110</td><td>33.89</td><td>4.1</td></tr><tr><td>13</td><td>B0B7JD6MC5</td><td>NCVI</td><td class='tl'>NCVI Warming Lactation Massager, 2-in-1 Breast…</td><td>1,917</td><td>$80,667</td><td>33.23</td><td>4.0</td></tr><tr><td>14</td><td>B0D3KTG81X</td><td>Momcozy</td><td class='tl'>Momcozy Rolling Lactation Massager…</td><td>1,548</td><td>$30,944</td><td>19.99</td><td>4.9</td></tr><tr><td>15</td><td>B0BNW1F3DR</td><td>Momcozy</td><td class='tl'>Momcozy Rolling Lactation Massager with Heat, …</td><td>1,518</td><td>$55,953</td><td>39.99</td><td>4.2</td></tr></tbody></table>
+</div>
+
+<div class="section">
+  <h2>新进入者分析</h2>
+  <p class="note">按 ASIN 首次出现的年份统计（共 130 个 ASIN）。</p>
+  <div class="grid2">
+    <div><div class="chart-box" style="height:240px"><canvas id="entrantChart"></canvas></div></div>
+    <div>
+      <p><span class="big">41</span> 个 ASIN 于 <b>2025–2026</b> 首次出现，占总量 32%。说明赛道仍未固化，新卖家持续进入；头部通过<b>变体裂变</b>筑墙。</p>
+      <p><b>红光照护（Red Light Therapy）</b>作为新卖点：4 款（HaSoCare / GINGPAISPORT / BEDHUM / ZenWrap），上市集中在 2025H2–2026，是热+震主流之外的差异化切入点，目前体量小、竞争弱。</p>
+    </div>
+  </div>
+  <h3 style="font-size:15px;margin:16px 0 6px">2025–2026 新进入产品（节选 20 条）</h3>
+  <table><thead><tr><th>首现月份</th><th>品牌</th><th>标题</th></tr></thead><tbody><tr><td>2025-01</td><td>Zomee</td><td class='tl'>Zomee Cooling Lactation Massager – 2-in-1 Breastfeed…</td></tr><tr><td>2025-01</td><td>Momcozy</td><td class='tl'>Momcozy Warming Lactation Massager & Breast Therapy …</td></tr><tr><td>2025-01</td><td>SPECTRA</td><td class='tl'>Spectra Silicone Breast Massager Breastfeeding Aid…</td></tr><tr><td>2025-01</td><td>Momcozy</td><td class='tl'>Momcozy Kneading Lactation Massager & Breast Therapy…</td></tr><tr><td>2025-01</td><td>Momcozy</td><td class='tl'>Momcozy Warming Lactation Massager 2-in-1 Retain Nut…</td></tr><tr><td>2025-02</td><td>LaVie</td><td class='tl'>LaVie Lactation Massager - Patented Breastfeeding Re…</td></tr><tr><td>2025-02</td><td>Momcozy</td><td class='tl'>Momcozy Warming Lactation Massager & Colostrum Colle…</td></tr><tr><td>2025-02</td><td>Momcozy</td><td class='tl'>Momcozy Warming Lactation Massager & Breast Pump Wip…</td></tr><tr><td>2025-02</td><td>Momcozy</td><td class='tl'>Momcozy Lacation Massager and Silver Nursing Cups…</td></tr><tr><td>2025-02</td><td>Momcozy</td><td class='tl'>Momcozy Kneading Lactation Massager with Heat Temp-S…</td></tr><tr><td>2025-02</td><td>Momcozy</td><td class='tl'>Momcozy Kneading Lactation Massager Natural Breast P…</td></tr><tr><td>2025-02</td><td>Phanpy</td><td class='tl'>Wearable Milk Collector Cup S2 and Lactation Massage…</td></tr><tr><td>2025-02</td><td>SMOOCH</td><td class='tl'>SMOOCH 3-in-1 Warming Lactation Massager - Breast Ma…</td></tr><tr><td>2025-03</td><td>Phanpy</td><td class='tl'>Wearable Milk Collector Cup and Lactation Massager f…</td></tr><tr><td>2025-04</td><td>Momcozy</td><td class='tl'>Momcozy Nipple Ruler & Momcozy Warming Lactation Mas…</td></tr><tr><td>2025-04</td><td>NCVI</td><td class='tl'>NCVI Lactation Massager, Breast Massager for Breastf…</td></tr><tr><td>2025-04</td><td>Momcozy</td><td class='tl'>Momcozy Hands-Free Lactation Massager, Maximum Heat …</td></tr><tr><td>2025-04</td><td>NCVI</td><td class='tl'>NCVI Warming Lactation Massager 2-in-1, Breast Massa…</td></tr><tr><td>2025-05</td><td>Momcozy</td><td class='tl'>Momcozy Kneading Lactation Massager & Milk Collector…</td></tr><tr><td>2025-05</td><td>NCVI</td><td class='tl'>NCVI Warming Lactation Massager,8 Mode&Heating ，Brea…</td></tr></tbody></table>
+</div>
+
+<div class="section">
+  <h2>数据口径与方法（已修正）</h2>
+  <ul class="cl">
+    <li>原始 <b>1218</b> 行 → <b>逐行汇总、不去重</b>；累计销量 309,966 件 / 销售额 $10,950,087.71，与用户真值（309,966 件 / $10,950,087.71）完全一致。</li>
+    <li><b>月份修正：</b>源数据 <b>'.1' = 10 月</b>（末尾 0 被丢弃），已与 1 月('.01')区分；时间轴为 2024-06→2026-06 连续 25 个月（此前误将 2024.1/2025.1 当作 1 月并合并，已纠正）。</li>
+    <li>按用户要求<b>不划分</b> Breastfeeding / Electric Breast Pumps，整体作为"哺乳按摩器"市场分析；原始子类仅保留为 cat_ref 参考列。</li>
+    <li>月销量/额为卖家精灵估算（含同一产品跨子类双列出的两次记录），空值按 0 处理；均价采用销量加权。</li>
+    <li>2025-04、2025-05 判定为抓取缺失（异常低谷），趋势解读已排除。</li>
+  </ul>
+</div>
+
+<footer>由卖家精灵历史BSR数据生成 · 仅供选品与竞争分析参考 · 销量/额为模型估算值</footer>
+</div>
+
+<script>
+const D = {"months": ["2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"], "sales": [10065, 19238, 14633, 14182, 15000, 13752, 12619, 13025, 12544, 18779, 5539, 7494, 8657, 9783, 10386, 11136, 12727, 13376, 10645, 12074, 11817, 11465, 10382, 18939, 11709], "rev": [382568, 724253, 529589, 532731, 510376, 494879, 438795, 485512, 443464, 651397, 214204, 287919, 322611, 334499, 352156, 381518, 426658, 435142, 378504, 407280, 404539, 403285, 359335, 659989, 388886], "price": [38.01, 37.65, 36.19, 37.56, 34.03, 35.99, 34.77, 37.28, 35.35, 34.69, 38.67, 38.42, 37.27, 34.19, 33.91, 34.26, 33.52, 32.53, 35.56, 33.73, 34.23, 35.18, 34.61, 34.85, 33.21], "prod": [49, 59, 54, 51, 52, 52, 51, 55, 57, 60, 55, 61, 48, 39, 43, 36, 38, 33, 55, 33, 31, 52, 51, 48, 55], "br": [31, 40, 39, 35, 37, 38, 37, 39, 37, 36, 35, 36, 33, 30, 32, 27, 29, 26, 40, 25, 25, 38, 36, 32, 38], "anom": [false, false, false, false, false, false, false, false, false, false, true, true, false, false, false, false, false, false, false, false, false, false, false, false, false], "brands": [{"brand": "Momcozy", "sales": 165448, "revenue": 5633974, "products": 29, "share": 53.38}, {"brand": "Frida Mom", "sales": 71938, "revenue": 2039829, "products": 3, "share": 23.21}, {"brand": "LaVie", "sales": 51233, "revenue": 2656985, "products": 9, "share": 16.53}, {"brand": "NCVI", "sales": 3475, "revenue": 132768, "products": 5, "share": 1.12}, {"brand": "Munchkin", "sales": 2076, "revenue": 55110, "products": 1, "share": 0.67}, {"brand": "KOSTTE", "sales": 1903, "revenue": 35699, "products": 3, "share": 0.61}, {"brand": "plusOne", "sales": 1419, "revenue": 23718, "products": 1, "share": 0.46}, {"brand": "Aidmom", "sales": 1354, "revenue": 40289, "products": 3, "share": 0.44}, {"brand": "Phanpy", "sales": 1353, "revenue": 29083, "products": 3, "share": 0.44}, {"brand": "Easy@Home", "sales": 1091, "revenue": 24054, "products": 1, "share": 0.35}, {"brand": "euma love", "sales": 1088, "revenue": 37808, "products": 1, "share": 0.35}, {"brand": "Zomee", "sales": 1021, "revenue": 47274, "products": 2, "share": 0.33}, {"brand": "Kisdream", "sales": 799, "revenue": 12432, "products": 2, "share": 0.26}, {"brand": "Baby Uma", "sales": 797, "revenue": 16559, "products": 1, "share": 0.26}, {"brand": "HORIGEN", "sales": 626, "revenue": 18973, "products": 4, "share": 0.2}], "top": [{"asin": "B09N6SYCFN", "brand": "Momcozy", "title": "Momcozy Warming Lactation Massager 2-in-1, Soft Breast Massager for Breastfeeding, Heat + Vibration Adjustable for Clogged Ducts, Improve Milk Flow, Engorgement", "cat_ref": "Breastfeeding", "sales": 62019, "revenue": 1839025, "launch": "2022-04-23", "price": 32.99, "rating": 4.4, "reviews": 4619.0}, {"asin": "B0DM5YGBMS", "brand": "Momcozy", "title": "Momcozy A1Pro Lactation Massager, Deep Vibration & Rapid Heating for Clog Relief & Efficient Pumping, Breastfeeding Essentials with Memory Function & Fast Charging, for Postpartum Mom", "cat_ref": "Breastfeeding", "sales": 61295, "revenue": 2055835, "launch": "2024-11-08", "price": 34.99, "rating": 4.4, "reviews": 4630.0}, {"asin": "B093J85L4W", "brand": "Frida Mom", "title": "Frida Mom 2-in-1 Lactation Massager, Multiple Modes of Heat + Vibration for Clogged Milk Ducts, Increase Milk Flow, Breast Engorgement - USB Cord Included, White", "cat_ref": "Breastfeeding", "sales": 48353, "revenue": 1067874, "launch": "2021-04-27", "price": 26.8, "rating": null, "reviews": null}, {"asin": "B0BNVZD21C", "brand": "Momcozy", "title": "Momcozy Rolling Lactation Massager with Heat, 3-in-1 Real-Like Massage for Relieve Clogged Ducts, Breast Massager Warming for Breastfeeding, Improve Milk Flow, Dusty Rose", "cat_ref": "Electric Breast Pumps", "sales": 28083, "revenue": 1093311, "launch": "2022-12-23", "price": 39.99, "rating": 4.2, "reviews": 939.0}, {"asin": "B08QTBJMDR", "brand": "Frida Mom", "title": "Frida Mom 9pc Breastfeeding Essentials Kit for Lactation Support & Nipple Relief, Includes Lactation Massager, Heating Pads, Breast Masks for Hydration & Milk Flow, Postpartum Essential Gift Set", "cat_ref": "Breastfeeding", "sales": 23585, "revenue": 971955, "launch": "2021-01-19", "price": 49.99, "rating": null, "reviews": null}, {"asin": "B07MZD5GVZ", "brand": "LaVie", "title": "LaVie 2-in-1 Warming Lactation Massager, 2 Pack, Heat and Vibration, Pumping and Breastfeeding Essential, for Clogged Ducts, Improved Milk Flow, Mastitis", "cat_ref": "Breastfeeding", "sales": 21410, "revenue": 1584391, "launch": "2019-02-12", "price": 77.99, "rating": 4.4, "reviews": 7325.0}, {"asin": "B0BNJTPHQM", "brand": "LaVie", "title": "LaVie Warming Lactation Massager 3-in-1 Adjustable Heat + Vibration for Breastfeeding, Nursing, Pumping, Essential Support for Improved Milk Flow", "cat_ref": "Electric Breast Pumps", "sales": 19191, "revenue": 725997, "launch": "2022-11-29", "price": 39.99, "rating": 4.0, "reviews": 255.0}, {"asin": "B079HFSYKX", "brand": "LaVie", "title": "LaVie Lactation Massager - Patented Breastfeeding Relief, Boost Milk Flow & Ease Discomfort from Clogged Ducts, Engorgement, Mastisis - Postpartum Essentials for Nursing Moms - HSA/FSA Medical Device", "cat_ref": "Electric Breast Pumps", "sales": 6411, "revenue": 218982, "launch": "2018-02-01", "price": 39.99, "rating": 4.5, "reviews": 10409.0}, {"asin": "B0B76JNQKQ", "brand": "Momcozy", "title": "Momcozy Warming Lactation Massager 2-in-1, Soft Breast Massager for Breastfeeding, Heat + Vibration Adjustable for Clogged Ducts, Improve Milk Flow, Blue-Green", "cat_ref": "Breastfeeding", "sales": 4613, "revenue": 152182, "launch": "2022-07-22", "price": 32.99, "rating": 4.4, "reviews": 4630.0}, {"asin": "B079H84FFY", "brand": "LaVie", "title": "Lactation Massager - Patented Breastfeeding Relief, Boost Milk Flow & Ease Discomfort from Clogged Ducts, Engorgement, Mastisis - Postpartum Essentials for Nursing Moms - HSA/FSA Medical Device", "cat_ref": "Electric Breast Pumps", "sales": 4197, "revenue": 125866, "launch": "2018-04-02", "price": 29.99, "rating": 4.5, "reviews": 12834.0}, {"asin": "B0CL6BD55F", "brand": "Momcozy", "title": "Momcozy Hands-Free Lactation Massager, Enhanced Heat & Vibration Area for Improved Milk Flow, Soft Warming Breast Massager for Effortless Breastfeeding and Pumping, 2-Pack", "cat_ref": "Electric Breast Pumps", "sales": 2336, "revenue": 163480, "launch": "2023-11-09", "price": 69.99, "rating": 3.7, "reviews": 167.0}, {"asin": "B0BPMQM53W", "brand": "Munchkin", "title": "Munchkin Warm Touch Lactation Massager with Heat and Vibration, Breastfeeding Postpartum Essentials, Award Winning, Light Pink", "cat_ref": "Breastfeeding", "sales": 2076, "revenue": 55110, "launch": "2022-12-26", "price": 33.89, "rating": 4.1, "reviews": 121.0}, {"asin": "B0B7JD6MC5", "brand": "NCVI", "title": "NCVI Warming Lactation Massager, 2-in-1 Breast Massager Heat & Vibration, 2 Pack, Lactation Massager with Heat, for Breastfeeding, Pumping, Relieve Clogged Ducts, Engorgement, Improve Milk Flow", "cat_ref": "Breastfeeding", "sales": 1917, "revenue": 80667, "launch": "2022-08-03", "price": 33.23, "rating": 4.0, "reviews": 451.0}, {"asin": "B0D3KTG81X", "brand": "Momcozy", "title": "Momcozy Rolling Lactation Massager", "cat_ref": "Electric Breast Pumps", "sales": 1548, "revenue": 30944, "launch": "2024-05-20", "price": 19.99, "rating": 4.9, "reviews": 36.0}, {"asin": "B0BNW1F3DR", "brand": "Momcozy", "title": "Momcozy Rolling Lactation Massager with Heat, 3-in-1 Real-Like Massage for Relieve Clogged Ducts, Breast Massager Warming for Breastfeeding, Improve Milk Flow, Blue-Green", "cat_ref": "Electric Breast Pumps", "sales": 1518, "revenue": 55953, "launch": "2022-12-26", "price": 39.99, "rating": 4.2, "reviews": 827.0}]};
+const C='#2563eb';
+const baseOpt=(y)=>({responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},
+  scales:{x:{ticks:{maxRotation:60,minRotation:45,font:{size:10}}},y:{title:{display:!!y,text:y}}}});
+new Chart(document.getElementById('salesChart'),{type:'line',data:{labels:D.months,datasets:[
+  {label:'月销量',data:D.sales,borderColor:C,backgroundColor:'rgba(37,99,235,.12)',fill:true,tension:.3,
+    pointRadius:D.anom.map(a=>a?6:2),pointBackgroundColor:D.anom.map(a=>a?'#ef4444':C)}]},options:baseOpt('件/月')});
+new Chart(document.getElementById('revChart'),{type:'line',data:{labels:D.months,datasets:[
+  {label:'月销售额',data:D.rev,borderColor:'#0ea5e9',backgroundColor:'rgba(14,165,233,.12)',fill:true,tension:.3,pointRadius:2}]},options:baseOpt('美元/月')});
+new Chart(document.getElementById('priceChart'),{type:'line',data:{labels:D.months,datasets:[
+  {label:'加权均价',data:D.price,borderColor:'#ea580c',tension:.3,pointRadius:2}]},options:baseOpt('美元')});
+const top=D.brands.slice(0,15).reverse();
+new Chart(document.getElementById('brandChart'),{type:'bar',data:{labels:top.map(b=>b.brand),datasets:[{label:'累计销量',data:top.map(b=>b.sales),backgroundColor:C}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'件'}}}}});
+new Chart(document.getElementById('countChart'),{type:'line',data:{labels:D.months,datasets:[
+  {label:'在售产品数',data:D.prod,borderColor:C,tension:.3,pointRadius:2},
+  {label:'品牌数',data:D.br,borderColor:'#f59e0b',tension:.3,pointRadius:2}]},options:baseOpt('个数')});
+new Chart(document.getElementById('entrantChart'),{type:'bar',data:{labels:["2024", "2025", "2026"],datasets:[{label:'首次出现 ASIN 数',data:[89, 31, 10],backgroundColor:['#94a3b8','#2563eb','#ea580c']}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'ASIN 数'}}}}});
+</script>
+</body></html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lactation Massager 市场调研报告 | Amazon US</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #1A3C6E;
+    --accent: #2E75B6;
+    --bg: #F7F9FC;
+    --card-bg: #FFFFFF;
+    --text: #333333;
+    --text-light: #666666;
+    --green: #00AA55;
+    --red: #D93025;
+    --orange: #E67E22;
+    --border: #E0E4E8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  
+  .hero {
+    background: linear-gradient(135deg, #1A3C6E 0%, #2E75B6 50%, #4DA0D4 100%);
+    color: white; padding: 60px 40px; text-align: center;
+  }
+  .hero h1 { font-size: 2.8em; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
+  .hero .subtitle { font-size: 1.4em; opacity: 0.9; margin-bottom: 6px; }
+  .hero .meta { font-size: 0.95em; opacity: 0.7; margin-top: 20px; }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 30px 20px; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px; margin-bottom: 40px;
+  }
+  .stat-card {
+    background: var(--card-bg); border-radius: 12px; padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid var(--accent);
+    transition: transform 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-2px); }
+  .stat-card .label { font-size: 0.85em; color: var(--text-light); margin-bottom: 6px; }
+  .stat-card .value { font-size: 2em; font-weight: 700; color: var(--primary); }
+  .stat-card .trend { font-size: 0.85em; margin-top: 4px; }
+  .trend.up { color: var(--green); }
+  .trend.down { color: var(--red); }
+
+  .section {
+    background: var(--card-bg); border-radius: 12px; padding: 32px; margin-bottom: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .section h2 {
+    font-size: 1.6em; font-weight: 700; color: var(--primary); margin-bottom: 8px;
+    padding-bottom: 12px; border-bottom: 3px solid var(--accent);
+  }
+  .section h3 { font-size: 1.15em; font-weight: 600; color: var(--accent); margin: 24px 0 12px; }
+
+  .chart-wrap { position: relative; margin: 20px 0; }
+  .chart-wrap canvas { max-height: 380px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+
+  table {
+    width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em;
+  }
+  thead th {
+    background: var(--accent); color: white; padding: 12px 14px; text-align: left;
+    font-weight: 600; font-size: 0.85em;
+  }
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+  tbody td {
+    padding: 10px 14px; border-bottom: 1px solid var(--border);
+  }
+  tbody tr:hover { background: #F0F5FA; }
+  tbody tr:nth-child(even) { background: #FAFBFC; }
+  tbody tr:nth-child(even):hover { background: #F0F5FA; }
+
+  .highlight { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.82em; font-weight: 600; }
+  .highlight.green { background: #E6F4EA; color: var(--green); }
+  .highlight.red { background: #FCE8E6; color: var(--red); }
+  .highlight.blue { background: #E8F0FE; color: var(--accent); }
+  .highlight.orange { background: #FEF7E0; color: var(--orange); }
+
+  .insight-box {
+    background: linear-gradient(135deg, #E8F0FE 0%, #F0F5FA 100%);
+    border-radius: 10px; padding: 20px 24px; margin: 16px 0;
+    border-left: 4px solid var(--accent);
+  }
+  .insight-box p { margin: 6px 0; }
+  .insight-box strong { color: var(--primary); }
+
+  .strategy-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
+    margin-top: 16px;
+  }
+  .strategy-card {
+    background: linear-gradient(135deg, #F7F9FC 0%, #FFFFFF 100%);
+    border-radius: 10px; padding: 20px; border: 1px solid var(--border);
+  }
+  .strategy-card h4 { font-size: 1em; color: var(--primary); margin-bottom: 10px; }
+  .strategy-card ul { list-style: none; padding: 0; }
+  .strategy-card li { padding: 4px 0; font-size: 0.9em; color: var(--text-light); }
+  .strategy-card li::before { content: "\2713\0020"; color: var(--accent); font-weight: bold; }
+
+  .risk-box {
+    background: #FFF8E1; border-radius: 10px; padding: 20px 24px; margin: 16px 0;
+    border-left: 4px solid var(--orange);
+  }
+  .risk-box h4 { color: var(--orange); margin-bottom: 8px; }
+
+  .footer { text-align: center; padding: 30px; color: var(--text-light); font-size: 0.85em; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Lactation Massager 市场调研报告</h1>
+  <div class="subtitle">Breast Massager · 哺乳按摩器 · Amazon US 站点</div>
+  <div class="subtitle" style="font-size:1.1em;">婴儿产品 > 喂养 > 母乳喂养 > 电动吸奶器</div>
+  <div class="meta">调研日期：2026年7月 · 数据来源：SellerSprite 卖家精灵 MCP · 站点：Amazon.com (US)</div>
+</div>
+
+<div class="container">
+
+<!-- 核心指标卡片 -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="label">核心关键词月搜索量</div>
+    <div class="value">20,495</div>
+    <div class="trend down">&#x2193; 近3月 -7.4%</div>
+  </div>
+  <div class="stat-card" style="border-left-color: #00AA55;">
+    <div class="label">购买转化率</div>
+    <div class="value">4.74%</div>
+    <div class="trend up">高于母婴品类均值 (1-3%)</div>
+  </div>
+  <div class="stat-card" style="border-left-color: #E67E22;">
+    <div class="label">供需比</div>
+    <div class="value">176.68</div>
+    <div class="trend up">极高位 — 供给远低于需求</div>
+  </div>
+  <div class="stat-card" style="border-left-color: #8E44AD;">
+    <div class="label">平均售价</div>
+    <div class="value">$34.99</div>
+    <div class="trend" style="color:#8E44AD;">Lactation Massager 品类</div>
+  </div>
+  <div class="stat-card" style="border-left-color: #00AA55;">
+    <div class="label">在线产品数</div>
+    <div class="value">116</div>
+    <div class="trend up">竞争相对有限</div>
+  </div>
+  <div class="stat-card" style="border-left-color: #E67E22;">
+    <div class="label">最快增长方向</div>
+    <div class="value" style="font-size:1.2em;">+45.7%</div>
+    <div class="trend up">warming lactation breast massager</div>
+  </div>
+</div>
+
+<!-- 关键词数据表格 -->
+<div class="section">
+  <h2>&#x1F50D; 核心关键词数据</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>关键词</th><th>月搜索量</th><th>月购买量</th><th>购买率</th><th>均价</th><th>产品数</th><th>供需比</th><th>近月增长</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>lactation massager</strong></td><td>20,495</td><td>971</td><td>4.74%</td><td>$34.99</td><td>116</td><td>176.68</td>
+        <td><span class="highlight red">-7.2%</span></td>
+      </tr>
+      <tr>
+        <td>momcozy lactation massager</td><td>2,544</td><td>198</td><td>7.80%</td><td>$39.99</td><td>80</td><td>31.80</td>
+        <td><span class="highlight red">-10.5%</span></td>
+      </tr>
+      <tr>
+        <td>lavie lactation massager</td><td>1,602</td><td>91</td><td>5.68%</td><td>$39.99</td><td>36</td><td>44.50</td>
+        <td><span class="highlight red">-17.6%</span></td>
+      </tr>
+      <tr>
+        <td>lactation massager with heat</td><td>1,859</td><td>95</td><td>5.13%</td><td>$34.99</td><td>87</td><td>21.37</td>
+        <td><span class="highlight red">-22.1%</span></td>
+      </tr>
+      <tr style="background:#F0FAF0;">
+        <td><strong>warming lactation breast massager</strong></td><td>711</td><td>30</td><td>4.17%</td><td>$34.99</td><td>100</td><td>7.11</td>
+        <td><span class="highlight green">+45.7%</span></td>
+      </tr>
+      <tr>
+        <td>lactation massager for breastfeeding</td><td>1,197</td><td>50</td><td>4.14%</td><td>$19.99</td><td>114</td><td>10.50</td>
+        <td><span class="highlight green">+7.6%</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="insight-box">
+    <p><strong>&#x1F4A1; 关键洞察：</strong></p>
+    <p>&#x2022; 核心词供需比高达 <strong>176.68</strong>，市场供给严重不足，存在巨大入场机会</p>
+    <p>&#x2022; 购买率 <strong>4.74%</strong> 显著高于一般母婴品类（1-3%），搜索意图精准、转化潜力高</p>
+    <p>&#x2022; <strong>"warming" 方向增长 +45.7%</strong>，是当前最值得关注的细分趋势</p>
+    <p>&#x2022; 74.5% 的搜索流量集中在 Baby Products 类目，类目定位清晰</p>
+  </div>
+</div>
+
+<!-- 图表区 -->
+<div class="two-col">
+  <!-- 关键词搜索量对比 -->
+  <div class="section">
+    <h2>&#x1F4CA; 关键词搜索量对比</h2>
+    <div class="chart-wrap"><canvas id="kwChart"></canvas></div>
+  </div>
+  <!-- 价格区间分布 -->
+  <div class="section">
+    <h2>&#x1F4B0; 价格区间销量分布</h2>
+    <div class="chart-wrap"><canvas id="priceChart"></canvas></div>
+  </div>
+</div>
+
+<div class="two-col">
+  <!-- 评分分布 -->
+  <div class="section">
+    <h2>&#x2B50; 评分分布</h2>
+    <div class="chart-wrap"><canvas id="ratingChart"></canvas></div>
+  </div>
+  <!-- 关键词增长趋势 -->
+  <div class="section">
+    <h2>&#x1F4C8; 关键词增长趋势</h2>
+    <div class="chart-wrap"><canvas id="growthChart"></canvas></div>
+  </div>
+</div>
+
+<!-- 类目数据 -->
+<div class="section">
+  <h2>&#x1F4E6; 关联类目节点</h2>
+  <table>
+    <thead>
+      <tr><th>类目路径</th><th>节点 ID</th><th>产品数</th><th>相关性</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Baby Products > Feeding > Breastfeeding</td>
+        <td>166784011</td><td>2,422</td>
+        <td><span class="highlight blue">主要类目</span></td>
+      </tr>
+      <tr>
+        <td>Breastfeeding > Breast Pumps</td>
+        <td>166786011</td><td>2,422</td><td>父级类目</td>
+      </tr>
+      <tr>
+        <td>Breast Pumps > Electric</td>
+        <td>2492161011</td><td>1,932</td>
+        <td><span class="highlight blue">核心子类目</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 市场规模 -->
+<div class="section">
+  <h2>&#x1F3EC; 市场规模与集中度</h2>
+  <div class="two-col">
+    <div>
+      <h3>母乳喂养大类 (166784011)</h3>
+      <table>
+        <thead><tr><th>指标</th><th>数值</th></tr></thead>
+        <tbody>
+          <tr><td>产品总数 (TOP100样本)</td><td><strong>100</strong></td></tr>
+          <tr><td>品牌数 / 卖家数</td><td><strong>43 / 43</strong></td></tr>
+          <tr><td>平均月销量 (单ASIN)</td><td><strong>1,587 件</strong></td></tr>
+          <tr><td>平均月销额 (单ASIN)</td><td><strong>$23,520</strong></td></tr>
+          <tr><td>平均售价</td><td><strong>$17.63</strong></td></tr>
+          <tr><td>平均评分 / 评分数</td><td><strong>4.5 / 1,950</strong></td></tr>
+          <tr><td>新品占比 (13个月内)</td><td><strong>13%</strong></td></tr>
+          <tr><td>头部10平均月销</td><td><strong>9,521 件</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <h3>电动吸奶器子类目 (2492161011)</h3>
+      <table>
+        <thead><tr><th>指标</th><th>数值</th></tr></thead>
+        <tbody>
+          <tr><td>产品总数 (TOP100样本)</td><td><strong>100</strong></td></tr>
+          <tr><td>品牌数 / 卖家数</td><td><strong>41 / 41</strong></td></tr>
+          <tr><td>平均月销量 (单ASIN)</td><td><strong>2,810 件</strong></td></tr>
+          <tr><td>平均月销额 (单ASIN)</td><td><strong>$256,707</strong></td></tr>
+          <tr><td>平均售价</td><td><strong>$55.72</strong></td></tr>
+          <tr><td>头部10均价</td><td><strong>$100.99</strong></td></tr>
+          <tr><td>新品占比</td><td><strong>31%</strong></td></tr>
+          <tr><td>新品平均月销额</td><td><strong>$546,510</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 品牌竞争 -->
+<div class="section">
+  <h2>&#x1F3C6; 品牌竞争格局 — 母乳喂养类目 TOP10</h2>
+  <table>
+    <thead>
+      <tr><th>品牌</th><th>排名</th><th>月销量</th><th>产品数</th><th>均价</th><th>评分</th><th>评分数</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Maymom</strong></td><td>1</td><td>25,262</td><td>多款配件</td><td>$9.99+</td><td>4.6</td><td>4,188</td></tr>
+      <tr><td>Nuliie</td><td>2</td><td>25,262</td><td>1</td><td>$9.99</td><td>4.6</td><td>4,188</td></tr>
+      <tr><td>PUMPMOM-US</td><td>3</td><td>~15,000</td><td>7</td><td>$8-15</td><td>4.5+</td><td>~2,000</td></tr>
+      <tr><td>Momstouch</td><td>4</td><td>9,684</td><td>4</td><td>$12.24</td><td>4.5+</td><td>~1,500</td></tr>
+      <tr><td>Nursi Luna</td><td>5</td><td>9,545</td><td>1</td><td>$9.99</td><td>4.6</td><td>2,082</td></tr>
+      <tr><td><strong>Lansinoh</strong></td><td>6</td><td>7,952</td><td>1</td><td>$14.88</td><td>4.7</td><td>371</td></tr>
+      <tr><td>SPECTRA</td><td>7</td><td>6,740</td><td>6</td><td>$25+</td><td>4.3+</td><td>~1,000</td></tr>
+      <tr><td>Suniceme</td><td>8</td><td>6,690</td><td>1</td><td>$7.99</td><td>4.5</td><td>972</td></tr>
+      <tr><td>NENESUPPLY</td><td>9</td><td>~5,500</td><td>7</td><td>$10-20</td><td>4.4+</td><td>~3,000</td></tr>
+      <tr><td>Papablic</td><td>10</td><td>5,855</td><td>1</td><td>$8.49</td><td>4.6</td><td>5,239</td></tr>
+    </tbody>
+  </table>
+  <p style="color:#666; font-size:0.85em; margin-top:8px;">&#x26A0;&#xFE0F; 以上为母乳喂养大类整体排名。Lactation Massager 细分赛道核心品牌为 <strong>Momcozy、LaVie、Frida Mom</strong>。</p>
+</div>
+
+<!-- 核心竞品 -->
+<div class="section">
+  <h2>&#x1F3AF; Lactation Massager 核心竞品分析</h2>
+  <table>
+    <thead>
+      <tr><th>产品</th><th>ASIN</th><th>价格</th><th>评分</th><th>评分数</th><th>点击率</th><th>转化率</th><th>特点</th></tr>
+    </thead>
+    <tbody>
+      <tr style="background:#E8F5E9;">
+        <td><strong>&#x1F947; Momcozy A1Pro</strong></td><td>B0DM5YGBMS</td><td>$34.99</td><td>4.4</td><td>4,620</td><td>35.4%</td><td>28.4%</td><td>深振+速热+记忆功能</td>
+      </tr>
+      <tr>
+        <td><strong>&#x1F948; LaVie (单只)</strong></td><td>B079HFSYKX</td><td>$39.99</td><td>4.5</td><td>10,408</td><td>12.3%</td><td>6.6%</td><td>专利设计+品牌壁垒</td>
+      </tr>
+      <tr>
+        <td><strong>&#x1F949; Frida Mom 2-in-1</strong></td><td>B093J85L4W</td><td>$16.99</td><td>4.2</td><td>2,779</td><td>17.7%</td><td>13.7%</td><td>低价+品牌知名度</td>
+      </tr>
+      <tr><td>LaVie 双只装</td><td>B07MZD5GVZ</td><td>$77.99</td><td>4.4</td><td>7,327</td><td>—</td><td>—</td><td>双只+加热+振动</td></tr>
+      <tr><td>Momcozy Rolling</td><td>B0BNVZD21C</td><td>$39.99</td><td>4.2</td><td>937</td><td>—</td><td>—</td><td>3合1滚轮按摩</td></tr>
+      <tr><td>NCVI 双只装</td><td>B0DY7SZR2F</td><td>$28.49</td><td>3.9</td><td>399</td><td>—</td><td>—</td><td>性价比双只</td></tr>
+      <tr><td>Phanpy</td><td>B0C2CPRVZL</td><td>$20.99</td><td>4.0</td><td>118</td><td>—</td><td>—</td><td>入门低价款</td></tr>
+      <tr><td>plusOne 穿戴式</td><td>B0CY1P8V3L</td><td>$16.99</td><td>4.0</td><td>90</td><td>—</td><td>—</td><td>穿戴式设计</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart-wrap" style="max-width:700px; margin: 24px auto 0;">
+    <canvas id="competitorChart"></canvas>
+  </div>
+</div>
+
+<!-- 差评痛点 -->
+<div class="section">
+  <h2>&#x1F4AC; 差评痛点分析</h2>
+  <div class="two-col">
+    <div class="insight-box">
+      <h3>LaVie — 4.5分 / 10,408评分</h3>
+      <p>&#x2022; <strong>耐用性差：</strong>"Broke after 2 uses" / "Does not last"</p>
+      <p>&#x2022; <strong>品控不稳定：</strong>"Received used product"</p>
+      <p>&#x2022; <strong>性价比质疑：</strong>$39.99 单价，用户对寿命期望高</p>
+    </div>
+    <div class="insight-box" style="border-left-color: var(--orange);">
+      <h3>Frida Mom — 4.2分 / 2,779评分</h3>
+      <p>&#x2022; <strong>产品质量：</strong>"Trash" / "Defective product"</p>
+      <p>&#x2022; <strong>功能性不足：</strong>"Doesn't work" / "Don't buy!"</p>
+      <p>&#x2022; <strong>振动/加热效果差：</strong>核心功能未达预期</p>
+    </div>
+  </div>
+  <div class="insight-box" style="border-left-color: var(--green); margin-top:16px;">
+    <p><strong>&#x1F4A1; 市场改进机会：</strong></p>
+    <p>&#x2022; <strong>耐用性</strong> — 提高马达质量和使用寿命是核心差异化方向</p>
+    <p>&#x2022; <strong>品控</strong> — 降低缺陷率可快速提升评分（头部品牌缺陷投诉较多）</p>
+    <p>&#x2022; <strong>电池续航</strong> — 充电速度和续航时间是有待改善的关键体验点</p>
+    <p>&#x2022; <strong>加热速度</strong> — 用户期望快速加热，"Rapid Heating"已成标配</p>
+    <p>&#x2022; <strong>FDA/HSA/FSA 认证</strong> — LaVie 通过医疗设备认证，是信任背书差异化点</p>
+  </div>
+</div>
+
+<!-- 入场建议 -->
+<div class="section">
+  <h2>&#x1F3AF; 入场建议与策略</h2>
+
+  <h3>市场吸引力评估</h3>
+  <table>
+    <thead><tr><th>维度</th><th>评估</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><strong>市场规模</strong></td><td><span class="highlight orange">中等偏小</span></td><td>核心词月搜索2万，属于小众细分</td></tr>
+      <tr><td><strong>竞争强度</strong></td><td><span class="highlight blue">中等</span></td><td>头部3品牌占65%点击，但供需比极高</td></tr>
+      <tr><td><strong>增长潜力</strong></td><td><span class="highlight green">较好</span></td><td>"warming"方向+46%，产后护理需求持续上升</td></tr>
+      <tr><td><strong>利润空间</strong></td><td><span class="highlight green">较好</span></td><td>均价$35+，毛利率预计60-70%</td></tr>
+      <tr><td><strong>进入壁垒</strong></td><td><span class="highlight blue">中等</span></td><td>LaVie有专利，需规避；FDA认证加分</td></tr>
+      <tr><td><strong>季节性</strong></td><td><span class="highlight green">低</span></td><td>产后需求全年稳定</td></tr>
+    </tbody>
+  </table>
+
+  <div class="strategy-grid" style="margin-top: 24px;">
+    <div class="strategy-card">
+      <h4>&#x1F4CD; 产品定位</h4>
+      <ul>
+        <li>定价 $19.99-$29.99</li>
+        <li>超快加热 &lt;30秒</li>
+        <li>超长续航 &gt;3小时</li>
+        <li>2年质保承诺</li>
+        <li>HSA/FSA 认证</li>
+      </ul>
+    </div>
+    <div class="strategy-card">
+      <h4>&#x1F50D; Listing 关键词</h4>
+      <ul>
+        <li>lactation massager</li>
+        <li>breast massager breastfeeding</li>
+        <li>clogged milk duct relief</li>
+        <li>mastitis relief</li>
+        <li>postpartum essentials</li>
+      </ul>
+    </div>
+    <div class="strategy-card">
+      <h4>&#x1F4E2; 广告策略</h4>
+      <ul>
+        <li>SP: "lactation massager with heat"</li>
+        <li>SD定向: Momcozy/LaVie/Frida ASIN</li>
+        <li>SP Brand: 大词获曝光</li>
+        <li>CPC预算: $1.50-$2.50</li>
+      </ul>
+    </div>
+    <div class="strategy-card">
+      <h4>&#x26A0;&#xFE0F; 风险提示</h4>
+      <ul>
+        <li>LaVie专利需FTO检索</li>
+        <li>CPSC安全检测</li>
+        <li>退货率预估 8-10%</li>
+        <li>母婴+电子双重监管</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>报告生成日期：2026年7月8日 &nbsp;|&nbsp; 数据来源：SellerSprite 卖家精灵 MCP &nbsp;|&nbsp; 站点：Amazon.com (US)</p>
+  <p>数据时效：2026年5月-6月（最新可用月度数据）</p>
+</div>
+
+</div>
+
+<!-- Charts JS -->
+<script>
+// Color palette
+const blue = '#2E75B6', blueLight = '#4DA0D4', green = '#00AA55', red = '#D93025', orange = '#E67E22', purple = '#8E44AD';
+const blueColors = ['#1A3C6E', '#2E75B6', '#4DA0D4', '#7AB8E0', '#A8D4F0', '#C5E3F6'];
+
+// 1. Keyword search volume
+new Chart(document.getElementById('kwChart'), {
+  type: 'bar',
+  data: {
+    labels: ['lactation\nmassager', 'momcozy\nlactation', 'lavie\nlactation', 'with\nheat', 'warming\nbreast', 'for\nbreastfeeding'],
+    datasets: [{
+      label: '月搜索量', data: [20495, 2544, 1602, 1859, 711, 1197],
+      backgroundColor: blueColors,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ctx.raw.toLocaleString() + ' 次/月' } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k' : v }, grid: { color: '#E0E4E8' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// 2. Price distribution
+new Chart(document.getElementById('priceChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['$0-5', '$5-10', '$10-15', '$15-20', '$20-25', '$25-30', '$30-55', '$55+'],
+    datasets: [{
+      data: [2026, 64069, 26804, 50834, 3145, 4064, 6839, 1132],
+      backgroundColor: ['#E8F0FE','#2E75B6','#4DA0D4','#1A3C6E','#7AB8E0','#A8D4F0','#C5E3F6','#E0E4E8'],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 12, usePointStyle: true } },
+      tooltip: { callbacks: { label: ctx => ctx.label + ': ' + ctx.raw.toLocaleString() + ' 件 (' + ((ctx.raw/158913)*100).toFixed(1) + '%)' } }
+    }
+  }
+});
+
+// 3. Rating distribution
+new Chart(document.getElementById('ratingChart'), {
+  type: 'bar',
+  data: {
+    labels: ['2.0以下', '2.0-3.0', '3.0-3.5', '3.5-4.0', '4.0-4.3', '4.3-4.5', '4.5以上'],
+    datasets: [{
+      label: '月销量 (件)',
+      data: [0, 459, 111, 1278, 4159, 43370, 109536],
+      backgroundColor: ['#E0E4E8', '#E0E4E8', '#E0E4E8', '#E0E4E8', '#7AB8E0', '#4DA0D4', '#2E75B6'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ctx.raw.toLocaleString() + ' 件' } }
+    },
+    scales: {
+      y: { beginAtZero: true, ticks: { callback: v => v >= 1000 ? (v/1000).toFixed(0) + 'k' : v }, grid: { color: '#E0E4E8' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// 4. Growth trends
+new Chart(document.getElementById('growthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['warming\nbreast', 'for\nbreastfeeding', 'lactation\nmassager', 'momcozy\nlactation', 'with\nheat', 'lavie\nlactation'],
+    datasets: [{
+      label: '近月增长率',
+      data: [45.7, 7.6, -7.2, -10.5, -22.1, -17.6],
+      backgroundColor: data => data.raw >= 0 ? green : red,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => (ctx.raw >= 0 ? '+' : '') + ctx.raw.toFixed(1) + '%' } }
+    },
+    scales: {
+      y: {
+        grid: { color: '#E0E4E8' },
+        ticks: { callback: v => (v >= 0 ? '+' : '') + v + '%' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// 5. Competitor comparison
+new Chart(document.getElementById('competitorChart'), {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      label: 'Momcozy A1Pro',
+      data: [{x: 35.4, y: 28.4, r: 22}],
+      backgroundColor: 'rgba(0,170,85,0.7)',
+      borderColor: '#00AA55',
+      borderWidth: 2,
+    }, {
+      label: 'Frida Mom 2-in-1',
+      data: [{x: 17.7, y: 13.7, r: 16}],
+      backgroundColor: 'rgba(230,126,34,0.7)',
+      borderColor: '#E67E22',
+      borderWidth: 2,
+    }, {
+      label: 'LaVie (单只)',
+      data: [{x: 12.3, y: 6.6, r: 13}],
+      backgroundColor: 'rgba(46,117,182,0.7)',
+      borderColor: '#2E75B6',
+      borderWidth: 2,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': 点击率 ' + ctx.parsed.x + '% / 转化率 ' + ctx.parsed.y + '%' } }
+    },
+    scales: {
+      x: { title: { display: true, text: '点击份额 (%)', font: { size: 13 } }, min: 0, max: 45, grid: { color: '#E0E4E8' } },
+      y: { title: { display: true, text: '转化份额 (%)', font: { size: 13 } }, min: 0, max: 35, grid: { color: '#E0E4E8' } }
+    }
+  }
+});
+</script>
+</body>
+</html>

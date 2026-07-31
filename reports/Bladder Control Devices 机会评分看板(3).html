@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<!-- saved from url=(0155)file:///Users/zhengguangming/Documents/Jackie%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%88%9B%E4%B8%9A/outputs/bladder_control_devices_opportunity_dashboard/index.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bladder Control Devices 机会评分看板</title>
+  <style>
+    :root{--bg:#f5f7f4;--panel:#fff;--ink:#19313a;--muted:#66777b;--line:#dfe7e3;--teal:#087f83;--teal-soft:#e2f3f1;--green:#2f8a5b;--green-soft:#e8f5ee;--amber:#bd7815;--amber-soft:#fff2d9;--red:#b9504b;--red-soft:#fbe9e7;--blue:#426f9f;--blue-soft:#e7eff8;--shadow:0 8px 24px rgba(31,70,83,.07);--radius:8px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:var(--bg);font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;font-size:14px;letter-spacing:0}.shell{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;padding:22px 16px;color:#effafa;background:#153e4b}.brand{display:flex;align-items:center;gap:10px;margin-bottom:28px}.brand-mark{display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(255,255,255,.3);border-radius:7px;color:#b6f0e9;background:rgba(255,255,255,.08);font-size:17px}.brand strong{display:block;font-size:14px}.brand span{color:#a6c2c8;font-size:11px}.nav-label{margin:20px 8px 9px;color:#7fa4ad;font-size:10px;font-weight:800;text-transform:uppercase}.nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;margin:3px 0;color:#c9dfe2;text-decoration:none;border-radius:6px;font-size:13px}.nav a:hover,.nav a.active{color:#fff;background:rgba(255,255,255,.1)}.nav svg{width:15px;height:15px;flex:none}.side-note{position:absolute;right:16px;bottom:18px;left:16px;color:#a6c2c8;font-size:11px;line-height:1.6}
+    main{min-width:0;padding:24px 30px 42px}.topbar{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:18px}h1{margin:0;color:#143845;font-size:26px;line-height:1.2}.subtitle{margin-top:7px;color:var(--muted);font-size:13px}.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.chip{padding:7px 10px;border:1px solid var(--line);border-radius:6px;color:var(--muted);background:#fff;font-size:12px}.hero{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(360px,.9fr);gap:16px;margin-bottom:16px;padding:18px;border:1px solid #cfe3e2;border-radius:var(--radius);background:linear-gradient(110deg,#ecf8f6,#fff 68%);box-shadow:var(--shadow)}.eyebrow{color:var(--teal);font-size:11px;font-weight:800;text-transform:uppercase}.hero h2{max-width:950px;margin:8px 0 9px;font-size:22px;line-height:1.35}.hero p{max-width:900px;margin:0;color:#536b73;line-height:1.7}.scorebox{display:grid;grid-template-columns:1fr 1fr;gap:12px}.score-card{padding:14px;border:1px solid var(--line);border-radius:8px;background:#fff}.score-card .label{color:var(--muted);font-size:11px;font-weight:800}.score-card .value{margin-top:8px;font-size:32px;font-weight:900;line-height:1}.score-card .note{margin-top:7px;color:var(--muted);font-size:11px;line-height:1.45}.score-card.op .value{color:var(--green)}.score-card.risk .value{color:var(--red)}.decision-tag{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px;border-radius:8px;background:var(--amber-soft);color:#7a4d0d}.decision-tag b{font-size:18px}.decision-tag span{font-size:12px;line-height:1.45}
+    .kpis{display:grid;grid-template-columns:repeat(8,1fr);gap:12px;margin-bottom:16px}.kpi,.panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:var(--shadow)}.kpi{padding:14px}.kpi .label{color:var(--muted);font-size:11px;font-weight:800}.kpi .value{margin-top:10px;font-size:22px;font-weight:800;line-height:1}.kpi .delta{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.45}section{scroll-margin-top:14px;margin-top:16px}.grid-2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(310px,.8fr);gap:16px}.grid-equal{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{padding:16px;overflow:hidden}.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:13px}h3{margin:0;font-size:15px}.hint{margin-top:4px;color:var(--muted);font-size:11px;line-height:1.5}.tag{padding:4px 7px;border-radius:4px;color:var(--teal);background:var(--teal-soft);font-size:11px;font-weight:800;white-space:nowrap}
+    .score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.dim{padding:12px;border:1px solid var(--line);border-radius:7px;background:#fff}.dim-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.dim-head strong{font-size:12px;color:#28515e}.dim-head b{font-size:18px}.bar-track{height:8px;margin-top:10px;border-radius:2px;background:#eaf0f1;overflow:hidden}.bar{height:100%;border-radius:2px;background:var(--teal)}.dim p{margin:8px 0 0;color:var(--muted);font-size:11px;line-height:1.45}.risk-list,.action-list{display:grid;gap:9px}.flag{display:flex;gap:9px;align-items:flex-start;padding:10px;border-radius:7px;background:#fff;border:1px solid var(--line);font-size:12px;line-height:1.5;color:#536b73}.flag i{display:grid;place-items:center;flex:none;width:18px;height:18px;border-radius:50%;font-style:normal;font-size:11px;font-weight:900}.flag.high i{color:var(--red);background:var(--red-soft)}.flag.medium i{color:var(--amber);background:var(--amber-soft)}
+    .table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse}th{padding:9px 8px;border-bottom:1px solid var(--line);color:#73838a;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase}td{padding:10px 8px;border-bottom:1px solid #edf1f2;font-size:12px;vertical-align:middle}tr:last-child td{border-bottom:0}.keyword{color:#28515e;font-weight:800}.cost{font-weight:800}.status{display:inline-block;min-width:58px;padding:3px 6px;border-radius:4px;font-size:10px;font-weight:800;text-align:center}.status.ok{color:var(--green);background:var(--green-soft)}.status.watch{color:var(--amber);background:var(--amber-soft)}.status.stop{color:var(--red);background:var(--red-soft)}.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{padding:12px;border:1px solid var(--line);border-radius:7px;background:#fff}.metric b{display:block;font-size:18px}.metric span{display:block;margin-top:5px;color:var(--muted);font-size:11px;line-height:1.45}.price-row{display:grid;grid-template-columns:118px 1fr 72px;gap:9px;align-items:center;margin-bottom:10px}.price-row span{color:var(--muted);font-size:12px}.price-row b{color:#4b6169;font-size:11px;text-align:right}.segments{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.segment{padding:13px;border:1px solid var(--line);border-radius:7px;background:#fff}.segment .label{color:var(--green);font-size:10px;font-weight:800;text-transform:uppercase}.segment strong{display:block;margin:7px 0 6px;color:#28515e;font-size:13px}.segment p{margin:0;color:var(--muted);font-size:11px;line-height:1.55}.footnote{margin-top:14px;color:#7e8e94;font-size:11px;line-height:1.6}a{color:var(--teal);text-decoration:none}
+    .line-chart{margin-bottom:14px;padding:12px;border:1px solid var(--line);border-radius:7px;background:#fff}.line-chart svg{display:block;width:100%;height:auto}.chart-grid{stroke:#e7edef;stroke-width:1}.chart-axis{stroke:#cbd8da;stroke-width:1}.line-units{fill:none;stroke:var(--teal);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.line-revenue{fill:none;stroke:var(--amber);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.line-blue{fill:none;stroke:var(--blue);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}.line-red{fill:none;stroke:var(--red);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}.dot-units{fill:var(--teal)}.dot-revenue{fill:var(--amber)}.chart-label{fill:#73838a;font-size:10px;font-weight:700}.chart-value{fill:#2d4d58;font-size:10px;font-weight:800}.legend{display:flex;gap:14px;align-items:center;margin:4px 0 10px;color:var(--muted);font-size:11px;flex-wrap:wrap}.legend i{display:inline-block;width:18px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}.share-bars{display:grid;gap:10px}.share-row{display:grid;grid-template-columns:112px 1fr 72px 72px;gap:8px;align-items:center;font-size:12px}.share-row .track{height:10px;border-radius:2px;background:#eaf0f1;overflow:hidden}.share-row .fill{height:100%;background:var(--teal)}.share-row .fill.rev{background:var(--amber)}.share-row b{font-size:11px;color:#4b6169;text-align:right}
+    @media(max-width:1240px){.shell{grid-template-columns:1fr}.sidebar{display:none}main{padding:20px}.kpis{grid-template-columns:repeat(4,1fr)}.score-grid{grid-template-columns:repeat(2,1fr)}.segments{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){main{padding:14px}.topbar,.hero,.grid-2,.grid-equal,.split{display:block}.scorebox{margin-top:14px}.controls{justify-content:flex-start;margin-top:12px}.kpis{grid-template-columns:repeat(2,1fr);gap:8px}.panel{margin-top:12px;padding:13px}.score-grid,.segments{grid-template-columns:1fr}table{min-width:860px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">◎</div><div><strong>Opportunity Lens</strong><span>类目海选看板 v2</span></div></div>
+      <div class="nav-label">Bladder Control</div>
+      <nav class="nav">
+        <a class="active" href="file:///Users/zhengguangming/Documents/Jackie%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%88%9B%E4%B8%9A/outputs/bladder_control_devices_opportunity_dashboard/index.html#overview"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm10 7h6v-9h-6v9ZM4 20h6v-3H4v3Zm10-13h6V4h-6v3Z"></path></svg>机会总览</a>
+        <a href="file:///Users/zhengguangming/Documents/Jackie%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%88%9B%E4%B8%9A/outputs/bladder_control_devices_opportunity_dashboard/index.html#scores"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 19V5M5 19h14M9 16V9m4 7V6m4 10v-4"></path></svg>10 维评分</a>
+        <a href="file:///Users/zhengguangming/Documents/Jackie%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%88%9B%E4%B8%9A/outputs/bladder_control_devices_opportunity_dashboard/index.html#trend"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 17l5-5 4 3 7-8M4 21h16"></path></svg>12 月趋势</a>
+        <a href="file:///Users/zhengguangming/Documents/Jackie%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%88%9B%E4%B8%9A/outputs/bladder_control_devices_opportunity_dashboard/index.html#ads"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3v18M17 7.5c0-2-2-3-5-3s-5 1-5 3 2 3 5 3 5 1 5 3-2 3-5 3-5-1-5-3"></path></svg>广告压力</a>
+        <a href="file:///Users/zhengguangming/Documents/Jackie%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%88%9B%E4%B8%9A/outputs/bladder_control_devices_opportunity_dashboard/index.html#entry"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 5h14v4H5zM5 10h9v4H5zM5 15h12v4H5z"></path></svg>子类目入口</a>
+        <a href="file:///Users/zhengguangming/Documents/Jackie%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%88%9B%E4%B8%9A/outputs/bladder_control_devices_opportunity_dashboard/index.html#risk"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 3l9 16H3zM12 9v4m0 4h.01"></path></svg>风险中心</a>
+        <a href="file:///Users/zhengguangming/Documents/Jackie%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%88%9B%E4%B8%9A/outputs/bladder_control_devices_opportunity_dashboard/index.html#decision"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"></path></svg>下一步</a>
+      </nav>
+      <div class="side-note">数据月份：2026-04。输出包含 HTML + JSON，可用于后续多类目矩阵。</div>
+    </aside>
+    <main>
+      <div class="topbar" id="overview">
+        <div><h1>Bladder Control Devices 机会评分看板</h1><div class="subtitle">Health &amp; Household / Health Care / Incontinence &amp; Ostomy / Bladder Control Devices · Node ID 3763321</div></div>
+        <div class="controls"><div class="chip">Amazon US</div><div class="chip">新模板试跑</div><div class="chip">Watchlist</div></div>
+      </div>
+
+      <div class="hero">
+        <div>
+          <div class="eyebrow">产品经理判断</div>
+          <h2>节点级别不建议直接进入，但值得进入 Watchlist：优先深挖 pelvic wand / vaginal dilators，暂缓 pessary、导尿器械和男士夹具。</h2>
+          <p>这个节点不是单一市场。它的机会来自高客单、低 CPC、强痛点的女性盆底康复子类目；风险来自黏膜接触、医疗器械边界、强功效宣称和部分产品责任。新版评分模型给出机会分 71、风险分 66，所以不是“马上做”，而是“专项验证后选择性做”。</p>
+        </div>
+        <div class="scorebox">
+          <div class="score-card op"><div class="label">Opportunity Score</div><div class="value">71</div><div class="note">中高机会，主要由关键词、价格、差异化和品牌契合拉动。</div></div>
+          <div class="score-card risk"><div class="label">Risk Score</div><div class="value">66</div><div class="note">风险偏高，集中在医疗器械、宣称和体内接触材料。</div></div>
+          <div class="decision-tag"><b>Watchlist</b><span>高价值子类目可专项深挖；节点平均值不能直接作为进入依据。</span></div>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="label">Top100 月销量</div><div class="value">54.9K</div><div class="delta">需求真实但非大盘</div></div>
+        <div class="kpi"><div class="label">Top100 月销售额</div><div class="value">$1.83M</div><div class="delta">商业规模可验证</div></div>
+        <div class="kpi"><div class="label">平均售价</div><div class="value">$31.98</div><div class="delta">健康但混入低价配件</div></div>
+        <div class="kpi"><div class="label">前10品牌/卖家</div><div class="value">100% / 100%</div><div class="delta">Top100 样本销量集中度；Intimate Rose 销额 51.7%</div></div>
+        <div class="kpi"><div class="label">新品占比</div><div class="value">15%</div><div class="delta">新品窗口仍存在</div></div>
+        <div class="kpi"><div class="label">新品均销额</div><div class="value">$16.9K</div><div class="delta">可小批量验证</div></div>
+        <div class="kpi"><div class="label">核心 CPC</div><div class="value">$0.26-$1.33</div><div class="delta">盆底康复词友好</div></div>
+        <div class="kpi"><div class="label">Amazon 自营</div><div class="value">0%</div><div class="delta">平台自营压力低</div></div>
+      </div>
+
+      <section class="grid-equal">
+        <div class="panel">
+          <div class="panel-head"><div><h3>前 10 品牌销量 / 销售额占比</h3><div class="hint">Top100 样本口径；重点看头部品牌是否压制新品。</div></div><span class="tag">Brand Top10</span></div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>品牌</th><th>销量占比</th><th>销售额占比</th><th>均价</th><th>评分 / 评分数</th></tr></thead>
+              <tbody>
+                <tr><td class="keyword">Intimate Rose</td><td>33.7%</td><td>51.7%</td><td>$53.74</td><td>4.3 / 9,028</td></tr>
+                <tr><td class="keyword">BeHerk</td><td>11.7%</td><td>6.8%</td><td>$19.99</td><td>3.6 / 681</td></tr>
+                <tr><td class="keyword">Gadget Beyond</td><td>8.8%</td><td>4.2%</td><td>$14.16</td><td>4.3 / 1,067</td></tr>
+                <tr><td class="keyword">RINOVUM</td><td>8.7%</td><td>9.1%</td><td>$31.49</td><td>3.6 / 3,007</td></tr>
+                <tr><td class="keyword">Oxytrol for Women</td><td>7.5%</td><td>6.5%</td><td>$25.00</td><td>3.8 / 2,465</td></tr>
+                <tr><td class="keyword">Opstra Yee</td><td>7.4%</td><td>5.9%</td><td>$23.19</td><td>4.6 / 128</td></tr>
+                <tr><td class="keyword">HANSILK</td><td>6.3%</td><td>3.8%</td><td>$17.99</td><td>4.2 / 1,927</td></tr>
+                <tr><td class="keyword">DOKIBI</td><td>5.5%</td><td>4.1%</td><td>$21.63</td><td>4.3 / 238</td></tr>
+                <tr><td class="keyword">Generic</td><td>5.4%</td><td>1.7%</td><td>$9.29</td><td>4.7 / 245</td></tr>
+                <tr><td class="keyword">WIESNER</td><td>5.1%</td><td>6.4%</td><td>$39.95</td><td>3.9 / 3,227</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h3>前 10 卖家销量 / 销售额占比</h3><div class="hint">卖家口径与品牌高度重合，说明头部品牌直营/强绑定明显。</div></div><span class="tag">Seller Top10</span></div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>卖家</th><th>销量占比</th><th>销售额占比</th><th>均价</th><th>评分 / 评分数</th></tr></thead>
+              <tbody>
+                <tr><td class="keyword">Distinguished Excellence</td><td>33.8%</td><td>52.2%</td><td>$53.74</td><td>4.3 / 9,028</td></tr>
+                <tr><td class="keyword">BeHerk Official</td><td>10.3%</td><td>5.5%</td><td>$17.99</td><td>3.6 / 578</td></tr>
+                <tr><td class="keyword">The Royal Choice Inc.</td><td>8.8%</td><td>4.2%</td><td>$14.16</td><td>4.3 / 1,067</td></tr>
+                <tr><td class="keyword">UseRevive</td><td>8.7%</td><td>9.2%</td><td>$31.49</td><td>3.6 / 3,007</td></tr>
+                <tr><td class="keyword">Amazon</td><td>7.6%</td><td>6.6%</td><td>$25.00</td><td>3.8 / 2,465</td></tr>
+                <tr><td class="keyword">Opstra Direct</td><td>7.5%</td><td>5.9%</td><td>$23.19</td><td>4.6 / 128</td></tr>
+                <tr><td class="keyword">Boondocks Medical</td><td>6.5%</td><td>2.1%</td><td>$9.64</td><td>4.4 / 366</td></tr>
+                <tr><td class="keyword">HALOCCI</td><td>6.3%</td><td>3.8%</td><td>$17.99</td><td>4.2 / 1,927</td></tr>
+                <tr><td class="keyword">DOKIBI</td><td>5.6%</td><td>4.1%</td><td>$21.63</td><td>4.3 / 238</td></tr>
+                <tr><td class="keyword">WH Innovation LLC</td><td>5.1%</td><td>6.4%</td><td>$39.95</td><td>3.9 / 3,227</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="scores">
+        <div class="panel">
+          <div class="panel-head"><div><h3>10 大维度评分</h3><div class="hint">分数越高越适合进入；风险另算，不和机会分抵消。</div></div><span class="tag">Opportunity Model</span></div>
+          <div class="score-grid">
+            <div class="dim"><div class="dim-head"><strong>市场容量</strong><b>7</b></div><div class="bar-track"><div class="bar" style="width:70%"></div></div><p>Top100 月销 $1.83M，够做验证但不是大盘。</p></div>
+            <div class="dim"><div class="dim-head"><strong>价格质量</strong><b>7</b></div><div class="bar-track"><div class="bar" style="width:70%"></div></div><p>$30+ 价值池健康，低价配件拉低均价。</p></div>
+            <div class="dim"><div class="dim-head"><strong>竞争友好</strong><b>6</b></div><div class="bar-track"><div class="bar" style="width:60%"></div></div><p>Intimate Rose 强，但节点不是单品牌垄断。</p></div>
+            <div class="dim"><div class="dim-head"><strong>新品进入</strong><b>7</b></div><div class="bar-track"><div class="bar" style="width:70%"></div></div><p>6 个月新品约 15%，低评论新品能起量。</p></div>
+            <div class="dim"><div class="dim-head"><strong>广告可行</strong><b>7</b></div><div class="bar-track"><div class="bar" style="width:70%"></div></div><p>vaginal dilators 和 pelvic wand 词能跑。</p></div>
+            <div class="dim"><div class="dim-head"><strong>关键词机会</strong><b>8</b></div><div class="bar-track"><div class="bar" style="width:80%"></div></div><p>有大词、长尾词和明确痛点词。</p></div>
+            <div class="dim"><div class="dim-head"><strong>差异化空间</strong><b>8</b></div><div class="bar-track"><div class="bar" style="width:80%"></div></div><p>材质、结构、握持、套装、教育内容均可做。</p></div>
+            <div class="dim"><div class="dim-head"><strong>供应链可行</strong><b>5</b></div><div class="bar-track"><div class="bar" style="width:50%;background:var(--amber)"></div></div><p>公模可找，但质量、材料和合规资料要验证。</p></div>
+            <div class="dim"><div class="dim-head"><strong>品牌契合</strong><b>9</b></div><div class="bar-track"><div class="bar" style="width:90%"></div></div><p>女性盆底健康非常贴合 Aurillis 主线。</p></div>
+            <div class="dim"><div class="dim-head"><strong>复购延展</strong><b>6</b></div><div class="bar-track"><div class="bar" style="width:60%"></div></div><p>可做套装和替换件，但复购弱于耗材类。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="trend" class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><div><h3>近 12 个月月销量 / 月销售额趋势</h3><div class="hint">节点 Top100 样本口径：月销量 = avgUnits × 100，月销售额 = avgRevenue × 100。</div></div><span class="tag">Sales Trend</span></div>
+          <div class="line-chart">
+            <div class="legend"><span><i style="background:var(--teal)"></i>Top100 月销量</span><span><i style="background:var(--amber)"></i>Top100 月销售额</span></div>
+            <svg viewBox="0 0 760 260" role="img" aria-label="Bladder Control Devices 近 12 个月月销量和月销售额趋势折线图">
+              <line class="chart-grid" x1="52" y1="30" x2="720" y2="30"></line><line class="chart-grid" x1="52" y1="78" x2="720" y2="78"></line><line class="chart-grid" x1="52" y1="126" x2="720" y2="126"></line><line class="chart-grid" x1="52" y1="174" x2="720" y2="174"></line><line class="chart-grid" x1="52" y1="222" x2="720" y2="222"></line>
+              <line class="chart-axis" x1="52" y1="222" x2="720" y2="222"></line><line class="chart-axis" x1="52" y1="30" x2="52" y2="222"></line><line class="chart-axis" x1="720" y1="30" x2="720" y2="222"></line>
+              <text class="chart-label" x="14" y="34">60K</text><text class="chart-label" x="14" y="226">49K</text><text class="chart-label" x="724" y="34">$2.31M</text><text class="chart-label" x="724" y="226">$1.65M</text>
+              <polyline class="line-units" points="52,222 112.7,198.6 173.5,91.6 234.2,118.8 294.9,107.2 355.6,93.5 416.4,25.8 477.1,138.2 537.8,27.7 598.5,64.6 659.3,80.2 720,113.0"></polyline>
+              <polyline class="line-revenue" points="52,222 112.7,193.7 173.5,118.2 234.2,162.1 294.9,135.7 355.6,153.4 416.4,88.0 477.1,138.3 537.8,18.0 598.5,96.4 659.3,150.1 720,164.9"></polyline>
+              <circle class="dot-units" cx="52" cy="222" r="3"></circle><circle class="dot-units" cx="112.7" cy="198.6" r="3"></circle><circle class="dot-units" cx="173.5" cy="91.6" r="3"></circle><circle class="dot-units" cx="234.2" cy="118.8" r="3"></circle><circle class="dot-units" cx="294.9" cy="107.2" r="3"></circle><circle class="dot-units" cx="355.6" cy="93.5" r="3"></circle><circle class="dot-units" cx="416.4" cy="25.8" r="3"></circle><circle class="dot-units" cx="477.1" cy="138.2" r="3"></circle><circle class="dot-units" cx="537.8" cy="27.7" r="3"></circle><circle class="dot-units" cx="598.5" cy="64.6" r="3"></circle><circle class="dot-units" cx="659.3" cy="80.2" r="3"></circle><circle class="dot-units" cx="720" cy="113" r="3"></circle>
+              <circle class="dot-revenue" cx="52" cy="222" r="3"></circle><circle class="dot-revenue" cx="112.7" cy="193.7" r="3"></circle><circle class="dot-revenue" cx="173.5" cy="118.2" r="3"></circle><circle class="dot-revenue" cx="234.2" cy="162.1" r="3"></circle><circle class="dot-revenue" cx="294.9" cy="135.7" r="3"></circle><circle class="dot-revenue" cx="355.6" cy="153.4" r="3"></circle><circle class="dot-revenue" cx="416.4" cy="88" r="3"></circle><circle class="dot-revenue" cx="477.1" cy="138.3" r="3"></circle><circle class="dot-revenue" cx="537.8" cy="18" r="3"></circle><circle class="dot-revenue" cx="598.5" cy="96.4" r="3"></circle><circle class="dot-revenue" cx="659.3" cy="150.1" r="3"></circle><circle class="dot-revenue" cx="720" cy="164.9" r="3"></circle>
+              <text class="chart-value" x="518" y="12">销售额峰值 $2.31M</text><text class="chart-value" x="395" y="22">销量峰值 59.4K</text>
+              <text class="chart-label" x="34" y="244">25-05</text><text class="chart-label" x="94" y="244">06</text><text class="chart-label" x="155" y="244">07</text><text class="chart-label" x="216" y="244">08</text><text class="chart-label" x="277" y="244">09</text><text class="chart-label" x="338" y="244">10</text><text class="chart-label" x="399" y="244">11</text><text class="chart-label" x="459" y="244">12</text><text class="chart-label" x="520" y="244">26-01</text><text class="chart-label" x="581" y="244">02</text><text class="chart-label" x="642" y="244">03</text><text class="chart-label" x="703" y="244">04</text>
+            </svg>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>月份</th><th>Top100 月销量</th><th>Top100 月销售额</th><th>均价</th><th>新品数</th><th>新品均销量</th><th>新品均销额</th></tr></thead>
+              <tbody>
+                <tr><td>2025-05</td><td>49.3K</td><td>$1.65M</td><td>$30.58</td><td>15</td><td>444</td><td>$9.3K</td></tr>
+                <tr><td>2025-06</td><td>50.5K</td><td>$1.74M</td><td>$31.83</td><td>17</td><td>408</td><td>$10.3K</td></tr>
+                <tr><td>2025-07</td><td>56.0K</td><td>$1.98M</td><td>$33.46</td><td>19</td><td>397</td><td>$8.8K</td></tr>
+                <tr><td>2025-08</td><td>54.6K</td><td>$1.84M</td><td>$33.09</td><td>20</td><td>422</td><td>$10.5K</td></tr>
+                <tr><td>2025-09</td><td>55.2K</td><td>$1.93M</td><td>$34.17</td><td>23</td><td>377</td><td>$8.9K</td></tr>
+                <tr><td>2025-10</td><td>55.9K</td><td>$1.87M</td><td>$32.26</td><td>18</td><td>408</td><td>$11.0K</td></tr>
+                <tr><td>2025-11</td><td>59.4K</td><td>$2.08M</td><td>$30.35</td><td>23</td><td>379</td><td>$12.9K</td></tr>
+                <tr><td>2025-12</td><td>53.6K</td><td>$1.92M</td><td>$31.38</td><td>22</td><td>366</td><td>$11.0K</td></tr>
+                <tr><td>2026-01</td><td>59.3K</td><td>$2.31M</td><td>$32.56</td><td>22</td><td>401</td><td>$18.4K</td></tr>
+                <tr><td>2026-02</td><td>57.4K</td><td>$2.06M</td><td>$34.08</td><td>24</td><td>413</td><td>$17.8K</td></tr>
+                <tr><td>2026-03</td><td>56.6K</td><td>$1.88M</td><td>$30.06</td><td>19</td><td>441</td><td>$20.6K</td></tr>
+                <tr><td>2026-04</td><td>54.9K</td><td>$1.83M</td><td>$31.98</td><td>15</td><td>352</td><td>$16.9K</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h3>销售趋势解读</h3><div class="hint">这层用来判断类目是在扩张、回落，还是只是单月异常。</div></div></div>
+          <div class="risk-list">
+            <div class="flag medium"><i>1</i><div><b>12 个月月销量约 +11.4%</b><br>Top100 从 49.3K 增至 54.9K，属于温和增长，不是爆发型类目。</div></div>
+            <div class="flag medium"><i>2</i><div><b>12 个月月销售额约 +11.3%</b><br>从 $1.65M 增至 $1.83M，商业盘子缓慢抬升。</div></div>
+            <div class="flag high"><i>3</i><div><b>2026-01 后有回落</b><br>销售额峰值在 2026-01 的 $2.31M，2026-03/04 回落，不能按峰值乐观估算。</div></div>
+            <div class="flag medium"><i>4</i><div><b>新品销售额质量改善</b><br>2026-01 到 2026-04 新品均销额明显高于 2025 年中段，说明新品仍有窗口。</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><div><h3>最小单元子市场拆分</h3><div class="hint">多数细分不是独立 Amazon 节点，以下按代表 ASIN 组/关键词池口径统计；占比以 2026-04 节点 Top100 为基准。</div></div><span class="tag">Submarket</span></div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>子市场</th><th>月销量</th><th>销量占比</th><th>月销售额</th><th>销售额占比</th><th>均价</th><th>新品数</th><th>新品均销量</th><th>新品均销额</th></tr></thead>
+              <tbody>
+                <tr><td class="keyword">Pelvic wand / 盆底按摩棒</td><td>7,286</td><td>13.3%</td><td>$285.0K</td><td>15.6%</td><td>$39.11</td><td>1</td><td>288</td><td>$8.6K</td></tr>
+                <tr><td class="keyword">Vaginal dilators / 扩张器套装</td><td>1,702</td><td>3.1%</td><td>$141.9K</td><td>7.7%</td><td>$83.38</td><td>1</td><td>18</td><td>$1.1K</td></tr>
+                <tr><td class="keyword">Catheter bag holders / 导尿袋固定带</td><td>3,361</td><td>6.1%</td><td>$64.3K</td><td>3.5%</td><td>$19.13</td><td>1</td><td>186</td><td>$9.3K</td></tr>
+                <tr><td class="keyword">Pessary / 膀胱支撑</td><td>2,139</td><td>3.9%</td><td>$67.4K</td><td>3.7%</td><td>$31.49</td><td>0</td><td>-</td><td>-</td></tr>
+                <tr><td class="keyword">Male incontinence clamp / 男性尿失禁夹</td><td>625</td><td>1.1%</td><td>$24.4K</td><td>1.3%</td><td>$38.99</td><td>1</td><td>120</td><td>$4.2K</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="footnote">读法：这里的占比不是全量子市场份额，而是代表 ASIN 组相对节点 Top100 的贡献度；用于比较机会大小、价格质量和新品表现。</div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h3>子市场机会排序</h3><div class="hint">结合销售体量、价格质量、新品表现、关键词趋势和合规风险。</div></div></div>
+          <div class="risk-list">
+            <div class="flag medium"><i>1</i><div><b>首选：Pelvic wand</b><br>代表组销售额约 $285K，占节点 Top100 15.6%；关键词 12 个月强增长，适合做结构、材质、握持和套装差异化。</div></div>
+            <div class="flag medium"><i>2</i><div><b>备选：Vaginal dilators</b><br>销量占比 3.1%，但销售额占比 7.7%，客单价好；CPC 低，适合小预算测试，但需求不按爆发增长估算。</div></div>
+            <div class="flag high"><i>3</i><div><b>谨慎：Catheter accessories</b><br>销量不低，但均价约 $19，CPC/售价压力大；更适合自然流量、组合装或B端医疗护理场景。</div></div>
+            <div class="flag high"><i>4</i><div><b>合规高压：Pessary</b><br>代表款销量可观，但医疗器械、人体接触和功效宣称风险更高，不建议作为轻量首发。</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><div><h3>子市场近 12 个月销量 / 销售额趋势</h3><div class="hint">代表 ASIN 组月汇总；用于观察子市场方向，不替代全量节点统计。</div></div><span class="tag">Submarket Trend</span></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>月份</th><th>盆底按摩棒销量 / 销额</th><th>扩张器销量 / 销额</th><th>导尿袋配件销量 / 销额</th><th>膀胱支撑销量 / 销额</th><th>男性夹销量 / 销额</th></tr></thead>
+            <tbody>
+              <tr><td>2025-05</td><td>1.9K / $92.5K</td><td>851 / $67.6K</td><td>2.8K / $51.7K</td><td>1.4K / $48.5K</td><td>556 / $22.2K</td></tr>
+              <tr><td>2025-06</td><td>3.9K / $164.2K</td><td>757 / $60.2K</td><td>3.2K / $58.9K</td><td>792 / $27.7K</td><td>512 / $20.5K</td></tr>
+              <tr><td>2025-07</td><td>7.6K / $290.0K</td><td>769 / $64.2K</td><td>3.4K / $61.5K</td><td>378 / $12.5K</td><td>510 / $20.4K</td></tr>
+              <tr><td>2025-08</td><td>7.4K / $292.8K</td><td>791 / $65.4K</td><td>3.3K / $62.7K</td><td>280 / $9.4K</td><td>445 / $17.8K</td></tr>
+              <tr><td>2025-09</td><td>6.9K / $272.6K</td><td>873 / $75.9K</td><td>3.1K / $61.0K</td><td>1.2K / $40.9K</td><td>432 / $17.3K</td></tr>
+              <tr><td>2025-10</td><td>7.4K / $283.1K</td><td>1.2K / $105.1K</td><td>3.4K / $65.0K</td><td>1.5K / $51.5K</td><td>415 / $16.6K</td></tr>
+              <tr><td>2025-11</td><td>7.6K / $287.7K</td><td>979 / $83.5K</td><td>3.5K / $67.7K</td><td>2.3K / $79.5K</td><td>663 / $25.3K</td></tr>
+              <tr><td>2025-12</td><td>6.8K / $263.5K</td><td>770 / $65.9K</td><td>2.5K / $52.2K</td><td>2.1K / $74.0K</td><td>677 / $25.7K</td></tr>
+              <tr><td>2026-01</td><td>7.6K / $297.7K</td><td>1.0K / $86.4K</td><td>2.7K / $52.0K</td><td>1.8K / $61.3K</td><td>711 / $27.3K</td></tr>
+              <tr><td>2026-02</td><td>6.9K / $270.4K</td><td>1.6K / $129.3K</td><td>2.6K / $50.4K</td><td>2.1K / $73.7K</td><td>613 / $23.6K</td></tr>
+              <tr><td>2026-03</td><td>7.5K / $294.3K</td><td>1.8K / $147.1K</td><td>3.3K / $59.4K</td><td>935 / $32.7K</td><td>642 / $25.0K</td></tr>
+              <tr><td>2026-04</td><td>7.3K / $285.0K</td><td>1.7K / $141.9K</td><td>3.4K / $64.3K</td><td>2.1K / $67.4K</td><td>625 / $24.4K</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><div><h3>近 12 个月关键词需求趋势</h3><div class="hint">ABA 搜索量序列，末月为 2026-04；月份字段未返回，因此按连续 12 个月观察值展示。</div></div><span class="tag">Trend Layer</span></div>
+          <div class="line-chart">
+            <div class="legend"><span><i style="background:var(--teal)"></i>vaginal dilators</span><span><i style="background:var(--amber)"></i>pelvic wand</span><span><i style="background:var(--blue)"></i>pelvic floor wand</span></div>
+            <svg viewBox="0 0 760 240" role="img" aria-label="近 12 个月关键词搜索量折线图">
+              <line class="chart-grid" x1="48" y1="28" x2="720" y2="28"></line><line class="chart-grid" x1="48" y1="77" x2="720" y2="77"></line><line class="chart-grid" x1="48" y1="126" x2="720" y2="126"></line><line class="chart-grid" x1="48" y1="175" x2="720" y2="175"></line><line class="chart-grid" x1="48" y1="214" x2="720" y2="214"></line>
+              <line class="chart-axis" x1="48" y1="214" x2="720" y2="214"></line><line class="chart-axis" x1="48" y1="28" x2="48" y2="214"></line>
+              <text class="chart-label" x="10" y="32">44K</text><text class="chart-label" x="14" y="218">1.5K</text>
+              <polyline class="line-units" points="48,64.2 109.1,28 170.2,160.7 231.3,165.6 292.4,141.0 353.5,170.6 414.5,187.4 475.6,187.9 536.7,170.5 597.8,162.9 658.9,167.4 720,162.3"></polyline>
+              <polyline class="line-revenue" points="48,169.9 109.1,180.4 170.2,182.1 231.3,161.6 292.4,159.8 353.5,173.7 414.5,169.5 475.6,161.9 536.7,127.8 597.8,113.8 658.9,117.9 720,108.5"></polyline>
+              <polyline class="line-blue" points="48,218 109.1,216.5 170.2,215.6 231.3,215.7 292.4,213.7 353.5,215.8 414.5,215.8 475.6,215.9 536.7,203.1 597.8,188.8 658.9,173.4 720,170.7"></polyline>
+              <text class="chart-value" x="620" y="102">pelvic wand +111%</text><text class="chart-value" x="570" y="184">pelvic floor wand 突破增长</text>
+              <text class="chart-label" x="30" y="232">25-05</text><text class="chart-label" x="91" y="232">06</text><text class="chart-label" x="152" y="232">07</text><text class="chart-label" x="213" y="232">08</text><text class="chart-label" x="274" y="232">09</text><text class="chart-label" x="335" y="232">10</text><text class="chart-label" x="396" y="232">11</text><text class="chart-label" x="457" y="232">12</text><text class="chart-label" x="518" y="232">26-01</text><text class="chart-label" x="579" y="232">02</text><text class="chart-label" x="640" y="232">03</text><text class="chart-label" x="701" y="232">04</text>
+            </svg>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>关键词</th><th>12 月序列</th><th>首月</th><th>最新月</th><th>变化</th><th>最新 3 月均值</th><th>趋势判断</th></tr></thead>
+              <tbody>
+                <tr><td class="keyword">vaginal dilators</td><td>35.8K → 43.8K → 14.5K → 13.4K → 18.8K → 12.2K → 8.5K → 8.4K → 12.3K → 14.0K → 13.0K → 14.1K</td><td>35.8K</td><td>14.1K</td><td><span class="status watch">-60.6%</span></td><td>13.7K</td><td>高峰回落，近期稳定</td></tr>
+                <tr><td class="keyword">pelvic wand</td><td>12.3K → 10.0K → 9.6K → 14.3K → 14.7K → 11.6K → 12.4K → 14.2K → 21.8K → 24.9K → 24.0K → 26.1K</td><td>12.3K</td><td>26.1K</td><td><span class="status ok">+111%</span></td><td>25.0K</td><td>强增长，近期加速</td></tr>
+                <tr><td class="keyword">pelvic floor wand</td><td>1.5K → 1.9K → 2.0K → 2.0K → 2.5K → 2.0K → 2.0K → 2.0K → 4.8K → 8.0K → 11.4K → 12.0K</td><td>1.5K</td><td>12.0K</td><td><span class="status ok">+694%</span></td><td>10.5K</td><td>突破式增长</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h3>趋势对决策的影响</h3><div class="hint">趋势层解决“单月漂亮是否只是偶然”的问题。</div></div></div>
+          <div class="risk-list">
+            <div class="flag medium"><i>1</i><div><b>节点级趋势暂未纳入总分</b><br>类目节点历史接口返回空值，所以 Top100 销量/销售额仍以 2026-04 单月为准。</div></div>
+            <div class="flag medium"><i>2</i><div><b>关键词机会分可上调</b><br>`pelvic wand` 和 `pelvic floor wand` 不是单月异常，而是连续需求抬升。</div></div>
+            <div class="flag high"><i>3</i><div><b>vaginal dilators 需要谨慎解释</b><br>当前 CPC 很好，但搜索量从高峰回落，适合做稳定需求，不适合按爆发增长判断。</div></div>
+          </div>
+          <div class="footnote">新版模板建议：每个类目都增加 `trend` 字段，至少包含 12 个月关键词搜索序列、最新 3 月均值、同比或首尾变化、趋势标签和数据可用性说明。</div>
+        </div>
+      </section>
+
+      <section id="ads" class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><div><h3>关键词 PPC / 广告压力</h3><div class="hint">PPC/售价低于 3% 通常友好；理论 ACoS 用于粗判广告压力。</div></div><span class="tag">CPC Included</span></div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>关键词</th><th>搜索量</th><th>购买率</th><th>均价</th><th>CPC</th><th>PPC/售价</th><th>理论 ACoS</th><th>判断</th></tr></thead>
+              <tbody>
+                <tr><td class="keyword">vaginal dilators</td><td>14,108</td><td>7.93%</td><td>$54.95</td><td class="cost">$0.26</td><td>0.47%</td><td>6%</td><td><span class="status ok">优先</span></td></tr>
+                <tr><td class="keyword">vibrating pelvic wand</td><td>1,241</td><td>14.53%</td><td>$39.99</td><td class="cost">$0.71</td><td>1.78%</td><td>12%</td><td><span class="status ok">优先</span></td></tr>
+                <tr><td class="keyword">pelvic floor wand</td><td>12,023</td><td>8.73%</td><td>$49.99</td><td class="cost">$1.11</td><td>2.22%</td><td>25%</td><td><span class="status ok">可跑</span></td></tr>
+                <tr><td class="keyword">pelvic wand</td><td>26,057</td><td>8.25%</td><td>$49.99</td><td class="cost">$1.33</td><td>2.66%</td><td>32%</td><td><span class="status watch">控价</span></td></tr>
+                <tr><td class="keyword">foley catheter leg bag</td><td>3,316</td><td>8.42%</td><td>$16.99</td><td class="cost">$1.19</td><td>7.00%</td><td>83%</td><td><span class="status watch">自然优先</span></td></tr>
+                <tr><td class="keyword">bladder control devices</td><td>1,461</td><td>0.49%</td><td>$49.99</td><td class="cost">$1.75</td><td>3.50%</td><td>714%</td><td><span class="status stop">否定</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h3>价格与广告红线</h3><div class="hint">这里决定能不能靠广告启动。</div></div></div>
+          <div class="risk-list">
+            <div class="flag medium"><i>!</i><div><b>节点均价 $31.98 可接受</b><br>但 $10-$20 配件销量占比高，不能用低价配件硬跑 PPC。</div></div>
+            <div class="flag high"><i>!</i><div><b>泛词 `bladder control devices` 否定</b><br>购买率 0.49%，理论 ACoS 约 714%，不适合启动。</div></div>
+            <div class="flag medium"><i>!</i><div><b>导尿袋广告承压</b><br>售价 $16.99、CPC $1.19，PPC/售价 7%，更适合 SEO、组合装和自然流量。</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><div><h3>最新月价格段销量 / 销售额占比</h3><div class="hint">2026-04 Top100 样本；用于判断价格带质量，而不是只看平均售价。</div></div><span class="tag">Price Band</span></div>
+          <div class="share-bars">
+            <div class="share-row"><span>&lt;$10</span><div class="track"><div class="fill" style="width:13%"></div></div><b>13%</b><b>$ 3%</b></div>
+            <div class="share-row"><span>$10-$20</span><div class="track"><div class="fill" style="width:29%"></div></div><b>29%</b><b>$ 19%</b></div>
+            <div class="share-row"><span>$20-$40</span><div class="track"><div class="fill" style="width:35%"></div></div><b>35%</b><b>$ 31%</b></div>
+            <div class="share-row"><span>$40-$80</span><div class="track"><div class="fill" style="width:15%"></div></div><b>15%</b><b>$ 24%</b></div>
+            <div class="share-row"><span>$80+</span><div class="track"><div class="fill" style="width:8%"></div></div><b>8%</b><b>$ 23%</b></div>
+          </div>
+          <div class="footnote">读法：低价段贡献了大量销量，但销售额质量集中在 $40+；高价产品包括电刺激/训练器和外部集尿系统，合规与售后风险更高。</div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h3>产品形态与价格带保留项</h3><div class="hint">用于判断“同一节点里到底卖的是什么”。</div></div></div>
+          <div class="risk-list">
+            <div class="flag medium"><i>1</i><div><b>低价耗材/固定件：$5-$20</b><br>导尿袋、固定贴、腿袋固定带、尿袋盖，销量多但利润和 PPC 容错低。</div></div>
+            <div class="flag medium"><i>2</i><div><b>女性盆底工具：$30-$80</b><br>pelvic wand、vaginal dilators、kegel weights，是当前更适合 Aurillis 的机会池。</div></div>
+            <div class="flag high"><i>3</i><div><b>电子/医疗系统：$100+</b><br>电刺激、训练器、外部集尿系统贡献销售额，但 FDA、售后和产品责任压力明显更大。</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="entry">
+        <div class="panel">
+          <div class="panel-head"><div><h3>最小单元子类目入口</h3><div class="hint">新版模板会明确拆出“可深挖”和“暂缓”的子类目，而不是只给节点结论。</div></div><span class="tag">Entry Map</span></div>
+          <div class="segments">
+            <div class="segment"><div class="label">Priority</div><strong>Vaginal Dilators</strong><p>CPC $0.26、均价 $54.95、购买率 7.93%。优先验证材料、尺寸梯度、教育内容。</p></div>
+            <div class="segment"><div class="label">Priority</div><strong>Pelvic Wand / Therapy</strong><p>搜索量强、CPC 可承受。差异化在软硬度、握持、电池、专业指导。</p></div>
+            <div class="segment"><div class="label">Watch</div><strong>Catheter Bag Holders</strong><p>低评论新品可起量，但低客单和售后体验要求高，广告不宜硬打。</p></div>
+            <div class="segment"><div class="label">Hold</div><strong>Pessary / Bladder Support</strong><p>需求真实，但疼痛、出血、适配失败和医疗器械边界较重。</p></div>
+            <div class="segment"><div class="label">Hold</div><strong>Male Clamp / External Catheter</strong><p>老人康复需求明确，但长期佩戴舒适性、漏尿、责任风险高。</p></div>
+          </div>
+          <div class="line-chart" style="margin-top:14px">
+            <div class="legend"><span><i style="background:var(--teal)"></i>Pelvic wand</span><span><i style="background:var(--amber)"></i>Vaginal dilators</span><span><i style="background:var(--blue)"></i>Catheter accessories</span><span><i style="background:var(--red)"></i>Pessary</span></div>
+            <svg viewBox="0 0 760 220" role="img" aria-label="子类目代表 ASIN 组近 12 个月销售额趋势图">
+              <line class="chart-grid" x1="48" y1="28" x2="720" y2="28"></line><line class="chart-grid" x1="48" y1="78" x2="720" y2="78"></line><line class="chart-grid" x1="48" y1="128" x2="720" y2="128"></line><line class="chart-grid" x1="48" y1="178" x2="720" y2="178"></line>
+              <line class="chart-axis" x1="48" y1="178" x2="720" y2="178"></line><line class="chart-axis" x1="48" y1="28" x2="48" y2="178"></line>
+              <text class="chart-label" x="10" y="32">$300K</text><text class="chart-label" x="14" y="182">$0</text>
+              <polyline class="line-units" points="48,131.8 109,95.9 170,33.0 231,31.6 292,41.7 353,36.4 414,34.1 475,46.3 536,29.2 597,42.8 659,30.9 720,35.5"></polyline>
+              <polyline class="line-revenue" points="48,144.2 109,147.9 170,145.9 231,145.3 292,140.1 353,125.5 414,136.2 475,145.0 536,134.8 597,113.3 659,104.4 720,107.0"></polyline>
+              <polyline class="line-blue" points="48,152.1 109,148.5 170,147.3 231,146.7 292,147.0 353,145.5 414,144.2 475,151.9 536,152.0 597,152.8 659,148.3 720,145.9"></polyline>
+              <polyline class="line-red" points="48,153.8 109,164.1 170,171.8 231,173.3 292,157.5 353,152.3 414,138.3 475,141.0 536,147.3 597,141.1 659,161.6 720,144.3"></polyline>
+              <text class="chart-value" x="575" y="24">Pelvic wand 长期最高</text><text class="chart-value" x="535" y="102">Dilators 2026 Q1 抬升</text>
+            </svg>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>子类目</th><th>2026-04销量 / 销额</th><th>12月走势</th><th>评分</th><th>评分数</th><th>新品占比</th><th>前5品牌销量占比</th><th>入口判断</th></tr></thead>
+              <tbody>
+                <tr><td class="keyword">Pelvic wand</td><td>7.3K / $285.0K</td><td><span class="status ok">高位稳定</span></td><td>4.3</td><td>约 9.1K</td><td>约 4%</td><td>约 95%</td><td>品牌集中高，但需求和客单最好，适合差异化硬仗。</td></tr>
+                <tr><td class="keyword">Vaginal dilators</td><td>1.7K / $141.9K</td><td><span class="status ok">Q1 抬升</span></td><td>4.5</td><td>约 2.0K</td><td>约 1%</td><td>约 100%</td><td>价格质量好，先做材料/尺寸/内容差异化验证。</td></tr>
+                <tr><td class="keyword">Catheter accessories</td><td>3.4K / $64.3K</td><td><span class="status watch">稳定低价</span></td><td>4.3</td><td>约 3.0K</td><td>约 6%</td><td>约 40%</td><td>品牌分散但低价，适合组合装和自然流量。</td></tr>
+                <tr><td class="keyword">Pessary / support</td><td>2.1K / $67.4K</td><td><span class="status watch">波动明显</span></td><td>3.6</td><td>3.0K</td><td>0%</td><td>100%</td><td>需求真实但体验和合规风险高，暂缓。</td></tr>
+                <tr><td class="keyword">Male clamp</td><td>625 / $24.4K</td><td><span class="status watch">小盘稳定</span></td><td>3.9</td><td>约 4.7K</td><td>约 19%</td><td>约 100%</td><td>小而聚焦，新品需验证舒适性与责任风险。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="risk" class="grid-equal">
+        <div class="panel">
+          <div class="panel-head"><div><h3>风险中心</h3><div class="hint">风险分越高代表越危险；这里不和机会分抵消。</div></div><span class="tag">Risk 66</span></div>
+          <div class="risk-list">
+            <div class="flag high"><i>H</i><div><b>黏膜/体内接触风险高</b><br>女性私密接触产品需要材料、清洁、生物相容性和禁忌人群验证。</div></div>
+            <div class="flag high"><i>H</i><div><b>医疗器械与宣称风险高</b><br>pessary、导尿、刺激、支撑类产品必须逐个确认 FDA 分类和 510(k) 边界。</div></div>
+            <div class="flag medium"><i>M</i><div><b>专利/结构风险中等</b><br>Intimate Rose、RINOVUM Revive、刺激设备结构需要单独做专利筛查。</div></div>
+            <div class="flag medium"><i>M</i><div><b>退货与售后风险中高</b><br>疼痛、尺寸不合、漏尿、充电失败会直接造成差评和退货。</div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h3>市场结构补充</h3><div class="hint">用来判断是否值得继续投入调研预算。</div></div></div>
+          <div class="split">
+            <div class="metric"><b>FBA 76.2%</b><span>按销量口径，FBA 是主流履约方式；FBM 约 7.7%，NA 约 16.1%。</span></div>
+            <div class="metric"><b>美国 49.6%</b><span>美国卖家销量略高于中国卖家，且销售额占比更高。</span></div>
+            <div class="metric"><b>中国 45.6%</b><span>中国卖家在低价导尿配件和外部集尿产品中活跃，价格竞争要小心。</span></div>
+            <div class="metric"><b>4.1</b><span>平均评分不高，说明体验缺口仍存在。</span></div>
+          </div>
+          <div class="footnote">FDA 参考：<a href="https://www.fda.gov/medical-devices/classify-your-medical-device/how-determine-if-your-product-medical-device">如何判断医疗器械</a>、<a href="https://www.fda.gov/medical-devices/premarket-notification-510k">510(k)</a>、<a href="https://www.fda.gov/medical-devices/consumers-medical-devices/are-there-fda-registered-or-fda-certified-medical-devices-how-do-i-know-what-fda-approved">FDA registered 不等于 approved</a>。</div>
+        </div>
+      </section>
+
+      <section id="decision" class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><div><h3>最终建议</h3><div class="hint">按新模板标签输出。</div></div><span class="tag">Watchlist</span></div>
+          <div class="action-list">
+            <div class="flag medium"><i>1</i><div><b>节点级别：Watchlist</b><br>机会分 71，风险分 66，不建议直接作为泛类目立项。</div></div>
+            <div class="flag medium"><i>2</i><div><b>优先深挖：vaginal dilators / pelvic wand</b><br>这两个子类目有更好的客单、CPC、品牌契合和差异化空间。</div></div>
+            <div class="flag high"><i>3</i><div><b>暂缓：pessary / catheter-like / male clamp</b><br>先做合规、专利、责任风险和供应链测试，不适合快速铺货。</div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div><h3>下一步验证清单</h3><div class="hint">这部分决定能否从 Watchlist 升级成 Priority Research。</div></div></div>
+          <div class="action-list">
+            <div class="flag medium"><i>✓</i><div>单独跑 `vaginal dilators` 和 `pelvic wand` 两个细分看板，拆竞品、评论、专利和供应链。</div></div>
+            <div class="flag medium"><i>✓</i><div>逐个目标产品确认 FDA product code、Class、510(k) 豁免状态和标签边界。</div></div>
+            <div class="flag medium"><i>✓</i><div>筛查 Intimate Rose、RINOVUM Revive、iSTIM 相关结构/外观/商标风险。</div></div>
+            <div class="flag medium"><i>✓</i><div>找 3-5 家工厂验证医用硅胶、材料报告、生物相容性、说明书和质检能力。</div></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="footnote">数据来源：卖家精灵 Amazon US 类目节点 3763321，统计月份 2026-04；旧版 Bladder Control Devices 看板和历史 data.json 复用。新版输出包含 <a href="file:///Users/zhengguangming/Documents/Jackie%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%88%9B%E4%B8%9A/outputs/bladder_control_devices_opportunity_dashboard/category_opportunity.json">category_opportunity.json</a>，用于后续多类目总览、机会矩阵和横向比较。PPC 为关键词工具建议竞价，理论 ACoS 为粗算，不代表实际广告结果。</div>
+    </main>
+  </div>
+
+
+</body></html>
