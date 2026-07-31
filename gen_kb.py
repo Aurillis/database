@@ -7,9 +7,8 @@ import json, pathlib, re
 BASE = pathlib.Path(__file__).parent
 META = json.loads((BASE / 'reports_meta.json').read_text(encoding='utf-8'))
 
-# Vercel serverless function URL (set empty; fill after deploying upload-api).
-# The GitHub token lives ONLY on that server — never embedded in this page.
-UPLOAD_API_PLACEHOLDER = 'https://report-portal-m2lnxphol-chenbiyin1770-5040s-projects.vercel.app/api/upload'
+# 腾讯云 SCF 函数 URL（部署上传后端后填入）。GitHub 令牌只在该服务端，绝不进页面。
+UPLOAD_API_PLACEHOLDER = 'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.com'
 
 # ===== CATEGORY TREE =====
 TREE = [
@@ -519,14 +518,13 @@ HTML = r"""
 # ===== JAVASCRIPT =====
 JS = r"""
 // ===== CONFIG =====
-// Vercel serverless function URL that handles uploads (set during deploy).
-// The GitHub token lives ONLY on that server, never in this page.
+// 服务端上传函数 URL（腾讯云 SCF 函数 URL，部署后填入）。
+// GitHub 令牌只存在该服务端，绝不进这个页面。
 var UPLOAD_API = '__UPLOAD_API__';
 
-// Upload secret sent to the Vercel function as the x-upload-secret header.
-// This is INDEPENDENT of the admin login password (S.adminPwd) — changing the
-// admin password must NOT break uploads. It must match the Vercel env var
-// UPLOAD_SECRET. Keep the two in sync if you ever change it.
+// 上传密钥，作为 x-upload-secret 头发给服务端函数。
+// 它与后台登录密码 (S.adminPwd) 相互独立——改管理密码不影响上传。
+// 必须与服务端环境变量 UPLOAD_SECRET 一致。
 var UPLOAD_SECRET = 'admin123';
 
 var FILES = __FILES_JSON__;
@@ -1089,7 +1087,7 @@ function handleUpload(fileList) {
       .catch(function(e) {
         done++;
         var msg = (e && e.message) ? e.message : '无法连接服务端';
-        fail.push(file.name + ' (网络错误：' + msg + '｜多为 Vercel 登录墙未关 或 浏览器连不上 vercel.app)');
+        fail.push(file.name + ' (网络错误：' + msg + '｜请确认函数 URL 可达且未开启访问保护)');
         if (done === files.length) finishUpload(result, ok, fail, bad);
       });
     };
