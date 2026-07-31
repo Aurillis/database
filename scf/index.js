@@ -15,8 +15,9 @@
 
 const https = require('https');
 
-// 允许上传的文件后缀(与前端一致)
-const ALLOWED_EXT = /\.(html?|css|js|png|jpe?g|gif|svg)$/i;
+// 不限制上传的文件后缀——支持任意文件类型。
+// 真正的保护是下方的「文件名安全过滤」(防路径穿越),而不是后缀白名单。
+// const ALLOWED_EXT = /\.(html?|css|js|png|jpe?g|gif|svg)$/i;  // 已放开:允许所有类型
 
 function env(name, def) {
   return process.env[name] !== undefined ? process.env[name] : def;
@@ -102,14 +103,12 @@ exports.main_handler = async (event, context) => {
     return send(400, { error: '缺少 filename 或 content' }, origin);
   }
 
-  // 3. 文件名安全过滤(防路径穿越、限制后缀)
+  // 3. 文件名安全过滤(防路径穿越) —— 允许任意文件类型
   const safeName = String(filename)
     .replace(/[^\w.\-\u4e00-\u9fa5 ()]/g, '_')  // 保留字母数字、点、横杠、中文、空格、括号
     .replace(/^\.+/, '')                         // 不允许开头是点
     .slice(0, 200);
-  if (!ALLOWED_EXT.test(safeName)) {
-    return send(400, { error: '不支持的文件格式' }, origin);
-  }
+  // 不再限制扩展名:支持所有文件类型上传(保护靠上面的安全过滤即可)
 
   const branch = env('GITHUB_BRANCH', 'main');
   const filePath = '/contents/reports/' + encodeURIComponent(safeName);

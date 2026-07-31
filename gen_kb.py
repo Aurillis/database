@@ -47,20 +47,54 @@ def categorize(filename, title):
     if "市场" in c or "调研" in c or "研究" in c: return "market"
     return "other"
 
-# Process files
+# 已上传文件的元数据(上次生成/上传时写进 manifest 的)，用于保留上传时选的分类
+existing_man = {}
+mp = BASE / 'manifest.json'
+if mp.exists():
+    try:
+        for e in json.loads(mp.read_text(encoding='utf-8')):
+            existing_man[e['filename']] = e
+    except Exception:
+        existing_man = {}
+
+# 以 reports/ 目录为权威数据源;reports_meta.json 仅作「精修标题/分类」覆盖层。
+# 这样通过网页上传的新文件(不在 META 里)也会被纳入,重新生成不会丢。
+meta_by_name = {r['filename']: r for r in META}
 files = []
-for r in META:
-    title = r['title']
-    title = re.sub(r'\.html\s*-\s*飞书云文档.*$', '', title, flags=re.IGNORECASE)
-    title = title.replace('&amp;', '&')
-    cat = categorize(r['filename'], title)
+for p in sorted((BASE / 'reports').glob('*')):
+    if not p.is_file():
+        continue
+    fn = p.name
+    if fn in meta_by_name:
+        r = meta_by_name[fn]
+        title = re.sub(r'\.html\s*-\s*飞书云文档.*$', '', r['title'], flags=re.IGNORECASE)
+        title = title.replace('&amp;', '&')
+        cat = categorize(fn, title)
+        size = r['size']
+        mtime = r['mtime']
+        uploaded = False
+    elif fn in existing_man:
+        # 上传文件:保留上传时填的标题/分类/大小
+        e = existing_man[fn]
+        title = e.get('title') or re.sub(r'\.[^.]+$', '', fn)
+        cat = e.get('category') or 'other'
+        size = e.get('size') or p.stat().st_size
+        mtime = e.get('mtime') or int(p.stat().st_mtime)
+        uploaded = True
+    else:
+        # 目录里有但既无 META 也无 manifest 记录(理论上不会发生):兜底
+        title = re.sub(r'\.[^.]+$', '', fn)
+        cat = 'other'
+        size = p.stat().st_size
+        mtime = int(p.stat().st_mtime)
+        uploaded = True
     files.append({
-        "filename": r['filename'],
+        "filename": fn,
         "title": title,
-        "size": r['size'],
-        "mtime": r['mtime'],
+        "size": size,
+        "mtime": mtime,
         "category": cat,
-        "isUploaded": False,
+        "isUploaded": uploaded,
     })
 
 files_json = json.dumps(files, ensure_ascii=False)
@@ -612,6 +646,25 @@ function catIcon(catId) {
   return 'fas fa-folder';
 }
 
+// 按扩展名返回文件图标(支持任意类型后,让混合文件列表更直观)
+function fileIcon(filename) {
+  var ext = (String(filename).split('.').pop() || '').toLowerCase();
+  var map = {
+    'html':'fa-file-code','htm':'fa-file-code','css':'fa-file-code','js':'fa-file-code',
+    'pdf':'fa-file-pdf',
+    'png':'fa-file-image','jpg':'fa-file-image','jpeg':'fa-file-image','gif':'fa-file-image',
+    'svg':'fa-file-image','webp':'fa-file-image','bmp':'fa-file-image',
+    'doc':'fa-file-word','docx':'fa-file-word',
+    'xls':'fa-file-excel','xlsx':'fa-file-excel','csv':'fa-file-excel',
+    'ppt':'fa-file-powerpoint','pptx':'fa-file-powerpoint',
+    'zip':'fa-file-archive','rar':'fa-file-archive','7z':'fa-file-archive','tar':'fa-file-archive','gz':'fa-file-archive',
+    'mp4':'fa-file-video','mov':'fa-file-video','avi':'fa-file-video','mkv':'fa-file-video',
+    'mp3':'fa-file-audio','wav':'fa-file-audio','flac':'fa-file-audio',
+    'txt':'fa-file-lines','md':'fa-file-lines',
+  };
+  return 'fas ' + (map[ext] || 'fa-file');
+}
+
 function catColor(catId) {
   var colors = {
     'product':'#236b6f','product-pelvic':'#236b6f','product-lactation':'#e6783c',
@@ -805,7 +858,7 @@ function renderMain() {
 
       html += '<div class="file-card" onclick="openFile(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')">';
       html += '<div class="file-card-top">';
-      html += '<div class="file-card-icon" style="background:'+color+'15"><i class="fas fa-file-lines" style="color:'+color+'"></i></div>';
+      html += '<div class="file-card-icon" style="background:'+color+'15"><i class="'+fileIcon(f.filename)+'" style="color:'+color+'"></i></div>';
       html += '<div class="file-card-body">';
       html += '<div class="file-card-title">'+esc(f.title)+'</div>';
       html += '<div class="file-card-cat"><i class="'+catIcon(cat)+'"></i> '+esc(catName(cat))+'</div>';
@@ -832,7 +885,7 @@ function renderMain() {
       var color = catColor(cat);
       var isFav = S.favorites.indexOf(f.filename) >= 0;
       html += '<div class="list-item" onclick="openFile(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')">';
-      html += '<div class="li-icon" style="background:'+color+'15"><i class="fas fa-file-lines" style="color:'+color+'"></i></div>';
+      html += '<div class="li-icon" style="background:'+color+'15"><i class="'+fileIcon(f.filename)+'" style="color:'+color+'"></i></div>';
       html += '<span class="li-title">'+esc(f.title)+'</span>';
       html += '<span class="li-cat">'+esc(catName(cat))+'</span>';
       html += '<span class="li-date">'+fmtDate(f.mtime)+'</span>';
@@ -982,7 +1035,7 @@ function renderAdminUpload() {
       <h3 style="font-size:16px;font-weight:700;margin-bottom:6px">📤 上传文件到知识库</h3>
       <p style="font-size:13px;color:var(--muted);line-height:1.9">
         ① 点击下方「选择文件」按钮，或直接把文件拖到下方虚线框　② 选择归属分类　③ 自动上传到服务器<br>
-        支持 <b>.html .htm .css .js .png .jpg .gif .svg</b>（可一次选多个）。<br>
+        支持 <b>所有文件类型</b>（可一次选多个）。<br>
         上传成功后文件会出现在对应分类，刷新页面约 1 分钟即可见。
       </p>
     </div>
@@ -990,9 +1043,9 @@ function renderAdminUpload() {
     <div class="upload-zone" id="uploadZone">
       <i class="fas fa-cloud-arrow-up"></i>
       <p style="font-weight:600">点击选择文件，或拖拽到此处</p>
-      <p class="hint">支持 .html .htm .css .js .png .jpg .gif .svg（可多选）</p>
+      <p class="hint">支持所有文件类型（可多选）</p>
     </div>
-    <input type="file" id="fileInput" multiple accept=".html,.htm,.css,.js,.png,.jpg,.jpeg,.gif,.svg" style="display:none">
+    <input type="file" id="fileInput" multiple style="display:none">
     <div id="uploadCatSelect" style="margin:16px 0 12px">
       <label style="font-size:12px;color:var(--muted)">上传到分类:</label>
       <select id="uploadCat" class="sort-select" style="width:100%;margin-top:4px;padding:8px"></select>
@@ -1034,15 +1087,14 @@ function handleUpload(fileList) {
   var cat = document.getElementById('uploadCat').value;
   var result = document.getElementById('uploadResult');
 
+  // 接受所有文件类型(不再按后缀过滤)。兜底:过滤掉空名文件。
   var files = Array.from(fileList).filter(function(f) {
-    return f.name.match(/\.(html?|css|js|png|jpe?g|gif|svg)$/i);
+    return f && f.name && f.name.length > 0;
   });
-  var bad = Array.from(fileList).filter(function(f) {
-    return !f.name.match(/\.(html?|css|js|png|jpe?g|gif|svg)$/i);
-  });
+  var bad = [];
 
   if (files.length === 0) {
-    result.innerHTML = '<p style="color:var(--danger)">没有支持的文件格式</p>';
+    result.innerHTML = '<p style="color:var(--danger)">没有选择任何文件</p>';
     return;
   }
   if (!UPLOAD_API) {
