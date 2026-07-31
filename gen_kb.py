@@ -70,17 +70,6 @@ tree_json = json.dumps(TREE, ensure_ascii=False)
 # Stored at repo root so the portal can fetch it (same origin on GitHub Pages).
 # The serverless upload function also rewrites this file after each upload.
 manifest = []
-local_names = set(f["filename"] for f in files)
-# Preserve remote-only entries (e.g. files uploaded via the website that are not
-# present locally) so a local regen + push never drops web-uploaded reports.
-existing = {}
-mp = BASE / 'manifest.json'
-if mp.exists():
-    try:
-        for e in json.loads(mp.read_text(encoding='utf-8')):
-            existing[e["filename"]] = e
-    except Exception:
-        pass
 for f in files:
     manifest.append({
         "filename": f["filename"],
@@ -89,12 +78,9 @@ for f in files:
         "mtime": f["mtime"],
         "category": f["category"],
     })
-for e in existing.values():
-    if e["filename"] not in local_names:
-        manifest.append(e)
 (BASE / 'manifest.json').write_text(
     json.dumps(manifest, ensure_ascii=False, indent=2), encoding='utf-8')
-print(f'Generated manifest.json: {len(manifest)} files ({len(local_names)} local)')
+print(f'Generated manifest.json: {len(manifest)} files')
 
 # ===== CSS =====
 CSS = r"""
