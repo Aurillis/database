@@ -1066,9 +1066,10 @@ function handleUpload(fileList) {
         else fail.push(file.name + ' (' + (resp.j.error || '失败') + ')');
         if (done === files.length) finishUpload(result, ok, fail, bad);
       })
-      .catch(function() {
+      .catch(function(e) {
         done++;
-        fail.push(file.name + ' (上传失败：服务端无响应，请确认 Vercel 函数已部署且未开启访问保护/登录墙)');
+        var msg = (e && e.message) ? e.message : '无法连接服务端';
+        fail.push(file.name + ' (网络错误：' + msg + '｜多为 Vercel 登录墙未关 或 浏览器连不上 vercel.app)');
         if (done === files.length) finishUpload(result, ok, fail, bad);
       });
     };
