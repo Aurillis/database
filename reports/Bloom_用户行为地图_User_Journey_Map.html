@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloom Breast Recovery User Journey Map · 女性哺乳期乳房健康恢复用户行为地图</title>
+<style>
+:root{
+  --blue:#2E6FED;
+  --blue-deep:#1B4FBF;
+  --blue-soft:#EAF1FD;
+  --blue-line:#C9DAFA;
+  --green:#3DA98A;
+  --green-soft:#E8F5F0;
+  --green-line:#BFE3D7;
+  --cream:#FAF8F4;
+  --warm:#F5F1EA;
+  --ink:#1C2733;
+  --ink-2:#44546A;
+  --ink-3:#7B8A9C;
+  --line:#E6E9EF;
+  --white:#FFFFFF;
+  --amber:#E8A13D;
+  --amber-soft:#FDF4E5;
+  --rose:#D96A7B;
+  --rose-soft:#FBEEF0;
+  --radius:16px;
+  --radius-s:10px;
+  --shadow:0 1px 3px rgba(28,39,51,.05),0 8px 24px rgba(28,39,51,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.page{max-width:1560px;margin:0 auto;padding:56px 48px 72px;}
+
+/* ============ Header ============ */
+.hero{margin-bottom:52px;}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:26px;}
+.brand-mark{
+  width:44px;height:44px;border-radius:14px;
+  background:linear-gradient(135deg,var(--blue) 0%,var(--green) 100%);
+  display:flex;align-items:center;justify-content:center;
+}
+.brand-mark svg{width:24px;height:24px;}
+.brand-name{font-size:20px;font-weight:700;letter-spacing:.06em;}
+.brand-sub{font-size:11px;color:var(--ink-3);letter-spacing:.22em;text-transform:uppercase;margin-top:1px;}
+.hero h1{font-size:44px;font-weight:800;letter-spacing:-.02em;line-height:1.12;max-width:900px;}
+.hero h1 .en{background:linear-gradient(90deg,var(--blue-deep),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero h2{font-size:21px;font-weight:500;color:var(--ink-2);margin-top:12px;letter-spacing:.02em;}
+.hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;}
+.meta-chip{
+  font-size:12px;color:var(--ink-2);background:var(--white);
+  border:1px solid var(--line);border-radius:99px;padding:7px 16px;
+  display:inline-flex;align-items:center;gap:7px;font-weight:500;
+}
+.meta-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);}
+.meta-chip:nth-child(2) .dot{background:var(--green);}
+.meta-chip:nth-child(3) .dot{background:var(--amber);}
+.meta-chip:nth-child(4) .dot{background:var(--rose);}
+.doc-tag{text-align:right;font-size:11px;color:var(--ink-3);line-height:1.8;letter-spacing:.05em;padding-top:6px;white-space:nowrap;}
+.doc-tag b{color:var(--ink-2);font-weight:600;}
+
+/* ============ Section frame ============ */
+.section{margin-bottom:64px;}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px;}
+.sec-no{
+  font-size:13px;font-weight:800;color:var(--blue);letter-spacing:.14em;
+  border:1.5px solid var(--blue-line);border-radius:8px;padding:3px 11px;background:var(--blue-soft);
+  white-space:nowrap;
+}
+.sec-title{font-size:27px;font-weight:750;letter-spacing:-.01em;}
+.sec-title .en{color:var(--ink-3);font-weight:500;font-size:16px;margin-left:12px;letter-spacing:.03em;}
+.sec-desc{font-size:14px;color:var(--ink-3);margin:6px 0 26px;max-width:860px;}
+
+/* ============ Part 1 Timeline ============ */
+.timeline-wrap{position:relative;}
+.timeline-track{
+  position:absolute;top:34px;left:6%;right:6%;height:3px;
+  background:linear-gradient(90deg,var(--blue-line),var(--green-line),var(--amber),var(--rose));
+  opacity:.55;border-radius:99px;
+}
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;position:relative;}
+.tl-col{display:flex;flex-direction:column;align-items:stretch;}
+.tl-node{display:flex;flex-direction:column;align-items:center;margin-bottom:18px;position:relative;}
+.tl-dot{
+  width:20px;height:20px;border-radius:50%;background:var(--white);
+  border:5px solid var(--blue);margin-bottom:12px;box-shadow:0 0 0 5px rgba(46,111,237,.12);
+}
+.tl-col:nth-child(2) .tl-dot{border-color:var(--green);box-shadow:0 0 0 5px rgba(61,169,138,.12);}
+.tl-col:nth-child(3) .tl-dot{border-color:var(--amber);box-shadow:0 0 0 5px rgba(232,161,61,.14);}
+.tl-col:nth-child(4) .tl-dot{border-color:var(--rose);box-shadow:0 0 0 5px rgba(217,106,123,.13);}
+.tl-stage{font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--ink-3);text-transform:uppercase;}
+.tl-card{
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+  padding:24px 22px;box-shadow:var(--shadow);flex:1;
+  border-top:4px solid var(--blue);
+}
+.tl-col:nth-child(2) .tl-card{border-top-color:var(--green);}
+.tl-col:nth-child(3) .tl-card{border-top-color:var(--amber);}
+.tl-col:nth-child(4) .tl-card{border-top-color:var(--rose);}
+.tl-time{font-size:19px;font-weight:800;letter-spacing:-.01em;}
+.tl-en{font-size:12.5px;font-weight:600;color:var(--blue);letter-spacing:.04em;margin-top:2px;}
+.tl-col:nth-child(2) .tl-en{color:var(--green);}
+.tl-col:nth-child(3) .tl-en{color:var(--amber);}
+.tl-col:nth-child(4) .tl-en{color:var(--rose);}
+.tl-cn{font-size:14px;color:var(--ink-2);font-weight:600;margin-bottom:16px;}
+.tl-item{margin-bottom:12px;}
+.tl-item:last-child{margin-bottom:0;}
+.tl-label{
+  font-size:10.5px;font-weight:700;letter-spacing:.12em;color:var(--ink-3);
+  text-transform:uppercase;display:flex;align-items:center;gap:6px;margin-bottom:4px;
+}
+.tl-label::before{content:"";width:12px;height:2px;background:currentColor;border-radius:2px;opacity:.5;}
+.tl-val{font-size:13px;color:var(--ink-2);line-height:1.6;}
+.mood{
+  display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;
+  background:var(--warm);border-radius:99px;padding:5px 13px;color:var(--ink-2);margin-top:2px;
+}
+
+/* ============ Part 2 Journey Map ============ */
+.jmap{
+  display:grid;grid-template-columns:150px repeat(4,1fr);gap:14px;
+}
+.jmap-rowlabel{
+  display:flex;flex-direction:column;justify-content:center;gap:4px;
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius-s);
+  padding:16px 14px;box-shadow:var(--shadow);
+}
+.jmap-rowlabel .icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;}
+.jmap-rowlabel .t{font-size:14px;font-weight:750;line-height:1.3;}
+.jmap-rowlabel .e{font-size:10.5px;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;font-weight:600;}
+.jcell{
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius-s);
+  padding:18px 17px;box-shadow:var(--shadow);font-size:13px;color:var(--ink-2);
+}
+.jmap-stagehead{
+  border-radius:var(--radius-s);padding:13px 16px;font-weight:750;font-size:14.5px;color:var(--white);
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+.jmap-stagehead .sub{font-size:10.5px;font-weight:600;opacity:.85;letter-spacing:.06em;}
+.sh1{background:linear-gradient(120deg,var(--blue-deep),var(--blue));}
+.sh2{background:linear-gradient(120deg,#2E8A6E,var(--green));}
+.sh3{background:linear-gradient(120deg,#C9862B,var(--amber));}
+.sh4{background:linear-gradient(120deg,#BC4E62,var(--rose));}
+.jlist{list-style:none;}
+.jlist li{position:relative;padding-left:16px;margin-bottom:7px;line-height:1.5;}
+.jlist li:last-child{margin-bottom:0;}
+.jlist li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--blue-line);}
+.jcell.stage2 .jlist li::before{background:var(--green-line);}
+.jcell.stage3 .jlist li::before{background:#F2D5A8;}
+.jcell.stage4 .jlist li::before{background:#F0C3CB;}
+
+.scenario{
+  background:var(--blue-soft);border-radius:9px;padding:12px 14px;margin-bottom:10px;
+  font-size:12.5px;line-height:1.6;color:var(--ink-2);position:relative;
+  border-left:3px solid var(--blue);
+}
+.jcell.stage2 .scenario{background:var(--green-soft);border-left-color:var(--green);}
+.jcell.stage3 .scenario{background:var(--amber-soft);border-left-color:var(--amber);}
+.jcell.stage4 .scenario{background:var(--rose-soft);border-left-color:var(--rose);}
+.scenario:last-child{margin-bottom:0;}
+.scenario .time{font-weight:700;color:var(--ink);font-size:11.5px;letter-spacing:.03em;display:block;margin-bottom:3px;}
+
+.pain-group{margin-bottom:12px;}
+.pain-group:last-child{margin-bottom:0;}
+.pain-cap{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase;margin-bottom:7px;}
+.tags{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{
+  font-size:11.5px;font-weight:600;border-radius:7px;padding:4px 10px;
+  background:var(--rose-soft);color:#B04A5C;border:1px solid #F2D3D9;
+}
+.tag.mind{background:#F0EBFA;color:#6B4FBB;border-color:#DDD2F2;}
+.tag.body{background:var(--rose-soft);color:#B04A5C;border-color:#F2D3D9;}
+
+.sol-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:12.5px;}
+.sol-line:last-child{margin-bottom:0;}
+.sol-k{
+  flex-shrink:0;font-size:11px;font-weight:700;border-radius:6px;padding:2px 8px;margin-top:1px;
+}
+.sol-k.cold{background:var(--blue-soft);color:var(--blue-deep);}
+.sol-k.heat{background:var(--amber-soft);color:#B47A22;}
+.sol-k.mass{background:var(--green-soft);color:#2E8A6E;}
+.sol-k.pump{background:#EFF1F5;color:var(--ink-2);}
+
+.gap-list{list-style:none;}
+.gap-list li{
+  position:relative;padding-left:20px;margin-bottom:7px;font-size:12.5px;line-height:1.5;color:var(--ink-2);
+}
+.gap-list li::before{
+  content:"✕";position:absolute;left:0;top:0;font-size:11px;font-weight:800;color:var(--rose);
+}
+
+/* ============ Part 3 Decision Map ============ */
+.decision{
+  background:var(--white);border:1px solid var(--line);border-radius:20px;
+  padding:44px 44px 40px;box-shadow:var(--shadow);
+}
+.d-flow{display:flex;flex-direction:column;align-items:center;}
+.d-start{
+  background:var(--ink);color:var(--white);border-radius:99px;padding:13px 34px;
+  font-size:15.5px;font-weight:700;letter-spacing:.02em;
+}
+.d-arrow{width:2.5px;height:30px;background:var(--ink-3);opacity:.4;margin:8px 0;position:relative;}
+.d-arrow::after{
+  content:"";position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);
+  border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid var(--ink-3);
+}
+.d-q{
+  background:var(--warm);border:1.5px dashed #D8D2C6;border-radius:14px;padding:12px 30px;
+  font-size:14.5px;font-weight:700;color:var(--ink-2);
+}
+.d-branches{
+  display:grid;grid-template-columns:1fr 1fr;gap:36px;width:100%;max-width:1060px;margin-top:14px;position:relative;
+}
+.d-branches::before{
+  content:"";position:absolute;top:-14px;left:25%;right:25%;height:2.5px;
+  background:linear-gradient(90deg,var(--blue),var(--amber));opacity:.35;border-radius:2px;
+}
+.d-card{
+  border-radius:18px;padding:32px 30px;position:relative;overflow:hidden;
+}
+.d-card.cold{background:linear-gradient(160deg,#EAF3FE 0%,#F5F9FF 70%);border:1.5px solid var(--blue-line);}
+.d-card.heat{background:linear-gradient(160deg,#FDF3E2 0%,#FFFBF3 70%);border:1.5px solid #F0DBB4;}
+.d-cond{
+  font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.d-cond::before{content:"IF";font-size:11px;font-weight:800;background:var(--ink);color:#fff;border-radius:5px;padding:2px 7px;letter-spacing:.05em;}
+.d-symptoms{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px;}
+.d-symptoms span{
+  font-size:12.5px;font-weight:600;background:var(--white);border-radius:8px;padding:5px 12px;color:var(--ink-2);
+  border:1px solid rgba(28,39,51,.08);
+}
+.d-therapy{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.d-ticon{
+  width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.d-card.cold .d-ticon{background:var(--blue);box-shadow:0 6px 16px rgba(46,111,237,.3);}
+.d-card.heat .d-ticon{background:var(--amber);box-shadow:0 6px 16px rgba(232,161,61,.3);}
+.d-ticon svg{width:28px;height:28px;}
+.d-tname{font-size:22px;font-weight:800;letter-spacing:-.01em;}
+.d-tname .cn{font-size:14px;font-weight:600;color:var(--ink-2);display:block;margin-top:1px;}
+.d-detail{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;}
+.d-goal{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase;margin-bottom:8px;}
+.d-goal-list{list-style:none;}
+.d-goal-list li{
+  font-size:13.5px;color:var(--ink-2);margin-bottom:6px;padding-left:18px;position:relative;font-weight:500;
+}
+.d-goal-list li::before{content:"✓";position:absolute;left:0;font-weight:800;font-size:12px;}
+.d-card.cold .d-goal-list li::before{color:var(--blue);}
+.d-card.heat .d-goal-list li::before{color:var(--amber);}
+.d-time{
+  background:var(--white);border-radius:12px;padding:14px 18px;text-align:center;min-width:110px;
+  border:1px solid rgba(28,39,51,.08);
+}
+.d-time .n{font-size:22px;font-weight:800;letter-spacing:-.02em;}
+.d-card.cold .d-time .n{color:var(--blue-deep);}
+.d-card.heat .d-time .n{color:#B47A22;}
+.d-time .l{font-size:11px;color:var(--ink-3);font-weight:600;margin-top:2px;}
+.d-note{
+  margin-top:18px;font-size:12px;color:var(--ink-3);background:var(--white);
+  border-radius:10px;padding:11px 14px;line-height:1.6;border:1px solid rgba(28,39,51,.07);
+}
+.d-note b{color:var(--ink-2);}
+.d-evidence{
+  margin-top:30px;display:flex;align-items:center;gap:12px;justify-content:center;
+  font-size:12px;color:var(--ink-3);flex-wrap:wrap;
+}
+.d-evidence .pill{
+  background:var(--warm);border-radius:99px;padding:6px 16px;font-weight:600;color:var(--ink-2);
+  border:1px solid #E8E2D6;
+}
+
+/* ============ Part 4 Product Opportunity ============ */
+.opp{
+  background:linear-gradient(150deg,#132039 0%,#1B3358 55%,#1E4A50 100%);
+  border-radius:24px;padding:52px 48px 48px;color:var(--white);position:relative;overflow:hidden;
+}
+.opp::before{
+  content:"";position:absolute;top:-120px;right:-80px;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(61,169,138,.25),transparent 65%);
+}
+.opp::after{
+  content:"";position:absolute;bottom:-140px;left:-60px;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(46,111,237,.28),transparent 65%);
+}
+.opp-inner{position:relative;z-index:1;}
+.opp-badge{
+  display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:#8FD8C0;border:1px solid rgba(143,216,192,.4);
+  border-radius:99px;padding:7px 18px;margin-bottom:20px;
+}
+.opp-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:#8FD8C0;}
+.opp h3{font-size:34px;font-weight:800;letter-spacing:-.01em;line-height:1.2;}
+.opp h3 .cn{display:block;font-size:18px;font-weight:500;color:rgba(255,255,255,.75);margin-top:8px;}
+.opp-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:38px;
+}
+.opp-card{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);
+  border-radius:16px;padding:26px 20px;backdrop-filter:blur(6px);
+  transition:background .2s;
+}
+.opp-card:hover{background:rgba(255,255,255,.12);}
+.opp-num{font-size:12px;font-weight:800;letter-spacing:.15em;color:rgba(255,255,255,.45);margin-bottom:14px;}
+.opp-icon{
+  width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+}
+.oi1{background:rgba(96,165,250,.22);}
+.oi2{background:rgba(251,191,36,.20);}
+.oi3{background:rgba(110,231,183,.18);}
+.oi4{background:rgba(196,181,253,.20);}
+.oi5{background:rgba(249,168,180,.18);}
+.opp-icon svg{width:24px;height:24px;}
+.opp-card h4{font-size:16.5px;font-weight:750;line-height:1.3;}
+.opp-card .cn{font-size:13px;font-weight:600;color:rgba(255,255,255,.72);margin:3px 0 14px;}
+.opp-card ul{list-style:none;}
+.opp-card li{
+  font-size:12.5px;color:rgba(255,255,255,.68);margin-bottom:7px;padding-left:15px;position:relative;line-height:1.5;
+}
+.opp-card li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:2px;background:#8FD8C0;border-radius:2px;}
+
+/* ============ Part 5 Strategy ============ */
+.strategy{
+  background:var(--white);border:1px solid var(--line);border-radius:20px;
+  padding:48px;box-shadow:var(--shadow);
+}
+.strategy h3{
+  font-size:30px;font-weight:800;letter-spacing:-.015em;text-align:center;line-height:1.25;
+}
+.strategy h3 .grad{background:linear-gradient(90deg,var(--blue-deep),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.strategy .sub{text-align:center;font-size:14.5px;color:var(--ink-3);margin-top:8px;}
+.vs{
+  display:grid;grid-template-columns:1fr 90px 1fr;gap:0;align-items:stretch;margin-top:40px;
+}
+.vs-col{
+  border-radius:18px;padding:34px 32px;
+}
+.vs-col.old{background:var(--warm);border:1px solid #E8E2D6;}
+.vs-col.new{
+  background:linear-gradient(150deg,var(--blue-soft),var(--green-soft));
+  border:1.5px solid var(--green-line);position:relative;
+}
+.vs-col.new::before{
+  content:"RECOMMENDED";position:absolute;top:-11px;right:24px;font-size:9.5px;font-weight:800;
+  letter-spacing:.16em;background:var(--green);color:#fff;border-radius:99px;padding:4px 13px;
+}
+.vs-cap{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;}
+.vs-name{font-size:23px;font-weight:800;margin-bottom:22px;}
+.vs-col.new .vs-name{color:var(--blue-deep);}
+.vs-chain{display:flex;flex-direction:column;gap:0;}
+.vs-step{
+  background:var(--white);border-radius:11px;padding:13px 18px;font-size:14px;font-weight:600;color:var(--ink-2);
+  border:1px solid rgba(28,39,51,.07);display:flex;align-items:center;gap:11px;
+}
+.vs-col.new .vs-step{border-color:rgba(61,169,138,.25);}
+.vs-step .si{
+  width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:12px;font-weight:800;
+}
+.vs-col.old .vs-step .si{background:#EDE7DA;color:#9A8F79;}
+.vs-col.new .vs-step .si{background:var(--green);color:#fff;}
+.vs-down{
+  width:2px;height:16px;background:#D8D2C6;margin:0 auto;
+}
+.vs-col.new .vs-down{background:var(--green-line);}
+.vs-mid{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+}
+.vs-mid .arrow-big{
+  width:46px;height:46px;border-radius:50%;background:var(--ink);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;
+}
+.vs-mid .l{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;}
+
+/* ============ Footer ============ */
+.footer{
+  margin-top:56px;padding-top:26px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+  font-size:11.5px;color:var(--ink-3);line-height:1.7;
+}
+.footer b{color:var(--ink-2);}
+.footer .right{text-align:right;}
+
+/* ============ Print ============ */
+@media print{
+  body{background:#fff;}
+  .page{padding:24px;max-width:none;}
+  .section{break-inside:avoid-page;margin-bottom:34px;}
+  .opp-card:hover{background:rgba(255,255,255,.07);}
+}
+@media (max-width:1200px){
+  .jmap{grid-template-columns:120px repeat(4,1fr);}
+  .opp-grid{grid-template-columns:repeat(3,1fr);}
+}
+@media (max-width:900px){
+  .timeline{grid-template-columns:1fr 1fr;}
+  .timeline-track{display:none;}
+  .jmap{grid-template-columns:1fr;}
+  .jmap-rowlabel{flex-direction:row;align-items:center;gap:12px;}
+  .d-branches{grid-template-columns:1fr;}
+  .opp-grid{grid-template-columns:1fr 1fr;}
+  .vs{grid-template-columns:1fr;gap:18px;}
+  .vs-mid{flex-direction:row;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ================= HEADER ================= -->
+  <header class="hero">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3C12 3 5 8.5 5 13.5C5 17.6 8.1 21 12 21C15.9 21 19 17.6 19 13.5C19 8.5 12 3 12 3Z" stroke="white" stroke-width="1.8" fill="rgba(255,255,255,.25)"/><circle cx="12" cy="13.5" r="2.6" fill="white"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">AURILLIS · BLOOM</div>
+        <div class="brand-sub">Women's Health Technology</div>
+      </div>
+    </div>
+    <div class="hero-top">
+      <div>
+        <h1><span class="en">Bloom Breast Recovery</span><br>User Journey Map</h1>
+        <h2>女性哺乳期乳房健康恢复用户行为地图</h2>
+        <div class="hero-meta">
+          <span class="meta-chip"><span class="dot"></span>用户生命周期 Lifecycle</span>
+          <span class="meta-chip"><span class="dot"></span>使用场景 Scenarios</span>
+          <span class="meta-chip"><span class="dot"></span>痛点 × 现有方案缺口 Pain & Gap</span>
+          <span class="meta-chip"><span class="dot"></span>产品机会 Product Opportunity</span>
+        </div>
+      </div>
+      <div class="doc-tag">
+        <b>STRATEGY BOARD</b><br>
+        For Product · R&amp;D · Investor Review<br>
+        Aurillis Health Technology · 2026.07<br>
+        Format: A1 / A2 Wall Print
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= PART 1 : TIMELINE ================= -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="sec-no">PART 01</span>
+      <span class="sec-title">用户生命周期时间轴<span class="en">Maternal Breast-Care Lifecycle</span></span>
+    </div>
+    <p class="sec-desc">从泌乳启动到断奶，女性乳房经历四个生理与心理状态截然不同的阶段——每个阶段都是一个独立的护理需求窗口。</p>
+
+    <div class="timeline-wrap">
+      <div class="timeline-track"></div>
+      <div class="timeline">
+
+        <!-- Stage 1 -->
+        <div class="tl-col">
+          <div class="tl-node"><div class="tl-dot"></div><div class="tl-stage">Stage 01</div></div>
+          <div class="tl-card">
+            <div class="tl-time">产后 0–5 天</div>
+            <div class="tl-en">Lactogenesis II</div>
+            <div class="tl-cn">泌乳启动期</div>
+            <div class="tl-item"><div class="tl-label">身体变化</div><div class="tl-val">激素骤变，乳汁量在 48–72 小时内突然增加（"下奶"）</div></div>
+            <div class="tl-item"><div class="tl-label">乳房状态</div><div class="tl-val">生理性充盈 → 肿胀、发硬、皮肤紧绷、温热感</div></div>
+            <div class="tl-item"><div class="tl-label">高频问题</div><div class="tl-val">生理性涨奶、衔乳困难、疼痛影响首次哺乳建立</div></div>
+            <div class="tl-item"><div class="tl-label">情绪状态</div><div class="mood">😰 焦虑 · 手足无措 · 疼痛叠加产后疲惫</div></div>
+          </div>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="tl-col">
+          <div class="tl-node"><div class="tl-dot"></div><div class="tl-stage">Stage 02</div></div>
+          <div class="tl-card">
+            <div class="tl-time">产后 1 周 – 3 个月</div>
+            <div class="tl-en">Breastfeeding Period</div>
+            <div class="tl-cn">稳定哺乳期</div>
+            <div class="tl-item"><div class="tl-label">身体变化</div><div class="tl-val">供需磨合，喂养 8–12 次/天，昼夜节律被打碎</div></div>
+            <div class="tl-item"><div class="tl-label">乳房状态</div><div class="tl-val">周期性充盈-排空；易出现局部硬块、导管淤堵感</div></div>
+            <div class="tl-item"><div class="tl-label">高频问题</div><div class="tl-val">硬块反复、单侧胀痛、泵奶排空不彻底、乳头疼痛</div></div>
+            <div class="tl-item"><div class="tl-label">情绪状态</div><div class="mood">😣 疲惫 · 担心乳腺炎 · 睡眠碎片化</div></div>
+          </div>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="tl-col">
+          <div class="tl-node"><div class="tl-dot"></div><div class="tl-stage">Stage 03</div></div>
+          <div class="tl-card">
+            <div class="tl-time">产后 3 个月以后</div>
+            <div class="tl-en">Extended Nursing</div>
+            <div class="tl-cn">长期哺乳期</div>
+            <div class="tl-item"><div class="tl-label">身体变化</div><div class="tl-val">重返职场，泵奶为主，时间被工作切割、间隔拉长</div></div>
+            <div class="tl-item"><div class="tl-label">乳房状态</div><div class="tl-val">间隔拉长导致的胀痛；泵奶效率与彻底排空成为核心</div></div>
+            <div class="tl-item"><div class="tl-label">高频问题</div><div class="tl-val">会议/通勤中涨奶、办公室泵奶不便、反复局部淤堵</div></div>
+            <div class="tl-item"><div class="tl-label">情绪状态</div><div class="mood">😤 时间压力 · 职场尴尬 · 坚持与放弃的拉扯</div></div>
+          </div>
+        </div>
+
+        <!-- Stage 4 -->
+        <div class="tl-col">
+          <div class="tl-node"><div class="tl-dot"></div><div class="tl-stage">Stage 04</div></div>
+          <div class="tl-card">
+            <div class="tl-time">断奶阶段</div>
+            <div class="tl-en">Weaning Period</div>
+            <div class="tl-cn">离乳过渡期</div>
+            <div class="tl-item"><div class="tl-label">身体变化</div><div class="tl-val">泌乳量逐步下降，激素再次波动，身体进入回退调整</div></div>
+            <div class="tl-item"><div class="tl-label">乳房状态</div><div class="tl-val">减量过程中的胀痛、充盈不适；组织逐步回缩</div></div>
+            <div class="tl-item"><div class="tl-label">高频问题</div><div class="tl-val">减喂节奏难把握、胀痛反复、担心堵奶收尾期发炎</div></div>
+            <div class="tl-item"><div class="tl-label">情绪状态</div><div class="mood">🥲 失落与解脱并存 · 激素性情绪波动</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PART 2 : JOURNEY MAP ================= -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="sec-no">PART 02</span>
+      <span class="sec-title">详细用户行为地图<span class="en">Detailed User Journey</span></span>
+    </div>
+    <p class="sec-desc">五个维度 × 四个阶段：用户状态 → 真实场景 → 痛点 → 现有方案 → 市场缺口。缺口列是 Bloom 的机会来源。</p>
+
+    <div class="jmap">
+      <!-- Stage header row -->
+      <div></div>
+      <div class="jmap-stagehead sh1">产后 0–5 天 <span class="sub">LACTOGENESIS II</span></div>
+      <div class="jmap-stagehead sh2">稳定哺乳期 <span class="sub">1W – 3M</span></div>
+      <div class="jmap-stagehead sh3">长期哺乳期 <span class="sub">3M+</span></div>
+      <div class="jmap-stagehead sh4">断奶阶段 <span class="sub">WEANING</span></div>
+
+      <!-- Row 1: User Condition -->
+      <div class="jmap-rowlabel">
+        <div class="icon" style="background:var(--blue-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#2E6FED" stroke-width="1.8"/><path d="M4 20C4 16.7 7.6 14 12 14C16.4 14 20 16.7 20 20" stroke="#2E6FED" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="t">用户状态</div><div class="e">User Condition</div>
+      </div>
+      <div class="jcell stage1"><ul class="jlist">
+        <li>乳汁突然增加（下奶）</li><li>乳房充盈、变硬</li><li>皮肤紧绷、温热感</li><li>触碰即痛</li><li>疼痛 + 强烈焦虑</li>
+      </ul></div>
+      <div class="jcell stage2"><ul class="jlist">
+        <li>喂奶频繁（8–12次/天）</li><li>吸奶时间不规律</li><li>局部硬块反复出现</li><li>单侧胀痛、压痛</li><li>夜间喂养睡眠碎片化</li>
+      </ul></div>
+      <div class="jcell stage3"><ul class="jlist">
+        <li>重返职场，泵奶为主</li><li>泵奶间隔被迫拉长</li><li>涨奶时间不可控</li><li>排空不彻底累积不适</li><li>体力与意志双重消耗</li>
+      </ul></div>
+      <div class="jcell stage4"><ul class="jlist">
+        <li>乳汁逐步减少</li><li>减喂间隔期乳房胀痛</li><li>激素回落、情绪波动</li><li>担心收尾期出问题</li><li>希望舒适平稳过渡</li>
+      </ul></div>
+
+      <!-- Row 2: Scenario -->
+      <div class="jmap-rowlabel">
+        <div class="icon" style="background:var(--green-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 6H20V16H8L4 20V6Z" stroke="#3DA98A" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <div class="t">典型场景</div><div class="e">User Scenario</div>
+      </div>
+      <div class="jcell stage1">
+        <div class="scenario"><span class="time">🌙 凌晨 2:00 · 病房/家中</span>宝宝连续睡了 4 小时，妈妈被胀醒——乳房硬得像石头，疼到无法翻身，也不敢叫醒宝宝。</div>
+        <div class="scenario"><span class="time">🌅 清晨 · 首次亲喂</span>乳房太硬太胀，宝宝含不住乳晕，衔乳失败，妈妈越急越疼。</div>
+      </div>
+      <div class="jcell stage2">
+        <div class="scenario"><span class="time">☀️ 上午 10:00 · 准备泵奶</span>乳房局部发硬，吸奶器吸了 20 分钟，出奶量却比平时少，硬块还在。</div>
+        <div class="scenario"><span class="time">🌙 晚上 21:00 · 哺乳结束后</span>喂完最后一顿，单侧局部隐隐作痛，希望快速缓解后能睡个整觉。</div>
+      </div>
+      <div class="jcell stage3">
+        <div class="scenario"><span class="time">🏢 下午 15:00 · 办公室</span>连续两个会议错过泵奶时间，胸口发胀发热，只能躲进母婴室仓促处理。</div>
+        <div class="scenario"><span class="time">🚗 晚上 19:00 · 通勤路上</span>堵车 40 分钟，涨奶不适持续加重，到家只想立刻缓解。</div>
+      </div>
+      <div class="jcell stage4">
+        <div class="scenario"><span class="time">📅 减喂第 3 天</span>从每天 5 次减到 3 次，两次之间乳房越来越胀，不敢排空又怕堵住。</div>
+        <div class="scenario"><span class="time">🌙 夜间 · 最后阶段</span>已停夜奶，半夜依然胀醒，想要一个不依赖冰箱、随手可用的缓解方式。</div>
+      </div>
+
+      <!-- Row 3: Pain Points -->
+      <div class="jmap-rowlabel">
+        <div class="icon" style="background:var(--rose-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3L13.8 8.2L19 6.5L15.9 11L20.5 13.8L15.2 14.6L16.4 20L12 16.6L7.6 20L8.8 14.6L3.5 13.8L8.1 11L5 6.5L10.2 8.2L12 3Z" stroke="#D96A7B" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+        <div class="t">用户痛点</div><div class="e">Pain Point</div>
+      </div>
+      <div class="jcell stage1">
+        <div class="pain-group"><div class="pain-cap">身体 Physical</div><div class="tags">
+          <span class="tag body">剧烈胀痛</span><span class="tag body">肿胀</span><span class="tag body">发硬</span><span class="tag body">热感</span>
+        </div></div>
+        <div class="pain-group"><div class="pain-cap">心理 Emotional</div><div class="tags">
+          <span class="tag mind">怕得乳腺炎</span><span class="tag mind">怕喂不了奶</span><span class="tag mind">不知如何护理</span>
+        </div></div>
+      </div>
+      <div class="jcell stage2">
+        <div class="pain-group"><div class="pain-cap">身体 Physical</div><div class="tags">
+          <span class="tag body">局部硬块</span><span class="tag body">疼痛反复</span><span class="tag body">泵奶低效</span><span class="tag body">乳头刺痛</span>
+        </div></div>
+        <div class="pain-group"><div class="pain-cap">心理 Emotional</div><div class="tags">
+          <span class="tag mind">乳腺炎恐惧</span><span class="tag mind">睡眠被打断</span><span class="tag mind">护理方式混乱</span>
+        </div></div>
+      </div>
+      <div class="jcell stage3">
+        <div class="pain-group"><div class="pain-cap">身体 Physical</div><div class="tags">
+          <span class="tag body">涨奶不适</span><span class="tag body">排空不彻底</span><span class="tag body">硬块复发</span>
+        </div></div>
+        <div class="pain-group"><div class="pain-cap">心理 Emotional</div><div class="tags">
+          <span class="tag mind">职场尴尬</span><span class="tag mind">时间焦虑</span><span class="tag mind">坚持的孤独感</span>
+        </div></div>
+      </div>
+      <div class="jcell stage4">
+        <div class="pain-group"><div class="pain-cap">身体 Physical</div><div class="tags">
+          <span class="tag body">间隔期胀痛</span><span class="tag body">充盈不适</span><span class="tag body">发硬</span>
+        </div></div>
+        <div class="pain-group"><div class="pain-cap">心理 Emotional</div><div class="tags">
+          <span class="tag mind">怕收尾出问题</span><span class="tag mind">情绪低落</span><span class="tag mind">节奏无指导</span>
+        </div></div>
+      </div>
+
+      <!-- Row 4: Existing Solutions -->
+      <div class="jmap-rowlabel">
+        <div class="icon" style="background:var(--warm)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="13" rx="2" stroke="#9A8F79" stroke-width="1.8"/><path d="M9 7V5C9 3.9 9.9 3 11 3H13C14.1 3 15 3.9 15 5V7" stroke="#9A8F79" stroke-width="1.8"/></svg></div>
+        <div class="t">现有方案</div><div class="e">Existing Solution</div>
+      </div>
+      <div class="jcell stage1">
+        <div class="sol-line"><span class="sol-k cold">冷敷</span><span>冰袋 / 凝胶冷敷贴 / 冷藏护理包（喂后消肿）</span></div>
+        <div class="sol-line"><span class="sol-k heat">热敷</span><span>热毛巾 / 热敷贴（喂前短时软化）</span></div>
+        <div class="sol-line"><span class="sol-k mass">按摩</span><span>手动轻柔按摩 / 反向按压软化乳晕</span></div>
+      </div>
+      <div class="jcell stage2">
+        <div class="sol-line"><span class="sol-k heat">热敷</span><span>热毛巾 / 热水袋 / 热敷贴（泵前促排）</span></div>
+        <div class="sol-line"><span class="sol-k mass">按摩</span><span>手动按摩 / 简易振动按摩器</span></div>
+        <div class="sol-line"><span class="sol-k pump">吸奶</span><span>电动吸奶器排空</span></div>
+        <div class="sol-line"><span class="sol-k cold">冷敷</span><span>凝胶贴（喂后舒缓，使用率低）</span></div>
+      </div>
+      <div class="jcell stage3">
+        <div class="sol-line"><span class="sol-k pump">吸奶</span><span>便携/穿戴式吸奶器</span></div>
+        <div class="sol-line"><span class="sol-k heat">热敷</span><span>一次性热敷贴（办公场景）</span></div>
+        <div class="sol-line"><span class="sol-k mass">按摩</span><span>手持振动按摩器辅助排空</span></div>
+      </div>
+      <div class="jcell stage4">
+        <div class="sol-line"><span class="sol-k cold">冷敷</span><span>冰袋 / 冷敷贴（减喂间隔期主力）</span></div>
+        <div class="sol-line"><span class="sol-k pump">吸奶</span><span>少量吸出缓解（不排空）</span></div>
+        <div class="sol-line"><span class="sol-k mass">按摩</span><span>轻柔按摩舒缓</span></div>
+      </div>
+
+      <!-- Row 5: Market Gap -->
+      <div class="jmap-rowlabel">
+        <div class="icon" style="background:var(--rose-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 4L21 20H3L12 4Z" stroke="#D96A7B" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10V14" stroke="#D96A7B" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="#D96A7B"/></svg></div>
+        <div class="t">方案不足</div><div class="e">Market Gap</div>
+      </div>
+      <div class="jcell stage1"><ul class="gap-list">
+        <li>冰袋/凝胶贴依赖冰箱冷冻</li>
+        <li>温度不可控：过冷刺激或迅速回温</li>
+        <li>单次有效时间仅 10–15 分钟</li>
+        <li>平面形态无法贴合乳房曲面</li>
+      </ul></div>
+      <div class="jcell stage2"><ul class="gap-list">
+        <li>热毛巾 3 分钟就凉，反复更换</li>
+        <li>冷热分属两套用品，无法切换</li>
+        <li>半夜起身准备，打断本已稀缺的睡眠</li>
+        <li>按摩力道全凭感觉，缺乏引导</li>
+      </ul></div>
+      <div class="jcell stage3"><ul class="gap-list">
+        <li>办公室没有冰箱/微波炉可用</li>
+        <li>一次性热敷贴成本高、不环保</li>
+        <li>无法在泵奶同时进行温感护理</li>
+        <li>没有任何智能化、连续性的护理</li>
+      </ul></div>
+      <div class="jcell stage4"><ul class="gap-list">
+        <li>夜间冷敷依然依赖冰箱</li>
+        <li>无冷热切换应对不同时刻需求</li>
+        <li>无护理节奏指导，全靠摸索</li>
+        <li>体验冰冷粗糙，与情绪需求脱节</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- ================= PART 3 : DECISION MAP ================= -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="sec-no">PART 03</span>
+      <span class="sec-title">冷敷 / 热敷使用决策地图<span class="en">Cold vs. Heat Decision Map</span></span>
+    </div>
+    <p class="sec-desc">用户最大的困惑是「现在该用冷还是热」。这张决策图既是用户教育资产，也是 Bloom 双模产品逻辑的直接来源。</p>
+
+    <div class="decision">
+      <div class="d-flow">
+        <div class="d-start">用户遇到乳房不适</div>
+        <div class="d-arrow"></div>
+        <div class="d-q">现在是什么情况？ What's happening right now?</div>
+
+        <div class="d-branches">
+          <!-- COLD -->
+          <div class="d-card cold">
+            <div class="d-cond">乳房胀痛 · 肿胀 · 疼痛 · 炎症感 · 喂奶/泵奶结束后</div>
+            <div class="d-symptoms">
+              <span>肿胀 Swelling</span><span>胀痛 Engorgement</span><span>发热感 Warmth</span><span>触痛 Tenderness</span><span>断奶减喂期</span>
+            </div>
+            <div class="d-therapy">
+              <div class="d-ticon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2V22M12 2L9 5M12 2L15 5M12 22L9 19M12 22L15 19M3.5 7L20.5 17M3.5 7L3.7 10.5M3.5 7L7 6.8M20.5 17L20.3 13.5M20.5 17L17 17.2M3.5 17L20.5 7M3.5 17L7 17.2M3.5 17L3.7 13.5M20.5 7L17 6.8M20.5 7L20.3 10.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+              <div class="d-tname">Cold Therapy<span class="cn">冷敷 · 冷舒缓</span></div>
+            </div>
+            <div class="d-detail">
+              <div>
+                <div class="d-goal">目的 Purpose</div>
+                <ul class="d-goal-list">
+                  <li>降低疼痛感受</li>
+                  <li>缓解肿胀与充盈不适</li>
+                  <li>减少整体不适感</li>
+                </ul>
+              </div>
+              <div class="d-time"><div class="n">15–20</div><div class="l">分钟 / 次</div></div>
+            </div>
+            <div class="d-note"><b>专业共识：</b>ABM Protocol #36（2022）明确建议——出现肿胀与炎症感时 <b>"Choose ice over heat"</b>，冷敷优于热敷。冷敷是喂后与炎症倾向期的主力方案。</div>
+          </div>
+
+          <!-- HEAT -->
+          <div class="d-card heat">
+            <div class="d-cond">喂奶前乳房过硬 · 乳汁流出困难 · 需要放松（无红肿热痛）</div>
+            <div class="d-symptoms">
+              <span>喂前发硬 Firmness</span><span>出乳慢 Slow Letdown</span><span>泵奶低效</span><span>需要放松 Relax</span>
+            </div>
+            <div class="d-therapy">
+              <div class="d-ticon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 3C8 3 9.5 5 9.5 6.8C9.5 8.6 8 9.5 8 11.3C8 13 9.5 14 9.5 14M14.5 3C14.5 3 16 5 16 6.8C16 8.6 14.5 9.5 14.5 11.3C14.5 13 16 14 16 14M5 18C6.5 16.5 9 16.5 10.5 18C12 19.5 14.5 19.5 16 18C17.5 16.5 19 17 19 17" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+              <div class="d-tname">Heat Therapy<span class="cn">热敷 · 温感促排</span></div>
+            </div>
+            <div class="d-detail">
+              <div>
+                <div class="d-goal">目的 Purpose</div>
+                <ul class="d-goal-list">
+                  <li>提升哺乳前舒适感</li>
+                  <li>帮助乳汁顺畅流出</li>
+                  <li>配合温和按摩放松</li>
+                </ul>
+              </div>
+              <div class="d-time"><div class="n">5–10</div><div class="l">分钟 / 次（喂前）</div></div>
+            </div>
+            <div class="d-note"><b>使用边界：</b>热敷仅用于<b>喂前短时促排</b>；若乳房已出现红、肿、热、痛等炎症表现，应停用热敷改用冷敷，避免加重不适。</div>
+          </div>
+        </div>
+
+        <div class="d-evidence">
+          <span>决策依据来源</span>
+          <span class="pill">ABM Clinical Protocol #36 (2022)</span>
+          <span class="pill">La Leche League International</span>
+          <span class="pill">NHS Breastfeeding Guidance</span>
+          <span class="pill">三步法：泵前热 → 泵中温和振动 → 泵后冷</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PART 4 : PRODUCT OPPORTUNITY ================= -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="sec-no">PART 04</span>
+      <span class="sec-title">Bloom 产品机会区域<span class="en">Future Product Opportunity</span></span>
+    </div>
+    <p class="sec-desc">把全旅程的缺口收敛为一套设备：冷、热、温和振动、智能温控、女性友好穿戴——五个模块，一个系统。</p>
+
+    <div class="opp">
+      <div class="opp-inner">
+        <div class="opp-badge">Future Product Opportunity</div>
+        <h3>Bloom 智能乳房护理系统<span class="cn">Bloom Smart Breast Recovery System — 覆盖泌乳启动 · 哺乳 · 职场泵奶 · 断奶全周期</span></h3>
+
+        <div class="opp-grid">
+          <div class="opp-card">
+            <div class="opp-num">01</div>
+            <div class="opp-icon oi1"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2V22M12 2L9 5M12 2L15 5M12 22L9 19M12 22L15 19M4 7L20 17M4 17L20 7" stroke="#93C5FD" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h4>Smart Cold Therapy</h4>
+            <div class="cn">智能冷疗</div>
+            <ul>
+              <li>PCM 相变冷芯，无需冰箱</li>
+              <li>恒温 15–18℃ 舒适冷感</li>
+              <li>长时间稳定冷敷不冻伤</li>
+            </ul>
+          </div>
+          <div class="opp-card">
+            <div class="opp-num">02</div>
+            <div class="opp-icon oi2"><svg viewBox="0 0 24 24" fill="none"><path d="M8 3C8 3 9.5 5 9.5 7C9.5 9 8 10 8 12C8 14 9.5 15 9.5 15M14.5 3C14.5 3 16 5 16 7C16 9 14.5 10 14.5 12C14.5 14 16 15 16 15M5 19H19" stroke="#FCD34D" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h4>Smart Heat Therapy</h4>
+            <div class="cn">智能热敷</div>
+            <ul>
+              <li>38–40℃ 安全温感区间</li>
+              <li>哺乳/泵奶前 5–10 分钟护理</li>
+              <li>过热保护，即开即用</li>
+            </ul>
+          </div>
+          <div class="opp-card">
+            <div class="opp-num">03</div>
+            <div class="opp-icon oi3"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12C4.5 12 4.5 9 6 9C7.5 9 7.5 15 9 15C10.5 15 10.5 7 12 7C13.5 7 13.5 17 15 17C16.5 17 16.5 9 18 9C19.5 9 19.5 12 21 12" stroke="#6EE7B7" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h4>Gentle Massage</h4>
+            <div class="cn">舒缓按摩</div>
+            <ul>
+              <li>低频温和振动，浅层舒缓</li>
+              <li>泵奶同步使用提升体验</li>
+              <li>≤45dB 静音，夜间友好</li>
+            </ul>
+          </div>
+          <div class="opp-card">
+            <div class="opp-num">04</div>
+            <div class="opp-icon oi4"><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="13" rx="3" stroke="#C4B5FD" stroke-width="1.7"/><circle cx="12" cy="19" r="2.5" stroke="#C4B5FD" stroke-width="1.7"/><path d="M12 8V16.5" stroke="#C4B5FD" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <h4>Smart Temperature Control</h4>
+            <div class="cn">智能温控</div>
+            <ul>
+              <li>实时温度传感监测</li>
+              <li>三档冷热自动调节</li>
+              <li>解决"温度不可控"核心差评</li>
+            </ul>
+          </div>
+          <div class="opp-card">
+            <div class="opp-num">05</div>
+            <div class="opp-icon oi5"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4C12 4 6 8.5 6 13C6 16.6 8.7 19.5 12 19.5C15.3 19.5 18 16.6 18 13C18 8.5 12 4 12 4Z" stroke="#F9A8B4" stroke-width="1.7"/><circle cx="12" cy="13" r="2.2" stroke="#F9A8B4" stroke-width="1.7"/></svg></div>
+            <h4>Wearable Design</h4>
+            <div class="cn">女性友好穿戴设计</div>
+            <ul>
+              <li>柔性医用级硅胶</li>
+              <li>乳房曲面贴合，可入 Bra</li>
+              <li>USB-C 无线便携，discreet 外形</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PART 5 : STRATEGY ================= -->
+  <section class="section">
+    <div class="sec-head">
+      <span class="sec-no">PART 05</span>
+      <span class="sec-title">产品定义总结<span class="en">Strategic Positioning</span></span>
+    </div>
+
+    <div class="strategy">
+      <h3>From Cold Pack to <span class="grad">Smart Breast Recovery System</span></h3>
+      <p class="sub">从一次性冷敷贴，到贯穿产后全周期的智能乳房护理系统</p>
+
+      <div class="vs">
+        <div class="vs-col old">
+          <div class="vs-cap">Traditional 传统方案</div>
+          <div class="vs-name">冷敷贴 / 冰袋</div>
+          <div class="vs-chain">
+            <div class="vs-step"><span class="si">1</span>单一功能 — 只冷或只热，无法应对全场景</div>
+            <div class="vs-down"></div>
+            <div class="vs-step"><span class="si">2</span>被动护理 — 出问题才临时找工具</div>
+            <div class="vs-down"></div>
+            <div class="vs-step"><span class="si">3</span>冰箱依赖 — 场景受限，夜间/职场不可用</div>
+          </div>
+        </div>
+
+        <div class="vs-mid">
+          <div class="arrow-big">→</div>
+          <div class="l">Upgrade</div>
+        </div>
+
+        <div class="vs-col new">
+          <div class="vs-cap">Bloom 方案</div>
+          <div class="vs-name">智能护理系统</div>
+          <div class="vs-chain">
+            <div class="vs-step"><span class="si">✓</span>冷热结合 — 一台设备覆盖喂前促排 + 喂后舒缓</div>
+            <div class="vs-down"></div>
+            <div class="vs-step"><span class="si">✓</span>主动管理 — 智能温控 + 节奏引导，护理有章法</div>
+            <div class="vs-down"></div>
+            <div class="vs-step"><span class="si">✓</span>全天候恢复体验 — 无冰箱依赖，卧室/办公室/差旅随时可用</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div>
+      <b>Aurillis Bloom · Breast Wellness</b><br>
+      本看板供 CEO / 产品 / 研发 / 投资人讨论使用 · 内容基于 ABM #36、LLLI、NHS 指南及 3,791 条亚马逊评论语义调研
+    </div>
+    <div class="right">
+      合规口径：relief · comfort · support（非医疗治疗宣称）<br>
+      Aurillis Health Technology (Shenzhen) · 2026.07 · CONFIDENTIAL
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
