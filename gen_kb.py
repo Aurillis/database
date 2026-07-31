@@ -974,13 +974,22 @@ function switchAdminTab(tab, el) {
 function renderAdminUpload() {
   var c = document.getElementById('adminContent');
   c.innerHTML = `
+    <div style="background:var(--accent-light);border:1px solid #cfe8e3;border-radius:12px;padding:18px;margin-bottom:18px">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:6px">📤 上传文件到知识库</h3>
+      <p style="font-size:13px;color:var(--muted);line-height:1.9">
+        ① 点击下方「选择文件」按钮，或直接把文件拖到下方虚线框　② 选择归属分类　③ 自动上传到服务器<br>
+        支持 <b>.html .htm .css .js .png .jpg .gif .svg</b>（可一次选多个）。<br>
+        上传成功后文件会出现在对应分类，刷新页面约 1 分钟即可见。
+      </p>
+    </div>
+    <button class="btn btn-primary" id="uploadPickBtn" style="margin-bottom:14px"><i class="fas fa-folder-open"></i> 选择文件上传</button>
     <div class="upload-zone" id="uploadZone">
       <i class="fas fa-cloud-arrow-up"></i>
-      <p>点击或拖拽文件到此处上传</p>
-      <p class="hint">支持 .html .htm .css .js .png .jpg .gif .svg</p>
+      <p style="font-weight:600">点击选择文件，或拖拽到此处</p>
+      <p class="hint">支持 .html .htm .css .js .png .jpg .gif .svg（可多选）</p>
     </div>
     <input type="file" id="fileInput" multiple accept=".html,.htm,.css,.js,.png,.jpg,.jpeg,.gif,.svg" style="display:none">
-    <div id="uploadCatSelect" style="margin-bottom:12px">
+    <div id="uploadCatSelect" style="margin:16px 0 12px">
       <label style="font-size:12px;color:var(--muted)">上传到分类:</label>
       <select id="uploadCat" class="sort-select" style="width:100%;margin-top:4px;padding:8px"></select>
     </div>
@@ -1005,6 +1014,7 @@ function renderAdminUpload() {
   var zone = document.getElementById('uploadZone');
   var input = document.getElementById('fileInput');
 
+  document.getElementById('uploadPickBtn').onclick = function() { input.click(); };
   zone.onclick = function() { input.click(); };
 
   zone.ondragover = function(e) { e.preventDefault(); this.classList.add('dragover'); };
@@ -1058,7 +1068,7 @@ function handleUpload(fileList) {
       })
       .catch(function() {
         done++;
-        fail.push(file.name + ' (网络错误)');
+        fail.push(file.name + ' (上传失败：服务端无响应，请确认 Vercel 函数已部署且未开启访问保护/登录墙)');
         if (done === files.length) finishUpload(result, ok, fail, bad);
       });
     };
