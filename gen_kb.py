@@ -71,6 +71,17 @@ tree_json = json.dumps(TREE, ensure_ascii=False)
 # Stored at repo root so the portal can fetch it (same origin on GitHub Pages).
 # The serverless upload function also rewrites this file after each upload.
 manifest = []
+local_names = set(f["filename"] for f in files)
+# Preserve remote-only entries (e.g. files uploaded via the website that are not
+# present locally) so a local regen + push never drops web-uploaded reports.
+existing = {}
+mp = BASE / 'manifest.json'
+if mp.exists():
+    try:
+        for e in json.loads(mp.read_text(encoding='utf-8')):
+            existing[e["filename"]] = e
+    except Exception:
+        pass
 for f in files:
     manifest.append({
         "filename": f["filename"],
@@ -79,9 +90,12 @@ for f in files:
         "mtime": f["mtime"],
         "category": f["category"],
     })
+for e in existing.values():
+    if e["filename"] not in local_names:
+        manifest.append(e)
 (BASE / 'manifest.json').write_text(
     json.dumps(manifest, ensure_ascii=False, indent=2), encoding='utf-8')
-print(f'Generated manifest.json: {len(manifest)} files')
+print(f'Generated manifest.json: {len(manifest)} files ({len(local_names)} local)')
 
 # ===== CSS =====
 CSS = r"""
@@ -508,6 +522,12 @@ JS = r"""
 // Vercel serverless function URL that handles uploads (set during deploy).
 // The GitHub token lives ONLY on that server, never in this page.
 var UPLOAD_API = '__UPLOAD_API__';
+
+// Upload secret sent to the Vercel function as the x-upload-secret header.
+// This is INDEPENDENT of the admin login password (S.adminPwd) — changing the
+// admin password must NOT break uploads. It must match the Vercel env var
+// UPLOAD_SECRET. Keep the two in sync if you ever change it.
+var UPLOAD_SECRET = 'admin123';
 
 var FILES = __FILES_JSON__;
 var TREE = __TREE_JSON__;
@@ -1056,7 +1076,7 @@ function handleUpload(fileList) {
       var base64 = dataUrl.split(',')[1] || '';
       fetch(UPLOAD_API, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-upload-secret': S.adminPwd },
+        headers: { 'Content-Type': 'application/json', 'x-upload-secret': UPLOAD_SECRET },
         body: JSON.stringify({ filename: file.name, content: base64, category: cat })
       })
       .then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); })
