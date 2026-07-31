@@ -7,6 +7,10 @@ import json, pathlib, re
 BASE = pathlib.Path(__file__).parent
 META = json.loads((BASE / 'reports_meta.json').read_text(encoding='utf-8'))
 
+# Vercel serverless function URL (set empty; fill after deploying upload-api).
+# The GitHub token lives ONLY on that server — never embedded in this page.
+UPLOAD_API_PLACEHOLDER = ''
+
 # ===== CATEGORY TREE =====
 TREE = [
     {"id": "product", "name": "产品研究", "icon": "fas fa-box", "children": [
@@ -62,6 +66,22 @@ for r in META:
 
 files_json = json.dumps(files, ensure_ascii=False)
 tree_json = json.dumps(TREE, ensure_ascii=False)
+
+# ===== MANIFEST (dynamic file list, updated by serverless upload) =====
+# Stored at repo root so the portal can fetch it (same origin on GitHub Pages).
+# The serverless upload function also rewrites this file after each upload.
+manifest = []
+for f in files:
+    manifest.append({
+        "filename": f["filename"],
+        "title": f["title"],
+        "size": f["size"],
+        "mtime": f["mtime"],
+        "category": f["category"],
+    })
+(BASE / 'manifest.json').write_text(
+    json.dumps(manifest, ensure_ascii=False, indent=2), encoding='utf-8')
+print(f'Generated manifest.json: {len(manifest)} files')
 
 # ===== CSS =====
 CSS = r"""
@@ -484,8 +504,23 @@ HTML = r"""
 
 # ===== JAVASCRIPT =====
 JS = r"""
+// ===== CONFIG =====
+// Vercel serverless function URL that handles uploads (set during deploy).
+// The GitHub token lives ONLY on that server, never in this page.
+var UPLOAD_API = '__UPLOAD_API__';
+
 var FILES = __FILES_JSON__;
 var TREE = __TREE_JSON__;
+
+// Load the dynamic manifest (rewritten by the upload function after each upload).
+// Falls back to the embedded data if the manifest can't be fetched.
+(function loadManifest() {
+  // cache-buster (changes every minute) so newly uploaded files appear after rebuild
+  var url = 'manifest.json?t=' + Math.floor(Date.now() / 60000);
+  fetch(url).then(function(r) { return r.json(); }).then(function(d) {
+    if (Array.isArray(d) && d.length) { FILES = d; renderSidebar(); renderMain(); }
+  }).catch(function() { /* keep embedded fallback */ });
+})();
 
 var S = {
   view: 'browser',      // 'browser' | 'admin'
@@ -984,35 +1019,62 @@ function renderAdminUpload() {
 function handleUpload(fileList) {
   var cat = document.getElementById('uploadCat').value;
   var result = document.getElementById('uploadResult');
-  var html = '';
-  var pending = fileList.length;
 
-  Array.from(fileList).forEach(function(file) {
-    if (!file.name.match(/\.(html?|css|js|png|jpe?g|gif|svg)$/i)) {
-      html += '<p style="color:var(--danger)">✗ '+esc(file.name)+' - 不支持的格式</p>';
-      pending--;
-      if (pending === 0) result.innerHTML = html;
-      return;
-    }
+  var files = Array.from(fileList).filter(function(f) {
+    return f.name.match(/\.(html?|css|js|png|jpe?g|gif|svg)$/i);
+  });
+  var bad = Array.from(fileList).filter(function(f) {
+    return !f.name.match(/\.(html?|css|js|png|jpe?g|gif|svg)$/i);
+  });
 
+  if (files.length === 0) {
+    result.innerHTML = '<p style="color:var(--danger)">没有支持的文件格式</p>';
+    return;
+  }
+  if (!UPLOAD_API) {
+    result.innerHTML = '<p style="color:var(--danger)">上传功能未配置：缺少服务端地址（UPLOAD_API）</p>';
+    return;
+  }
+
+  result.innerHTML = '<p style="color:var(--muted)">正在上传 ' + files.length + ' 个文件到服务器...</p>';
+  var done = 0, ok = 0, fail = [];
+
+  files.forEach(function(file) {
     var reader = new FileReader();
     reader.onload = function(e) {
-      var title = file.name.replace(/\.(html?|)$/i, '');
-      S.uploaded.push({
-        name: file.name,
-        title: title,
-        size: file.size,
-        mtime: Date.now() / 1000,
-        category: cat,
-        data: e.target.result
+      var dataUrl = e.target.result;
+      var base64 = dataUrl.split(',')[1] || '';
+      fetch(UPLOAD_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-upload-secret': S.adminPwd },
+        body: JSON.stringify({ filename: file.name, content: base64, category: cat })
+      })
+      .then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); })
+      .then(function(resp) {
+        done++;
+        if (resp.ok) ok++;
+        else fail.push(file.name + ' (' + (resp.j.error || '失败') + ')');
+        if (done === files.length) finishUpload(result, ok, fail, bad);
+      })
+      .catch(function() {
+        done++;
+        fail.push(file.name + ' (网络错误)');
+        if (done === files.length) finishUpload(result, ok, fail, bad);
       });
-      Save();
-      html += '<p style="color:var(--accent)">✓ '+esc(file.name)+' - 上传成功 ('+fmtSize(file.size)+')</p>';
-      pending--;
-      if (pending === 0) { result.innerHTML = html; renderSidebar(); toast('上传完成'); }
     };
     reader.readAsDataURL(file);
   });
+}
+
+function finishUpload(result, ok, fail, bad) {
+  var html = '';
+  if (ok > 0) html += '<p style="color:var(--accent)">✓ 成功上传 ' + ok + ' 个文件到服务器</p>';
+  fail.forEach(function(n) { html += '<p style="color:var(--danger)">✗ ' + esc(n) + '</p>'; });
+  bad.forEach(function(f) { html += '<p style="color:var(--warning)">⚠ ' + esc(f.name) + ' - 不支持的格式</p>'; });
+  html += '<p style="font-size:12px;color:var(--muted);margin-top:8px">文件已保存到 GitHub 仓库，约 1 分钟后刷新页面即可在列表中看到。</p>';
+  result.innerHTML = html;
+  renderSidebar();
+  toast('上传完成');
 }
 
 function renderAdminFiles() {
@@ -1346,7 +1408,7 @@ html += '<title>我的研究知识库</title>\n'
 html += '<style>' + CSS + '</style>\n</head>\n<body>\n'
 html += HTML
 html += '<script>\n'
-html += JS.replace('__FILES_JSON__', files_json).replace('__TREE_JSON__', tree_json)
+html += JS.replace('__FILES_JSON__', files_json).replace('__TREE_JSON__', tree_json).replace('__UPLOAD_API__', UPLOAD_API_PLACEHOLDER)
 html += '\n</script>\n</body>\n</html>'
 
 (BASE / 'index.html').write_text(html, encoding='utf-8')
