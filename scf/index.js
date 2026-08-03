@@ -184,7 +184,10 @@ async function getManifest(branch) {
 }
 async function putManifest(data, sha, branch, message) {
   const content = Buffer.from(JSON.stringify(data, null, 2), 'utf8').toString('base64');
-  return ghRequest('PUT', '/contents/manifest.json', { message: message, content: content, sha: sha, branch: branch });
+  const res = await ghRequest('PUT', '/contents/manifest.json', { message: message, content: content, sha: sha, branch: branch });
+  // 关键: 不再静默忽略失败 —— 写不进 manifest 会抛错, 让上层感知(否则文件已从磁盘删掉却仍留在 manifest, 刷新即"幽灵重现")
+  if (res.status >= 300) throw new Error('更新 manifest 失败: ' + ((res.json && res.json.message) || res.status));
+  return res;
 }
 async function removeFromManifest(safeName, branch) {
   const m = await getManifest(branch);
@@ -226,7 +229,11 @@ async function handleDelete(body, origin) {
 
   try {
     const head = await ghRequest('GET', filePath + '?ref=' + branch);
-    if (head.status === 404) return send(404, { error: '文件不存在或已被删除' }, origin);
+    if (head.status === 404) {
+      // 文件已不在磁盘上(可能之前已删) -> 仅确保 manifest 干净即可, 返回成功(幂等, 便于重试)
+      await removeFromManifest(safeName, branch);
+      return send(200, { ok: true, alreadyGone: true }, origin);
+    }
     if (head.status >= 300) return send(500, { error: '读取文件失败: ' + (head.json && head.json.message || head.status) }, origin);
     const sha = head.json.sha;
     const content = head.json.content;
