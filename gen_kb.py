@@ -984,9 +984,11 @@ function showAdminPanel() {
   var panel = document.getElementById('adminPanel');
   var main = document.getElementById('main');
   var sidebar = document.getElementById('sidebar');
+  var layout = document.querySelector('.layout');
 
   main.style.display = 'none';
   sidebar.style.display = 'none';
+  layout.style.display = 'none';
   panel.style.display = 'block';
 
   panel.innerHTML = `
@@ -1012,6 +1014,7 @@ function showAdminPanel() {
 
 function exitAdmin() {
   document.getElementById('adminPanel').style.display = 'none';
+  document.querySelector('.layout').style.display = '';
   document.getElementById('main').style.display = '';
   document.getElementById('sidebar').style.display = '';
   renderSidebar(); renderMain();
