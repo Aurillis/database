@@ -1547,7 +1547,11 @@ function doShare() {
         + '<p style="color:var(--muted);font-size:12px;margin-top:6px">若提示「缺少 filename 或 content」，说明后端尚未更新——请把新的 scf/index.js 粘进腾讯云 SCF 并保存部署。</p>';
       return;
     }
-    var url = resp.j.url;
+    // 用本页真实地址拼分享链接，避免后端按浏览器 origin 漏掉 /report-portal 子路径导致 404
+    var tok = resp.j.token;
+    var url = tok
+      ? new URL('share.html?t=' + encodeURIComponent(tok), location.href).toString()
+      : resp.j.url;
     res.innerHTML = '<label style="font-size:12px;color:var(--muted)">分享直链（凭此链接仅可看本篇）</label>'
       + '<div style="display:flex;gap:8px;margin-top:6px">'
       + '<input id="shareUrl" readonly value="' + esc(url) + '" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:6px;font-size:13px">'

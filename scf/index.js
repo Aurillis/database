@@ -110,10 +110,9 @@ async function handleShare(body, origin) {
     return send(500, { error: '分享记录写入失败: ' + msg }, origin);
   }
 
-  // 站点根地址：优先用请求来源（前端从本站调用），否则用环境变量兜底
-  const base = (origin && /^https?:\/\//.test(origin))
-    ? origin.replace(/\/$/, '')
-    : env('SITE_BASE', 'https://chenbiyin1770.github.io/report-portal').replace(/\/$/, '');
+  // 站点根地址：优先用显式配置 SITE_BASE（含子路径，如 .../report-portal）。
+  // 不用浏览器 origin 兜底——origin 不含仓库子路径，会让链接指向错误根域名而 404。
+  const base = env('SITE_BASE', 'https://chenbiyin1770.github.io/report-portal').replace(/\/$/, '');
   const url = base + '/share.html?t=' + token;
   return send(200, { ok: true, token: token, url: url }, origin);
 }
