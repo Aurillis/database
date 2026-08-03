@@ -433,11 +433,29 @@ var UPLOAD_API = 'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.com';
 var FILES = [{"filename": "ABM_Protocol_36_Mastitis_Spectrum_2022.pdf", "title": "ABM_Protocol_36_Mastitis_Spectrum_2022", "size": 2056065, "mtime": 1783676572, "category": "product-lactation", "isUploaded": true}, {"filename": "Bloom_乳房健康问题地图_产品机会矩阵看板.html", "title": "Bloom_乳房健康问题地图_产品机会矩阵看板", "size": 25558, "mtime": 1785738991, "category": "product-lactation", "isUploaded": true}, {"filename": "Bloom_冷敷vs热敷振动_场景人群辨析.html", "title": "Bloom_冷敷vs热敷振动_场景人群辨析", "size": 10666, "mtime": 1785738970, "category": "product-lactation", "isUploaded": true}, {"filename": "Bloom_冷热敷使用时机定义_权威依据.html", "title": "Bloom_冷热敷使用时机定义_权威依据", "size": 14039, "mtime": 1785738983, "category": "product-lactation", "isUploaded": true}, {"filename": "Bloom_用户行为地图_User_Journey_Map.html", "title": "Bloom_用户行为地图_User_Journey_Map", "size": 48337, "mtime": 1785738995, "category": "product-lactation", "isUploaded": true}, {"filename": "Lansinoh_B01J61VL9W_冷热敷洞察看板.html", "title": "Lansinoh_B01J61VL9W_冷热敷洞察看板", "size": 21925, "mtime": 1785738998, "category": "product-lactation", "isUploaded": true}, {"filename": "Momcozy_A1Pro_B0DM5YGBMS_加热震动洞察看板.html", "title": "Momcozy_A1Pro_B0DM5YGBMS_加热震动洞察看板", "size": 30386, "mtime": 1785739003, "category": "product-lactation", "isUploaded": true}, {"filename": "US Bladder Control Devices 盆底肌训练器机会评分看板.html", "title": "US Bladder Control Devices 盆底肌训练器机会评分看板", "size": 117035, "mtime": 1785465027.659554, "category": "product-pelvic", "isUploaded": false}, {"filename": "「震动功能」专项分析：使用情境与用户反馈问题.md", "title": "「震动功能」专项分析：使用情境与用户反馈问题", "size": 5560, "mtime": 1784537589, "category": "product-lactation", "isUploaded": true}, {"filename": "全球成人乳房玩具功能技术及哺乳按摩器迁移研究.html", "title": "全球成人乳房玩具功能技术及哺乳按摩器迁移研究", "size": 21715, "mtime": 1785465027.9768794, "category": "product-lactation", "isUploaded": false}, {"filename": "全球盆底相关FDA_510k数据库_2026-07-22.xlsx", "title": "全球盆底相关FDA_510k数据库_2026-07-22", "size": 115826, "mtime": 1784703752, "category": "product-pelvic", "isUploaded": true}, {"filename": "哺乳按摩器_社媒洞察.md", "title": "哺乳按摩器_社媒洞察", "size": 10627, "mtime": 1783929422, "category": "product-lactation", "isUploaded": true}, {"filename": "哺乳按摩器【冷敷】功能调研报告.html", "title": "哺乳按摩器【冷敷】功能调研报告", "size": 4521318, "mtime": 1784889231, "category": "product-lactation", "isUploaded": true}, {"filename": "哺乳按摩器评论语义分析报告.md", "title": "哺乳按摩器评论语义分析报告", "size": 19990, "mtime": 1784539860, "category": "product-lactation", "isUploaded": true}, {"filename": "欧洲盆底肌修复仪市场看板.html", "title": "欧洲盆底肌修复仪市场看板", "size": 83071, "mtime": 1784607741, "category": "product-pelvic", "isUploaded": true}, {"filename": "盆底肌修复市场调研 -2020703.pptx", "title": "盆底肌修复市场调研 -2020703", "size": 10458656, "mtime": 1783330015, "category": "product-pelvic", "isUploaded": true}, {"filename": "盆底肌竞品分析0706.xlsx", "title": "盆底肌竞品分析0706", "size": 9707003, "mtime": 1783586426, "category": "product-pelvic", "isUploaded": true}, {"filename": "经痛热敷路径_亚马逊未满足需求与溢价标杆_V4.html", "title": "经痛热敷路径_亚马逊未满足需求与溢价标杆_V4", "size": 17998, "mtime": 1785739281, "category": "product-dysmenorrhea", "isUploaded": true}, {"filename": "美国冷热敷产品市场与用户洞察.html", "title": "美国冷热敷产品市场与用户洞察", "size": 145723, "mtime": 1784794030, "category": "product-lactation", "isUploaded": true}, {"filename": "美国哺乳按摩器机会评分分析看板.html", "title": "美国哺乳按摩器机会评分分析看板", "size": 149759, "mtime": 1783680336, "category": "product-lactation", "isUploaded": true}];
 var TREE = [{"id": "product-lactation", "name": "哺乳按摩器", "icon": "fas fa-baby"}, {"id": "product-dysmenorrhea", "name": "痛经缓解产品", "icon": "fas fa-spa"}, {"id": "product-pelvic", "name": "盆底肌修复仪", "icon": "fas fa-flask"}, {"id": "other", "name": "其他", "icon": "fas fa-folder"}];
 
+// 直读 raw.githubusercontent.com 的 manifest.json —— 永远最新, 无需等 Pages 构建(~1分钟)
+// 由当前页地址推导: https://<user>.github.io/<repo>/... -> raw/<user>/<repo>/<branch>/manifest.json
+function rawManifestUrl() {
+  try {
+    var u = new URL(location.href);
+    if (u.hostname.endsWith('.github.io')) {
+      var parts = u.pathname.split('/').filter(function(p) { return p; }); // ['report-portal', 'index.html']
+      if (parts.length >= 1) {
+        var user = u.hostname.split('.')[0];
+        var repo = parts[0];
+        var branch = 'main'; // 与仓库默认分支保持一致(如需改分支, 只改这里)
+        return 'https://raw.githubusercontent.com/' + user + '/' + repo + '/' + branch + '/manifest.json';
+      }
+    }
+  } catch (e) {}
+  // 本地预览 / 非 Pages 环境: 退回同源 manifest(无 raw 可直读)
+  return 'manifest.json?t=' + Date.now();
+}
+
 // Load the dynamic manifest (rewritten by the upload function after each upload).
-// Falls back to the embedded data if the manifest can't be fetched.
+// 直读 raw(无构建延迟), 失败回退到嵌入数据.
 (function loadManifest() {
-  // cache-buster (changes every minute) so newly uploaded files appear after rebuild
-  var url = 'manifest.json?t=' + Math.floor(Date.now() / 60000);
+  var url = rawManifestUrl() + '?t=' + Date.now(); // 实时缓存破坏, 永远拉最新
   fetch(url).then(function(r) { return r.json(); }).then(function(d) {
     if (Array.isArray(d) && d.length) { FILES = d; renderSidebar(); renderMain(); }
   }).catch(function() { /* keep embedded fallback */ });
@@ -1103,10 +1121,12 @@ function finishUpload(result, ok, fail, bad) {
   if (ok > 0) html += '<p style="color:var(--accent)">✓ 成功上传 ' + ok + ' 个文件到服务器</p>';
   fail.forEach(function(n) { html += '<p style="color:var(--danger)">✗ ' + esc(n) + '</p>'; });
   bad.forEach(function(f) { html += '<p style="color:var(--warning)">⚠ ' + esc(f.name) + ' - 不支持的格式</p>'; });
-  html += '<p style="font-size:12px;color:var(--muted);margin-top:8px">文件已保存到 GitHub 仓库，约 1 分钟后刷新页面即可在列表中看到。</p>';
+  html += '<p style="font-size:12px;color:var(--muted);margin-top:8px">文件已保存到 GitHub 仓库，列表将立即刷新。</p>';
   result.innerHTML = html;
   renderSidebar();
   toast('上传完成');
+  // 立即从 raw 重新拉取 manifest(无 Pages 构建延迟), 上传的文件立刻可见
+  refreshManifest(function() { renderSidebar(); renderMain(); });
 }
 
 function renderAdminFiles() {
@@ -1405,9 +1425,9 @@ function adminApi(op, body) {
   }).then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); });
 }
 
-// 重新拉取 manifest(绕过分钟级缓存), 用于删除/恢复后即时刷新列表
+// 重新拉取 manifest(直读 raw, 永远最新), 用于上传/删除/恢复后即时刷新列表
 function refreshManifest(cb) {
-  fetch('manifest.json?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(d) {
+  fetch(rawManifestUrl() + '?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(d) {
     if (Array.isArray(d) && d.length) FILES = d;
   }).catch(function() { /* 保留原数据 */ }).then(function() { if (cb) cb(); });
 }

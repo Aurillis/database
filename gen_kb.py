@@ -537,11 +537,29 @@ var UPLOAD_API = '__UPLOAD_API__';
 var FILES = __FILES_JSON__;
 var TREE = __TREE_JSON__;
 
+// 直读 raw.githubusercontent.com 的 manifest.json —— 永远最新, 无需等 Pages 构建(~1分钟)
+// 由当前页地址推导: https://<user>.github.io/<repo>/... -> raw/<user>/<repo>/<branch>/manifest.json
+function rawManifestUrl() {
+  try {
+    var u = new URL(location.href);
+    if (u.hostname.endsWith('.github.io')) {
+      var parts = u.pathname.split('/').filter(function(p) { return p; }); // ['report-portal', 'index.html']
+      if (parts.length >= 1) {
+        var user = u.hostname.split('.')[0];
+        var repo = parts[0];
+        var branch = 'main'; // 与仓库默认分支保持一致(如需改分支, 只改这里)
+        return 'https://raw.githubusercontent.com/' + user + '/' + repo + '/' + branch + '/manifest.json';
+      }
+    }
+  } catch (e) {}
+  // 本地预览 / 非 Pages 环境: 退回同源 manifest(无 raw 可直读)
+  return 'manifest.json?t=' + Date.now();
+}
+
 // Load the dynamic manifest (rewritten by the upload function after each upload).
-// Falls back to the embedded data if the manifest can't be fetched.
+// 直读 raw(无构建延迟), 失败回退到嵌入数据.
 (function loadManifest() {
-  // cache-buster (changes every minute) so newly uploaded files appear after rebuild
-  var url = 'manifest.json?t=' + Math.floor(Date.now() / 60000);
+  var url = rawManifestUrl() + '?t=' + Date.now(); // 实时缓存破坏, 永远拉最新
   fetch(url).then(function(r) { return r.json(); }).then(function(d) {
     if (Array.isArray(d) && d.length) { FILES = d; renderSidebar(); renderMain(); }
   }).catch(function() { /* keep embedded fallback */ });
@@ -1207,10 +1225,12 @@ function finishUpload(result, ok, fail, bad) {
   if (ok > 0) html += '<p style="color:var(--accent)">✓ 成功上传 ' + ok + ' 个文件到服务器</p>';
   fail.forEach(function(n) { html += '<p style="color:var(--danger)">✗ ' + esc(n) + '</p>'; });
   bad.forEach(function(f) { html += '<p style="color:var(--warning)">⚠ ' + esc(f.name) + ' - 不支持的格式</p>'; });
-  html += '<p style="font-size:12px;color:var(--muted);margin-top:8px">文件已保存到 GitHub 仓库，约 1 分钟后刷新页面即可在列表中看到。</p>';
+  html += '<p style="font-size:12px;color:var(--muted);margin-top:8px">文件已保存到 GitHub 仓库，列表将立即刷新。</p>';
   result.innerHTML = html;
   renderSidebar();
   toast('上传完成');
+  // 立即从 raw 重新拉取 manifest(无 Pages 构建延迟), 上传的文件立刻可见
+  refreshManifest(function() { renderSidebar(); renderMain(); });
 }
 
 function renderAdminFiles() {
@@ -1509,9 +1529,9 @@ function adminApi(op, body) {
   }).then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); });
 }
 
-// 重新拉取 manifest(绕过分钟级缓存), 用于删除/恢复后即时刷新列表
+// 重新拉取 manifest(直读 raw, 永远最新), 用于上传/删除/恢复后即时刷新列表
 function refreshManifest(cb) {
-  fetch('manifest.json?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(d) {
+  fetch(rawManifestUrl() + '?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(d) {
     if (Array.isArray(d) && d.length) FILES = d;
   }).catch(function() { /* 保留原数据 */ }).then(function() { if (cb) cb(); });
 }
