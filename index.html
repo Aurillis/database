@@ -758,6 +758,7 @@ function renderMain() {
       html += '<div style="margin-top:6px"><span class="fmt-badge" style="background:'+fmtColor(f.filename)+'1a;color:'+fmtColor(f.filename)+'">'+fileFmt(f.filename)+'</span></div>';
       html += '</div>';
       html += '<button class="fav-btn'+(isFav?' active':'')+'" onclick="event.stopPropagation();toggleFav(\''+esc(f.filename)+'\')"><i class="fas fa-star"></i></button>';
+      html += '<button class="fav-btn" title="分享链接" onclick="event.stopPropagation();openShareModal(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')"><i class="fas fa-share-alt"></i></button>';
       html += '</div>';
 
       if (tags.length > 0) {
@@ -786,6 +787,7 @@ function renderMain() {
       html += '<span class="li-date">'+fmtDate(f.mtime)+'</span>';
       html += '<span class="li-size">'+fmtSize(f.size)+'</span>';
       html += '<button class="fav-btn'+(isFav?' active':'')+'" style="width:24px;height:24px" onclick="event.stopPropagation();toggleFav(\''+esc(f.filename)+'\')"><i class="fas fa-star"></i></button>';
+      html += '<button class="fav-btn" style="width:24px;height:24px" title="分享链接" onclick="event.stopPropagation();openShareModal(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')"><i class="fas fa-share-alt"></i></button>';
       html += '</div>';
     });
     html += '</div>';
@@ -1126,6 +1128,7 @@ function renderAdminFiles() {
     html += '<td>'+fmtDate(f.mtime)+'</td>';
     html += '<td><div class="actions">';
     html += '<button class="act-btn" title="打开" onclick="openFile(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')"><i class="fas fa-external-link-alt"></i></button>';
+    html += '<button class="act-btn" title="分享链接" onclick="openShareModal(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')"><i class="fas fa-share-alt"></i></button>';
     html += '<button class="act-btn" title="移动分类" onclick="moveFileModal(\''+esc(f.filename)+'\')"><i class="fas fa-folder-tree"></i></button>';
     html += '<button class="act-btn" title="编辑标签" onclick="editTagsModal(\''+esc(f.filename)+'\')"><i class="fas fa-tag"></i></button>';
     if (f.isUploaded) {
@@ -1418,6 +1421,71 @@ function showModal(title, body, footer) {
 }
 
 function closeModal() { document.getElementById('modal').classList.remove('show'); }
+
+// ===== SHARE（单篇分享直链）=====
+var _shareFile = null;
+function openShareModal(filename, title) {
+  _shareFile = { filename: filename, title: title };
+  var body = ''
+    + '<p style="font-size:13px;color:var(--muted);margin:0 0 12px">为《' + esc(title) + '》生成一条仅限本篇的分享直链，可设置有效期。</p>'
+    + '<label style="font-size:13px;display:block;margin-bottom:6px">有效期</label>'
+    + '<select id="shareExpire" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;font-size:14px">'
+    +   '<option value="1">1 天</option>'
+    +   '<option value="7" selected>7 天</option>'
+    +   '<option value="30">30 天</option>'
+    +   '<option value="0">永久有效</option>'
+    + '</select>'
+    + '<div id="shareResult" style="margin-top:14px"></div>';
+  showModal('分享单个报告', body, [
+    {text:'取消', cls:'btn-ghost', action:'closeModal()'},
+    {text:'生成链接', cls:'btn-primary', action:'doShare()'}
+  ]);
+}
+
+function doShare() {
+  if (!_shareFile) return;
+  var filename = _shareFile.filename, title = _shareFile.title;
+  var sel = document.getElementById('shareExpire');
+  var expire = parseInt(sel ? sel.value : '7', 10) || 7;
+  var res = document.getElementById('shareResult');
+  if (res) res.innerHTML = '<p style="color:var(--muted);font-size:13px">生成中…</p>';
+  fetch(UPLOAD_API, {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'x-upload-secret': UPLOAD_SECRET },
+    body: JSON.stringify({ op:'share', filename:filename, title:title, expireDays:expire })
+  })
+  .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }); })
+  .then(function(resp){
+    if (!res) return;
+    if (!resp.ok || !resp.j.ok) {
+      res.innerHTML = '<p style="color:var(--danger);font-size:13px">生成失败：' + esc(resp.j.error || '未知错误') + '</p>'
+        + '<p style="color:var(--muted);font-size:12px;margin-top:6px">若提示「缺少 filename 或 content」，说明后端尚未更新——请把新的 scf/index.js 粘进腾讯云 SCF 并保存部署。</p>';
+      return;
+    }
+    var url = resp.j.url;
+    res.innerHTML = '<label style="font-size:12px;color:var(--muted)">分享直链（凭此链接仅可看本篇）</label>'
+      + '<div style="display:flex;gap:8px;margin-top:6px">'
+      + '<input id="shareUrl" readonly value="' + esc(url) + '" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:6px;font-size:13px">'
+      + '<button class="btn btn-primary btn-sm" onclick="copyShare()">复制</button>'
+      + '</div>';
+  })
+  .catch(function(e){
+    if (res) res.innerHTML = '<p style="color:var(--danger);font-size:13px">网络错误：' + esc((e && e.message) ? e.message : '无法连接服务端') + '</p>';
+  });
+}
+
+function copyShare() {
+  var inp = document.getElementById('shareUrl');
+  if (!inp) return;
+  var url = inp.value;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(function(){ toast('链接已复制'); }, function(){ fallbackCopy(inp); });
+  } else { fallbackCopy(inp); }
+}
+function fallbackCopy(inp) {
+  inp.select(); inp.setSelectionRange(0, 99999);
+  try { document.execCommand('copy'); toast('链接已复制'); } catch(e){ toast('复制失败，请手动复制'); }
+}
 
 // ===== KEYBOARD =====
 document.addEventListener('keydown', function(e) {

@@ -14,6 +14,7 @@
 // =====================================================================
 
 const https = require('https');
+const crypto = require('crypto');
 
 // 不限制上传的文件后缀——支持任意文件类型。
 // 真正的保护是下方的「文件名安全过滤」(防路径穿越),而不是后缀白名单。
@@ -72,6 +73,59 @@ function send(statusCode, obj, origin) {
   };
 }
 
+// ---------- 分享直链：生成带随机 token 的记录，存入仓库 shares.json ----------
+// 请求体: { op:'share', filename, title?, expireDays? }  (expireDays<=0 表示永久)
+// 返回: { ok:true, token, url:'<站点>/share.html?t=<token>' }
+async function handleShare(body, origin) {
+  const filename = body && body.filename;
+  if (!filename) return send(400, { error: '缺少 filename' }, origin);
+
+  const safeName = String(filename)
+    .replace(/[^\w.\-\u4e00-\u9fa5 ()]/g, '_')
+    .replace(/^\.+/, '')
+    .slice(0, 200);
+
+  const expireDays = Number(body.expireDays) || 0;
+  const expireAt = expireDays > 0 ? Date.now() + expireDays * 86400000 : null;
+  const token = crypto.randomBytes(12).toString('hex'); // 24 位十六进制，不可猜测
+
+  const branch = env('GITHUB_BRANCH', 'main');
+  const filePath = '/contents/shares.json?ref=' + branch;
+  let shares = [];
+  let sha = null;
+  try {
+    const head = await ghRequest('GET', filePath);
+    if (head.status === 200 && head.json && head.json.content) {
+      shares = JSON.parse(Buffer.from(head.json.content, 'base64').toString('utf8')) || [];
+      sha = head.json.sha;
+    }
+  } catch (e) { /* 文件尚不存在，当作空数组 */ }
+
+  shares.push({
+    token: token,
+    filename: safeName,
+    title: String(body.title || safeName).slice(0, 200),
+    created: Date.now(),
+    expireAt: expireAt,
+  });
+
+  const newContent = Buffer.from(JSON.stringify(shares, null, 2), 'utf8').toString('base64');
+  const putBody = { message: 'share: ' + safeName, content: newContent, branch: branch };
+  if (sha) putBody.sha = sha;
+  const putRes = await ghRequest('PUT', '/contents/shares.json', putBody);
+  if (putRes.status >= 300) {
+    const msg = (putRes.json && putRes.json.message) || putRes.status;
+    return send(500, { error: '分享记录写入失败: ' + msg }, origin);
+  }
+
+  // 站点根地址：优先用请求来源（前端从本站调用），否则用环境变量兜底
+  const base = (origin && /^https?:\/\//.test(origin))
+    ? origin.replace(/\/$/, '')
+    : env('SITE_BASE', 'https://chenbiyin1770.github.io/report-portal').replace(/\/$/, '');
+  const url = base + '/share.html?t=' + token;
+  return send(200, { ok: true, token: token, url: url }, origin);
+}
+
 // ---------- 主处理函数 ----------
 exports.main_handler = async (event, context) => {
   const origin = (event.headers &&
@@ -96,6 +150,11 @@ exports.main_handler = async (event, context) => {
     body = JSON.parse(raw);
   } catch (e) {
     return send(400, { error: '请求格式错误' }, origin);
+  }
+
+  const op = (body && body.op) || 'upload';
+  if (op === 'share') {
+    return await handleShare(body, origin);
   }
 
   const { filename, content, category } = body || {};
