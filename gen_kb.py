@@ -953,9 +953,9 @@ function openFile(filename, title) {
   var file = getAllFiles().find(function(f) { return f.filename === filename; });
   if (!file) return;
 
-  // Markdown：站内渲染为富文本，效果接近飞书
+  // Markdown：渲染为富文本并在新标签页打开，效果接近飞书
   if (fileExt(filename) === 'md') {
-    showMarkdown(filename, file, title);
+    openMarkdownNewTab(filename, file, title);
     renderSidebar();
     return;
   }
@@ -1011,17 +1011,29 @@ var MD_PAGE = [
   '</style></head><body><div class="md" id="c">__BODY__</div></body></html>'
 ].join('\n');
 
-function showMarkdown(filename, file, title) {
+function openMarkdownNewTab(filename, file, title) {
   var rawUrl = 'reports/' + encodeURIComponent(filename);
+  function renderAndOpen(txt) {
+    var body;
+    if (window.marked && marked.parse) {
+      try { body = marked.parse(txt); }
+      catch(e) { body = '<pre>' + esc(txt) + '</pre>'; }
+    } else {
+      body = '<pre>' + esc(txt) + '</pre>';
+    }
+    var doc = MD_PAGE.replace('__BODY__', body);
+    var blob = new Blob([doc], {type: 'text/html;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(function() { URL.revokeObjectURL(url); }, 60000);
+  }
   if (file.isUploaded && file.data) {
     try {
       var txt = decodeURIComponent(escape(atob(file.data.split(',')[1])));
-      renderMarkdown(txt, title, rawUrl);
+      renderAndOpen(txt);
     } catch(e) { window.open(rawUrl, '_blank'); }
   } else {
-    fetch(rawUrl).then(function(r) { return r.text(); }).then(function(txt) {
-      renderMarkdown(txt, title, rawUrl);
-    }).catch(function() { window.open(rawUrl, '_blank'); });
+    fetch(rawUrl).then(function(r) { return r.text(); }).then(renderAndOpen).catch(function() { window.open(rawUrl, '_blank'); });
   }
 }
 
