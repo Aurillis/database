@@ -532,6 +532,7 @@ HTML = r"""
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+<script src="vendor/marked/marked.min.js"></script>
 """
 
 # ===== JAVASCRIPT =====
@@ -952,6 +953,13 @@ function openFile(filename, title) {
   var file = getAllFiles().find(function(f) { return f.filename === filename; });
   if (!file) return;
 
+  // Markdown：站内渲染为富文本，效果接近飞书
+  if (fileExt(filename) === 'md') {
+    showMarkdown(filename, file, title);
+    renderSidebar();
+    return;
+  }
+
   if (file.isUploaded && file.data) {
     // Open from base64
     var parts = file.data.split(',');
@@ -968,6 +976,71 @@ function openFile(filename, title) {
     window.open(url, '_blank');
   }
   renderSidebar();
+}
+
+// ===== MARKDOWN 预览 =====
+var MD_PAGE = [
+  '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">',
+  '<meta name="viewport" content="width=device-width,initial-scale=1">',
+  '<style>',
+  '*{box-sizing:border-box}',
+  'body{margin:0;background:#fff;color:#1f2329;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:15px;line-height:1.75;',
+  '-webkit-font-smoothing:antialiased}',
+  '.md{max-width:860px;margin:0 auto;padding:40px 28px 80px}',
+  'h1,h2,h3,h4{color:#1f2329;font-weight:700;line-height:1.4;margin:28px 0 14px}',
+  'h1{font-size:26px;padding-bottom:12px;border-bottom:1px solid #eceef1}',
+  'h2{font-size:21px;padding-bottom:8px;border-bottom:1px solid #f0f1f3}',
+  'h3{font-size:18px}h4{font-size:16px}',
+  'p{margin:12px 0;color:#2b2f36}',
+  'a{color:#2f6fed;text-decoration:none}a:hover{text-decoration:underline}',
+  'strong{font-weight:700;color:#1f2329}',
+  'em{color:#51565d}',
+  'ul,ol{padding-left:24px;margin:12px 0}',
+  'li{margin:6px 0}',
+  'blockquote{margin:14px 0;padding:8px 16px;background:#f7f8fa;border-left:4px solid #d0d3d9;color:#646a73;border-radius:0 4px 4px 0}',
+  'blockquote p{margin:4px 0;color:#646a73}',
+  'code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:13px;background:#f2f3f5;color:#d6336c;padding:2px 6px;border-radius:4px}',
+  'pre{margin:14px 0;padding:16px;background:#1f2329;border-radius:8px;overflow:auto}',
+  'pre code{background:transparent;color:#e6e6e6;padding:0;font-size:13px;line-height:1.6}',
+  'table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px}',
+  'th,td{border:1px solid #e5e6eb;padding:8px 12px;text-align:left}',
+  'th{background:#f7f8fa;font-weight:600;color:#1f2329}',
+  'tr:nth-child(even) td{background:#fafbfc}',
+  'img{max-width:100%;border-radius:6px;margin:8px 0}',
+  'hr{border:none;border-top:1px solid #eceef1;margin:24px 0}',
+  '</style></head><body><div class="md" id="c">__BODY__</div></body></html>'
+].join('\n');
+
+function showMarkdown(filename, file, title) {
+  var rawUrl = 'reports/' + encodeURIComponent(filename);
+  if (file.isUploaded && file.data) {
+    try {
+      var txt = decodeURIComponent(escape(atob(file.data.split(',')[1])));
+      renderMarkdown(txt, title, rawUrl);
+    } catch(e) { window.open(rawUrl, '_blank'); }
+  } else {
+    fetch(rawUrl).then(function(r) { return r.text(); }).then(function(txt) {
+      renderMarkdown(txt, title, rawUrl);
+    }).catch(function() { window.open(rawUrl, '_blank'); });
+  }
+}
+
+function renderMarkdown(txt, title, rawUrl) {
+  var body;
+  if (window.marked && marked.parse) {
+    try { body = marked.parse(txt); }
+    catch(e) { body = '<pre>' + esc(txt) + '</pre>'; }
+  } else {
+    body = '<pre>' + esc(txt) + '</pre>';
+  }
+  var doc = MD_PAGE.replace('__BODY__', body);
+  var frame = document.getElementById('previewFrame');
+  frame.removeAttribute('src');
+  frame.srcdoc = doc;
+  document.getElementById('previewTitle').textContent = title || '文档预览';
+  document.getElementById('previewOpen').href = rawUrl;
+  document.getElementById('preview').classList.add('show');
+  document.body.style.overflow = 'hidden';
 }
 
 function toggleFav(filename) {
