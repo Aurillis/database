@@ -313,29 +313,6 @@ input,select{font-family:inherit}
 .btn-ghost{background:var(--hover);color:var(--ink)}
 .btn-ghost:hover{background:var(--hover2)}
 
-/* ===== PREVIEW MODAL ===== */
-.preview-overlay{
-  position:fixed;inset:0;z-index:400;display:none;
-  flex-direction:column;background:#fff;
-}
-.preview-overlay.show{display:flex}
-.preview-header{
-  background:#1a1a2e;padding:10px 16px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-}
-.preview-title{color:#fff;font-size:13px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.preview-safe{margin-left:10px;font-size:12px;color:#1a7f37;background:#e8f5ec;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap}
-.preview-actions{display:flex;gap:6px}
-.preview-btn{
-  padding:5px 12px;border-radius:5px;font-size:12px;font-weight:600;
-  transition:opacity .15s;
-}
-.preview-btn:hover{opacity:.85}
-.preview-btn-open{background:var(--accent);color:#fff}
-.preview-btn-close{background:#444;color:#fff}
-.preview-body{flex:1;overflow:hidden;position:relative}
-.preview-body iframe{width:100%;height:100%;border:none}
-
 /* ===== TOAST ===== */
 .toast{
   position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
@@ -408,25 +385,6 @@ input,select{font-family:inherit}
     </div>
     <div class="modal-body" id="modalBody"></div>
     <div class="modal-footer" id="modalFooter"></div>
-  </div>
-</div>
-
-<!-- Preview Modal -->
-<div class="preview-overlay" id="preview">
-  <div class="preview-header">
-    <span class="preview-title" id="previewTitle">报告预览</span>
-    <span id="previewSafe" class="preview-safe" style="display:none">🛡 沙箱隔离</span>
-    <div class="preview-actions">
-      <a class="preview-btn preview-btn-open" id="previewOpen" href="#" target="_blank">
-        <i class="fas fa-external-link-alt"></i> 新标签打开
-      </a>
-      <button class="preview-btn preview-btn-close" onclick="closePreview()">
-        <i class="fas fa-times"></i> 关闭
-      </button>
-    </div>
-  </div>
-  <div class="preview-body">
-    <iframe id="previewFrame" src="" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
   </div>
 </div>
 
@@ -858,14 +816,7 @@ function openFile(filename, title) {
     return;
   }
 
-  // HTML：在沙箱 iframe 中渲染（不透明源，无法读取同域 localStorage / cookie，杜绝 XSS）
-  var ext = fileExt(filename);
-  if (ext === 'html' || ext === 'htm') {
-    openHtmlSandboxed(filename, file, title);
-    renderSidebar();
-    return;
-  }
-
+  // 其余所有格式（HTML / PDF / Word / Excel / PPT / 图片等）统一在新标签页打开
   if (file.isUploaded && file.data) {
     // Open from base64
     var parts = file.data.split(',');
@@ -943,67 +894,6 @@ function openMarkdownNewTab(filename, file, title) {
   }
 }
 
-function openHtmlSandboxed(filename, file, title) {
-  var rawUrl = 'reports/' + encodeURIComponent(filename);
-  var frame = document.getElementById('previewFrame');
-  frame.removeAttribute('srcdoc');
-  if (file.isUploaded && file.data) {
-    // 会话内上传的 base64 文件：转 Blob 后加载（相对资源可能失效，仅展示用）
-    try {
-      var parts = file.data.split(',');
-      var mime = (parts[0].match(/:(.*?);/) || [, 'text/html'])[1] || 'text/html';
-      var bstr = atob(parts[1]);
-      var n = bstr.length;
-      var u8 = new Uint8Array(n);
-      while (n--) u8[n] = bstr.charCodeAt(n);
-      var blob = new Blob([u8], {type: mime});
-      frame.src = URL.createObjectURL(blob);
-    } catch(e) { window.open(rawUrl, '_blank'); return; }
-  } else {
-    // 已落盘文件：直接加载 reports/ 路径，相对图片/CSS 可正常显示；sandbox 使其运行在透明源
-    frame.src = rawUrl;
-  }
-  document.getElementById('previewTitle').textContent = title || '报告预览';
-  // 沙箱内文档不可信：关闭按钮改为「下载原文件」，避免新标签同域打开绕过沙箱
-  var ob = document.getElementById('previewOpen');
-  ob.href = rawUrl;
-  ob.setAttribute('download', filename);
-  ob.innerHTML = '<i class="fas fa-download"></i> 下载原文件';
-  document.getElementById('previewSafe').style.display = '';
-  document.getElementById('preview').classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-
-function closePreview() {
-  var p = document.getElementById('preview');
-  if (!p) return;
-  p.classList.remove('show');
-  document.body.style.overflow = '';
-  var frame = document.getElementById('previewFrame');
-  if (frame) { frame.removeAttribute('src'); frame.srcdoc = ''; }
-  document.getElementById('previewSafe').style.display = 'none';
-  var ob = document.getElementById('previewOpen');
-  if (ob) { ob.removeAttribute('download'); ob.innerHTML = '<i class="fas fa-external-link-alt"></i> 新标签打开'; }
-}
-
-function renderMarkdown(txt, title, rawUrl) {
-  var body;
-  if (window.marked && marked.parse) {
-    try { body = marked.parse(txt); }
-    catch(e) { body = '<pre>' + esc(txt) + '</pre>'; }
-  } else {
-    body = '<pre>' + esc(txt) + '</pre>';
-  }
-  var doc = MD_PAGE.replace('__BODY__', body);
-  var frame = document.getElementById('previewFrame');
-  frame.removeAttribute('src');
-  frame.srcdoc = doc;
-  document.getElementById('previewTitle').textContent = title || '文档预览';
-  document.getElementById('previewOpen').href = rawUrl;
-  document.getElementById('preview').classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-
 function toggleFav(filename) {
   var idx = S.favorites.indexOf(filename);
   if (idx >= 0) { S.favorites.splice(idx, 1); toast('已取消收藏'); }
@@ -1014,11 +904,6 @@ function toggleFav(filename) {
 // ===== SEARCH =====
 document.getElementById('searchInput').addEventListener('input', function(e) {
   S.search = e.target.value; renderMain();
-});
-
-// 点击预览浮层空白处关闭
-document.getElementById('preview').addEventListener('click', function(e) {
-  if (e.target === this) closePreview();
 });
 
 // ===== HEADER BUTTONS =====
