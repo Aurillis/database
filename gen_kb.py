@@ -171,6 +171,13 @@ input,select{font-family:inherit}
 }
 .admin-entry:hover{background:var(--accent-light);color:var(--accent);border-color:var(--accent)}
 .admin-entry i{font-size:14px}
+.admin-entry-txt{font-size:13px}
+
+/* 移动端汉堡按钮(默认隐藏, 仅 @media 显示) */
+.menu-toggle{display:none;width:36px;height:36px;border-radius:var(--radius);align-items:center;justify-content:center;color:var(--muted);font-size:17px;flex-shrink:0}
+.menu-toggle:hover{background:var(--hover);color:var(--ink)}
+/* 移动端侧边栏遮罩(点遮罩收起抽屉) */
+.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(17,24,39,.45);z-index:95;opacity:0;pointer-events:none;transition:opacity .25s}
 
 /* ===== LAYOUT ===== */
 .layout{display:flex;min-height:calc(100vh - 56px)}
@@ -426,10 +433,19 @@ input,select{font-family:inherit}
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:900px){
-  .sidebar{position:fixed;left:-280px;z-index:99;transition:left .2s}
+  .menu-toggle{display:flex}
+  .sidebar{position:fixed;top:56px;left:-280px;bottom:0;z-index:99;transition:left .25s ease;box-shadow:2px 0 18px rgba(0,0,0,.14)}
   .sidebar.show{left:0}
+  .sidebar-backdrop{display:block;opacity:0;pointer-events:none}
+  .sidebar-backdrop.show{opacity:1;pointer-events:auto}
   .main{padding:16px}
   .file-grid{grid-template-columns:1fr}
+  .logo-text{display:none}
+}
+@media(max-width:560px){
+  .header{gap:10px;padding:0 14px}
+  .admin-entry-txt{display:none}
+  .search-bar input{padding-left:34px}
 }
 
 /* ===== VIEWER GATE（查看密码，防止外人直接浏览全部文件） ===== */
@@ -458,6 +474,7 @@ HTML = r"""
 
 <!-- Header -->
 <div class="header">
+  <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" title="菜单 / 分类" aria-label="打开菜单"><i class="fas fa-bars"></i></button>
   <div class="logo">
     <div class="logo-icon"><i class="fas fa-book-open"></i></div>
     <span class="logo-text">我的研究知识库</span>
@@ -469,7 +486,7 @@ HTML = r"""
   <div class="header-right">
     <button class="icon-btn" id="favBtn" title="收藏夹"><i class="fas fa-star"></i></button>
     <button class="icon-btn" id="recentBtn" title="最近访问"><i class="fas fa-clock-rotate-left"></i></button>
-    <button class="admin-entry" id="adminBtn"><i class="fas fa-gear"></i> 管理后台</button>
+    <button class="admin-entry" id="adminBtn"><i class="fas fa-gear"></i> <span class="admin-entry-txt">管理后台</span></button>
   </div>
 </div>
 
@@ -480,6 +497,9 @@ HTML = r"""
   <!-- Main -->
   <div class="main" id="main"></div>
 </div>
+
+<!-- 移动端侧边栏遮罩(点此收起) -->
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
 
 <!-- Admin Login -->
 <div class="admin-overlay" id="adminLogin">
@@ -836,6 +856,17 @@ function renderSidebar() {
   sb.innerHTML = html;
 }
 
+function toggleSidebar() {
+  var s = document.getElementById('sidebar');
+  var b = document.getElementById('sidebarBackdrop');
+  var open = s.classList.toggle('show');
+  b.classList.toggle('show', open);
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarBackdrop').classList.remove('show');
+}
+
 function toggleCat(id) {
   S.expanded[id] = S.expanded[id] === false ? true : false;
   renderSidebar();
@@ -844,22 +875,26 @@ function toggleCat(id) {
 function selectCat(id) {
   S.cat = id; S.showFav = false; S.showRecent = false;
   renderSidebar(); renderMain();
+  closeSidebar(); // 移动端点选分类后收起抽屉
 }
 
 function showFavorites() {
   S.showFav = true; S.showRecent = false; S.cat = 'all';
   renderSidebar(); renderMain();
+  closeSidebar();
 }
 
 function showRecent() {
   S.showRecent = true; S.showFav = false; S.cat = 'all';
   renderSidebar(); renderMain();
+  closeSidebar();
 }
 
 function searchTag(tag) {
   document.getElementById('searchInput').value = tag;
   S.search = tag;
   renderMain();
+  closeSidebar();
 }
 
 // ===== RENDER MAIN =====

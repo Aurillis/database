@@ -24,7 +24,7 @@
 </head>
 <body>
   <header class="vh">
-    <a class="vh-back" href="index.html"><i class="fas fa-arrow-left"></i> 返回</a>
+    <a class="vh-back" href="javascript:void(0)" onclick="closeViewer()"><i class="fas fa-times"></i> 关闭</a>
     <span class="vh-title" id="vt">报告预览</span>
     <a class="vh-dl" id="dl" href="#" download><i class="fas fa-download"></i> 下载原文件</a>
   </header>
@@ -33,6 +33,15 @@
   </div>
 
   <script src="vendor/marked/marked.min.js"></script>
+  <script>
+  // 「关闭」而非「返回」：对外链收件人, 返回会跳到被密码锁住的门户(死胡同)。
+  // 优先 window.close()(对脚本打开的窗口有效), 否则回退历史; 都没有则停留本页。
+  function closeViewer() {
+    if (window.opener) { try { window.close(); } catch (e) {} return; }
+    if (history.length > 1) { history.back(); return; }
+    try { window.close(); } catch (e) {}
+  }
+  </script>
   <script>
   (function() {
     var params = new URLSearchParams(location.search);
