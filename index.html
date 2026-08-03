@@ -143,12 +143,23 @@ input,select{font-family:inherit}
 }
 .file-card{
   background:var(--card-bg);border:1px solid var(--line);
-  border-radius:var(--radius-lg);padding:16px;
+  border-radius:var(--radius-lg);
   cursor:pointer;transition:all .2s;position:relative;
-  display:flex;flex-direction:column;gap:8px;
+  display:flex;flex-direction:column;overflow:hidden;
 }
 .file-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:#d1d5db}
-.file-card-top{display:flex;align-items:flex-start;gap:10px}
+.file-card-content{padding:14px;display:flex;flex-direction:column;gap:8px}
+/* 封面 / 缩略图 */
+.file-cover{
+  position:relative;height:128px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#eef2f7,#e2e8f0);
+}
+.file-cover.cover-img{background-size:cover;background-position:center;background-repeat:no-repeat}
+.file-cover .cover-icon{font-size:44px;color:rgba(255,255,255,.95);filter:drop-shadow(0 1px 2px rgba(0,0,0,.18))}
+.file-cover .cover-fmt{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.55);color:#fff}
+.file-cover .fav-btn{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.85);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.file-cover .fav-btn:hover{background:#fff}
 .file-card-icon{
   width:36px;height:36px;border-radius:8px;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
@@ -181,6 +192,8 @@ input,select{font-family:inherit}
 }
 .fav-btn:hover{background:var(--hover);color:var(--warning)}
 .fav-btn.active{color:var(--warning)}
+/* 搜索关键词高亮 */
+mark.hl{background:#fff3a0;color:inherit;padding:0 1px;border-radius:2px;font-weight:600}
 
 /* ===== FILE LIST VIEW ===== */
 .file-list{display:flex;flex-direction:column;gap:2px}
@@ -191,6 +204,7 @@ input,select{font-family:inherit}
 }
 .list-item:hover{background:var(--hover)}
 .list-item .li-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.list-item .li-icon.li-thumb{background-size:cover;background-position:center;background-repeat:no-repeat}
 .list-item .li-title{flex:1;font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .list-item .li-cat{font-size:11px;color:var(--light);flex-shrink:0}
 .list-item .li-date{font-size:11px;color:var(--light);flex-shrink:0;width:80px}
@@ -680,6 +694,35 @@ function fmtColor(filename) {
   return map[ext] || '#888780';
 }
 
+// ===== 封面 / 缩略图 / 搜索高亮 辅助 =====
+// 判断是否为可直接作缩略图的图片类型
+function isImageFile(filename) {
+  return ['png','jpg','jpeg','gif','webp','svg','bmp'].indexOf(fileExt(filename)) >= 0;
+}
+
+// 生成卡片封面区：图片文件用真实图片作封面；其余文件用「分类色渐变 + 大图标 + 格式徽标」生成的封面
+function coverHtml(f, color, isFav) {
+  var favBtn = '<button class="fav-btn'+(isFav?' active':'')+'" onclick="event.stopPropagation();toggleFav(\''+esc(f.filename)+'\')"><i class="fas fa-star"></i></button>';
+  var fmt = '<span class="fmt-badge cover-fmt">'+fileFmt(f.filename)+'</span>';
+  if (isImageFile(f.filename)) {
+    var src = 'reports/' + encodeURIComponent(f.filename);
+    return '<div class="file-cover cover-img" style="background-image:url(\''+src+'\')">'+fmt+favBtn+'</div>';
+  }
+  return '<div class="file-cover" style="background:linear-gradient(135deg,'+color+','+color+'cc)">'
+    + '<i class="'+fileIcon(f.filename)+' cover-icon"></i>'+fmt+favBtn+'</div>';
+}
+
+// 搜索关键词高亮：先转义再对匹配词包裹 <mark class="hl">，避免 XSS
+function hl(text) {
+  text = String(text == null ? '' : text);
+  var q = (S.search || '').trim();
+  var safe = esc(text);
+  if (!q) return safe;
+  var qEsc = esc(q).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  try { return safe.replace(new RegExp('('+qEsc+')', 'gi'), '<mark class="hl">$1</mark>'); }
+  catch (e) { return safe; }
+}
+
 function catColor(catId) {
   var colors = {
     'product':'#236b6f','product-pelvic':'#236b6f','product-lactation':'#e6783c',
@@ -889,15 +932,10 @@ function renderMain() {
       var isFav = S.favorites.indexOf(f.filename) >= 0;
 
       html += '<div class="file-card" onclick="openFile(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')">';
-      html += '<div class="file-card-top">';
-      html += '<div class="file-card-icon" style="background:'+color+'15"><i class="'+fileIcon(f.filename)+'" style="color:'+color+'"></i></div>';
-      html += '<div class="file-card-body">';
-      html += '<div class="file-card-title">'+esc(f.title)+'</div>';
-      html += '<div class="file-card-cat"><i class="'+catIcon(cat)+'"></i> '+esc(catName(cat))+'</div>';
-      html += '<div style="margin-top:6px"><span class="fmt-badge" style="background:'+fmtColor(f.filename)+'1a;color:'+fmtColor(f.filename)+'">'+fileFmt(f.filename)+'</span></div>';
-      html += '</div>';
-      html += '<button class="fav-btn'+(isFav?' active':'')+'" onclick="event.stopPropagation();toggleFav(\''+esc(f.filename)+'\')"><i class="fas fa-star"></i></button>';
-      html += '</div>';
+      html += coverHtml(f, color, isFav);
+      html += '<div class="file-card-content">';
+      html += '<div class="file-card-title">'+hl(f.title)+'</div>';
+      html += '<div class="file-card-cat"><i class="'+catIcon(cat)+'"></i> '+hl(catName(cat))+'</div>';
 
       if (tags.length > 0) {
         html += '<div class="file-card-tags">';
@@ -918,9 +956,13 @@ function renderMain() {
       var color = catColor(cat);
       var isFav = S.favorites.indexOf(f.filename) >= 0;
       html += '<div class="list-item" onclick="openFile(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')">';
-      html += '<div class="li-icon" style="background:'+color+'15"><i class="'+fileIcon(f.filename)+'" style="color:'+color+'"></i></div>';
-      html += '<span class="li-title">'+esc(f.title)+'</span>';
-      html += '<span class="li-cat">'+esc(catName(cat))+'</span>';
+      if (isImageFile(f.filename)) {
+        html += '<div class="li-icon li-thumb" style="background-image:url(\'reports/'+encodeURIComponent(f.filename)+'\')"></div>';
+      } else {
+        html += '<div class="li-icon" style="background:'+color+'15"><i class="'+fileIcon(f.filename)+'" style="color:'+color+'"></i></div>';
+      }
+      html += '<span class="li-title">'+hl(f.title)+'</span>';
+      html += '<span class="li-cat">'+hl(catName(cat))+'</span>';
       html += '<span class="li-fmt"><span class="fmt-badge" style="background:'+fmtColor(f.filename)+'1a;color:'+fmtColor(f.filename)+'">'+fileFmt(f.filename)+'</span></span>';
       html += '<span class="li-date">'+fmtDate(f.mtime)+'</span>';
       html += '<span class="li-size">'+fmtSize(f.size)+'</span>';
