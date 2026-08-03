@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloom 冷热敷使用时机定义 · 权威依据与产品使用逻辑</title>
+<style>
+  :root{
+    --ink:#1d2330; --sub:#5b6679; --line:#e6e9f0; --bg:#fff;
+    --heat:#e8673a; --heat-bg:#fff3ee; --cold:#2f80c4; --cold-bg:#eef6fc;
+    --warn:#c98a00; --warn-bg:#fff8e8; --ok:#2e9e6b; --ok-bg:#eafaf2;
+    --card:#fafbfd;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+       color:var(--ink);background:#f5f6f9;line-height:1.65}
+  .wrap{max-width:920px;margin:0 auto;padding:32px 22px 60px}
+  header h1{font-size:25px;margin:0 0 6px}
+  header .meta{color:var(--sub);font-size:13px}
+  .lead{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:20px 0;font-size:14.5px}
+  .lead b{color:var(--ink)}
+  h2{font-size:18px;margin:30px 0 12px;padding-left:11px;border-left:4px solid var(--ink)}
+  h3{font-size:15px;margin:18px 0 8px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  .card{border-radius:14px;padding:16px 18px;border:1px solid var(--line)}
+  .heat{background:var(--heat-bg);border-color:#f6d3c4}
+  .cold{background:var(--cold-bg);border-color:#cfe4f5}
+  .warn{background:var(--warn-bg);border-color:#f0e0b0}
+  .ok{background:var(--ok-bg);border-color:#c7ecd8}
+  .tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;margin-bottom:8px}
+  .tag.h{background:var(--heat);color:#fff}
+  .tag.c{background:var(--cold);color:#fff}
+  .tag.w{background:var(--warn);color:#fff}
+  .tag.o{background:var(--ok);color:#fff}
+  ul{margin:6px 0 0;padding-left:18px}
+  li{margin:5px 0;font-size:14px}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;background:var(--bg);border-radius:10px;overflow:hidden}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#f0f2f7;font-weight:600}
+  .src{font-size:13px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0}
+  .src b{color:var(--ink)}
+  .pill{display:inline-block;font-size:11px;padding:1px 7px;border-radius:6px;margin-left:6px;vertical-align:middle}
+  .pill.core{background:#e8673a;color:#fff}
+  .pill.sup{background:#9aa6bb;color:#fff}
+  .pill.cn{background:#7a8aa3;color:#fff}
+  .step{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0}
+  .step .n{flex:0 0 30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px}
+  .n1{background:var(--heat)} .n2{background:var(--warn)} .n3{background:var(--cold)}
+  .note{font-size:12.5px;color:var(--sub);margin-top:6px}
+  .danger{background:#fdecec;border:1px solid #f3c0c0;color:#9b2c2c;border-radius:12px;padding:14px 16px;margin:16px 0;font-size:14px}
+  footer{color:var(--sub);font-size:12px;margin-top:34px;border-top:1px solid var(--line);padding-top:14px}
+  code{background:#eef0f5;padding:1px 6px;border-radius:5px;font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>🔥❄️ Bloom 冷热敷使用时机定义</h1>
+  <div class="meta">权威依据 · 产品使用逻辑 · 合规红线 &nbsp;|&nbsp; 2026-07-20 &nbsp;|&nbsp; 对应 APRF Module E / 产品定义书 fork C</div>
+</header>
+
+<div class="lead">
+<b>一句话定义：</b>热用于「泵前促排、非炎症涨奶」；冷用于「泵后舒缓、红肿热痛的炎症时刻」；振动只能做「温和浅层、泵中辅助舒适」，<b>炎症急性期禁用</b>。
+这不是我们拍脑袋定的，而是 ABM #36（2022 修订版，国际母乳喂养医学最权威临床协议）与 La Leche League / NHS 等机构指南的共同结论。
+</div>
+
+<h2>一、权威文件清单</h2>
+
+<div class="src">
+  <b>① ABM Protocol #36: The Mastitis Spectrum, Revised 2022</b><span class="pill core">核心权威</span><br>
+  Academy of Breastfeeding Medicine（美国母乳喂养医学会）临床协议，2022 年 5 月修订。国际母乳喂养医学界最权威的循证指南。<br>
+  <span class="note">关键条款（被多家 IBCLC/医疗机构一致引用）：<br>
+  · <b>Choose ice over heat</b> —— 乳腺炎/炎症谱系下，冰敷优先于热敷；热会加重肿胀与炎症。<br>
+  · <b>Don't "empty" the breast</b> —— 不再建议频繁排空，避免过度刺激导致过量泌乳。<br>
+  · <b>Avoid deep massage / vibration tools</b> —— 深层按摩与振动工具会加重炎症、造成微血管损伤（这是振动的合规红线来源）。<br>
+  · 冷敷可每小时一次、每次 5–10 分钟。</span>
+</div>
+
+<div class="src">
+  <b>② La Leche League（LLL / LLL Canada / LLL GB）</b><span class="pill sup">支持性权威</span><br>
+  · <b>乳腺炎</b>：用冷（NOT ICE）敷疼痛区，每小时 5–10 分钟；继续哺乳。<br>
+  · <b>涨奶（Engorgement）</b>：喂奶<b>前</b>短暂温敷促喷乳（勿久敷，会加重肿胀），喂奶<b>后</b>冷敷减轻肿胀 —— 即「泵前热、泵后冷」经典逻辑。
+</div>
+
+<div class="src">
+  <b>③ NHS（英国国家医疗服务体系）Breast pain and breastfeeding</b><span class="pill sup">支持性权威</span><br>
+  · 涨奶/堵奶：喂奶<b>前</b>温敷（勿过多热、勿久敷，会增加炎症）促流动；喂奶<b>后</b>冷敷减轻疼痛肿胀。<br>
+  · 乳腺炎：继续哺乳，温敷助流动，冷敷减痛肿，12–24 小时无改善就医。
+</div>
+
+<div class="src">
+  <b>④ WHO/UNICEF · Ten Steps to Successful Breastfeeding & AAP</b><span class="pill sup">框架性</span><br>
+  被上述哺乳期护理指南引用为喂养频率（8–12 次/24h）与用药安全（布洛芬/对乙酰氨基酚哺乳期安全）的底层依据。
+</div>
+
+<div class="src">
+  <b>⑤ 中华医学会（CMA）等中文科普</b><span class="pill cn">仅参考·偏旧观念</span><br>
+  部分中文来源仍沿用「48 小时内冷敷、48 小时后热敷」或「涨奶初期冷敷、后期热敷」的旧框架，<b>与 ABM #36 的「炎症期禁用热」新共识存在分歧</b>。产品定义以 ABM #36 国际最新共识为准，不采用「热敷疏通堵奶」的旧表述。
+</div>
+
+<div class="danger">
+⚠️ <b>新旧指南分歧（必须写进 PRD）</b>：传统「堵奶就热敷疏通」已被 ABM #36（2022）推翻——乳腺炎本质是<b>炎症谱系</b>而非「奶管堵了」，热会加重炎症肿胀。因此 Bloom 绝不可宣称「热敷疏通堵奶」，热仅限「非炎症性涨奶、泵前促排」场景。
+</div>
+
+<h2 id="verbatim">一·补 — ABM #36 原文精确条款（已下载英文原文核对）</h2>
+<div class="src" style="border-color:#cfe4f5;background:#f4f9fd">
+  <b>原文出处</b>：Mitchell KB, et al. <i>Academy of Breastfeeding Medicine Clinical Protocol #36: The Mastitis Spectrum, Revised 2022.</i> Breastfeed Med. 2022;17(5):360–376. DOI: 10.1089/bfm.2022.29207.kbm（本地已存英文 PDF，17 页）。
+  <table style="margin-top:10px">
+    <tr><th style="width:24%">主题</th><th>原文原句（verbatim）</th></tr>
+    <tr>
+      <td><b>❄️ 冰敷（临床示例，Fig.10 图注）</b></td>
+      <td>“The patient was treated with <b>ice</b>, ibuprofen, acetaminophen, and feeding first off the … less congested breast … to avoid overstimulation of the affected … breast. The patient's symptoms resolved within 48 hours.”</td>
+    </tr>
+    <tr>
+      <td><b>🔥 热（关键·比二手措辞更微妙）</b></td>
+      <td>“Although <b>heat will vasodilate and may worsen symptoms, it also may provide comfort for some patients.</b> The use of warm showers and antipyretics did not improve mastitis outcomes in a randomized controlled trial.”</td>
+    </tr>
+    <tr>
+      <td><b>⚠️ 振动/按摩设备（禁忌）</b></td>
+      <td>“… edema, and microvascular injury. <b>Avoid electric toothbrushes and other commercial vibrating or massaging devices.</b> A systematic review concluded that although breast massage may reduce pain …”</td>
+    </tr>
+  </table>
+  <div class="note" style="margin-top:10px;color:#9b2c2c">
+  ⚠️ <b>校准（重要）</b>：网络二手来源常把 ABM #36 概括为“Choose ice over heat（冷优于热）”。<b>原文更精确</b>：热会血管扩张、<b>可能</b>加重（炎症）症状，但<b>对部分患者可提供舒适感</b>——即原文并非“绝对禁热”，而是「炎症场景下不推荐用热来治疗、但热的价值在 comfort」。<b>这反而更支持 Bloom 定位</b>：热 = 泵前促排/舒适（非炎症场景），冷 = 炎症/肿痛主力，振动 = 明确避免（不做治疗叙事）。
+  </div>
+</div>
+
+<h2>二、冷 vs 热：使用时机定义</h2>
+<div class="grid">
+  <div class="card heat">
+    <span class="tag h">🔥 热敷 HEAT</span>
+    <h3 style="margin-top:4px">什么时候用</h3>
+    <ul>
+      <li>亲喂 / 泵奶<b>前</b>，短暂温和（约 <b>3–5 分钟</b>）</li>
+      <li>目的：促进喷乳反射（let-down）、软化乳房、缓解<b>非炎症性</b>涨奶的紧绷</li>
+      <li>依据：LLL / NHS 涨奶指南「泵前温敷促流动」</li>
+    </ul>
+    <h3>什么时候<span style="color:var(--heat)">禁用热</span></h3>
+    <ul>
+      <li>乳房出现<b>红、肿、热、触痛</b>（炎症/乳腺炎信号）→ <b>禁用热</b></li>
+      <li>ABM #36：热会加重炎症肿胀，此时冷才是主力</li>
+    </ul>
+  </div>
+  <div class="card cold">
+    <span class="tag c">❄️ 冷敷 COLD</span>
+    <h3 style="margin-top:4px">什么时候用</h3>
+    <ul>
+      <li>亲喂 / 泵奶<b>后</b>，或任何「红肿热痛」的不适时刻</li>
+      <li>可<b>每小时</b>敷 5–10 分钟（ABM #36 / LLL）</li>
+      <li>目的：减轻肿胀、疼痛、炎症</li>
+      <li>依据：ABM #36（首选冰敷）、LLL / NHS（泵后冷敷）</li>
+    </ul>
+    <h3>核心场景</h3>
+    <ul>
+      <li><b>乳腺炎 / 堵奶炎症期</b> → 冷是主力，热是禁忌</li>
+      <li>「Cold is the new hot」—— 2022 后护理共识转向</li>
+    </ul>
+  </div>
+</div>
+
+<h2>三、振动（Vibration）的合规红线</h2>
+<div class="card warn">
+  <span class="tag w">⚠️ 红线</span>
+  <ul>
+    <li><b>ABM #36 明确禁忌</b>：深层按摩 / 振动工具会加重炎症、造成微血管损伤。</li>
+    <li>Bloom 振动定位：仅限 <b>温和浅层、泵中辅助舒适</b>，<b>炎症急性期禁用</b>。</li>
+    <li>绝不宣称「振动疏通堵奶 / 按摩通乳」—— 这既踩 ABM 禁忌，也触 FDA 医疗宣称红线（触发 510(k)）。</li>
+    <li>振动是「comfort / wellness」辅助，不是「treatment」。</li>
+  </ul>
+  <div class="note">这与之前重定义书的「热+冷+温和振动」方向一致，但把振动的边界钉死了：舒适辅助属性，非治疗属性。</div>
+</div>
+
+<h2>四、映射到 Bloom 产品使用逻辑（三步法）</h2>
+<div class="step"><div class="n n1">1</div><div><b>泵前 · 温和热敷（3–5 分钟）</b><br>仅限非炎症性涨奶/促排场景。设备提示：「乳房发红发热时请勿热敷」。<br><span class="note">对应 ABM 禁忌：红肿热痛禁用热。</span></div></div>
+<div class="step"><div class="n n2">2</div><div><b>泵中 · 温和振动（浅层辅助）</b><br>仅作舒适辅助，非炎症期可用；炎症急性期设备引导跳过此步。<br><span class="note">对应 ABM 红线：禁深层振动/按摩。</span></div></div>
+<div class="step"><div class="n n3">3</div><div><b>泵后 / 不适时 · 冷敷（5–10 分钟，可每小时）</b><br>舒缓肿胀、疼痛、炎症。这是差异化主卖点（电子主动控温、比凝胶垫保冷久）。<br><span class="note">对应 ABM #36 首选冰敷 + LLL/NHS 泵后冷敷。</span></div></div>
+
+<h2>五、合规文案边界（写进 Listing / 说明书）</h2>
+<table>
+  <tr><th>可用（Allowed）</th><th>禁用（Forbidden）</th></tr>
+  <tr>
+    <td>relief / comfort / support / wellness<br>engorgement relief（涨奶舒缓）<br>warmth before pumping · cold after<br>gentle vibration for comfort</td>
+    <td><b>treat / prevent / cure</b> mastitis（治疗/预防乳腺炎）<br><b>“振动/热敷疏通堵奶”</b>（通乳治疗宣称）<br>“clear clogged duct”（疏通堵塞）<br>任何诊断、医疗建议性质表述</td>
+  </tr>
+</table>
+<div class="note">FDA 边界：定位 lactation wellness / comfort，不碰诊断治疗战场；用户出现发热/红肿扩散/24h 无改善，文案须引导就医（与 ABM #36 一致）。</div>
+
+<h2>六、结论对 Bloom 定义的影响</h2>
+<div class="ok card">
+  <span class="tag o">✓ 确认</span>
+  <ul>
+    <li><b>冷热双模齐发 = 成立且必要</b>：热管「泵前促排」、冷管「泵后/炎症舒缓」，覆盖了一次哺乳期不适的完整时间线，不是两群人、两个场景。</li>
+    <li><b>冷是核心差异点</b>：ABM #36 转向冰敷 + 供给空白（竞品冷敷覆盖仅 1.2%），且电子主动控温可打凝胶垫「保冷仅 1–2 分钟」的弱点。</li>
+    <li><b>振动降级为舒适辅助</b>：合规安全，不抢治疗叙事，反而规避 FDA 风险。</li>
+    <li><b>使用逻辑可直接刻进产品</b>：三步法（泵前热→泵中温和振动→泵后冷）即设备交互与说明书主线。</li>
+  </ul>
+</div>
+
+<footer>
+依据来源：ABM Protocol #36 (2022) · La Leche League (Mastitis / Engorgement) · NHS Breast pain and breastfeeding · WHO/UNICEF Ten Steps · AAP。
+本文件为产品定义输入，非医疗建议；最终文案须经合规审核。生成于 Aurillis Bloom 产品重定义流程。
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lansinoh B01J61VL9W · 冷热敷用户洞察看板</title>
+<style>
+:root{
+  --bg:#f5f7fa;
+  --card:#ffffff;
+  --ink:#12203a;
+  --ink-2:#4a5a75;
+  --ink-3:#8a99b0;
+  --line:#e3e9f2;
+  --hot:#e5484d;
+  --hot-soft:#fdeced;
+  --cold:#0d8dd6;
+  --cold-soft:#e7f4fc;
+  --warn:#f5a524;
+  --warn-soft:#fef6e7;
+  --ok:#12a67c;
+  --ok-soft:#e6f7f1;
+  --purple:#7c5cff;
+  --shadow:0 1px 2px rgba(18,32,58,.04),0 8px 24px rgba(18,32,58,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Segoe UI,sans-serif;
+  background:var(--bg);color:var(--ink);
+  -webkit-font-smoothing:antialiased;line-height:1.6;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+
+/* ---------- header ---------- */
+.hd{margin-bottom:28px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+h1{font-size:30px;font-weight:700;letter-spacing:-.02em;margin:8px 0 10px}
+.sub{color:var(--ink-2);font-size:14.5px;max-width:760px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;color:var(--ink-2)}
+.chip b{color:var(--ink);font-weight:600}
+
+/* ---------- layout ---------- */
+.grid{display:grid;gap:18px;margin-top:22px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+.card h2{font-size:16.5px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card .note{font-size:12.5px;color:var(--ink-3);margin-bottom:18px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+
+.sect{margin-top:38px}
+.sect-t{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:18px}
+
+/* ---------- kpi ---------- */
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
+.kpi .lab{font-size:12.5px;color:var(--ink-3);font-weight:500}
+.kpi .val{font-size:30px;font-weight:750;letter-spacing:-.03em;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.kpi .foot{font-size:12px;color:var(--ink-2)}
+.kpi.hot .val{color:var(--hot)} .kpi.cold .val{color:var(--cold)}
+.kpi.warn .val{color:var(--warn)} .kpi.ok .val{color:var(--ok)}
+
+/* ---------- bars ---------- */
+.row{display:grid;grid-template-columns:132px 1fr 46px;align-items:center;gap:10px;margin-bottom:9px}
+.row .n{font-size:12.5px;color:var(--ink-2);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{height:22px;background:#f0f3f8;border-radius:5px;overflow:hidden}
+.fill{height:100%;border-radius:5px}
+.row .v{font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+/* stacked scene bar */
+.stack{display:flex;height:44px;border-radius:9px;overflow:hidden;margin:6px 0 14px}
+.stack div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12.5px;font-weight:650}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--ink-2)}
+.legend span{display:flex;align-items:center;gap:6px}
+
+/* gap chart */
+.gap{margin-bottom:20px}
+.gap .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.gap .top b{font-size:14px}
+.gap .top em{font-style:normal;font-size:12px;color:var(--hot);font-weight:650}
+.gaptrack{position:relative;height:30px;background:#f0f3f8;border-radius:6px}
+.gapfill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;display:flex;align-items:center;padding-left:10px;
+  color:#fff;font-size:12px;font-weight:650}
+.gapexp{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);border-radius:2px}
+.gapexp:after{content:attr(data-l);position:absolute;left:8px;top:6px;font-size:11.5px;color:var(--ink);white-space:nowrap;font-weight:650}
+
+/* quotes */
+.q{border-left:3px solid var(--line);padding:2px 0 2px 12px;margin:12px 0;font-size:13px;color:var(--ink-2)}
+.q i{font-style:italic;display:block;color:var(--ink);margin-bottom:2px}
+.q.hot{border-color:var(--hot)} .q.cold{border-color:var(--cold)} .q.warn{border-color:var(--warn)}
+.star{font-size:11.5px;color:var(--ink-3)}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);
+  padding:0 10px 9px;border-bottom:1px solid var(--line);font-weight:650}
+td{padding:11px 10px;border-bottom:1px solid #f0f3f8;vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.num{font-variant-numeric:tabular-nums;font-weight:650;white-space:nowrap}
+
+/* opportunity */
+.op{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid #f0f3f8}
+.op:last-child{border-bottom:none;padding-bottom:0}
+.op .rank{width:30px;height:30px;flex:none;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:750;color:#fff;background:var(--ink)}
+.op h3{font-size:14.5px;font-weight:700;margin-bottom:3px}
+.op p{font-size:13px;color:var(--ink-2)}
+.op .tag{display:inline-block;margin-top:7px;font-size:11.5px;padding:3px 9px;border-radius:6px;font-weight:600}
+
+.foot{margin-top:40px;font-size:12px;color:var(--ink-3);text-align:center;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <div class="eyebrow">Amazon US · Voice of Customer</div>
+    <h1>冷敷 vs 热敷：846 条评论全量拆解</h1>
+    <p class="sub">Lansinoh Breast Therapy Packs（ASIN B01J61VL9W）—— 冷热两用哺乳敷垫品类头部产品。本看板逐条判读全部 43 页评论，回答四个问题：冷热场景各占多少、分别解决什么问题、建议温度是多少、单次使用能撑多久。</p>
+    <div class="meta">
+      <span class="chip">ASIN <b>B01J61VL9W</b></span>
+      <span class="chip">评分 <b>4.6★</b> / 31,145 ratings</span>
+      <span class="chip">分析样本 <b>846 条</b>（43 页全量）</span>
+      <span class="chip">数据源 <b>卖家精灵</b></span>
+      <span class="chip">生成 <b>2026-07-31</b></span>
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <div class="grid g4">
+    <div class="kpi hot">
+      <div class="lab">热敷相关评论</div>
+      <div class="val">426</div>
+      <div class="foot">占比 50.4% · 主场景</div>
+    </div>
+    <div class="kpi cold">
+      <div class="lab">冷敷相关评论</div>
+      <div class="val">379</div>
+      <div class="foot">占比 44.8%</div>
+    </div>
+    <div class="kpi warn">
+      <div class="lab">微波爆裂投诉</div>
+      <div class="val">85</div>
+      <div class="foot">每 10 个用户就 1 个踩雷</div>
+    </div>
+    <div class="kpi">
+      <div class="lab">热敷保温缺口</div>
+      <div class="val">10×</div>
+      <div class="foot">实测 2–5min vs 期望 20–30min</div>
+    </div>
+  </div>
+
+  <!-- 1 场景 -->
+  <div class="sect">
+    <div class="sect-t">01 · 场景占比 —— 热敷才是主场景</div>
+    <div class="card">
+      <h2>846 条评论的温度场景归类</h2>
+      <p class="note">按用户实际描述的使用方式判读。去掉未提温度的 243 条后，热相关 426 条 &gt; 冷相关 379 条。</p>
+      <div class="stack">
+        <div style="width:26.5%;background:var(--hot)">只热敷 224 · 26.5%</div>
+        <div style="width:23.9%;background:var(--purple)">冷热都用 202 · 23.9%</div>
+        <div style="width:20.9%;background:var(--cold)">只冷敷 177 · 20.9%</div>
+        <div style="width:28.7%;background:#c3ccdb">未提温度 243 · 28.7%</div>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--hot)"></i>只热敷</span>
+        <span><i class="dot" style="background:var(--purple)"></i>冷热都用</span>
+        <span><i class="dot" style="background:var(--cold)"></i>只冷敷</span>
+        <span><i class="dot" style="background:#c3ccdb"></i>未提温度</span>
+      </div>
+      <div class="q"><i>关键修正：单看关键词频次会误判成"冷敷为主"（freezer 一词出现频率最高），但按"用来干什么"判读，热敷诉求更集中、更刚性。</i></div>
+    </div>
+  </div>
+
+  <!-- 2 诉求 -->
+  <div class="sect">
+    <div class="sect-t">02 · 分别解决什么问题 —— 两套完全不同的需求</div>
+    <div class="grid g2">
+
+      <div class="card">
+        <h2><i class="dot" style="background:var(--hot)"></i>热敷 = 通（让奶出来）</h2>
+        <p class="note">核心是疏通与促流，围绕"泵奶/喂奶前"的准备动作。</p>
+        <div class="row"><span class="n">促奶阵 letdown</span><span class="track"><span class="fill" style="width:100%;background:var(--hot)"></span></span><span class="v">55</span></div>
+        <div class="row"><span class="n">通堵奶 clogged duct</span><span class="track"><span class="fill" style="width:80%;background:var(--hot)"></span></span><span class="v">44</span></div>
+        <div class="row"><span class="n">泵/喂前软化</span><span class="track"><span class="fill" style="width:65%;background:#ef7276"></span></span><span class="v">36</span></div>
+        <div class="row"><span class="n">涨奶软化</span><span class="track"><span class="fill" style="width:33%;background:#f39a9d"></span></span><span class="v">18</span></div>
+        <div class="row"><span class="n">疼痛缓解</span><span class="track"><span class="fill" style="width:29%;background:#f39a9d"></span></span><span class="v">16</span></div>
+        <div class="row"><span class="n">乳腺炎早期</span><span class="track"><span class="fill" style="width:22%;background:#f8c2c4"></span></span><span class="v">12</span></div>
+        <div class="q hot"><i>"I use them warm 5-10 minutes before I pump and I swear I get more milk output."</i><span class="star">★★★★★</span></div>
+      </div>
+
+      <div class="card">
+        <h2><i class="dot" style="background:var(--cold)"></i>冷敷 = 消（把炎症压下去）</h2>
+        <p class="note">核心是消肿镇痛，用在喂后、术后、断奶等"善后"场景。</p>
+        <div class="row"><span class="n">涨奶硬块 engorgement</span><span class="track"><span class="fill" style="width:100%;background:var(--cold)"></span></span><span class="v">35</span></div>
+        <div class="row"><span class="n">疼痛 soreness</span><span class="track"><span class="fill" style="width:89%;background:var(--cold)"></span></span><span class="v">31</span></div>
+        <div class="row"><span class="n">肿胀 / 炎症</span><span class="track"><span class="fill" style="width:57%;background:#4aa9e0"></span></span><span class="v">20</span></div>
+        <div class="row"><span class="n">喂后 / 泵后镇痛</span><span class="track"><span class="fill" style="width:57%;background:#4aa9e0"></span></span><span class="v">20</span></div>
+        <div class="row"><span class="n">非哺乳用途 ⭐</span><span class="track"><span class="fill" style="width:54%;background:var(--ok)"></span></span><span class="v">19</span></div>
+        <div class="row"><span class="n">断奶回奶</span><span class="track"><span class="fill" style="width:20%;background:#a9d5f0"></span></span><span class="v">7</span></div>
+        <div class="q cold"><i>"Warmth helps with milk flow and clogged ducts. Cold reduces swelling and mastitis pain."</i><span class="star">★★★★★ · 用户自己总结的产品说明书</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px;background:var(--ok-soft);border-color:#bce5d6">
+      <h2><i class="dot" style="background:var(--ok)"></i>白捡的增量：19 条非哺乳用途</h2>
+      <p class="note" style="color:#3c7a66;margin-bottom:10px">这批用户完全不在品类原定人群内，却主动买来用——不需要重新教育市场的横向扩张线。</p>
+      <div class="legend" style="gap:10px">
+        <span class="chip" style="background:#fff">乳腺活检术后</span>
+        <span class="chip" style="background:#fff">缩胸 / 隆胸术后</span>
+        <span class="chip" style="background:#fff">剖腹产恢复</span>
+        <span class="chip" style="background:#fff">孩子磕碰冰敷</span>
+        <span class="chip" style="background:#fff">更年期潮热</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 温度 -->
+  <div class="sect">
+    <div class="sect-t">03 · 建议使用温度 —— 冷侧偏保守，热侧是雷区</div>
+    <div class="grid g2">
+
+      <div class="card">
+        <h2><i class="dot" style="background:var(--cold)"></i>冷侧：冷冻室，不是冷藏室</h2>
+        <p class="note">freezer 提及 90 次 vs fridge 仅 6 次，比例 15 : 1。</p>
+        <div class="row"><span class="n">冷冻室 freezer</span><span class="track"><span class="fill" style="width:100%;background:var(--cold)"></span></span><span class="v">90</span></div>
+        <div class="row"><span class="n">冷藏室 fridge</span><span class="track"><span class="fill" style="width:6.7%;background:#a9d5f0"></span></span><span class="v">6</span></div>
+        <table style="margin-top:16px">
+          <tr><td>官方要求预冷</td><td class="num" style="text-align:right">冷冻 ≥ 4 小时</td></tr>
+          <tr><td>冻伤 / 过冷投诉</td><td class="num" style="text-align:right;color:var(--ok)">0 条</td></tr>
+          <tr><td>抱怨布套隔冷、脱套才有感觉</td><td class="num" style="text-align:right;color:var(--warn)">31 条</td></tr>
+        </table>
+        <div class="q cold" style="margin-top:14px"><i>零冻伤 + 31 条"不够冷" = 冷侧温度还有下探空间，可以做得更狠。</i></div>
+      </div>
+
+      <div class="card">
+        <h2><i class="dot" style="background:var(--hot)"></i>热侧：10–15 秒是安全线，官方 25 秒是坑</h2>
+        <p class="note">用户实测微波秒数出现两个峰：5 秒（谨慎派）和 23–25 秒（照说明书派）。</p>
+        <div class="row"><span class="n">5 秒</span><span class="track"><span class="fill" style="width:100%;background:var(--ok)"></span></span><span class="v">18</span></div>
+        <div class="row"><span class="n">10–15 秒 ✓安全</span><span class="track"><span class="fill" style="width:67%;background:var(--ok)"></span></span><span class="v">12</span></div>
+        <div class="row"><span class="n">20 秒</span><span class="track"><span class="fill" style="width:44%;background:var(--warn)"></span></span><span class="v">8</span></div>
+        <div class="row"><span class="n">23–25 秒 ⚠官方上限</span><span class="track"><span class="fill" style="width:94%;background:var(--hot)"></span></span><span class="v">17</span></div>
+        <div class="row"><span class="n">30 秒以上</span><span class="track"><span class="fill" style="width:33%;background:#8e1f23"></span></span><span class="v">6</span></div>
+        <div class="q warn" style="margin-top:14px"><i>"followed the directions... but it burst!"</i><span class="star">★☆☆☆☆ · 按说明书操作照样炸</span></div>
+        <div class="q warn"><i>"it will burn you even if you have the cover over it"</i><span class="star">★☆☆☆☆ · 29 条烫伤/过烫投诉</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px;background:var(--hot-soft);border-color:#f5c3c5">
+      <h2><i class="dot" style="background:var(--hot)"></i>品类第一大差评源：微波爆裂 85 条 · 占全样本 10%</h2>
+      <p class="note" style="color:#9c3a3d">"Beads everywhere" / "exploded after 12 seconds" / "broke at 20 seconds" —— 加热方式本身就是设计缺陷。少数改用热水浸泡的用户（5 条）反馈明显更好："the heat definitely lasts longer"。</p>
+    </div>
+  </div>
+
+  <!-- 4 时长 -->
+  <div class="sect">
+    <div class="sect-t">04 · 单次使用能撑多久 —— 最致命的落差</div>
+
+    <div class="card">
+      <h2>实测时长 vs 用户期望</h2>
+      <p class="note">期望值来源明确：医生和哺乳顾问给的标准方案是「20 分钟热 + 20 分钟冷交替」。产品撑不到 20 分钟，整个使用协议就跑不通。</p>
+
+      <div class="gap">
+        <div class="top"><b><i class="dot" style="background:var(--cold)"></i> 冷敷保冷</b><em>缺口 2–4 倍</em></div>
+        <div class="gaptrack">
+          <div class="gapfill" style="width:37.5%;background:var(--cold)">实测中位 5–10 min</div>
+          <div class="gapexp" style="left:75%" data-l="期望 20 min"></div>
+        </div>
+      </div>
+
+      <div class="gap">
+        <div class="top"><b><i class="dot" style="background:var(--hot)"></i> 热敷保温</b><em>缺口 5–10 倍</em></div>
+        <div class="gaptrack">
+          <div class="gapfill" style="width:12.5%;background:var(--hot);padding-left:0;justify-content:center;font-size:11px">2–5 min</div>
+          <div class="gapexp" style="left:75%" data-l="期望 20–30 min"></div>
+        </div>
+      </div>
+
+      <div class="q hot"><i>"it kept the heat for like 5 minutes. I was expecting at least 20-30 mins"</i><span class="star">★☆☆☆☆</span></div>
+    </div>
+
+    <div class="grid g2" style="margin-top:18px">
+      <div class="card">
+        <h2>冷敷时长分布（n=71）</h2>
+        <p class="note">20 分钟是满意度分水岭。</p>
+        <div class="row"><span class="n">≤ 3 min</span><span class="track"><span class="fill" style="width:58%;background:var(--hot)"></span></span><span class="v">15</span></div>
+        <div class="row"><span class="n">5 min 档</span><span class="track"><span class="fill" style="width:100%;background:var(--warn)"></span></span><span class="v">26</span></div>
+        <div class="row"><span class="n">10–15 min</span><span class="track"><span class="fill" style="width:62%;background:#7fbfe8"></span></span><span class="v">16</span></div>
+        <div class="row"><span class="n">≥ 20 min</span><span class="track"><span class="fill" style="width:54%;background:var(--ok)"></span></span><span class="v">14</span></div>
+        <div class="q" style="margin-top:14px"><i>说 ≤10 分钟的基本都是 1–3★；说 ≥20 分钟的基本都是 5★。</i></div>
+      </div>
+      <div class="card">
+        <h2>热敷时长（n=23）</h2>
+        <p class="note">样本少，但一边倒地差 —— 中位仅 2–5 分钟。</p>
+        <table>
+          <tr><td>中位保温时长</td><td class="num" style="text-align:right;color:var(--hot)">2–5 min</td></tr>
+          <tr><td>用户期望</td><td class="num" style="text-align:right">20–30 min</td></tr>
+          <tr><td>最短抱怨记录</td><td class="num" style="text-align:right">30 秒</td></tr>
+          <tr><td>热水浸泡替代方案反馈</td><td class="num" style="text-align:right;color:var(--ok)">明显更持久</td></tr>
+        </table>
+        <div class="q hot" style="margin-top:14px"><i>热敷是主场景（426 条）却是最短板 —— 这就是最大的产品空白。</i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 机会 -->
+  <div class="sect">
+    <div class="sect-t">05 · 四个切入口（按 ROI 排序）</div>
+    <div class="card">
+      <div class="op">
+        <div class="rank" style="background:var(--hot)">1</div>
+        <div>
+          <h3>把保温做到 20 分钟</h3>
+          <p>热敷是占比最高的主场景（426 条），却是体验最差的一环：实测 2–5 分钟 vs 期望 20–30 分钟，缺口 10 倍。相变材料 / 更大热容配方是直接解法。</p>
+          <span class="tag" style="background:var(--hot-soft);color:var(--hot)">最大空白 · 高影响</span>
+        </div>
+      </div>
+      <div class="op">
+        <div class="rank" style="background:var(--warn)">2</div>
+        <div>
+          <h3>去微波化</h3>
+          <p>85 条爆裂 + 29 条烫伤，合计 114 条，占全样本 13.5%。改自热包 / 热水激活 / USB 恒温，一刀切掉品类最大的差评源，同时天然解决保温时长。</p>
+          <span class="tag" style="background:var(--warn-soft);color:#a86a06">切掉 13.5% 差评源</span>
+        </div>
+      </div>
+      <div class="op">
+        <div class="rank" style="background:var(--cold)">3</div>
+        <div>
+          <h3>布套导温改造</h3>
+          <p>31 条抱怨布套隔温、冷敷"感觉不到凉"，被迫脱套直接贴皮，热敷脱套又会烫伤。改薄布料或开导温窗，是低成本高感知的改动。</p>
+          <span class="tag" style="background:var(--cold-soft);color:var(--cold)">低成本 · 快速见效</span>
+        </div>
+      </div>
+      <div class="op">
+        <div class="rank" style="background:var(--purple)">4</div>
+        <div>
+          <h3>默认双件装 + 一冷一热标识</h3>
+          <p>"一个放冷冻室、一个加热"的轮换用法在 5★ 好评里反复出现，是用户自己发明出来的刚需。直接产品化，并顺带覆盖 19 条非哺乳（术后 / 活检 / 儿童磕碰）横向需求。</p>
+          <span class="tag" style="background:#f0ecff;color:var(--purple)">用户已验证的用法</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    数据来源：卖家精灵 Review API · Amazon US · ASIN B01J61VL9W · 43 页 846 条评论全量判读<br>
+    所有计数为逐条人工判读结果，同一评论可能同时归入多个诉求类别，故各分项之和大于评论总数。
+  </div>
+
+</div>
+</body>
+</html>

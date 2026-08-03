@@ -12,20 +12,9 @@ UPLOAD_API_PLACEHOLDER = 'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.
 
 # ===== CATEGORY TREE =====
 TREE = [
-    {"id": "product", "name": "产品研究", "icon": "fas fa-box", "children": [
-        {"id": "product-pelvic", "name": "盆底肌训练器", "icon": "fas fa-flask"},
-        {"id": "product-lactation", "name": "哺乳按摩器", "icon": "fas fa-baby"},
-        {"id": "product-pump", "name": "乳房泵", "icon": "fas fa-heartbeat"},
-        {"id": "product-sterilizer", "name": "奶瓶消毒器", "icon": "fas fa-shield-alt"},
-        {"id": "product-warmer", "name": "暖奶器", "icon": "fas fa-mug-hot"},
-        {"id": "product-muscle", "name": "肌肉刺激器", "icon": "fas fa-bolt"},
-        {"id": "product-sinus", "name": "鼻腔药品", "icon": "fas fa-pills"},
-    ]},
-    {"id": "market", "name": "市场分析", "icon": "fas fa-chart-bar"},
-    {"id": "tech", "name": "技术研究", "icon": "fas fa-cogs"},
-    {"id": "review", "name": "评论分析", "icon": "fas fa-comments"},
-    {"id": "history", "name": "历史数据", "icon": "fas fa-history"},
-    {"id": "feishu", "name": "飞书文档", "icon": "fas fa-file-alt"},
+    {"id": "product-lactation", "name": "哺乳按摩器", "icon": "fas fa-baby"},
+    {"id": "product-dysmenorrhea", "name": "痛经缓解产品", "icon": "fas fa-spa"},
+    {"id": "product-pelvic", "name": "盆底肌修复仪", "icon": "fas fa-flask"},
     {"id": "other", "name": "其他", "icon": "fas fa-folder"},
 ]
 

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Momcozy A1Pro B0DM5YGBMS · 加热与震动用户洞察看板</title>
+<style>
+:root{
+  --bg:#f5f7fa; --card:#ffffff; --ink:#12203a; --ink-2:#4a5a75; --ink-3:#8a99b0;
+  --line:#e3e9f2;
+  --heat:#d85a30; --heat-soft:#faece7;
+  --vib:#378add; --vib-soft:#e6f1fb;
+  --both:#7f77dd; --both-soft:#eeedfe;
+  --warn:#ba7517; --warn-soft:#faeeda;
+  --danger:#a32d2d; --danger-soft:#fcebeb;
+  --ok:#1d9e75; --ok-soft:#e1f5ee;
+  --shadow:0 1px 2px rgba(18,32,58,.04),0 8px 24px rgba(18,32,58,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Segoe UI,sans-serif;
+  background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+
+.hd{margin-bottom:26px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+h1{font-size:30px;font-weight:700;letter-spacing:-.02em;margin:8px 0 10px}
+.sub{color:var(--ink-2);font-size:14.5px;max-width:800px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;color:var(--ink-2)}
+.chip b{color:var(--ink);font-weight:600}
+
+.grid{display:grid;gap:18px;margin-top:22px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+.card h2{font-size:16.5px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card .note{font-size:12.5px;color:var(--ink-3);margin-bottom:18px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+
+.sect{margin-top:38px}
+.sect-t{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:18px}
+
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
+.kpi .lab{font-size:12.5px;color:var(--ink-3);font-weight:500}
+.kpi .val{font-size:30px;font-weight:750;letter-spacing:-.03em;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.kpi .foot{font-size:12px;color:var(--ink-2)}
+.kpi.heat .val{color:var(--heat)} .kpi.vib .val{color:var(--vib)}
+.kpi.danger .val{color:var(--danger)} .kpi.ok .val{color:var(--ok)}
+
+.row{display:grid;grid-template-columns:150px 1fr 46px;align-items:center;gap:10px;margin-bottom:9px}
+.row .n{font-size:12.5px;color:var(--ink-2);text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{height:22px;background:#f0f3f8;border-radius:5px;overflow:hidden}
+.fill{height:100%;border-radius:5px;display:block}
+.row .v{font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+.stack{display:flex;height:44px;border-radius:9px;overflow:hidden;margin:6px 0 14px}
+.stack div{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12.5px;font-weight:650}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--ink-2)}
+.legend span{display:flex;align-items:center;gap:6px}
+
+.gap{margin-bottom:20px}
+.gap .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.gap .top b{font-size:14px}
+.gap .top em{font-style:normal;font-size:12px;color:var(--danger);font-weight:650}
+.gaptrack{position:relative;height:30px;background:#f0f3f8;border-radius:6px}
+.gapfill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;display:flex;align-items:center;padding-left:10px;
+  color:#fff;font-size:12px;font-weight:650}
+.gapexp{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);border-radius:2px}
+.gapexp:after{content:attr(data-l);position:absolute;left:8px;top:6px;font-size:11.5px;color:var(--ink);white-space:nowrap;font-weight:650}
+
+.q{border-left:3px solid var(--line);padding:2px 0 2px 12px;margin:12px 0;font-size:13px;color:var(--ink-2)}
+.q i{font-style:italic;display:block;color:var(--ink);margin-bottom:2px}
+.q.heat{border-color:var(--heat)} .q.vib{border-color:var(--vib)}
+.q.danger{border-color:var(--danger)} .q.ok{border-color:var(--ok)}
+.star{font-size:11.5px;color:var(--ink-3)}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);
+  padding:0 10px 9px;border-bottom:1px solid var(--line);font-weight:650}
+td{padding:11px 10px;border-bottom:1px solid #f0f3f8;vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.num{font-variant-numeric:tabular-nums;font-weight:650;white-space:nowrap}
+
+.op{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid #f0f3f8}
+.op:last-child{border-bottom:none;padding-bottom:0}
+.op .rank{width:30px;height:30px;flex:none;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:750;color:#fff;background:var(--ink)}
+.op h3{font-size:14.5px;font-weight:700;margin-bottom:3px}
+.op p{font-size:13px;color:var(--ink-2)}
+.op .tag{display:inline-block;margin-top:7px;font-size:11.5px;padding:3px 9px;border-radius:6px;font-weight:600}
+
+.banner{border-radius:12px;padding:16px 18px;font-size:13px;line-height:1.7}
+.foot{margin-top:40px;font-size:12px;color:var(--ink-3);text-align:center;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <div class="eyebrow">Amazon US · Voice of Customer</div>
+    <h1>加热 vs 震动：通乳按摩器 1901 条评论拆解</h1>
+    <p class="sub">目标产品 Momcozy A1Pro 加热震动通乳按摩器（ASIN B0DM5YGBMS，$31.49 / 4.4★ / 3892 评分 / Amazon's Choice / Baby 大类 BSR 1106）。因该 listing 在数据源仅收录 8 条评论，本看板以「目标 ASIN 8 条 + 三款同功能竞品 1893 条」为样本，回答功能占比、单次时长、用户期望、核心诉求、冷敷需求五个问题。</p>
+    <div class="meta">
+      <span class="chip">目标 <b>B0DM5YGBMS</b> 8 条</span>
+      <span class="chip">LaVie 2-in-1 <b>1296 条</b></span>
+      <span class="chip">Frida Mom 2-in-1 <b>361 条</b></span>
+      <span class="chip">Momcozy Rolling <b>211 条</b></span>
+      <span class="chip">合计 <b>1901 条</b></span>
+      <span class="chip">数据源 <b>卖家精灵</b> · 2026-07-31</span>
+    </div>
+  </div>
+
+  <div class="banner" style="background:var(--warn-soft);border:1px solid #f0d9ad;color:#7a4d0a;margin-top:18px">
+    <b>样本说明：</b>Momcozy A1Pro 上架仅约 1.7 年（2024-11），数据源仅收录 8 条评论（含 1 条差评），无法单独支撑统计结论。本看板的比例与计数来自加热+震动同功能竞品集；A1Pro 自身 8 条作为定性印证单独标注。凡标「A1Pro 自身」的结论均为原始样本，其余为品类推断。
+  </div>
+
+  <!-- KPI -->
+  <div class="grid g4">
+    <div class="kpi heat">
+      <div class="lab">加热相关评论</div>
+      <div class="val">1111</div>
+      <div class="foot">占提及功能者 91%</div>
+    </div>
+    <div class="kpi vib">
+      <div class="lab">震动相关评论</div>
+      <div class="val">958</div>
+      <div class="foot">占提及功能者 79%</div>
+    </div>
+    <div class="kpi danger">
+      <div class="lab">电池续航投诉</div>
+      <div class="val">585</div>
+      <div class="foot">压倒性第一痛点</div>
+    </div>
+    <div class="kpi">
+      <div class="lab">明确要冷敷功能</div>
+      <div class="val">0</div>
+      <div class="foot">1901 条中零诉求</div>
+    </div>
+  </div>
+
+  <!-- 1 功能占比 -->
+  <div class="sect">
+    <div class="sect-t">01 · 加热 vs 震动 —— 捆绑使用为主，加热是购买理由</div>
+    <div class="card">
+      <h2>1868 条可判读评论的功能归类</h2>
+      <p class="note">七成用户把加热和震动当一个整体来用，很少单独评价。但当用户只提一个功能时，提加热的是提震动的 2.5 倍。</p>
+      <div class="stack">
+        <div style="width:13.7%;background:var(--heat)">仅加热 256 · 13.7%</div>
+        <div style="width:45.8%;background:var(--both)">加热 + 震动 855 · 45.8%</div>
+        <div style="width:5.5%;background:var(--vib);font-size:11px">103</div>
+        <div style="width:35%;background:#b4b2a9">未提功能 654 · 35.0%</div>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--heat)"></i>仅加热 256</span>
+        <span><i class="dot" style="background:var(--both)"></i>加热+震动 855</span>
+        <span><i class="dot" style="background:var(--vib)"></i>仅震动 103</span>
+        <span><i class="dot" style="background:#b4b2a9"></i>未提功能 654</span>
+      </div>
+
+      <div class="grid g2" style="margin-top:20px;gap:14px">
+        <div>
+          <table>
+            <tr><td>加热相关合计</td><td class="num" style="text-align:right;color:var(--heat)">1111 条 · 91%</td></tr>
+            <tr><td>震动相关合计</td><td class="num" style="text-align:right;color:var(--vib)">958 条 · 79%</td></tr>
+            <tr><td>单独提加热 : 单独提震动</td><td class="num" style="text-align:right">2.5 : 1</td></tr>
+            <tr><td>震动被单独抱怨"太弱"</td><td class="num" style="text-align:right;color:var(--warn)">25 条</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="q heat"><i>"this thing was a lifesaver just for the heating function alone"</i><span class="star">★★★★★ · A1Pro 自身评论 Shannon</span></div>
+          <div class="q vib"><i>"the vibration attacks clogged ducts so well"</i><span class="star">★★★★★ · Frida Mom</span></div>
+        </div>
+      </div>
+
+      <div class="banner" style="background:var(--heat-soft);border:1px solid #f0c8b8;color:#8a3a1c;margin-top:14px">
+        <b>结论：</b>加热是主诉求与购买决策点，震动是效果放大器。A1Pro 自身 8 条评论里，5 条提到功能，<b>5 条全部提到加热</b>，其中 4 条同时提震动，1 条只提加热（"primarily liked this item because of the heat setting"），无一条只提震动——与品类结论一致。
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 单次时长 -->
+  <div class="sect">
+    <div class="sect-t">02 · 单次使用时长 —— 不是用户定的，是电池定的</div>
+
+    <div class="card">
+      <h2>四个时长口径的错位</h2>
+      <p class="note">这个品类的单次使用时长被「一次泵奶 session」锚定在 20–30 分钟，但设备的自动断电和电池续航都卡在这条线以下。</p>
+
+      <div class="gap">
+        <div class="top"><b><i class="dot" style="background:var(--both)"></i> 用户实际需要（一次完整泵奶）</b><em>基准线</em></div>
+        <div class="gaptrack"><div class="gapfill" style="width:33.3%;background:var(--both)">30 分钟</div></div>
+      </div>
+      <div class="gap">
+        <div class="top"><b><i class="dot" style="background:var(--warn)"></i> 设备自动断电</b><em>提前 5–15 分钟关机</em></div>
+        <div class="gaptrack"><div class="gapfill" style="width:22.2%;background:var(--warn)">15–20 分钟</div></div>
+      </div>
+      <div class="gap">
+        <div class="top"><b><i class="dot" style="background:var(--danger)"></i> 单次充电实际续航</b><em>撑不完一次泵奶</em></div>
+        <div class="gaptrack"><div class="gapfill" style="width:24.4%;background:var(--danger)">20–25 分钟</div></div>
+      </div>
+      <div class="gap">
+        <div class="top"><b><i class="dot" style="background:var(--ok)"></i> 用户真正期望的续航</b><em>缺口 3–4 倍</em></div>
+        <div class="gaptrack"><div class="gapfill" style="width:83.3%;background:var(--ok)">60–90 分钟 · 一充撑 2–3 次 session</div></div>
+      </div>
+
+      <div class="q danger"><i>"On a full charge it only lasts about 15-20 mins. It would die mid pumping session."</i><span class="star">★★☆☆☆ · LaVie</span></div>
+      <div class="q danger"><i>"works only for 5 mins if you need to use heating and vibration at the same time, and then you need to charge it for an hour"</i><span class="star">★☆☆☆☆ · Frida Mom · 同开双功能是续航杀手</span></div>
+    </div>
+
+    <div class="grid g2" style="margin-top:18px">
+      <div class="card">
+        <h2>用户口述的单次使用分钟数</h2>
+        <p class="note">跨样本高频档位统计，30 分钟与 20 分钟是双峰。</p>
+        <div class="row"><span class="n">30 分钟</span><span class="track"><span class="fill" style="width:100%;background:var(--both)"></span></span><span class="v">39</span></div>
+        <div class="row"><span class="n">20 分钟</span><span class="track"><span class="fill" style="width:72%;background:var(--both)"></span></span><span class="v">28</span></div>
+        <div class="row"><span class="n">15 分钟</span><span class="track"><span class="fill" style="width:38%;background:#a5a0e8"></span></span><span class="v">15</span></div>
+        <div class="row"><span class="n">10 分钟及以下</span><span class="track"><span class="fill" style="width:33%;background:var(--danger)"></span></span><span class="v">13</span></div>
+        <div class="row"><span class="n">40 分钟以上</span><span class="track"><span class="fill" style="width:15%;background:#c9c6f0"></span></span><span class="v">6</span></div>
+        <div class="q" style="margin-top:12px"><i>时长不是产品参数，而是泵奶行为决定的——单次使用 = 一次泵奶。做产品时应该按 30 分钟设计，不是按 20 分钟。</i></div>
+      </div>
+
+      <div class="card">
+        <h2>A1Pro 自身 8 条中的时长证据</h2>
+        <p class="note">样本虽小，但四条都直接给了分钟数，与品类结论完全吻合。</p>
+        <table>
+          <tr><td>Shannon ★5</td><td class="num" style="text-align:right">每次 30 min 后充电</td></tr>
+          <tr><td>Tim S. ★5</td><td class="num" style="text-align:right">双功能可用 2 × 20 min</td></tr>
+          <tr><td>Sarah W ★3</td><td class="num" style="text-align:right;color:var(--danger)">高温档仅 30 min 没电</td></tr>
+          <tr><td>Amazon Customer ★5</td><td class="num" style="text-align:right;color:var(--ok)">一次 10 min 即排空</td></tr>
+        </table>
+        <div class="q heat" style="margin-top:12px"><i>"The battery life is several hours when using just the vibration feature, but the heat setting drains it much faster."</i><span class="star">★★★★★ · Tim S. · 加热才是耗电大头</span></div>
+        <div class="q danger"><i>"I primarily liked this item because of the heat setting, however, when on 'high' the battery would only last maybe 30 minutes."</i><span class="star">★★★☆☆ · Sarah W · A1Pro 唯一差评，指向电池</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 解决问题 -->
+  <div class="sect">
+    <div class="sect-t">03 · 主要解决什么问题 —— 堵奶是绝对第一</div>
+    <div class="card">
+      <h2>1901 条评论累计症状提及</h2>
+      <p class="note">同一条评论可能提到多个症状，故合计大于评论总数。</p>
+      <div class="row"><span class="n">堵奶通乳 clogged duct</span><span class="track"><span class="fill" style="width:100%;background:#993c1d"></span></span><span class="v">591</span></div>
+      <div class="row"><span class="n">增加奶量 supply</span><span class="track"><span class="fill" style="width:57%;background:var(--heat)"></span></span><span class="v">339</span></div>
+      <div class="row"><span class="n">促奶阵 letdown</span><span class="track"><span class="fill" style="width:49%;background:#ef9f27"></span></span><span class="v">292</span></div>
+      <div class="row"><span class="n">排空 empty breast</span><span class="track"><span class="fill" style="width:47%;background:#ef9f27"></span></span><span class="v">279</span></div>
+      <div class="row"><span class="n">疼痛缓解 pain</span><span class="track"><span class="fill" style="width:38%;background:#fac775"></span></span><span class="v">226</span></div>
+      <div class="row"><span class="n">涨奶 engorgement</span><span class="track"><span class="fill" style="width:35%;background:#fac775"></span></span><span class="v">208</span></div>
+      <div class="row"><span class="n">乳腺炎 mastitis</span><span class="track"><span class="fill" style="width:21%;background:#fac775"></span></span><span class="v">123</span></div>
+      <div class="row"><span class="n">泵奶前预热</span><span class="track"><span class="fill" style="width:17%;background:#fac775"></span></span><span class="v">101</span></div>
+      <div class="row"><span class="n">乳头小白点 bleb</span><span class="track"><span class="fill" style="width:0.5%;background:#d3d1c7"></span></span><span class="v">0</span></div>
+
+      <div class="grid g2" style="margin-top:18px;gap:14px">
+        <div class="q heat"><i>"this tool with a combo of vibration and heat helps unclog it every single time"</i><span class="star">★★★★☆ · Frida Mom</span></div>
+        <div class="q ok"><i>"After one 10-minute session, I completely emptied the breast... Since I can completely empty the breasts now, I am producing more and in a lot less pain."</i><span class="star">★★★★★ · A1Pro 自身</span></div>
+      </div>
+
+      <div class="banner" style="background:var(--both-soft);border:1px solid #c9c6f0;color:#3c3489;margin-top:12px">
+        <b>需求链条很清晰：</b>堵奶 → 排不空 → 奶量下降 → 疼痛/乳腺炎风险。产品真正卖的不是"按摩"，而是<b>「把堵住的奶弄出来」这一件事</b>，其余都是它的副产品。注意 <b>bleb（乳头小白点）0 提及</b>——这是文献常见但用户不会用的词，做 listing 时别堆这个关键词。
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 冷敷 -->
+  <div class="sect">
+    <div class="sect-t">04 · 有人提冷敷吗 —— 几乎没有，但有一条值钱的信号</div>
+    <div class="grid g3">
+      <div class="kpi">
+        <div class="lab">出现 cold / ice / freezer 字样</div>
+        <div class="val">约 7</div>
+        <div class="foot">占 1901 条的 0.4%</div>
+      </div>
+      <div class="kpi danger">
+        <div class="lab">明确要求增加冷敷功能</div>
+        <div class="val">0</div>
+        <div class="foot">一条都没有</div>
+      </div>
+      <div class="kpi danger">
+        <div class="lab">抱怨"只有热没有冷"</div>
+        <div class="val">0</div>
+        <div class="foot">一条都没有</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h2>七条提及的全部内容</h2>
+      <p class="note">逐条核验后，绝大多数是"买之前试过冰敷但没用"，属于反向证据。</p>
+      <div class="q"><i>"I tried everything!! Warm showers.. warm compresses.. massages.. then when that didn't work.. cold compresses. Nothing was working until I found these."</i><span class="star">★★★★★ · 冷敷是失败的替代方案</span></div>
+      <div class="q"><i>"ice packs etc. didn't work"</i><span class="star">★★★★★ · 同上</span></div>
+      <div class="q"><i>"helping with the pain along with the hot+cold breast relief packs"</i><span class="star">★★★★★ · 冷热敷袋是另买的配件，不是对本品的诉求</span></div>
+      <div class="q"><i>"You can have a heat and cold pack for a fraction of the cost"</i><span class="star">★★☆☆☆ · 用冷热敷袋做价格攻击</span></div>
+      <div class="q vib"><i>"I feel like my Lansinoh hot/cold packs do a better job of opening all the ducts"</i><span class="star">★★★☆☆ · 唯一一条说冷热敷袋效果更好</span></div>
+      <div class="q ok"><i>"Also ice is now the recommended treatment for clogged ducts and mastitis."</i><span class="star">★★★★★ · 关键信号，见下方</span></div>
+    </div>
+
+    <div class="card" style="margin-top:18px;background:var(--ok-soft);border-color:#a8ddc9">
+      <h2><i class="dot" style="background:var(--ok)"></i>被埋掉的战略信号：医学指南已经改口了</h2>
+      <p class="note" style="color:#0f6e56;margin-bottom:10px">2022 年美国母乳喂养医学会（ABM）更新的乳腺炎临床指南，把堵奶与乳腺炎的推荐处置从「热敷 + 用力按摩」改成了「<b>冰敷 + 轻柔淋巴引流</b>」，明确指出深度按摩与持续热敷可能加重组织水肿。</p>
+      <table>
+        <tr><td>用户端认知</td><td class="num" style="text-align:right;color:var(--danger)">尚未跟上 · 0 条要求冷敷</td></tr>
+        <tr><td>产品端供给</td><td class="num" style="text-align:right;color:var(--danger)">全品类清一色只做加热</td></tr>
+        <tr><td>已有信号</td><td class="num" style="text-align:right;color:var(--ok)">1 条 5★ 主动科普 ice</td></tr>
+      </table>
+      <div class="banner" style="background:#fff;border:1px solid #a8ddc9;color:#0f6e56;margin-top:12px">
+        <b>怎么读这个数据：</b>「0 条要求」不等于「没机会」，而是等于<b>「用户还不知道要」</b>。这是典型的教育型机会——风险是需要自己花钱教育市场，回报是一旦哺乳顾问和儿科医生的口径彻底转向冰敷，先入局者会吃到整个转换红利。反过来说，如果只做「加热+震动」的第 N 个跟随者，等于把产品建在一个正在被医学界质疑的机理上。
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 其他期望 -->
+  <div class="sect">
+    <div class="sect-t">05 · 还有什么别的期望 —— 电池压倒一切</div>
+    <div class="card">
+      <h2>改进诉求排序（1901 条累计提及）</h2>
+      <p class="note">电池一项就等于其后五项之和。这个品类的竞争焦点根本不在功能，在电。</p>
+      <div class="row"><span class="n">电池续航短</span><span class="track"><span class="fill" style="width:100%;background:var(--danger)"></span></span><span class="v">585</span></div>
+      <div class="row"><span class="n">质量故障 用几周就坏</span><span class="track"><span class="fill" style="width:34%;background:var(--heat)"></span></span><span class="v">200</span></div>
+      <div class="row"><span class="n">价格贵</span><span class="track"><span class="fill" style="width:30%;background:var(--warn)"></span></span><span class="v">173</span></div>
+      <div class="row"><span class="n">加热不够热 / 升温慢</span><span class="track"><span class="fill" style="width:10%;background:#ef9f27"></span></span><span class="v">58</span></div>
+      <div class="row"><span class="n">震动噪音大</span><span class="track"><span class="fill" style="width:10%;background:#ef9f27"></span></span><span class="v">56</span></div>
+      <div class="row"><span class="n">加热过烫 / 烫伤</span><span class="track"><span class="fill" style="width:9%;background:#e24b4a"></span></span><span class="v">53</span></div>
+      <div class="row"><span class="n">形状不贴合 大杯型</span><span class="track"><span class="fill" style="width:6%;background:#fac775"></span></span><span class="v">35</span></div>
+      <div class="row"><span class="n">震动太弱</span><span class="track"><span class="fill" style="width:4%;background:#fac775"></span></span><span class="v">25</span></div>
+      <div class="row"><span class="n">想要双只装</span><span class="track"><span class="fill" style="width:3%;background:#9fe1cb"></span></span><span class="v">14</span></div>
+      <div class="row"><span class="n">指示灯太亮扰婴</span><span class="track"><span class="fill" style="width:2%;background:#9fe1cb"></span></span><span class="v">7</span></div>
+      <div class="row"><span class="n">想要冷敷功能</span><span class="track"><span class="fill" style="width:0.5%;background:#d3d1c7"></span></span><span class="v">0</span></div>
+    </div>
+
+    <div class="grid g2" style="margin-top:18px">
+      <div class="card">
+        <h2><i class="dot" style="background:var(--danger)"></i>安全隐患：不只是烫伤</h2>
+        <p class="note">53 条过烫/烫伤之外，还有多起充电起火与自燃投诉，属于合规红线。</p>
+        <div class="q danger"><i>"the charging port on one melted while charging. It's scary because it could have burned our house down."</i><span class="star">★☆☆☆☆</span></div>
+        <div class="q danger"><i>"They also burnt my breasts on the lowest heat setting after only 5 minutes."</i><span class="star">★☆☆☆☆ · 最低档也烫伤</span></div>
+        <div class="q danger"><i>"I also have permanent red marks above my breasts from the hot setting!"</i><span class="star">★★★☆☆ · 永久红印</span></div>
+        <div class="q danger"><i>"turned on by itself... afraid it would start a fire"</i><span class="star">★☆☆☆☆ · 自行启动</span></div>
+      </div>
+
+      <div class="card">
+        <h2><i class="dot" style="background:var(--ok)"></i>被忽略的低成本改进点</h2>
+        <p class="note">提及量不高，但改动成本极低、竞品几乎都没做。</p>
+        <table>
+          <tr><td><b>指示灯调暗 / 夜间模式</b><br><span style="font-size:12px;color:var(--ink-3)">夜奶时灯光晃到婴儿眼睛，有用户因此退货</span></td><td class="num" style="text-align:right">7 条</td></tr>
+          <tr><td><b>大杯型适配</b><br><span style="font-size:12px;color:var(--ink-3)">DDD/H cup 用户反映贴不住、会滑</span></td><td class="num" style="text-align:right">35 条</td></tr>
+          <tr><td><b>双只同用</b><br><span style="font-size:12px;color:var(--ink-3)">"Don't we all have 2 breasts??"</span></td><td class="num" style="text-align:right">14 条</td></tr>
+          <tr><td><b>免手持 / 塞内衣</b><br><span style="font-size:12px;color:var(--ink-3)">A1Pro 已做到，是它相对竞品的现有优势</span></td><td class="num" style="text-align:right;color:var(--ok)">已具备</td></tr>
+          <tr><td><b>充电口密封盖易开</b><br><span style="font-size:12px;color:var(--ink-3)">Frida 硅胶塞太紧，有人抠到起水泡</span></td><td class="num" style="text-align:right">8 条</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6 机会 -->
+  <div class="sect">
+    <div class="sect-t">06 · 五个切入口（按 ROI 排序）</div>
+    <div class="card">
+      <div class="op">
+        <div class="rank" style="background:var(--danger)">1</div>
+        <div>
+          <h3>续航做到 90 分钟，且必须是「双功能同开」口径</h3>
+          <p>585 条投诉集中于此，是品类第一痛点。关键在于所有竞品的标称续航都按「只开震动」测，用户一开加热就腰斩。直接对标「加热+震动同开撑满 3 次 30 分钟 session」，并把这个口径写进 listing 主图——这本身就是一条差异化文案。</p>
+          <span class="tag" style="background:var(--danger-soft);color:var(--danger)">585 条投诉 · 最高优先级</span>
+        </div>
+      </div>
+      <div class="op">
+        <div class="rank" style="background:var(--heat)">2</div>
+        <div>
+          <h3>耐用性与电气安全</h3>
+          <p>200 条"用几周就坏"+ 53 条烫伤 + 多起充电口熔毁/自燃。竞品在这一项上口碑全线崩塌（Frida 甚至出现"4 个月换 3 个"）。做好 NTC 温控、过温保护、充电口防护，等于白捡竞品让出来的信任。</p>
+          <span class="tag" style="background:var(--heat-soft);color:#8a3a1c">253 条 · 合规红线</span>
+        </div>
+      </div>
+      <div class="op">
+        <div class="rank" style="background:var(--warn)">3</div>
+        <div>
+          <h3>加热更快、更热、可精细控温</h3>
+          <p>58 条嫌不够热或升温慢，53 条嫌太烫——看似矛盾，实为「档位太粗 + 无温度显示」。A1Pro 的 4 档 102–118°F / 100 秒速热已是同类最优，可以继续往「显示实际温度 + 恒温不衰减」推。</p>
+          <span class="tag" style="background:var(--warn-soft);color:#7a4d0a">111 条 · A1Pro 现有优势可放大</span>
+        </div>
+      </div>
+      <div class="op">
+        <div class="rank" style="background:var(--ok)">4</div>
+        <div>
+          <h3>冷热双模 —— 教育型长线赌注</h3>
+          <p>用户端 0 诉求，但 2022 年 ABM 乳腺炎指南已把推荐处置从热敷改为冰敷。这是典型的「供给早于需求」窗口：短期无搜索量，需自己教育；一旦哺乳顾问口径转向，能吃到整个品类的转换红利。建议做成子系列试水，不押主力。</p>
+          <span class="tag" style="background:var(--ok-soft);color:#0f6e56">0 需求但有医学背书 · 长线</span>
+        </div>
+      </div>
+      <div class="op">
+        <div class="rank" style="background:var(--vib)">5</div>
+        <div>
+          <h3>低成本细节包：夜间暗光 + 大杯型 + 双只装</h3>
+          <p>三项合计 56 条，单项都不大但改动成本极低，且竞品全部忽略。尤其「夜奶不晃眼」这条几乎无人做，做出来就是评论区里会被反复夸的记忆点。</p>
+          <span class="tag" style="background:var(--vib-soft);color:#185fa5">56 条 · 低成本高感知</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    数据来源：卖家精灵 Review API · Amazon US<br>
+    样本构成：B0DM5YGBMS（Momcozy A1Pro）8 条 + B07MZD5GVZ（LaVie 2-in-1 Warming）1296 条 + B093J85L4W（Frida Mom 2-in-1）361 条 + B0BNVZD21C（Momcozy Rolling with Heat）211 条，合计 1901 条，逐条判读。<br>
+    同一评论可同时归入多个诉求类别，故各分项之和大于评论总数。ABM 乳腺炎指南结论为公开医学文献，非评论数据。
+  </div>
+
+</div>
+</body>
+</html>

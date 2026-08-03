@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloom｜女性哺乳周期乳房健康问题地图 & 产品机会矩阵</title>
+<style>
+:root{
+  --cream:#FBF7F2; --pink:#F8E6EB; --pink-deep:#EBCDD6; --mist:#ECEAE6;
+  --mist-deep:#D9D5CF; --beige:#F2EADB; --adzuki:#B98A93; --adzuki-deep:#9C6C76;
+  --purple:#E8E1EF; --purple-deep:#B7A6D2; --rose:#F3D2DB; --rose-deep:#E0A9B8;
+  --ink:#46404a; --ink-soft:#7C727A; --line:#E6DFD6; --teal:#3E8B7E;
+  --tp:#F6D7DA; --tp-c:#B5524F; --so:#DCEDE4; --so-c:#3E7E63;
+  --gap:#F8E6D2; --gap-c:#B5793B; --op:#E8E1EF; --op-c:#6E5A9E;
+  --rd:#E1E7EE; --rd-c:#5A6A82;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:#e9e6e1;}
+.poster{
+  width:1680px;margin:0 auto;background:var(--cream);color:var(--ink);
+  font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  padding:26px 30px 22px;line-height:1.5;position:relative;
+  box-shadow:0 4px 24px rgba(0,0,0,.12);
+}
+/* header */
+.hd{background:linear-gradient(110deg,#FCF6F0 0%,#F8E6EB 55%,#EFE6F0 100%);
+  border:1px solid var(--pink-deep);border-radius:14px;padding:16px 22px;position:relative;overflow:hidden;}
+.hd:before{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(185,138,147,.18),transparent 70%);}
+.brandmark{display:inline-flex;align-items:center;gap:9px;}
+.bm-logo{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--rose-deep),var(--purple-deep));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;box-shadow:0 2px 6px rgba(156,108,118,.3);}
+.hd h1{font-size:27px;margin:0;color:#3a333e;letter-spacing:.3px;font-weight:800;}
+.hd .sub{font-size:14.5px;color:var(--adzuki-deep);margin-top:4px;font-weight:600;}
+.hd .note{font-size:12.5px;color:var(--ink-soft);margin-top:7px;border-left:3px solid var(--adzuki);padding-left:10px;}
+/* flow strip */
+.flow{display:flex;align-items:center;justify-content:center;gap:0;margin:14px 0 4px;flex-wrap:wrap;}
+.flow .step{display:flex;align-items:center;gap:9px;padding:6px 14px;border-radius:22px;font-size:13px;font-weight:700;}
+.flow .arrow{margin:0 4px;color:var(--adzuki);font-size:18px;font-weight:700;}
+.f-pain{background:var(--tp);color:var(--tp-c);}
+.f-sol{background:var(--so);color:var(--so-c);}
+.f-gap{background:var(--gap);color:var(--gap-c);}
+.f-op{background:var(--op);color:var(--op-c);}
+/* section titles */
+.sec{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 16px 15px;position:relative;}
+.sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.sec-num{width:26px;height:26px;border-radius:7px;background:var(--adzuki);color:#fff;font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 5px rgba(156,108,118,.3);}
+.sec-h h2{font-size:17px;margin:0;color:#3a333e;font-weight:800;}
+.sec-h .en{font-size:11.5px;color:var(--ink-soft);margin-left:2px;font-weight:600;letter-spacing:.4px;}
+/* module1 timeline */
+.tl{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;}
+.tl-card{border:1px solid var(--mist-deep);border-radius:10px;background:var(--cream);padding:9px 10px;position:relative;}
+.tl-card .stage{font-size:13px;font-weight:800;color:var(--adzuki-deep);margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+.tl-card .s-en{font-size:9.5px;color:var(--ink-soft);font-weight:600;letter-spacing:.2px;}
+.dim{margin-top:6px;padding-top:6px;border-top:1px dashed var(--mist-deep);}
+.dim .lab{font-size:9.5px;font-weight:800;color:var(--teal);letter-spacing:.3px;text-transform:uppercase;}
+.dim .val{font-size:11px;color:var(--ink);margin-top:1px;line-height:1.35;}
+.dim.feel .lab{color:var(--adzuki-deep);}
+.dim.need .lab{color:var(--purple-deep);}
+/* module23 grid */
+.row23{display:grid;grid-template-columns:1.32fr 1fr;gap:14px;margin-top:14px;}
+/* module2 problem tree */
+.pm-cats{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.pm-cat{border:1px solid var(--pink-deep);border-radius:9px;padding:8px 10px;background:var(--pink);}
+.pm-cat .ch{font-size:13px;font-weight:800;color:var(--adzuki-deep);}
+.pm-cat .ct{font-size:11px;color:var(--ink);margin-top:3px;line-height:1.4;}
+.slogan{margin-top:11px;background:linear-gradient(100deg,#EFE6F0,#F3D2DB);border-radius:9px;padding:9px 13px;
+  font-size:13.5px;font-weight:800;color:#6e4a55;text-align:center;letter-spacing:.2px;}
+/* module3 solution map */
+.sol-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.sol{border:1px solid var(--mist-deep);border-radius:9px;padding:8px 10px;background:var(--cream);}
+.sol .sh{font-size:12.5px;font-weight:800;color:var(--teal);display:flex;align-items:center;gap:5px;}
+.sol .sx{font-size:10.5px;margin-top:3px;color:var(--ink);}
+.sol .sx b{color:var(--adzuki-deep);}
+.sol .lim{font-size:10.5px;margin-top:3px;color:var(--ink-soft);background:var(--mist);border-radius:5px;padding:3px 6px;}
+/* module4 gaps */
+.m4{background:linear-gradient(180deg,#FFFDFB,#FBF1F3);}
+.gap-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:4px;}
+.gc{border:1px solid var(--rose);border-left:4px solid var(--rose-deep);border-radius:8px;background:#fff;padding:8px 10px;}
+.gc .gt{font-size:12px;font-weight:800;color:var(--tp-c);}
+.gc .gv{font-size:10.8px;color:var(--ink);margin-top:2px;line-height:1.4;}
+.big-head{margin-top:11px;text-align:center;font-size:19px;font-weight:900;color:var(--adzuki-deep);letter-spacing:.5px;
+  background:var(--beige);border-radius:9px;padding:10px;border:1px dashed var(--adzuki);}
+/* module5 matrix */
+.m5{background:linear-gradient(180deg,#FFFDFB,#F4EEF6);}
+.op-line{border:1px solid var(--purple-deep);border-radius:10px;padding:9px 12px;margin-top:9px;background:#fff;}
+.op-line:first-of-type{margin-top:6px;}
+.op-h{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.op-h .ot{font-size:13.5px;font-weight:800;color:#5b4a6e;}
+.op-items{display:flex;flex-wrap:wrap;gap:6px 14px;}
+.op-item{font-size:11.5px;color:var(--ink);}
+.op-item b{color:var(--adzuki-deep);}
+.tags{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;}
+.tg{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:11px;}
+.tg-lab{background:var(--mist);color:var(--ink-soft);font-weight:800;margin-right:1px;}
+.tg-h{background:var(--so);color:var(--so-c);}
+.tg-m{background:var(--gap);color:var(--gap-c);}
+.tg-l{background:#ECECEC;color:#8a8a8a;}
+/* module6 roadmap */
+.road{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:4px;}
+.ph{border-radius:10px;padding:10px 12px;border:1px solid var(--mist-deep);}
+.ph1{background:linear-gradient(180deg,#FDF3F5,#F8E6EB);border-color:var(--pink-deep);}
+.ph2{background:linear-gradient(180deg,#F2EEF7,#E8E1EF);border-color:var(--purple-deep);}
+.ph3{background:linear-gradient(180deg,#F4F0E8,#EDE6D5);border-color:var(--beige);border-color:#D9CFB8;}
+.ph .ph-h{font-size:14px;font-weight:800;color:#3a333e;display:flex;align-items:center;gap:6px;}
+.ph .ph-pr{font-size:10.5px;color:var(--ink-soft);font-weight:700;margin:3px 0 6px;}
+.ph ul{margin:0;padding-left:16px;}
+.ph li{font-size:11.3px;color:var(--ink);margin-bottom:4px;line-height:1.4;}
+.ph .ph-foot{font-size:11px;font-weight:800;color:var(--adzuki-deep);margin-top:7px;border-top:1px dashed var(--mist-deep);padding-top:6px;}
+/* footer */
+.ft{display:grid;grid-template-columns:1fr 360px;gap:14px;margin-top:14px;}
+.notes{border:2px dashed var(--mist-deep);border-radius:11px;padding:11px 14px;background:#FCFAF7;position:relative;}
+.notes .nt{font-size:13px;font-weight:900;color:var(--ink-soft);letter-spacing:.5px;}
+.notes .nl{font-size:10.5px;color:var(--ink-soft);margin-top:2px;}
+.notes .lines{margin-top:10px;}
+.notes .ln{height:26px;border-bottom:1px dotted var(--mist-deep);}
+.concl{background:linear-gradient(135deg,#F8E6EB,#EFE6F0);border:1px solid var(--adzuki);border-radius:11px;padding:12px 15px;}
+.concl .ct{font-size:12.5px;font-weight:900;color:var(--adzuki-deep);margin-bottom:6px;letter-spacing:.3px;}
+.concl .cv{font-size:11.8px;color:var(--ink);line-height:1.6;}
+.concl .cv b{color:var(--adzuki-deep);}
+/* small tag chip used inline */
+.chip{display:inline-block;font-size:9px;font-weight:800;padding:1px 6px;border-radius:9px;vertical-align:middle;letter-spacing:.3px;}
+.chip.pain{background:var(--tp);color:var(--tp-c);}
+.chip.sol{background:var(--so);color:var(--so-c);}
+.chip.gap{background:var(--gap);color:var(--gap-c);}
+.chip.op{background:var(--op);color:var(--op-c);}
+.chip.rd{background:var(--rd);color:var(--rd-c);}
+.ico{width:15px;height:15px;flex-shrink:0;}
+svg{display:block;}
+.legend{position:absolute;top:14px;right:18px;display:flex;gap:6px;flex-wrap:wrap;max-width:340px;justify-content:flex-end;}
+.legend .lg{font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;}
+@media print{
+  html,body{background:#fff;}
+  .poster{box-shadow:none;margin:0;width:100%;}
+  @page{size:A1 landscape;margin:8mm;}
+}
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <!-- HEADER -->
+  <header class="hd">
+    <div class="legend">
+      <span class="lg" style="background:var(--tp);color:var(--tp-c)">Pain Point 痛点</span>
+      <span class="lg" style="background:var(--so);color:var(--so-c)">Solution 方案</span>
+      <span class="lg" style="background:var(--gap);color:var(--gap-c)">Gap 空白</span>
+      <span class="lg" style="background:var(--op);color:var(--op-c)">Opportunity 机会</span>
+      <span class="lg" style="background:var(--rd);color:var(--rd-c)">Roadmap 路线</span>
+    </div>
+    <div class="brandmark">
+      <div class="bm-logo">B</div>
+      <div>
+        <h1>Bloom｜女性哺乳周期乳房健康问题地图 &amp; 产品机会矩阵</h1>
+        <div class="sub">从问题出发，逐步击破，构建 Bloom 的乳房护理与恢复产品矩阵</div>
+      </div>
+    </div>
+    <div class="note"><b>目标：</b>围绕女性在孕期—产后—哺乳期—断奶后的真实乳房问题，识别高价值需求、现有解决方案空白点与 Bloom 可持续布局的产品机会。</div>
+  </header>
+
+  <!-- FLOW STRIP -->
+  <div class="flow">
+    <span class="step f-pain">① 问题 Pain Point</span><span class="arrow">➜</span>
+    <span class="step f-sol">② 现有方案 Solution</span><span class="arrow">➜</span>
+    <span class="step f-gap">③ 市场空白 Gap</span><span class="arrow">➜</span>
+    <span class="step f-op">④ Bloom 机会 Opportunity</span>
+  </div>
+
+  <!-- MODULE 1 -->
+  <section class="sec">
+    <div class="sec-h"><div class="sec-num">1</div><h2>女性哺乳周期乳房变化全景</h2><span class="en">BREAST JOURNEY TIMELINE</span></div>
+    <div class="tl">
+      <div class="tl-card">
+        <div class="stage">🤰 孕期<span class="s-en">Pregnancy</span></div>
+        <div class="dim"><div class="lab">生理变化</div><div class="val">乳房增大、胀痛感、敏感度上升、乳晕颜色加深变大</div></div>
+        <div class="dim"><div class="lab">常见问题</div><div class="val">胀痛、摩擦不适、支撑不足、睡眠时压迫痛</div></div>
+        <div class="dim feel"><div class="lab">感受/情绪</div><div class="val">身体变化明显、敏感脆弱、对产后未知焦虑</div></div>
+        <div class="dim need"><div class="lab">核心诉求</div><div class="val">舒适支撑、减轻不适、温柔接纳变化</div></div>
+      </div>
+      <div class="tl-card">
+        <div class="stage">🍼 泌乳启动期<span class="s-en">0–2 wks</span></div>
+        <div class="dim"><div class="lab">生理变化</div><div class="val">泌乳开始、乳房充盈、血流增加、组织水肿</div></div>
+        <div class="dim"><div class="lab">常见问题</div><div class="val">涨奶、发硬、触痛、宝宝含乳困难</div></div>
+        <div class="dim feel"><div class="lab">感受/情绪</div><div class="val">疼痛、慌张、缺乏经验、易自责</div></div>
+        <div class="dim need"><div class="lab">核心诉求</div><div class="val">快速舒缓、辅助哺乳、提升喂养顺畅度</div></div>
+      </div>
+      <div class="tl-card">
+        <div class="stage">🌱 哺乳建立期<span class="s-en">2 wks–3 mo</span></div>
+        <div class="dim"><div class="lab">生理变化</div><div class="val">频繁哺乳/吸奶、乳汁分泌逐步稳定</div></div>
+        <div class="dim"><div class="lab">常见问题</div><div class="val">堵奶不适、局部胀痛、乳头摩擦损伤、吸奶不适</div></div>
+        <div class="dim feel"><div class="lab">感受/情绪</div><div class="val">疲惫、疼痛、反复护理的消耗感</div></div>
+        <div class="dim need"><div class="lab">核心诉求</div><div class="val">舒缓疼痛、减少不适、提高护理效率</div></div>
+      </div>
+      <div class="tl-card">
+        <div class="stage">💗 稳定哺乳期<span class="s-en">3–12 mo</span></div>
+        <div class="dim"><div class="lab">生理变化</div><div class="val">哺乳规律化、长期机械牵拉</div></div>
+        <div class="dim"><div class="lab">常见问题</div><div class="val">反复不适、胸部疲劳、下垂焦虑、胸型变化</div></div>
+        <div class="dim feel"><div class="lab">感受/情绪</div><div class="val">长期消耗、身体被忽视、自我感降低</div></div>
+        <div class="dim need"><div class="lab">核心诉求</div><div class="val">日常护理、修复支持、身心恢复</div></div>
+      </div>
+      <div class="tl-card">
+        <div class="stage">🌿 断奶期<span class="s-en">Weaning</span></div>
+        <div class="dim"><div class="lab">生理变化</div><div class="val">泌乳减少、乳房组织变化、肿胀波动</div></div>
+        <div class="dim"><div class="lab">常见问题</div><div class="val">胀痛、残余不适、胸型变化焦虑</div></div>
+        <div class="dim feel"><div class="lab">感受/情绪</div><div class="val">身体恢复关注增加、身份转换情绪</div></div>
+        <div class="dim need"><div class="lab">核心诉求</div><div class="val">平稳过渡、舒适恢复、形态管理</div></div>
+      </div>
+      <div class="tl-card">
+        <div class="stage">🌸 断奶后恢复期<span class="s-en">Post-weaning</span></div>
+        <div class="dim"><div class="lab">生理变化</div><div class="val">乳腺退缩、体积变化、松弛感增强</div></div>
+        <div class="dim"><div class="lab">常见问题</div><div class="val">松弛、干瘪感、皮肤状态下降、身体自信下降</div></div>
+        <div class="dim feel"><div class="lab">感受/情绪</div><div class="val">希望找回自己、恢复女性状态</div></div>
+        <div class="dim need"><div class="lab">核心诉求</div><div class="val">外观恢复、紧致支撑、自我护理、自信重建</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULE 2 + 3 -->
+  <div class="row23">
+    <section class="sec" style="margin-top:0">
+      <div class="sec-h"><div class="sec-num">2</div><h2>女性乳房问题地图</h2><span class="en">PROBLEM MAP</span><span class="chip pain" style="margin-left:auto">Pain Point</span></div>
+      <div class="pm-cats">
+        <div class="pm-cat"><div class="ch">A. 疼痛与胀感</div><div class="ct">涨奶 · 局部胀痛 · 乳房发硬 · 触碰疼痛 · 断奶期胀痛</div></div>
+        <div class="pm-cat"><div class="ch">B. 哺乳相关</div><div class="ct">含乳困难 · 哺乳前后不适 · 吸奶器不舒适 · 排乳不畅 · 哺乳后疲劳</div></div>
+        <div class="pm-cat"><div class="ch">C. 乳头与表层</div><div class="ct">摩擦不适 · 敏感 · 干裂/损伤后不适 · 皮肤屏障受损</div></div>
+        <div class="pm-cat"><div class="ch">D. 恢复与形态</div><div class="ct">下垂焦虑 · 松弛感 · 胸型变化 · 弹性下降 · 断奶后空杯感</div></div>
+        <div class="pm-cat" style="grid-column:span 2"><div class="ch">E. 情绪与心理</div><div class="ct">疼痛焦虑 · 哺乳不安 · 自我形象下降 · 缺乏自我护理时间 · 渴望被照顾与被理解</div></div>
+      </div>
+      <div class="slogan">💡 Bloom 不只是解决疼痛，更要帮助女性恢复身体体验与自我感受。</div>
+    </section>
+
+    <section class="sec" style="margin-top:0">
+      <div class="sec-h"><div class="sec-num">3</div><h2>现有解决方案地图</h2><span class="en">SOLUTION MAP</span><span class="chip sol" style="margin-left:auto">Solution</span></div>
+      <div class="sol-grid">
+        <div class="sol"><div class="sh">🔥 热敷类</div><div class="sx"><b>用途：</b>温热垫/凝胶垫舒缓涨奶</div><div class="lim">局限：仅热、无数据、不成体系</div></div>
+        <div class="sol"><div class="sh">❄️ 冷敷类</div><div class="sx"><b>用途：</b>冷敷贴/冷热两用缓肿胀</div><div class="lim">局限：被动、无持续护理</div></div>
+        <div class="sol"><div class="sh">🧺 物理辅助</div><div class="sx"><b>用途：</b>吸奶器/文胸/防溢垫/按摩器</div><div class="lim">局限：工具属性、无恢复</div></div>
+        <div class="sol"><div class="sh">🧴 护肤修复</div><div class="sx"><b>用途：</b>乳头膏/修复膏/保湿</div><div class="lim">局限：仅表层、无形态</div></div>
+        <div class="sol"><div class="sh">👙 美体恢复</div><div class="sx"><b>用途：</b>塑形内衣/紧致护理</div><div class="lim">局限：重外观、轻体验</div></div>
+        <div class="sol"><div class="sh">⚡ 科技护理</div><div class="sx"><b>用途：</b>LED红光/微热/震动/柔性穿戴</div><div class="lim">局限：少乳房专用、缺教育</div></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- MODULE 4 -->
+  <section class="sec m4">
+    <div class="sec-h"><div class="sec-num">4</div><h2>现有方案不足 / 市场空白</h2><span class="en">MARKET GAPS</span><span class="chip gap" style="margin-left:auto">Gap</span></div>
+    <div class="gap-cards">
+      <div class="gc"><div class="gt">单点解决</div><div class="gv">只解决单点问题，缺乏系统恢复逻辑</div></div>
+      <div class="gc"><div class="gt">重功能轻体验</div><div class="gv">偏功能工具，不重视女性体验</div></div>
+      <div class="gc"><div class="gt">缺恢复场景</div><div class="gv">缺乏哺乳后恢复场景产品</div></div>
+      <div class="gc"><div class="gt">轻外观恢复</div><div class="gv">对乳房外观恢复关注不足</div></div>
+      <div class="gc"><div class="gt">碎片化</div><div class="gv">产品碎片化，不成体系</div></div>
+      <div class="gc"><div class="gt">缺情绪价值</div><div class="gv">缺乏舒适+科技+情绪价值结合</div></div>
+      <div class="gc"><div class="gt">母婴感多于科技感</div><div class="gv">像母婴用品，不像女性恢复科技产品</div></div>
+      <div class="gc"><div class="gt">场景断层</div><div class="gv">哺乳期↔断奶后存在明显产品断层</div></div>
+      <div class="gc"><div class="gt">教育偏窄</div><div class="gv">市场教育集中在吸奶器，缺后续恢复关注</div></div>
+    </div>
+    <div class="big-head">市场已经在解决“喂奶”，但还没有真正系统地解决“乳房恢复”。</div>
+  </section>
+
+  <!-- MODULE 5 -->
+  <section class="sec m5">
+    <div class="sec-h"><div class="sec-num">5</div><h2>Bloom 产品机会矩阵</h2><span class="en">OPPORTUNITY MATRIX</span><span class="chip op" style="margin-left:auto">Opportunity</span></div>
+
+    <div class="op-line">
+      <div class="op-h"><span class="chip op">机会线 1</span><span class="ot">舒缓护理 Soothing Care</span></div>
+      <div class="op-items">
+        <span class="op-item"><b>热敷</b>乳房护理产品</span>
+        <span class="op-item"><b>冷热双效</b>护理产品</span>
+        <span class="op-item">哺乳后<b>舒缓护理贴</b></span>
+        <span class="op-item">日常<b>乳房舒缓恢复</b>产品</span>
+      </div>
+      <div class="tags"><span class="tg tg-lab">痛点强度</span><span class="tg tg-h">高</span><span class="tg tg-lab">市场成熟度</span><span class="tg tg-h">高</span><span class="tg tg-lab">Bloom进入价值</span><span class="tg tg-h">高</span></div>
+    </div>
+
+    <div class="op-line">
+      <div class="op-h"><span class="chip op">机会线 2</span><span class="ot">科技护理 Tech Care</span></div>
+      <div class="op-items">
+        <span class="op-item"><b>红光</b>乳房护理设备</span>
+        <span class="op-item"><b>温热+红光</b>组合设备</span>
+        <span class="op-item">柔性<b>穿戴式</b>乳房护理装置</span>
+        <span class="op-item">哺乳后<b>15分钟恢复程序</b>产品</span>
+      </div>
+      <div class="tags"><span class="tg tg-lab">痛点强度</span><span class="tg tg-h">高</span><span class="tg tg-lab">市场成熟度</span><span class="tg tg-m">中</span><span class="tg tg-lab">Bloom进入价值</span><span class="tg tg-h">高</span></div>
+    </div>
+
+    <div class="op-line">
+      <div class="op-h"><span class="chip op">机会线 3</span><span class="ot">哺乳辅助延伸 Lactation Add-on</span></div>
+      <div class="op-items">
+        <span class="op-item">吸奶<b>前准备</b>护理</span>
+        <span class="op-item">吸奶<b>后恢复</b>护理</span>
+        <span class="op-item">与<b>吸奶器配套</b>恢复产品</span>
+        <span class="op-item">哺乳期<b>护理生态位</b>产品</span>
+      </div>
+      <div class="tags"><span class="tg tg-lab">痛点强度</span><span class="tg tg-m">中</span><span class="tg tg-lab">市场成熟度</span><span class="tg tg-m">中</span><span class="tg tg-lab">Bloom进入价值</span><span class="tg tg-m">中</span></div>
+    </div>
+
+    <div class="op-line">
+      <div class="op-h"><span class="chip op">机会线 4</span><span class="ot">断奶后恢复 / 外观恢复 Recovery &amp; Shape</span></div>
+      <div class="op-items">
+        <span class="op-item">断奶后<b>胸部恢复</b>护理</span>
+        <span class="op-item"><b>支撑+修复+科技</b>产品</span>
+        <span class="op-item">胸部<b>松弛恢复</b>类</span>
+        <span class="op-item">重建<b>自信</b>自我护理产品</span>
+      </div>
+      <div class="tags"><span class="tg tg-lab">痛点强度</span><span class="tg tg-m">中</span><span class="tg tg-lab">市场成熟度</span><span class="tg tg-l">低</span><span class="tg tg-lab">Bloom进入价值</span><span class="tg tg-h">高</span></div>
+    </div>
+  </section>
+
+  <!-- MODULE 6 -->
+  <section class="sec">
+    <div class="sec-h"><div class="sec-num">6</div><h2>Bloom 产品矩阵路线图</h2><span class="en">ROADMAP</span><span class="chip rd" style="margin-left:auto">Roadmap</span></div>
+    <div class="road">
+      <div class="ph ph1">
+        <div class="ph-h">🟢 Phase 1｜立即切入</div>
+        <div class="ph-pr">原则：高痛点 · 低教育成本 · 易落地</div>
+        <ul>
+          <li>热敷 / 冷热双效乳房护理</li>
+          <li>哺乳后舒缓护理贴</li>
+          <li>与吸奶场景相关的恢复产品</li>
+        </ul>
+        <div class="ph-foot">落点：现有品类教育成熟，快速起量建立信任</div>
+      </div>
+      <div class="ph ph2">
+        <div class="ph-h">🟣 Phase 2｜差异化升级</div>
+        <div class="ph-pr">原则：技术组合 · 体验升级 · 形成品牌特色</div>
+        <ul>
+          <li>红光 + 温热组合设备</li>
+          <li>柔性穿戴式乳房护理装置</li>
+          <li>哺乳恢复科技产品（15分钟程序）</li>
+        </ul>
+        <div class="ph-foot">落点：以科技护理建立 Bloom 差异心智</div>
+      </div>
+      <div class="ph ph3">
+        <div class="ph-h">🟡 Phase 3｜品牌心智建立</div>
+        <div class="ph-pr">原则：从单品走向系统方案</div>
+        <ul>
+          <li>Postpartum Breast Recovery System</li>
+          <li>断奶后恢复方案</li>
+          <li>女性乳房恢复生态产品矩阵</li>
+        </ul>
+        <div class="ph-foot">落点：从单品到系统，占领“乳房恢复”品类</div>
+      </div>
+    </div>
+    <div class="big-head" style="font-size:14px;margin-top:11px;border-color:var(--adzuki)">Bloom 路线不是追单品，而是围绕女性乳房问题，逐步建立“舒缓护理—科技护理—恢复系统”的产品矩阵。</div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="ft">
+    <div class="notes">
+      <div class="nt">✍️ Team Notes / New Opportunities</div>
+      <div class="nl">团队讨论区 · 后续补充新的产品机会或市场观察（手写）</div>
+      <div class="lines">
+        <div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div>
+      </div>
+    </div>
+    <div class="concl">
+      <div class="ct">📌 战略结论 Strategic Conclusion</div>
+      <div class="cv">
+        女性哺乳周期中的乳房问题，当前市场<b>重“喂养工具”，轻“系统恢复”</b>。<br><br>
+        Bloom 的机会在于：<br>
+        从 <b>舒缓护理</b>切入，<br>
+        以 <b>科技护理</b>形成差异化，<br>
+        最终建立 <b>女性乳房恢复产品矩阵</b>。
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
