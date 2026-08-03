@@ -1063,6 +1063,7 @@ function showAdminPanel() {
       <div class="admin-tabs">
         <div class="admin-tab active" onclick="switchAdminTab('upload',this)">文件上传</div>
         <div class="admin-tab" onclick="switchAdminTab('files',this)">文件管理</div>
+        <div class="admin-tab" onclick="switchAdminTab('trash',this)">垃圾箱</div>
         <div class="admin-tab" onclick="switchAdminTab('cats',this)">分类管理</div>
         <div class="admin-tab" onclick="switchAdminTab('tags',this)">标签管理</div>
         <div class="admin-tab" onclick="switchAdminTab('settings',this)">设置</div>
@@ -1086,6 +1087,7 @@ function switchAdminTab(tab, el) {
   el.classList.add('active');
   if (tab === 'upload') renderAdminUpload();
   else if (tab === 'files') renderAdminFiles();
+  else if (tab === 'trash') renderAdminTrash();
   else if (tab === 'cats') renderAdminCats();
   else if (tab === 'tags') renderAdminTags();
   else if (tab === 'settings') renderAdminSettings();
@@ -1228,9 +1230,7 @@ function renderAdminFiles() {
     html += '<button class="act-btn" title="打开" onclick="openFile(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')"><i class="fas fa-external-link-alt"></i></button>';
     html += '<button class="act-btn" title="移动分类" onclick="moveFileModal(\''+esc(f.filename)+'\')"><i class="fas fa-folder-tree"></i></button>';
     html += '<button class="act-btn" title="编辑标签" onclick="editTagsModal(\''+esc(f.filename)+'\')"><i class="fas fa-tag"></i></button>';
-    if (f.isUploaded) {
-      html += '<button class="act-btn danger" title="删除" onclick="deleteFile(\''+esc(f.filename)+'\')"><i class="fas fa-trash"></i></button>';
-    }
+    html += '<button class="act-btn danger" title="删除" onclick="deleteFile(\''+esc(f.filename)+'\')"><i class="fas fa-trash"></i></button>';
     html += '</div></td>';
     html += '</tr>';
   });
@@ -1482,14 +1482,97 @@ function removeFileTag(filename, tag) {
 }
 
 function deleteFile(filename) {
-  if (!confirm('确定删除文件: '+filename+'?')) return;
-  S.uploaded = S.uploaded.filter(function(f){return f.name !== filename});
-  S.favorites = S.favorites.filter(function(f){return f !== filename});
-  S.recent = S.recent.filter(function(f){return f !== filename});
-  delete S.fileTags[filename];
-  delete S.fileCats[filename];
-  Save(); renderAdminFiles(); renderSidebar();
-  toast('文件已删除');
+  if (!confirm('确定删除文件「'+filename+'」？\n删除后将进入回收站，可在「垃圾箱」中恢复。')) return;
+  if (!S.adminToken) { toast('请先登录后台'); return; }
+  adminApi('delete', { filename: filename }).then(function(resp) {
+    if (!resp.ok || !resp.j.ok) { toast('删除失败：' + (resp.j.error || '未知错误')); return; }
+    // 清除本地跟踪, 立即从界面消失
+    S.uploaded = S.uploaded.filter(function(f){return f.name !== filename});
+    S.favorites = S.favorites.filter(function(f){return f !== filename});
+    S.recent = S.recent.filter(function(f){return f !== filename});
+    delete S.fileTags[filename];
+    delete S.fileCats[filename];
+    Save();
+    refreshManifest(function() { renderAdminFiles(); renderSidebar(); });
+    toast('已删除，可在「垃圾箱」恢复');
+  }).catch(function() {
+    toast('删除失败：网络错误，请确认函数 URL 可达');
+  });
+}
+
+// 统一的后台 API 调用(携带管理员令牌)
+function adminApi(op, body) {
+  return fetch(UPLOAD_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-admin-token': S.adminToken },
+    body: JSON.stringify(Object.assign({ op: op }, body || {}))
+  }).then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); });
+}
+
+// 重新拉取 manifest(绕过分钟级缓存), 用于删除/恢复后即时刷新列表
+function refreshManifest(cb) {
+  fetch('manifest.json?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(d) {
+    if (Array.isArray(d) && d.length) FILES = d;
+  }).catch(function() { /* 保留原数据 */ }).then(function() { if (cb) cb(); });
+}
+
+function renderAdminTrash() {
+  var c = document.getElementById('adminContent');
+  c.innerHTML = '<div style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">' +
+    '<span style="font-size:13px;color:var(--muted)">已删除的文件会暂存在这里，可恢复或彻底清除（回收站不对外公开）。</span>' +
+    '<button class="btn btn-sm btn-danger" onclick="purgeAllTrash()"><i class="fas fa-trash"></i> 清空回收站</button></div>' +
+    '<div id="trashList">正在加载回收站…</div>';
+  adminApi('listtrash', {}).then(function(resp) {
+    var box = document.getElementById('trashList');
+    if (!box) return;
+    if (!resp.ok || !resp.j.ok) { box.innerHTML = '<p style="color:var(--danger)">加载失败：' + (resp.j.error || '未知错误') + '</p>'; return; }
+    var items = resp.j.items || [];
+    if (items.length === 0) { box.innerHTML = '<p style="color:var(--muted)">回收站为空。</p>'; return; }
+    var html = '<table class="admin-table"><thead><tr><th>原文件名</th><th>删除时间</th><th>操作</th></tr></thead><tbody>';
+    items.forEach(function(it) {
+      var dt = it.deletedAt ? new Date(it.deletedAt).toLocaleString('zh-CN') : '';
+      html += '<tr>';
+      html += '<td style="max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(it.originalFilename) + '</td>';
+      html += '<td>' + dt + '</td>';
+      html += '<td><div class="actions">';
+      html += '<button class="act-btn" title="恢复" onclick="restoreFile(\'' + esc(it.entryId) + '\')"><i class="fas fa-undo"></i></button>';
+      html += '<button class="act-btn danger" title="彻底删除" onclick="purgeFile(\'' + esc(it.entryId) + '\')"><i class="fas fa-times"></i></button>';
+      html += '</div></td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    box.innerHTML = html;
+  }).catch(function() {
+    var box = document.getElementById('trashList');
+    if (box) box.innerHTML = '<p style="color:var(--danger)">加载失败：网络错误，请确认函数 URL 可达</p>';
+  });
+}
+
+function restoreFile(entryId) {
+  if (!confirm('确定恢复该文件？将重新出现在文件列表中。')) return;
+  adminApi('restore', { entryId: entryId }).then(function(resp) {
+    if (!resp.ok || !resp.j.ok) { toast('恢复失败：' + (resp.j.error || '未知错误')); return; }
+    refreshManifest(function() { renderAdminTrash(); renderSidebar(); });
+    toast('已恢复');
+  }).catch(function() { toast('恢复失败：网络错误'); });
+}
+
+function purgeFile(entryId) {
+  if (!confirm('彻底删除后无法恢复，确定？')) return;
+  adminApi('purge', { entryId: entryId }).then(function(resp) {
+    if (!resp.ok || !resp.j.ok) { toast('删除失败：' + (resp.j.error || '未知错误')); return; }
+    renderAdminTrash();
+    toast('已彻底删除');
+  }).catch(function() { toast('删除失败：网络错误'); });
+}
+
+function purgeAllTrash() {
+  if (!confirm('将清空回收站中所有文件，且无法恢复，确定？')) return;
+  adminApi('purgeall', {}).then(function(resp) {
+    if (!resp.ok || !resp.j.ok) { toast('清空失败：' + (resp.j.error || '未知错误')); return; }
+    renderAdminTrash();
+    toast('回收站已清空');
+  }).catch(function() { toast('清空失败：网络错误'); });
 }
 
 function addTag() {

@@ -12,9 +12,16 @@
 // 接口:
 //   POST {op:'login', password}                       -> 校验密码, 返回 {token}
 //   POST {op:'upload', filename, content, category}   -> 需带 x-admin-token
+//   POST {op:'delete', filename}                      -> 需带 x-admin-token(真删并移入回收站)
+//   POST {op:'listtrash'}                             -> 需带 x-admin-token(列出回收站)
+//   POST {op:'restore', entryId}                      -> 需带 x-admin-token(从回收站恢复)
+//   POST {op:'purge', entryId}                        -> 需带 x-admin-token(彻底删除单条)
+//   POST {op:'purgeall'}                              -> 需带 x-admin-token(清空回收站)
 //   POST {op:'share', ...}                            -> 需带 x-admin-token(前端已未调用)
 //
 // 服务端限制: 来源白名单 / 文件类型白名单 / 大小上限 / 频率限制 / 覆盖前自动备份
+// 删除文件时会先将其内容与元信息存入 trash/ 目录, 再删除 reports/ 与 manifest 记录,
+// 因此「删除」是软删除, 可在后台「垃圾箱」中恢复或彻底清除。
 // 部署与环境变量见同目录 TENCENT_SCF_DEPLOY.md
 // =====================================================================
 
@@ -167,6 +174,215 @@ async function backupBeforeOverwrite(safeName, oldContent, branch) {
   } catch (e) { /* 清理失败不影响主流程 */ }
 }
 
+// ---------- manifest 读写辅助 ----------
+async function getManifest(branch) {
+  const res = await ghRequest('GET', '/contents/manifest.json?ref=' + branch);
+  if (res.status !== 200 || !res.json || !res.json.content) return null;
+  try {
+    return { sha: res.json.sha, data: JSON.parse(Buffer.from(res.json.content, 'base64').toString('utf8')) };
+  } catch (e) { return null; }
+}
+async function putManifest(data, sha, branch, message) {
+  const content = Buffer.from(JSON.stringify(data, null, 2), 'utf8').toString('base64');
+  return ghRequest('PUT', '/contents/manifest.json', { message: message, content: content, sha: sha, branch: branch });
+}
+async function removeFromManifest(safeName, branch) {
+  const m = await getManifest(branch);
+  if (!m) return;
+  const data = (m.data || []).filter(function (f) { return f.filename !== safeName; });
+  await putManifest(data, m.sha, branch, 'manifest: remove ' + safeName);
+}
+async function addToManifest(safeName, branch, content, meta) {
+  const m = await getManifest(branch);
+  if (!m) return;
+  let data = (m.data || []).filter(function (f) { return f.filename !== safeName; });
+  const decodedSize = Math.max(0, Math.floor((content || '').length * 3 / 4)
+    - (content && content.endsWith('==') ? 2 : content && content.endsWith('=') ? 1 : 0));
+  data.push({
+    filename: safeName,
+    title: (meta && meta.title) || safeName.replace(/\.[^.]+$/, ''),
+    size: (meta && meta.size) || decodedSize,
+    mtime: Math.floor(Date.now() / 1000),
+    category: (meta && meta.category) || 'other',
+  });
+  await putManifest(data, m.sha, branch, 'manifest: add ' + safeName);
+}
+
+// 文件名安全过滤(防路径穿越) —— 与上传保持一致
+function safeNameOf(filename) {
+  return String(filename)
+    .replace(/[^\w.\-\u4e00-\u9fa5 ()]/g, '_')
+    .replace(/^\.+/, '')
+    .slice(0, 200);
+}
+
+// ---------- 删除(软删除 -> 回收站) ----------
+async function handleDelete(body, origin) {
+  const filename = body && body.filename;
+  if (!filename) return send(400, { error: '缺少 filename' }, origin);
+  const safeName = safeNameOf(filename);
+  const branch = env('GITHUB_BRANCH', 'main');
+  const filePath = '/contents/reports/' + encodeURIComponent(safeName);
+
+  try {
+    const head = await ghRequest('GET', filePath + '?ref=' + branch);
+    if (head.status === 404) return send(404, { error: '文件不存在或已被删除' }, origin);
+    if (head.status >= 300) return send(500, { error: '读取文件失败: ' + (head.json && head.json.message || head.status) }, origin);
+    const sha = head.json.sha;
+    const content = head.json.content;
+
+    // 抓取原 manifest 元信息(用于恢复时还原标题/分类)
+    let meta = null;
+    const m = await getManifest(branch);
+    if (m) {
+      const entry = (m.data || []).find(function (f) { return f.filename === safeName; });
+      if (entry) meta = { title: entry.title, category: entry.category, size: entry.size };
+    }
+
+    // 写入回收站: trash/reports/<entryId> + trash/meta/<entryId>.json
+    const entryId = new Date().toISOString().replace(/[:.]/g, '-')
+      + '__' + crypto.randomBytes(4).toString('hex') + '__' + safeName;
+    await ghRequest('PUT', '/contents/trash/reports/' + encodeURIComponent(entryId), {
+      message: 'trash: ' + safeName, content: content, branch: branch,
+    });
+    const metaContent = Buffer.from(JSON.stringify({
+      originalFilename: safeName, deletedAt: Date.now(), title: meta && meta.title,
+      category: meta && meta.category, size: meta && meta.size,
+    }, null, 2), 'utf8').toString('base64');
+    await ghRequest('PUT', '/contents/trash/meta/' + encodeURIComponent(entryId) + '.json', {
+      message: 'trash meta: ' + safeName, content: metaContent, branch: branch,
+    });
+
+    // 从 reports/ 删除
+    const delRes = await ghRequest('DELETE', filePath, { message: 'delete: ' + safeName, sha: sha, branch: branch });
+    if (delRes.status >= 300) return send(500, { error: '删除 reports 失败: ' + (delRes.json && delRes.json.message || delRes.status) }, origin);
+
+    // 从 manifest 移除
+    await removeFromManifest(safeName, branch);
+
+    return send(200, { ok: true, entryId: entryId }, origin);
+  } catch (err) {
+    return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
+  }
+}
+
+// ---------- 列出回收站 ----------
+async function handleListTrash(body, origin) {
+  const branch = env('GITHUB_BRANCH', 'main');
+  try {
+    const res = await ghRequest('GET', '/contents/trash/meta?ref=' + branch);
+    if (res.status !== 200 || !Array.isArray(res.json)) return send(200, { ok: true, items: [] }, origin);
+    const items = [];
+    // meta 目录文件通常很少, 逐一读取可接受的请求量
+    for (const e of res.json) {
+      if (!e.name || e.name.indexOf('.json') !== e.name.length - 5) continue;
+      const mRes = await ghRequest('GET', '/contents/trash/meta/' + encodeURIComponent(e.name) + '?ref=' + branch);
+      if (mRes.status !== 200 || !mRes.json || !mRes.json.content) continue;
+      try {
+        const meta = JSON.parse(Buffer.from(mRes.json.content, 'base64').toString('utf8'));
+        items.push({
+          entryId: e.name.replace(/\.json$/, ''),
+          originalFilename: meta.originalFilename || e.name,
+          deletedAt: meta.deletedAt || 0,
+          title: meta.title,
+          category: meta.category,
+          size: meta.size,
+        });
+      } catch (err) { /* 跳过坏数据 */ }
+    }
+    items.sort(function (a, b) { return (b.deletedAt || 0) - (a.deletedAt || 0); });
+    return send(200, { ok: true, items: items }, origin);
+  } catch (err) {
+    return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
+  }
+}
+
+// ---------- 从回收站恢复 ----------
+async function handleRestore(body, origin) {
+  const entryId = body && body.entryId;
+  if (!entryId) return send(400, { error: '缺少 entryId' }, origin);
+  const branch = env('GITHUB_BRANCH', 'main');
+  try {
+    const tRes = await ghRequest('GET', '/contents/trash/reports/' + encodeURIComponent(entryId) + '?ref=' + branch);
+    if (tRes.status !== 200 || !tRes.json) return send(404, { error: '回收站中无此文件' }, origin);
+    const content = tRes.json.content;
+    const tSha = tRes.json.sha;
+
+    let meta = null;
+    const mRes = await ghRequest('GET', '/contents/trash/meta/' + encodeURIComponent(entryId) + '.json?ref=' + branch);
+    if (mRes.status === 200 && mRes.json && mRes.json.content) {
+      try { meta = JSON.parse(Buffer.from(mRes.json.content, 'base64').toString('utf8')); } catch (e) { /* ignore */ }
+    }
+    const originalFilename = (meta && meta.originalFilename) || entryId;
+    const safeName = safeNameOf(originalFilename);
+
+    // 写回 reports/(若已存在则覆盖)
+    const rPath = '/contents/reports/' + encodeURIComponent(safeName);
+    const rHead = await ghRequest('GET', rPath + '?ref=' + branch);
+    const putBody = { message: 'restore: ' + safeName, content: content, branch: branch };
+    if (rHead.status === 200 && rHead.json && rHead.json.sha) putBody.sha = rHead.json.sha;
+    const putRes = await ghRequest('PUT', rPath, putBody);
+    if (putRes.status >= 300) return send(500, { error: '恢复失败: ' + (putRes.json && putRes.json.message || putRes.status) }, origin);
+
+    // 重新加入 manifest
+    await addToManifest(safeName, branch, content, meta);
+
+    // 清理回收站条目
+    const mSha = (mRes.json && mRes.json.sha) || null;
+    await ghRequest('DELETE', '/contents/trash/reports/' + encodeURIComponent(entryId), { message: 'purge trash: ' + entryId, sha: tSha, branch: branch });
+    if (mSha) await ghRequest('DELETE', '/contents/trash/meta/' + encodeURIComponent(entryId) + '.json', { message: 'purge trash meta', sha: mSha, branch: branch });
+
+    return send(200, { ok: true }, origin);
+  } catch (err) {
+    return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
+  }
+}
+
+// ---------- 彻底删除单条(从回收站) ----------
+async function handlePurge(body, origin) {
+  const entryId = body && body.entryId;
+  if (!entryId) return send(400, { error: '缺少 entryId' }, origin);
+  const branch = env('GITHUB_BRANCH', 'main');
+  try {
+    const tRes = await ghRequest('GET', '/contents/trash/reports/' + encodeURIComponent(entryId) + '?ref=' + branch);
+    if (tRes.status === 200 && tRes.json && tRes.json.sha) {
+      await ghRequest('DELETE', '/contents/trash/reports/' + encodeURIComponent(entryId), { message: 'purge: ' + entryId, sha: tRes.json.sha, branch: branch });
+    }
+    const mRes = await ghRequest('GET', '/contents/trash/meta/' + encodeURIComponent(entryId) + '.json?ref=' + branch);
+    if (mRes.status === 200 && mRes.json && mRes.json.sha) {
+      await ghRequest('DELETE', '/contents/trash/meta/' + encodeURIComponent(entryId) + '.json', { message: 'purge meta: ' + entryId, sha: mRes.json.sha, branch: branch });
+    }
+    return send(200, { ok: true }, origin);
+  } catch (err) {
+    return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
+  }
+}
+
+// ---------- 清空回收站 ----------
+async function handlePurgeAll(body, origin) {
+  const branch = env('GITHUB_BRANCH', 'main');
+  try {
+    const res = await ghRequest('GET', '/contents/trash/meta?ref=' + branch);
+    if (res.status !== 200 || !Array.isArray(res.json)) return send(200, { ok: true, count: 0 }, origin);
+    let count = 0;
+    for (const e of res.json) {
+      if (!e.name || e.name.indexOf('.json') !== e.name.length - 5) continue;
+      const entryId = e.name.replace(/\.json$/, '');
+      const tRes = await ghRequest('GET', '/contents/trash/reports/' + encodeURIComponent(entryId) + '?ref=' + branch);
+      if (tRes.status === 200 && tRes.json && tRes.json.sha) {
+        await ghRequest('DELETE', '/contents/trash/reports/' + encodeURIComponent(entryId), { message: 'purge: ' + entryId, sha: tRes.json.sha, branch: branch });
+      }
+      if (e.sha) {
+        await ghRequest('DELETE', '/contents/trash/meta/' + encodeURIComponent(e.name), { message: 'purge meta: ' + entryId, sha: e.sha, branch: branch });
+      }
+      count++;
+    }
+    return send(200, { ok: true, count: count }, origin);
+  } catch (err) {
+    return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
+  }
+}
+
 // ---------- 上传 ----------
 async function handleUpload(body, origin) {
   const { filename, content, category } = body || {};
@@ -290,6 +506,11 @@ exports.main_handler = async (event, context) => {
   if (authErr) return authErr;
 
   if (op === 'upload') return await handleUpload(body, origin);
+  if (op === 'delete') return await handleDelete(body, origin);
+  if (op === 'listtrash') return await handleListTrash(body, origin);
+  if (op === 'restore') return await handleRestore(body, origin);
+  if (op === 'purge') return await handlePurge(body, origin);
+  if (op === 'purgeall') return await handlePurgeAll(body, origin);
   if (op === 'share') return await handleShare(body, origin);
   return send(400, { error: '未知操作: ' + op }, origin);
 };
