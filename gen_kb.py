@@ -576,6 +576,61 @@ function rawManifestUrl() {
   return 'manifest.json?t=' + Date.now();
 }
 
+// 直读 raw.githubusercontent.com 的 meta.json(分类/标签等云端元数据) —— 与 manifest 同理
+function metaUrl() {
+  try {
+    var u = new URL(location.href);
+    if (u.hostname.endsWith('.github.io')) {
+      var parts = u.pathname.split('/').filter(function(p) { return p; });
+      if (parts.length >= 1) {
+        var user = u.hostname.split('.')[0];
+        var repo = parts[0];
+        var branch = 'main'; // 与仓库默认分支保持一致(如需改分支, 只改这里)
+        return 'https://raw.githubusercontent.com/' + user + '/' + repo + '/' + branch + '/meta.json';
+      }
+    }
+  } catch (e) {}
+  // 本地预览 / 非 Pages 环境: 退回同源 meta.json
+  return 'meta.json?t=' + Date.now();
+}
+
+// 拉取云端元数据覆盖本地分类/标签(云端为权威源); 首次(404)用本地数据初始化云端
+function loadMeta(cb) {
+  fetch(metaUrl() + '?t=' + Date.now()).then(function(r) {
+    if (r.status === 404) { syncMetaToCloud(); if (cb) cb(); return; } // 首次: 把本地已有数据推上云
+    if (!r.ok) { if (cb) cb(); return; }
+    return r.json();
+  }).then(function(d) {
+    if (!d) return;
+    if (Array.isArray(d.customCats)) S.customCats = d.customCats;
+    if (d.fileCats && typeof d.fileCats === 'object') S.fileCats = d.fileCats;
+    if (d.fileTags && typeof d.fileTags === 'object') S.fileTags = d.fileTags;
+    if (Array.isArray(d.allTags)) S.allTags = d.allTags;
+    if (cb) cb();
+    renderSidebar(); renderMain();
+  }).catch(function() { if (cb) cb(); });
+}
+
+// 把分类/标签推送到云端 meta.json(管理员令牌鉴权, 最近写入优先; 防抖合并)
+var _metaTimer = null;
+function syncMetaToCloud() {
+  if (!S.adminToken) return; // 仅管理员可写云端元数据
+  if (_metaTimer) clearTimeout(_metaTimer);
+  _metaTimer = setTimeout(function() {
+    var data = {
+      customCats: S.customCats || [],
+      fileCats: S.fileCats || {},
+      fileTags: S.fileTags || {},
+      allTags: S.allTags || []
+    };
+    fetch(UPLOAD_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': S.adminToken },
+      body: JSON.stringify({ op: 'meta', data: data })
+    }).catch(function() { /* 静默: 云端不可达时本地仍可用 */ });
+  }, 600);
+}
+
 // Load the dynamic manifest (rewritten by the upload function after each upload).
 // 直读 raw(无构建延迟), 失败回退到嵌入数据.
 (function loadManifest() {
@@ -617,6 +672,8 @@ function Save() {
   localStorage.setItem('kb_customCats', JSON.stringify(S.customCats));
   localStorage.setItem('kb_uploaded', JSON.stringify(S.uploaded));
   localStorage.setItem('kb_fileCats', JSON.stringify(S.fileCats));
+  // 分类/标签等云端元数据: 防抖推送到 meta.json(仅管理员)
+  syncMetaToCloud();
   // 令牌已在前端登录时单独持久化，不在此处理
 }
 
@@ -1076,6 +1133,7 @@ document.getElementById('adminLoginBtn').addEventListener('click', function() {
     if (resp.ok && resp.j.token) {
       S.adminToken = resp.j.token;
       S.isAdmin = true;
+      loadMeta(); // 登录后刷新云端分类/标签(若其他设备改过)
       try { localStorage.setItem('kb_admin_token', S.adminToken); } catch(e) {}
       document.getElementById('adminLogin').classList.remove('show');
       document.getElementById('adminPwdInput').value = '';
@@ -1684,6 +1742,7 @@ function isViewUnlocked() {
 }
 S.viewUnlocked = isViewUnlocked();
 S.isAdmin = !!S.adminToken; // 记住本设备时令牌仍在，视为已登录（上传若 401 会提示重新登录）
+loadMeta(); // 启动即从云端加载分类/标签(云端为权威源, 换设备/清缓存不丢)
 
 function showViewerLock() {
   var lock = document.getElementById('viewerLock');
@@ -1705,6 +1764,7 @@ function tryUnlock(pwd, remember) {
       S.adminToken = resp.j.token;
       S.viewUnlocked = true;
       S.isAdmin = true; // 查看密码=管理密码，解锁后后台亦可直接进入
+      loadMeta(); // 解锁后刷新云端分类/标签
       try {
         sessionStorage.setItem('kb_admin_token', S.adminToken);
         sessionStorage.setItem('kb_view_unlocked','1');

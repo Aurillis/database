@@ -211,6 +211,49 @@ async function addToManifest(safeName, branch, content, meta) {
   await putManifest(data, m.sha, branch, 'manifest: add ' + safeName);
 }
 
+// ---------- 分类/标签等元数据(云端同步, meta.json) ----------
+async function getMeta(branch) {
+  const res = await ghRequest('GET', '/contents/meta.json?ref=' + branch);
+  if (res.status !== 200 || !res.json || !res.json.content) return null;
+  try {
+    return { sha: res.json.sha, data: JSON.parse(Buffer.from(res.json.content, 'base64').toString('utf8')) };
+  } catch (e) { return null; }
+}
+async function putMeta(data, sha, branch, message) {
+  const content = Buffer.from(JSON.stringify(data, null, 2), 'utf8').toString('base64');
+  const putBody = { message: message, content: content, branch: branch };
+  if (sha) putBody.sha = sha;
+  const res = await ghRequest('PUT', '/contents/meta.json', putBody);
+  if (res.status >= 300) throw new Error('更新 meta 失败: ' + ((res.json && res.json.message) || res.status));
+  return res;
+}
+async function handleMeta(body, origin) {
+  const branch = env('GITHUB_BRANCH', 'main');
+  const d = (body && body.data) || {};
+  // 仅接受已知字段, 避免被写入无关结构
+  const out = {
+    customCats: Array.isArray(d.customCats) ? d.customCats : [],
+    fileCats: (d.fileCats && typeof d.fileCats === 'object') ? d.fileCats : {},
+    fileTags: (d.fileTags && typeof d.fileTags === 'object') ? d.fileTags : {},
+    allTags: Array.isArray(d.allTags) ? d.allTags : [],
+  };
+  try {
+    const m = await getMeta(branch);
+    if (m) {
+      await putMeta(out, m.sha, branch, 'meta: update');
+    } else {
+      await ghRequest('PUT', '/contents/meta.json', {
+        message: 'meta: init',
+        content: Buffer.from(JSON.stringify(out, null, 2), 'utf8').toString('base64'),
+        branch: branch,
+      });
+    }
+    return send(200, { ok: true }, origin);
+  } catch (err) {
+    return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
+  }
+}
+
 // 文件名安全过滤(防路径穿越) —— 与上传保持一致
 function safeNameOf(filename) {
   return String(filename)
@@ -518,6 +561,7 @@ exports.main_handler = async (event, context) => {
   if (op === 'restore') return await handleRestore(body, origin);
   if (op === 'purge') return await handlePurge(body, origin);
   if (op === 'purgeall') return await handlePurgeAll(body, origin);
+  if (op === 'meta') return await handleMeta(body, origin);
   if (op === 'share') return await handleShare(body, origin);
   return send(400, { error: '未知操作: ' + op }, origin);
 };
