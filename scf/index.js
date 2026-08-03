@@ -73,9 +73,10 @@ function send(statusCode, obj, origin) {
   };
 }
 
-// ---------- 分享直链：生成带随机 token 的记录，存入仓库 shares.json ----------
+// ---------- 分享直链：生成带随机 token 的记录，每篇独立存入 shares/<token>.json ----------
 // 请求体: { op:'share', filename, title?, expireDays? }  (expireDays<=0 表示永久)
 // 返回: { ok:true, token, url:'<站点>/share.html?t=<token>' }
+// 注意：每篇独立存放，避免通过全局 shares.json 反查到其他分享。
 async function handleShare(body, origin) {
   const filename = body && body.filename;
   if (!filename) return send(400, { error: '缺少 filename' }, origin);
@@ -90,29 +91,20 @@ async function handleShare(body, origin) {
   const token = crypto.randomBytes(12).toString('hex'); // 24 位十六进制，不可猜测
 
   const branch = env('GITHUB_BRANCH', 'main');
-  const filePath = '/contents/shares.json?ref=' + branch;
-  let shares = [];
-  let sha = null;
-  try {
-    const head = await ghRequest('GET', filePath);
-    if (head.status === 200 && head.json && head.json.content) {
-      shares = JSON.parse(Buffer.from(head.json.content, 'base64').toString('utf8')) || [];
-      sha = head.json.sha;
-    }
-  } catch (e) { /* 文件尚不存在，当作空数组 */ }
-
-  shares.push({
+  // 每篇独立存放到 shares/<token>.json，避免通过全局 shares.json 反查其他分享
+  const record = {
     token: token,
     filename: safeName,
     title: String(body.title || safeName).slice(0, 200),
     created: Date.now(),
     expireAt: expireAt,
+  };
+  const tokenContent = Buffer.from(JSON.stringify(record, null, 2), 'utf8').toString('base64');
+  const putRes = await ghRequest('PUT', '/contents/shares/' + token + '.json', {
+    message: 'share: ' + safeName,
+    content: tokenContent,
+    branch: branch,
   });
-
-  const newContent = Buffer.from(JSON.stringify(shares, null, 2), 'utf8').toString('base64');
-  const putBody = { message: 'share: ' + safeName, content: newContent, branch: branch };
-  if (sha) putBody.sha = sha;
-  const putRes = await ghRequest('PUT', '/contents/shares.json', putBody);
   if (putRes.status >= 300) {
     const msg = (putRes.json && putRes.json.message) || putRes.status;
     return send(500, { error: '分享记录写入失败: ' + msg }, origin);

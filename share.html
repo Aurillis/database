@@ -53,8 +53,7 @@
 </head>
 <body>
   <div class="topbar">
-    <span class="brand"><i class="fas fa-share-alt"></i> report-portal · 单篇分享</span>
-    <a href="index.html"><i class="fas fa-home"></i> 回到网站</a>
+    <span class="brand"><i class="fas fa-share-alt"></i> 单篇分享 · 仅此文件</span>
   </div>
   <div class="wrap">
     <div id="app"><div class="card"><p style="color:#646a73"><span class="spin"></span> 加载中…</p></div></div>
@@ -107,13 +106,24 @@
   var token=qs.get('t');
   if(!token){renderError('链接无效','该分享链接缺少必要的参数。');return;}
 
-  fetch('shares.json?t='+Date.now()).then(function(r){return r.status===200?r.json():[];}).then(function(list){
-    list=Array.isArray(list)?list:[];
-    var rec=list.filter(function(x){return x.token===token;})[0];
+  fetchShare(token).then(function(rec){
     if(!rec){renderError('链接无效或已失效','没有找到对应的分享记录，可能链接已过期或被删除。');return;}
     if(rec.expireAt && Date.now()>rec.expireAt){renderError('链接已过期','该分享链接已超过设定的有效期。');return;}
     renderReport(rec);
   }).catch(function(){renderError('加载失败','无法读取分享数据，请稍后重试。');});
+
+  // 优先读取每篇独立的 shares/<token>.json（不暴露其他分享）；旧链接回退到全局 shares.json
+  function fetchShare(tok){
+    return fetch('shares/'+encodeURIComponent(tok)+'.json?t='+Date.now())
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(rec){
+        if(rec && rec.token) return rec;
+        return fetch('shares.json?t='+Date.now()).then(function(r){ return r.status===200?r.json():[]; }).then(function(list){
+          list=Array.isArray(list)?list:[];
+          return list.filter(function(x){return x.token===tok;})[0] || null;
+        });
+      });
+  }
 
   function renderError(title,msg){
     app.innerHTML='<div class="card"><div class="notice err"><strong>'+esc(title)+'</strong><br>'+esc(msg)+'</div></div>';

@@ -431,6 +431,24 @@ input,select{font-family:inherit}
   .main{padding:16px}
   .file-grid{grid-template-columns:1fr}
 }
+
+/* ===== VIEWER GATE（查看密码，防止外人直接浏览全部文件） ===== */
+.viewer-lock{
+  position:fixed;inset:0;background:rgba(20,22,40,.97);z-index:400;
+  display:none;align-items:center;justify-content:center;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)
+}
+.viewer-lock.show{display:flex}
+.vl-box{background:#fff;border-radius:16px;width:380px;max-width:90vw;padding:34px 32px;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.35)}
+.vl-icon{width:58px;height:58px;border-radius:50%;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px}
+.vl-box h2{font-size:18px;margin-bottom:6px}
+.vl-box p{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6}
+.vl-chk{display:flex;align-items:center;gap:7px;justify-content:center;margin:-6px 0 16px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none}
+.vl-box input[type=password]{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-size:14px;margin-bottom:12px;box-sizing:border-box}
+.vl-box input[type=password]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(35,107,111,.12)}
+.vl-box .btn{width:100%;padding:11px;border-radius:8px;font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;transition:all .15s}
+.vl-box .btn:hover{background:var(--accent-dark)}
+.vl-err{color:var(--danger);font-size:12px;min-height:16px}
 """
 
 # ===== HTML BODY =====
@@ -471,7 +489,21 @@ HTML = r"""
     <input type="password" id="adminPwdInput" placeholder="管理密码" autofocus>
     <div class="admin-error" id="adminError"></div>
     <button class="btn btn-primary" id="adminLoginBtn">登录</button>
-    <p style="margin-top:12px;font-size:11px;color:var(--light)">默认密码: admin123</p>
+    <p style="margin-top:12px">默认密码: admin123</p>
+  </div>
+</div>
+
+<!-- 查看密码（防止外人直接浏览全部文件） -->
+<div class="viewer-lock" id="viewerLock">
+  <div class="vl-box">
+    <div class="vl-icon"><i class="fas fa-lock"></i></div>
+    <h2>私人知识库 · 需要密码</h2>
+    <p>这是私人知识库，请输入查看密码以访问文件。</p>
+    <input type="password" id="viewPwdInput" placeholder="查看密码" autofocus>
+    <label class="vl-chk"><input type="checkbox" id="viewRemember"> 记住本设备（免密进入）</label>
+    <div class="vl-err" id="viewErr"></div>
+    <button class="btn" id="viewUnlockBtn">进入</button>
+    <p style="margin-top:14px;font-size:11px;color:var(--light)">默认密码: admin123（可于管理后台修改）</p>
   </div>
 </div>
 
@@ -713,6 +745,7 @@ function getFilteredFiles() {
 
 // ===== RENDER SIDEBAR =====
 function renderSidebar() {
+  if (!S.viewUnlocked) return;
   var sb = document.getElementById('sidebar');
   var all = getAllFiles();
   var html = '';
@@ -818,6 +851,7 @@ function searchTag(tag) {
 
 // ===== RENDER MAIN =====
 function renderMain() {
+  if (!S.viewUnlocked) return;
   var main = document.getElementById('main');
   var files = getFilteredFiles();
   var title = '';
@@ -974,6 +1008,7 @@ document.getElementById('recentBtn').addEventListener('click', function() {
 });
 
 document.getElementById('adminBtn').addEventListener('click', function() {
+  if (!S.viewUnlocked) { showViewerLock(); var v=document.getElementById('viewPwdInput'); if(v) v.focus(); return; }
   if (S.isAdmin) { showAdminPanel(); }
   else { document.getElementById('adminLogin').classList.add('show'); document.getElementById('adminPwdInput').focus(); }
 });
@@ -1549,9 +1584,58 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
+// ===== VIEWER GATE（查看密码：防止外人直接访问全部文件）=====
+function isViewUnlocked() {
+  try {
+    if (sessionStorage.getItem('kb_view_unlocked') === '1') return true;
+    if (localStorage.getItem('kb_view_unlocked') === '1') return true;
+  } catch(e) {}
+  return false;
+}
+S.viewUnlocked = isViewUnlocked();
+
+function showViewerLock() {
+  var lock = document.getElementById('viewerLock');
+  if (!lock) return;
+  lock.classList.add('show');
+  var layout = document.querySelector('.layout');
+  if (layout) layout.style.display = 'none';
+  setTimeout(function(){ var i=document.getElementById('viewPwdInput'); if(i) i.focus(); }, 50);
+}
+function hideViewerLock() {
+  var lock = document.getElementById('viewerLock');
+  if (lock) lock.classList.remove('show');
+  var layout = document.querySelector('.layout');
+  if (layout) layout.style.display = '';
+}
+function tryUnlock(pwd, remember) {
+  if (pwd === S.adminPwd) {
+    S.viewUnlocked = true;
+    S.isAdmin = true; // 查看密码=管理密码，解锁后后台亦可直接进入
+    try {
+      sessionStorage.setItem('kb_view_unlocked','1');
+      if (remember) localStorage.setItem('kb_view_unlocked','1');
+    } catch(e) {}
+    document.getElementById('viewErr').textContent = '';
+    document.getElementById('viewPwdInput').value = '';
+    hideViewerLock();
+    renderSidebar(); renderMain();
+    return true;
+  }
+  document.getElementById('viewErr').textContent = '密码错误，请重试';
+  return false;
+}
+
+document.getElementById('viewUnlockBtn').addEventListener('click', function() {
+  tryUnlock(document.getElementById('viewPwdInput').value, document.getElementById('viewRemember').checked);
+});
+document.getElementById('viewPwdInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('viewUnlockBtn').click();
+});
+
 // ===== INIT =====
-renderSidebar();
-renderMain();
+if (S.viewUnlocked) { renderSidebar(); renderMain(); }
+else { showViewerLock(); }
 """
 
 # ===== GENERATE HTML =====
