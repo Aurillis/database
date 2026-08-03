@@ -489,7 +489,6 @@ HTML = r"""
     <input type="password" id="adminPwdInput" placeholder="管理密码" autofocus>
     <div class="admin-error" id="adminError"></div>
     <button class="btn btn-primary" id="adminLoginBtn">登录</button>
-    <p style="margin-top:12px">默认密码: admin123</p>
   </div>
 </div>
 
@@ -503,7 +502,6 @@ HTML = r"""
     <label class="vl-chk"><input type="checkbox" id="viewRemember"> 记住本设备（免密进入）</label>
     <div class="vl-err" id="viewErr"></div>
     <button class="btn" id="viewUnlockBtn">进入</button>
-    <p style="margin-top:14px;font-size:11px;color:var(--light)">默认密码: admin123（可于管理后台修改）</p>
   </div>
 </div>
 
@@ -534,10 +532,7 @@ JS = r"""
 // GitHub 令牌只存在该服务端，绝不进这个页面。
 var UPLOAD_API = '__UPLOAD_API__';
 
-// 上传密钥，作为 x-upload-secret 头发给服务端函数。
-// 它与后台登录密码 (S.adminPwd) 相互独立——改管理密码不影响上传。
-// 必须与服务端环境变量 UPLOAD_SECRET 一致。
-var UPLOAD_SECRET = 'admin123';
+// 注意：网页不再保存任何密钥或密码，登录与上传均走服务端令牌鉴权。
 
 var FILES = __FILES_JSON__;
 var TREE = __TREE_JSON__;
@@ -569,7 +564,7 @@ var S = {
   allTags: LS('kb_allTags', []),
   customCats: LS('kb_customCats', []),
   uploaded: LS('kb_uploaded', []),
-  adminPwd: localStorage.getItem('kb_adminPwd') || 'admin123',
+  adminToken: localStorage.getItem('kb_admin_token') || sessionStorage.getItem('kb_admin_token') || '',
   fileCats: LS('kb_fileCats', {}),  // custom category overrides
 };
 
@@ -584,7 +579,7 @@ function Save() {
   localStorage.setItem('kb_customCats', JSON.stringify(S.customCats));
   localStorage.setItem('kb_uploaded', JSON.stringify(S.uploaded));
   localStorage.setItem('kb_fileCats', JSON.stringify(S.fileCats));
-  if (S.adminPwd) localStorage.setItem('kb_adminPwd', S.adminPwd);
+  // 令牌已在前端登录时单独持久化，不在此处理
 }
 
 // ===== UTILS =====
@@ -1011,18 +1006,34 @@ document.getElementById('adminBtn').addEventListener('click', function() {
   else { document.getElementById('adminLogin').classList.add('show'); document.getElementById('adminPwdInput').focus(); }
 });
 
-// ===== ADMIN LOGIN =====
+// ===== ADMIN LOGIN（服务端验证，网页不含密码）=====
+// 向服务端发起登录，成功后返回签名令牌（不含明文密码），本地仅保存令牌。
+function doLogin(pwd) {
+  return fetch(UPLOAD_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ op: 'login', password: pwd })
+  }).then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); });
+}
+
 document.getElementById('adminLoginBtn').addEventListener('click', function() {
   var pwd = document.getElementById('adminPwdInput').value;
-  if (pwd === S.adminPwd) {
-    S.isAdmin = true;
-    document.getElementById('adminLogin').classList.remove('show');
-    document.getElementById('adminPwdInput').value = '';
-    document.getElementById('adminError').textContent = '';
-    showAdminPanel();
-  } else {
-    document.getElementById('adminError').textContent = '密码错误，请重试';
-  }
+  if (!pwd) { document.getElementById('adminError').textContent = '请输入密码'; return; }
+  doLogin(pwd).then(function(resp) {
+    if (resp.ok && resp.j.token) {
+      S.adminToken = resp.j.token;
+      S.isAdmin = true;
+      try { localStorage.setItem('kb_admin_token', S.adminToken); } catch(e) {}
+      document.getElementById('adminLogin').classList.remove('show');
+      document.getElementById('adminPwdInput').value = '';
+      document.getElementById('adminError').textContent = '';
+      showAdminPanel();
+    } else {
+      document.getElementById('adminError').textContent = (resp.j && resp.j.error) || '密码错误，请重试';
+    }
+  }).catch(function(e) {
+    document.getElementById('adminError').textContent = '无法连接服务端，请稍后重试';
+  });
 });
 
 document.getElementById('adminPwdInput').addEventListener('keydown', function(e) {
@@ -1153,6 +1164,10 @@ function handleUpload(fileList) {
     result.innerHTML = '<p style="color:var(--danger)">上传功能未配置：缺少服务端地址（UPLOAD_API）</p>';
     return;
   }
+  if (!S.adminToken) {
+    result.innerHTML = '<p style="color:var(--danger)">未登录或登录已过期，请先在右上角登录后台</p>';
+    return;
+  }
 
   result.innerHTML = '<p style="color:var(--muted)">正在上传 ' + files.length + ' 个文件到服务器...</p>';
   var done = 0, ok = 0, fail = [];
@@ -1164,8 +1179,8 @@ function handleUpload(fileList) {
       var base64 = dataUrl.split(',')[1] || '';
       fetch(UPLOAD_API, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-upload-secret': UPLOAD_SECRET },
-        body: JSON.stringify({ filename: file.name, content: base64, category: cat })
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': S.adminToken },
+        body: JSON.stringify({ op: 'upload', filename: file.name, content: base64, category: cat })
       })
       .then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); })
       .then(function(resp) {
@@ -1274,9 +1289,9 @@ function renderAdminSettings() {
   var c = document.getElementById('adminContent');
   c.innerHTML = `
     <div style="max-width:400px">
-      <h3 style="font-size:14px;margin-bottom:8px">修改管理密码</h3>
-      <input type="password" id="newPwd" placeholder="新密码" style="width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius);margin-bottom:8px">
-      <button class="btn btn-sm btn-primary" onclick="changePwd()">修改密码</button>
+      <h3 style="font-size:14px;margin-bottom:8px">管理密码</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">管理密码在服务端（腾讯云函数环境变量 <code>ADMIN_PASSWORD</code>）配置，不存储于网页，无法在此页面修改。如需更换，请在腾讯云控制台修改该环境变量后重新部署函数。</p>
+      <button class="btn btn-sm btn-ghost" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> 退出登录</button>
       <hr style="margin:24px 0;border:none;border-top:1px solid var(--line)">
       <h3 style="font-size:14px;margin-bottom:8px">数据管理</h3>
       <p style="font-size:12px;color:var(--muted);margin-bottom:8px">导出所有数据（收藏、标签、上传文件等）</p>
@@ -1289,12 +1304,17 @@ function renderAdminSettings() {
   `;
 }
 
-function changePwd() {
-  var pwd = document.getElementById('newPwd').value;
-  if (!pwd) { toast('请输入新密码'); return; }
-  S.adminPwd = pwd; Save();
-  document.getElementById('newPwd').value = '';
-  toast('密码已修改');
+function logoutAdmin() {
+  try {
+    localStorage.removeItem('kb_admin_token');
+    localStorage.removeItem('kb_view_unlocked');
+    sessionStorage.removeItem('kb_admin_token');
+    sessionStorage.removeItem('kb_view_unlocked');
+  } catch(e) {}
+  S.adminToken = '';
+  S.isAdmin = false;
+  S.viewUnlocked = false;
+  location.reload();
 }
 
 function exportData() {
@@ -1525,6 +1545,7 @@ function isViewUnlocked() {
   return false;
 }
 S.viewUnlocked = isViewUnlocked();
+S.isAdmin = !!S.adminToken; // 记住本设备时令牌仍在，视为已登录（上传若 401 会提示重新登录）
 
 function showViewerLock() {
   var lock = document.getElementById('viewerLock');
@@ -1541,21 +1562,26 @@ function hideViewerLock() {
   if (layout) layout.style.display = '';
 }
 function tryUnlock(pwd, remember) {
-  if (pwd === S.adminPwd) {
-    S.viewUnlocked = true;
-    S.isAdmin = true; // 查看密码=管理密码，解锁后后台亦可直接进入
-    try {
-      sessionStorage.setItem('kb_view_unlocked','1');
-      if (remember) localStorage.setItem('kb_view_unlocked','1');
-    } catch(e) {}
-    document.getElementById('viewErr').textContent = '';
-    document.getElementById('viewPwdInput').value = '';
-    hideViewerLock();
-    renderSidebar(); renderMain();
-    return true;
-  }
-  document.getElementById('viewErr').textContent = '密码错误，请重试';
-  return false;
+  doLogin(pwd).then(function(resp) {
+    if (resp.ok && resp.j.token) {
+      S.adminToken = resp.j.token;
+      S.viewUnlocked = true;
+      S.isAdmin = true; // 查看密码=管理密码，解锁后后台亦可直接进入
+      try {
+        sessionStorage.setItem('kb_admin_token', S.adminToken);
+        sessionStorage.setItem('kb_view_unlocked','1');
+        if (remember) { localStorage.setItem('kb_admin_token', S.adminToken); localStorage.setItem('kb_view_unlocked','1'); }
+      } catch(e) {}
+      document.getElementById('viewErr').textContent = '';
+      document.getElementById('viewPwdInput').value = '';
+      hideViewerLock();
+      renderSidebar(); renderMain();
+    } else {
+      document.getElementById('viewErr').textContent = (resp.j && resp.j.error) || '密码错误，请重试';
+    }
+  }).catch(function(e) {
+    document.getElementById('viewErr').textContent = '无法连接服务端，请稍后重试';
+  });
 }
 
 document.getElementById('viewUnlockBtn').addEventListener('click', function() {

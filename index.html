@@ -387,7 +387,6 @@ input,select{font-family:inherit}
     <input type="password" id="adminPwdInput" placeholder="管理密码" autofocus>
     <div class="admin-error" id="adminError"></div>
     <button class="btn btn-primary" id="adminLoginBtn">登录</button>
-    <p style="margin-top:12px">默认密码: admin123</p>
   </div>
 </div>
 
@@ -401,7 +400,6 @@ input,select{font-family:inherit}
     <label class="vl-chk"><input type="checkbox" id="viewRemember"> 记住本设备（免密进入）</label>
     <div class="vl-err" id="viewErr"></div>
     <button class="btn" id="viewUnlockBtn">进入</button>
-    <p style="margin-top:14px;font-size:11px;color:var(--light)">默认密码: admin123（可于管理后台修改）</p>
   </div>
 </div>
 
@@ -430,10 +428,7 @@ input,select{font-family:inherit}
 // GitHub 令牌只存在该服务端，绝不进这个页面。
 var UPLOAD_API = 'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.com';
 
-// 上传密钥，作为 x-upload-secret 头发给服务端函数。
-// 它与后台登录密码 (S.adminPwd) 相互独立——改管理密码不影响上传。
-// 必须与服务端环境变量 UPLOAD_SECRET 一致。
-var UPLOAD_SECRET = 'admin123';
+// 注意：网页不再保存任何密钥或密码，登录与上传均走服务端令牌鉴权。
 
 var FILES = [{"filename": "ABM_Protocol_36_Mastitis_Spectrum_2022.pdf", "title": "ABM_Protocol_36_Mastitis_Spectrum_2022", "size": 2056065, "mtime": 1783676572, "category": "product-lactation", "isUploaded": true}, {"filename": "Bloom_乳房健康问题地图_产品机会矩阵看板.html", "title": "Bloom_乳房健康问题地图_产品机会矩阵看板", "size": 25558, "mtime": 1785738991, "category": "product-lactation", "isUploaded": true}, {"filename": "Bloom_冷敷vs热敷振动_场景人群辨析.html", "title": "Bloom_冷敷vs热敷振动_场景人群辨析", "size": 10666, "mtime": 1785738970, "category": "product-lactation", "isUploaded": true}, {"filename": "Bloom_冷热敷使用时机定义_权威依据.html", "title": "Bloom_冷热敷使用时机定义_权威依据", "size": 14039, "mtime": 1785738983, "category": "product-lactation", "isUploaded": true}, {"filename": "Bloom_用户行为地图_User_Journey_Map.html", "title": "Bloom_用户行为地图_User_Journey_Map", "size": 48337, "mtime": 1785738995, "category": "product-lactation", "isUploaded": true}, {"filename": "Lansinoh_B01J61VL9W_冷热敷洞察看板.html", "title": "Lansinoh_B01J61VL9W_冷热敷洞察看板", "size": 21925, "mtime": 1785738998, "category": "product-lactation", "isUploaded": true}, {"filename": "Momcozy_A1Pro_B0DM5YGBMS_加热震动洞察看板.html", "title": "Momcozy_A1Pro_B0DM5YGBMS_加热震动洞察看板", "size": 30386, "mtime": 1785739003, "category": "product-lactation", "isUploaded": true}, {"filename": "US Bladder Control Devices 盆底肌训练器机会评分看板.html", "title": "US Bladder Control Devices 盆底肌训练器机会评分看板", "size": 117035, "mtime": 1785465027.659554, "category": "product-pelvic", "isUploaded": false}, {"filename": "「震动功能」专项分析：使用情境与用户反馈问题.md", "title": "「震动功能」专项分析：使用情境与用户反馈问题", "size": 5560, "mtime": 1784537589, "category": "product-lactation", "isUploaded": true}, {"filename": "全球成人乳房玩具功能技术及哺乳按摩器迁移研究.html", "title": "全球成人乳房玩具功能技术及哺乳按摩器迁移研究", "size": 21715, "mtime": 1785465027.9768794, "category": "product-lactation", "isUploaded": false}, {"filename": "全球盆底相关FDA_510k数据库_2026-07-22.xlsx", "title": "全球盆底相关FDA_510k数据库_2026-07-22", "size": 115826, "mtime": 1784703752, "category": "product-pelvic", "isUploaded": true}, {"filename": "哺乳按摩器_社媒洞察.md", "title": "哺乳按摩器_社媒洞察", "size": 10627, "mtime": 1783929422, "category": "product-lactation", "isUploaded": true}, {"filename": "哺乳按摩器【冷敷】功能调研报告.html", "title": "哺乳按摩器【冷敷】功能调研报告", "size": 4521318, "mtime": 1784889231, "category": "product-lactation", "isUploaded": true}, {"filename": "哺乳按摩器评论语义分析报告.md", "title": "哺乳按摩器评论语义分析报告", "size": 19990, "mtime": 1784539860, "category": "product-lactation", "isUploaded": true}, {"filename": "欧洲盆底肌修复仪市场看板.html", "title": "欧洲盆底肌修复仪市场看板", "size": 83071, "mtime": 1784607741, "category": "product-pelvic", "isUploaded": true}, {"filename": "盆底肌修复市场调研 -2020703.pptx", "title": "盆底肌修复市场调研 -2020703", "size": 10458656, "mtime": 1783330015, "category": "product-pelvic", "isUploaded": true}, {"filename": "盆底肌竞品分析0706.xlsx", "title": "盆底肌竞品分析0706", "size": 9707003, "mtime": 1783586426, "category": "product-pelvic", "isUploaded": true}, {"filename": "经痛热敷路径_亚马逊未满足需求与溢价标杆_V4.html", "title": "经痛热敷路径_亚马逊未满足需求与溢价标杆_V4", "size": 17998, "mtime": 1785739281, "category": "product-dysmenorrhea", "isUploaded": true}, {"filename": "美国冷热敷产品市场与用户洞察.html", "title": "美国冷热敷产品市场与用户洞察", "size": 145723, "mtime": 1784794030, "category": "product-lactation", "isUploaded": true}, {"filename": "美国哺乳按摩器机会评分分析看板.html", "title": "美国哺乳按摩器机会评分分析看板", "size": 149759, "mtime": 1783680336, "category": "product-lactation", "isUploaded": true}];
 var TREE = [{"id": "product-lactation", "name": "哺乳按摩器", "icon": "fas fa-baby"}, {"id": "product-dysmenorrhea", "name": "痛经缓解产品", "icon": "fas fa-spa"}, {"id": "product-pelvic", "name": "盆底肌修复仪", "icon": "fas fa-flask"}, {"id": "other", "name": "其他", "icon": "fas fa-folder"}];
@@ -465,7 +460,7 @@ var S = {
   allTags: LS('kb_allTags', []),
   customCats: LS('kb_customCats', []),
   uploaded: LS('kb_uploaded', []),
-  adminPwd: localStorage.getItem('kb_adminPwd') || 'admin123',
+  adminToken: localStorage.getItem('kb_admin_token') || sessionStorage.getItem('kb_admin_token') || '',
   fileCats: LS('kb_fileCats', {}),  // custom category overrides
 };
 
@@ -480,7 +475,7 @@ function Save() {
   localStorage.setItem('kb_customCats', JSON.stringify(S.customCats));
   localStorage.setItem('kb_uploaded', JSON.stringify(S.uploaded));
   localStorage.setItem('kb_fileCats', JSON.stringify(S.fileCats));
-  if (S.adminPwd) localStorage.setItem('kb_adminPwd', S.adminPwd);
+  // 令牌已在前端登录时单独持久化，不在此处理
 }
 
 // ===== UTILS =====
@@ -907,18 +902,34 @@ document.getElementById('adminBtn').addEventListener('click', function() {
   else { document.getElementById('adminLogin').classList.add('show'); document.getElementById('adminPwdInput').focus(); }
 });
 
-// ===== ADMIN LOGIN =====
+// ===== ADMIN LOGIN（服务端验证，网页不含密码）=====
+// 向服务端发起登录，成功后返回签名令牌（不含明文密码），本地仅保存令牌。
+function doLogin(pwd) {
+  return fetch(UPLOAD_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ op: 'login', password: pwd })
+  }).then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); });
+}
+
 document.getElementById('adminLoginBtn').addEventListener('click', function() {
   var pwd = document.getElementById('adminPwdInput').value;
-  if (pwd === S.adminPwd) {
-    S.isAdmin = true;
-    document.getElementById('adminLogin').classList.remove('show');
-    document.getElementById('adminPwdInput').value = '';
-    document.getElementById('adminError').textContent = '';
-    showAdminPanel();
-  } else {
-    document.getElementById('adminError').textContent = '密码错误，请重试';
-  }
+  if (!pwd) { document.getElementById('adminError').textContent = '请输入密码'; return; }
+  doLogin(pwd).then(function(resp) {
+    if (resp.ok && resp.j.token) {
+      S.adminToken = resp.j.token;
+      S.isAdmin = true;
+      try { localStorage.setItem('kb_admin_token', S.adminToken); } catch(e) {}
+      document.getElementById('adminLogin').classList.remove('show');
+      document.getElementById('adminPwdInput').value = '';
+      document.getElementById('adminError').textContent = '';
+      showAdminPanel();
+    } else {
+      document.getElementById('adminError').textContent = (resp.j && resp.j.error) || '密码错误，请重试';
+    }
+  }).catch(function(e) {
+    document.getElementById('adminError').textContent = '无法连接服务端，请稍后重试';
+  });
 });
 
 document.getElementById('adminPwdInput').addEventListener('keydown', function(e) {
@@ -1049,6 +1060,10 @@ function handleUpload(fileList) {
     result.innerHTML = '<p style="color:var(--danger)">上传功能未配置：缺少服务端地址（UPLOAD_API）</p>';
     return;
   }
+  if (!S.adminToken) {
+    result.innerHTML = '<p style="color:var(--danger)">未登录或登录已过期，请先在右上角登录后台</p>';
+    return;
+  }
 
   result.innerHTML = '<p style="color:var(--muted)">正在上传 ' + files.length + ' 个文件到服务器...</p>';
   var done = 0, ok = 0, fail = [];
@@ -1060,8 +1075,8 @@ function handleUpload(fileList) {
       var base64 = dataUrl.split(',')[1] || '';
       fetch(UPLOAD_API, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-upload-secret': UPLOAD_SECRET },
-        body: JSON.stringify({ filename: file.name, content: base64, category: cat })
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': S.adminToken },
+        body: JSON.stringify({ op: 'upload', filename: file.name, content: base64, category: cat })
       })
       .then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); })
       .then(function(resp) {
@@ -1170,9 +1185,9 @@ function renderAdminSettings() {
   var c = document.getElementById('adminContent');
   c.innerHTML = `
     <div style="max-width:400px">
-      <h3 style="font-size:14px;margin-bottom:8px">修改管理密码</h3>
-      <input type="password" id="newPwd" placeholder="新密码" style="width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius);margin-bottom:8px">
-      <button class="btn btn-sm btn-primary" onclick="changePwd()">修改密码</button>
+      <h3 style="font-size:14px;margin-bottom:8px">管理密码</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">管理密码在服务端（腾讯云函数环境变量 <code>ADMIN_PASSWORD</code>）配置，不存储于网页，无法在此页面修改。如需更换，请在腾讯云控制台修改该环境变量后重新部署函数。</p>
+      <button class="btn btn-sm btn-ghost" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> 退出登录</button>
       <hr style="margin:24px 0;border:none;border-top:1px solid var(--line)">
       <h3 style="font-size:14px;margin-bottom:8px">数据管理</h3>
       <p style="font-size:12px;color:var(--muted);margin-bottom:8px">导出所有数据（收藏、标签、上传文件等）</p>
@@ -1185,12 +1200,17 @@ function renderAdminSettings() {
   `;
 }
 
-function changePwd() {
-  var pwd = document.getElementById('newPwd').value;
-  if (!pwd) { toast('请输入新密码'); return; }
-  S.adminPwd = pwd; Save();
-  document.getElementById('newPwd').value = '';
-  toast('密码已修改');
+function logoutAdmin() {
+  try {
+    localStorage.removeItem('kb_admin_token');
+    localStorage.removeItem('kb_view_unlocked');
+    sessionStorage.removeItem('kb_admin_token');
+    sessionStorage.removeItem('kb_view_unlocked');
+  } catch(e) {}
+  S.adminToken = '';
+  S.isAdmin = false;
+  S.viewUnlocked = false;
+  location.reload();
 }
 
 function exportData() {
@@ -1421,6 +1441,7 @@ function isViewUnlocked() {
   return false;
 }
 S.viewUnlocked = isViewUnlocked();
+S.isAdmin = !!S.adminToken; // 记住本设备时令牌仍在，视为已登录（上传若 401 会提示重新登录）
 
 function showViewerLock() {
   var lock = document.getElementById('viewerLock');
@@ -1437,21 +1458,26 @@ function hideViewerLock() {
   if (layout) layout.style.display = '';
 }
 function tryUnlock(pwd, remember) {
-  if (pwd === S.adminPwd) {
-    S.viewUnlocked = true;
-    S.isAdmin = true; // 查看密码=管理密码，解锁后后台亦可直接进入
-    try {
-      sessionStorage.setItem('kb_view_unlocked','1');
-      if (remember) localStorage.setItem('kb_view_unlocked','1');
-    } catch(e) {}
-    document.getElementById('viewErr').textContent = '';
-    document.getElementById('viewPwdInput').value = '';
-    hideViewerLock();
-    renderSidebar(); renderMain();
-    return true;
-  }
-  document.getElementById('viewErr').textContent = '密码错误，请重试';
-  return false;
+  doLogin(pwd).then(function(resp) {
+    if (resp.ok && resp.j.token) {
+      S.adminToken = resp.j.token;
+      S.viewUnlocked = true;
+      S.isAdmin = true; // 查看密码=管理密码，解锁后后台亦可直接进入
+      try {
+        sessionStorage.setItem('kb_admin_token', S.adminToken);
+        sessionStorage.setItem('kb_view_unlocked','1');
+        if (remember) { localStorage.setItem('kb_admin_token', S.adminToken); localStorage.setItem('kb_view_unlocked','1'); }
+      } catch(e) {}
+      document.getElementById('viewErr').textContent = '';
+      document.getElementById('viewPwdInput').value = '';
+      hideViewerLock();
+      renderSidebar(); renderMain();
+    } else {
+      document.getElementById('viewErr').textContent = (resp.j && resp.j.error) || '密码错误，请重试';
+    }
+  }).catch(function(e) {
+    document.getElementById('viewErr').textContent = '无法连接服务端，请稍后重试';
+  });
 }
 
 document.getElementById('viewUnlockBtn').addEventListener('click', function() {
