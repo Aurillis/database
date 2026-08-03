@@ -165,6 +165,8 @@ input,select{font-family:inherit}
   font-size:11px;color:var(--light);
 }
 .file-card-footer .left{display:flex;gap:10px;align-items:center}
+.fmt-badge{display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:.3px;padding:2px 7px;border-radius:4px;line-height:1.4;white-space:nowrap}
+.li-fmt{flex-shrink:0;display:flex;align-items:center;width:74px}
 .fav-btn{
   width:28px;height:28px;border-radius:6px;
   display:flex;align-items:center;justify-content:center;
@@ -558,6 +560,43 @@ function fileIcon(filename) {
   return 'fas ' + (map[ext] || 'fa-file');
 }
 
+function fileExt(filename) {
+  var parts = String(filename).split('.');
+  return (parts.length > 1 ? parts.pop() : '').toLowerCase();
+}
+function fileFmt(filename) {
+  var ext = fileExt(filename);
+  var labels = {
+    'html':'HTML','htm':'HTML','css':'CSS','js':'JS',
+    'pdf':'PDF',
+    'png':'PNG','jpg':'JPG','jpeg':'JPG','gif':'GIF','svg':'SVG','webp':'WEBP','bmp':'BMP',
+    'doc':'Word','docx':'Word',
+    'xls':'Excel','xlsx':'Excel','csv':'Excel',
+    'ppt':'PPT','pptx':'PPT',
+    'zip':'ZIP','rar':'RAR','7z':'7Z','tar':'TAR','gz':'GZ',
+    'mp4':'MP4','mov':'MOV','avi':'AVI','mkv':'MKV',
+    'mp3':'MP3','wav':'WAV','flac':'FLAC',
+    'txt':'TXT','md':'Markdown'
+  };
+  return labels[ext] || (ext ? ext.toUpperCase() : 'FILE');
+}
+function fmtColor(filename) {
+  var ext = fileExt(filename);
+  var map = {
+    'html':'#e6783c','htm':'#e6783c','css':'#2965f1','js':'#c79f00',
+    'pdf':'#c0392b',
+    'png':'#16a34a','jpg':'#16a34a','jpeg':'#16a34a','gif':'#16a34a','svg':'#16a34a','webp':'#16a34a','bmp':'#16a34a',
+    'doc':'#2563eb','docx':'#2563eb',
+    'xls':'#1d7d3f','xlsx':'#1d7d3f','csv':'#1d7d3f',
+    'ppt':'#d35400','pptx':'#d35400',
+    'zip':'#6b7280','rar':'#6b7280','7z':'#6b7280','tar':'#6b7280','gz':'#6b7280',
+    'mp4':'#7c3aed','mov':'#7c3aed','avi':'#7c3aed','mkv':'#7c3aed',
+    'mp3':'#db2777','wav':'#db2777','flac':'#db2777',
+    'txt':'#64748b','md':'#374151'
+  };
+  return map[ext] || '#888780';
+}
+
 function catColor(catId) {
   var colors = {
     'product':'#236b6f','product-pelvic':'#236b6f','product-lactation':'#e6783c',
@@ -755,6 +794,7 @@ function renderMain() {
       html += '<div class="file-card-body">';
       html += '<div class="file-card-title">'+esc(f.title)+'</div>';
       html += '<div class="file-card-cat"><i class="'+catIcon(cat)+'"></i> '+esc(catName(cat))+'</div>';
+      html += '<div style="margin-top:6px"><span class="fmt-badge" style="background:'+fmtColor(f.filename)+'1a;color:'+fmtColor(f.filename)+'">'+fileFmt(f.filename)+'</span></div>';
       html += '</div>';
       html += '<button class="fav-btn'+(isFav?' active':'')+'" onclick="event.stopPropagation();toggleFav(\''+esc(f.filename)+'\')"><i class="fas fa-star"></i></button>';
       html += '</div>';
@@ -781,6 +821,7 @@ function renderMain() {
       html += '<div class="li-icon" style="background:'+color+'15"><i class="'+fileIcon(f.filename)+'" style="color:'+color+'"></i></div>';
       html += '<span class="li-title">'+esc(f.title)+'</span>';
       html += '<span class="li-cat">'+esc(catName(cat))+'</span>';
+      html += '<span class="li-fmt"><span class="fmt-badge" style="background:'+fmtColor(f.filename)+'1a;color:'+fmtColor(f.filename)+'">'+fileFmt(f.filename)+'</span></span>';
       html += '<span class="li-date">'+fmtDate(f.mtime)+'</span>';
       html += '<span class="li-size">'+fmtSize(f.size)+'</span>';
       html += '<button class="fav-btn'+(isFav?' active':'')+'" style="width:24px;height:24px" onclick="event.stopPropagation();toggleFav(\''+esc(f.filename)+'\')"><i class="fas fa-star"></i></button>';
@@ -1045,13 +1086,14 @@ function finishUpload(result, ok, fail, bad) {
 function renderAdminFiles() {
   var c = document.getElementById('adminContent');
   var all = getAllFiles();
-  var html = '<table class="admin-table"><thead><tr><th>文件名</th><th>分类</th><th>大小</th><th>日期</th><th>操作</th></tr></thead><tbody>';
+  var html = '<table class="admin-table"><thead><tr><th>文件名</th><th>分类</th><th>格式</th><th>大小</th><th>日期</th><th>操作</th></tr></thead><tbody>';
 
   all.forEach(function(f) {
     var cat = getFileCat(f.filename);
     html += '<tr>';
     html += '<td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(f.title)+'</td>';
     html += '<td>'+esc(catName(cat))+'</td>';
+    html += '<td><span class="fmt-badge" style="background:'+fmtColor(f.filename)+'1a;color:'+fmtColor(f.filename)+'">'+fileFmt(f.filename)+'</span></td>';
     html += '<td>'+fmtSize(f.size)+'</td>';
     html += '<td>'+fmtDate(f.mtime)+'</td>';
     html += '<td><div class="actions">';
