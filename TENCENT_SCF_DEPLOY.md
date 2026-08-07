@@ -1,6 +1,6 @@
 # 迁移上传后端到腾讯云 SCF（不用 VPN 也能上传）
 
-本指引把 report-portal 的「网页上传」后端从 Vercel（国内常被墙）迁到**腾讯云 SCF 云函数 + 函数 URL（Function URL）触发器**。
+本指引把 database 的「网页上传」后端从 Vercel（国内常被墙）迁到**腾讯云 SCF 云函数 + 函数 URL（Function URL）触发器**。
 
 - 优点：国内直连、**不用 VPN**、免费额度足够、安全架构不变（GitHub 令牌只在服务器端）。
 - 前提：有腾讯云账号并完成**实名认证**（国内云平台必做，几分钟）。
@@ -23,7 +23,7 @@
 2. 左上角**地域**选一个离你近的，例如「广州」或「上海」。
 3. 点 **新建**（或「函数服务」→「新建函数」）。
 4. 创建方式：**从头开始 / 空白函数**。
-5. 函数名称：`report-portal-upload`（随便起）。
+5. 函数名称：`database-upload`（随便起）。
 6. 运行环境：**Node.js 18.15 / 20**（选一个）。
 7. 函数类型：**事件函数**（不要选 Web 函数，我们用函数 URL 触发器）。
 8. 提交后进入函数详情 → **函数代码**：
@@ -38,13 +38,13 @@
 
 | 键 | 值 | 说明 |
 |----|----|------|
-| `GITHUB_TOKEN` | 你的 fine-grained PAT | 细粒度令牌，仅授权 `report-portal` 仓库的 Contents: Read/Write。建议勾「加密存储」。 |
-| `GITHUB_REPO` | `chenbiyin1770/report-portal` | 仓库名（用户名/仓库名）。 |
+| `GITHUB_TOKEN` | 你的 fine-grained PAT | 细粒度令牌，仅授权 `database` 仓库的 Contents: Read/Write。建议勾「加密存储」。 |
+| `GITHUB_REPO` | `Aurillis/database` | 仓库名（用户名/仓库名）。 |
 | `GITHUB_BRANCH` | `main` | 分支。 |
 | `UPLOAD_SECRET` | `admin123` | 上传密钥，必须和前端一致（前端固定发这个值）。 |
 
 > 如果之前 Vercel 用的就是同一个 fine-grained 令牌，这里**直接复用**即可，不用重新生成。
-> 若令牌已失效/泄露，去 GitHub → Settings → Developer settings → Personal access tokens → fine-grained 重新生成一个，只勾 `report-portal` 仓库、Contents 读写权限。
+> 若令牌已失效/泄露，去 GitHub → Settings → Developer settings → Personal access tokens → fine-grained 重新生成一个，只勾 `database` 仓库、Contents 读写权限。
 
 保存后**重新部署**（函数配置页右上角「部署」或代码页「保存并部署」）。
 
@@ -76,18 +76,18 @@
 
 ## 第 5 步：CORS 跨域（已在代码里处理）
 
-前端页面在 `chenbiyin1770.github.io` 下，浏览器会因跨域拦截响应。
+前端页面在 `Aurillis.github.io` 下，浏览器会因跨域拦截响应。
 
 本函数代码已经自动返回以下 CORS 响应头：
 ```
-Access-Control-Allow-Origin: https://chenbiyin1770.github.io
+Access-Control-Allow-Origin: https://Aurillis.github.io
 Access-Control-Allow-Methods: POST, OPTIONS
 Access-Control-Allow-Headers: Content-Type, x-upload-secret
 ```
 
 **你不需要额外配置 CORS**，只要函数 URL 触发器创建成功即可。
 
-（如果控制台有「函数 URL CORS」配置项，可以顺手把允许域名填成 `https://chenbiyin1770.github.io`，但不填也不影响，代码会兜底。）
+（如果控制台有「函数 URL CORS」配置项，可以顺手把允许域名填成 `https://Aurillis.github.io`，但不填也不影响，代码会兜底。）
 
 ---
 
@@ -119,7 +119,7 @@ curl -X POST "<函数URL>" \
 1. 把前端 `UPLOAD_API` 改成腾讯云地址；
 2. 顺手把上传错误提示里的「Vercel」字样去掉（改成通用提示）；
 3. 重新生成 `index.html` 并推送到 GitHub Pages；
-4. 约 1 分钟后你硬刷新 `https://chenbiyin1770.github.io/report-portal/`，齿轮 → `admin123` 登录 → 文件上传 → 选文件，**不用 VPN 即可上传成功**。
+4. 约 1 分钟后你硬刷新 `https://Aurillis.github.io/database/`，齿轮 → `admin123` 登录 → 文件上传 → 选文件，**不用 VPN 即可上传成功**。
 
 ---
 

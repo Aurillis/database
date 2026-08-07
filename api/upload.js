@@ -3,7 +3,7 @@
 //
 // Required environment variables (set in Vercel dashboard):
 //   GITHUB_TOKEN   — fine-grained PAT with Contents: Read/Write on the repo
-//   GITHUB_REPO    — e.g. chenbiyin1770/report-portal
+//   GITHUB_REPO    — e.g. Aurillis/database
 //   GITHUB_BRANCH  — main
 //   UPLOAD_SECRET  — a password the frontend must send to be allowed to upload
 //
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
   }
 
   const token = process.env.GITHUB_TOKEN;
-  const repo = process.env.GITHUB_REPO || 'chenbiyin1770/database';
+  const repo = process.env.GITHUB_REPO || 'Aurillis/database';
   const branch = process.env.GITHUB_BRANCH || 'main';
   const apiBase = 'https://api.github.com/repos/' + repo;
   const ghHeaders = {

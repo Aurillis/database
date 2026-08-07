@@ -35,7 +35,7 @@ function env(name, def) {
 // ---------- 服务端要求配置的环境变量(均不进网页) ----------
 const ADMIN_PASSWORD = env('ADMIN_PASSWORD', '');
 const SESSION_SECRET = env('SESSION_SECRET', '');
-const ALLOWED_ORIGIN = env('ALLOWED_ORIGIN', '');                      // 例如 https://chenbiyin1770.github.io
+const ALLOWED_ORIGIN = env('ALLOWED_ORIGIN', '');                      // 例如 https://Aurillis.github.io
 const MAX_UPLOAD_BYTES = Number(env('MAX_UPLOAD_BYTES', 15 * 1024 * 1024)); // 默认 15MB
 const RATE_WINDOW_MS = Number(env('RATE_WINDOW_MS', 60000));
 const RATE_MAX = Number(env('RATE_MAX', 30));                          // 每窗口最多请求数
@@ -81,7 +81,7 @@ function ghRequest(method, path, bodyObj) {
     const req = https.request({
       hostname: 'api.github.com',
       port: 443,
-      path: '/repos/' + env('GITHUB_REPO', 'chenbiyin1770/database') + path,
+      path: '/repos/' + env('GITHUB_REPO', 'Aurillis/database') + path,
       method: method,
       headers: headers,
     }, (res) => {
@@ -515,7 +515,7 @@ async function handleShare(body, origin) {
     message: 'share: ' + safeName, content: tokenContent, branch,
   });
   if (putRes.status >= 300) return send(500, { error: '分享记录写入失败' }, origin);
-  const base = env('SITE_BASE', 'https://chenbiyin1770.github.io/database').replace(/\/$/, '');
+  const base = env('SITE_BASE', 'https://Aurillis.github.io/database').replace(/\/$/, '');
   return send(200, { ok: true, token, url: base + '/share.html?t=' + token }, origin);
 }
 

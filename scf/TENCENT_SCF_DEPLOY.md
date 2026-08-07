@@ -1,4 +1,4 @@
-# 腾讯云 SCF 部署指南（report-portal 登录 / 上传后端）
+# 腾讯云 SCF 部署指南（database 登录 / 上传后端）
 
 > 对应源码：`scf/index.js`
 > 安全模型（重构后）：网页里**不再有任何密钥或密码**。登录密码与 GitHub 令牌都只存在于腾讯云函数环境变量。
@@ -51,9 +51,9 @@
 | `GITHUB_TOKEN` | `ghp_xxx...你的令牌` | 从「一.1」复制，**只在此处填写** |
 | `ADMIN_PASSWORD` | `你自己定的强密码` | **新增**：门户查看密码 + 后台登录密码，取代旧 admin123。务必改成强密码 |
 | `SESSION_SECRET` | `一段随机串` | **新增**：令牌签名密钥，用「一.2」生成的随机串 |
-| `GITHUB_REPO` | `chenbiyin1770/report-portal` | 仓库名 |
+| `GITHUB_REPO` | `Aurillis/database` | 仓库名 |
 | `GITHUB_BRANCH` | `main` | 部署分支 |
-| `ALLOWED_ORIGIN` | `https://chenbiyin1770.github.io` | **推荐**：限定请求来源，挡掉其它站点调用 |
+| `ALLOWED_ORIGIN` | `https://Aurillis.github.io` | **推荐**：限定请求来源，挡掉其它站点调用 |
 | `MAX_UPLOAD_BYTES` | `15728640` | 可选，上传大小上限（默认 15MB，单位字节） |
 
 > ⚠️ **不再需要 `UPLOAD_SECRET` 变量**——新后端已废弃它，改用 `ADMIN_PASSWORD` + 令牌鉴权。
@@ -89,7 +89,7 @@ git push origin main
 
 ## 六、验证是否生效
 
-1. 打开线上门户 `https://chenbiyin1770.github.io/report-portal/`
+1. 打开线上门户 `https://Aurillis.github.io/database/`
 2. 查看闸门输入**新的 `ADMIN_PASSWORD`** 解锁（不再是 admin123）
 3. 右上角点「管理员」→ 用同一密码登录后台
 4. 在后台「上传文件」选一个文件上传 → 应提示上传成功，约 1 分钟后列表中可见
