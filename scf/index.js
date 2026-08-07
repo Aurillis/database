@@ -81,7 +81,7 @@ function ghRequest(method, path, bodyObj) {
     const req = https.request({
       hostname: 'api.github.com',
       port: 443,
-      path: '/repos/' + env('GITHUB_REPO', 'chenbiyin1770/report-portal') + path,
+      path: '/repos/' + env('GITHUB_REPO', 'chenbiyin1770/database') + path,
       method: method,
       headers: headers,
     }, (res) => {
@@ -515,7 +515,7 @@ async function handleShare(body, origin) {
     message: 'share: ' + safeName, content: tokenContent, branch,
   });
   if (putRes.status >= 300) return send(500, { error: '分享记录写入失败' }, origin);
-  const base = env('SITE_BASE', 'https://chenbiyin1770.github.io/report-portal').replace(/\/$/, '');
+  const base = env('SITE_BASE', 'https://chenbiyin1770.github.io/database').replace(/\/$/, '');
   return send(200, { ok: true, token, url: base + '/share.html?t=' + token }, origin);
 }
 

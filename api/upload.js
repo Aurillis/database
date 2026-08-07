@@ -48,7 +48,7 @@ export default async function handler(req, res) {
   }
 
   const token = process.env.GITHUB_TOKEN;
-  const repo = process.env.GITHUB_REPO || 'chenbiyin1770/report-portal';
+  const repo = process.env.GITHUB_REPO || 'chenbiyin1770/database';
   const branch = process.env.GITHUB_BRANCH || 'main';
   const apiBase = 'https://api.github.com/repos/' + repo;
   const ghHeaders = {

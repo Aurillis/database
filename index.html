@@ -459,7 +459,7 @@ function rawManifestUrl() {
   try {
     var u = new URL(location.href);
     if (u.hostname.endsWith('.github.io')) {
-      var parts = u.pathname.split('/').filter(function(p) { return p; }); // ['report-portal', 'index.html']
+      var parts = u.pathname.split('/').filter(function(p) { return p; }); // ['database', 'index.html']
       if (parts.length >= 1) {
         var user = u.hostname.split('.')[0];
         var repo = parts[0];
