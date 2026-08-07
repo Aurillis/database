@@ -35,8 +35,31 @@ function env(name, def) {
 // ---------- 服务端要求配置的环境变量(均不进网页) ----------
 const ADMIN_PASSWORD = env('ADMIN_PASSWORD', '');
 const SESSION_SECRET = env('SESSION_SECRET', '');
-const ALLOWED_ORIGIN = env('ALLOWED_ORIGIN', '');                      // 例如 https://Aurillis.github.io
+const ALLOWED_ORIGIN = env('ALLOWED_ORIGIN', '');                      // 例如 https://Aurillis.github.io (可逗号分隔多个; 留空则自动按 SITE_BASE 推导)
 const MAX_UPLOAD_BYTES = Number(env('MAX_UPLOAD_BYTES', 15 * 1024 * 1024)); // 默认 15MB
+
+// 允许的跨域来源：支持逗号分隔多个；自动忽略末尾斜杠与大小写差异。
+// 若未配置 ALLOWED_ORIGIN，则根据 SITE_BASE 自动推导(并额外允许 localhost 便于本地调试)。
+function getAllowedOrigins() {
+  const raw = (ALLOWED_ORIGIN || '').trim();
+  let list = [];
+  if (raw) {
+    list = raw.split(',').map(function (s) { return s.trim().replace(/\/+$/, ''); }).filter(Boolean);
+  } else {
+    const sb = env('SITE_BASE', '').trim().replace(/\/+$/, '');
+    if (sb) { try { list.push(new URL(sb).origin); } catch (e) {} }
+    list.push('http://localhost:5500', 'http://127.0.0.1:5500');
+  }
+  return list;
+}
+function originAllowed(origin) {
+  const o = (origin || '').trim().replace(/\/+$/, '');
+  if (o === '' || o === '*') return true; // 无来源信息或非浏览器请求放行, 由密码鉴权兜底
+  for (const a of getAllowedOrigins()) {
+    if (o === a || o.toLowerCase() === a.toLowerCase()) return true;
+  }
+  return false;
+}
 const RATE_WINDOW_MS = Number(env('RATE_WINDOW_MS', 60000));
 const RATE_MAX = Number(env('RATE_MAX', 30));                          // 每窗口最多请求数
 // 允许的文件后缀白名单
@@ -527,8 +550,8 @@ exports.main_handler = async (event, context) => {
   if (event.httpMethod === 'OPTIONS') return send(204, {}, origin);
   if (event.httpMethod !== 'POST') return send(405, { error: 'Method not allowed' }, origin);
 
-  // 来源白名单(可选, 配置 ALLOWED_ORIGIN 后生效)
-  if (ALLOWED_ORIGIN && origin !== ALLOWED_ORIGIN) {
+  // 来源白名单(可选, 配置 ALLOWED_ORIGIN 后生效; 留空则按 SITE_BASE 自动推导)
+  if (!originAllowed(origin)) {
     return send(403, { error: '来源不被允许' }, origin);
   }
 
