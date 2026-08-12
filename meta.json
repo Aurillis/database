@@ -1,12 +1,5 @@
 {
-  "customCats": [
-    {
-      "id": "cat_1786529731892",
-      "name": "其他",
-      "icon": "fas fa-folder",
-      "parentId": null
-    }
-  ],
+  "customCats": [],
   "fileCats": {},
   "fileTags": {},
   "allTags": []
