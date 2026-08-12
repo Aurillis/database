@@ -15,7 +15,6 @@ TREE = [
     {"id": "product-lactation", "name": "哺乳按摩器", "icon": "fas fa-baby"},
     {"id": "product-dysmenorrhea", "name": "痛经缓解产品", "icon": "fas fa-spa"},
     {"id": "product-pelvic", "name": "盆底肌修复仪", "icon": "fas fa-flask"},
-    {"id": "other", "name": "其他", "icon": "fas fa-folder"},
 ]
 
 def categorize(filename, title):
@@ -679,7 +678,7 @@ function Save() {
 
 // ===== UTILS =====
 function esc(s) { var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
-function fmtDate(ts) { var d=new Date(ts*1000); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function fmtDate(ts) { var d=new Date(ts*1000); var p=function(n){return String(n).padStart(2,'0');}; return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes()); }
 function fmtSize(b) { if(b<1048576) return Math.round(b/1024)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
 function toast(msg) { var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show')},2500); }
 
@@ -699,6 +698,7 @@ function getFileCat(filename) {
 function getTree() { return TREE.concat(S.customCats); }
 
 function catName(catId) {
+  if (catId === 'other') return '未分类';
   for (var i=0; i<TREE.length; i++) {
     if (TREE[i].id === catId) return TREE[i].name;
     if (TREE[i].children) {
@@ -873,7 +873,7 @@ function renderSidebar() {
         // Parent category files
         if (catFiles > 0) {
           html += '<div class="nav-child'+(S.cat===cat.id?' active':'')+'" onclick="event.stopPropagation();selectCat(\''+cat.id+'\')">';
-          html += '<i class="fas fa-dot-circle"></i> 其他 <span class="count">'+catFiles+'</span></div>';
+          html += '<i class="fas fa-dot-circle"></i> 未归类 <span class="count">'+catFiles+'</span></div>';
         }
         cat.children.forEach(function(child) {
           var count = all.filter(function(f) { return getFileCat(f.filename) === child.id; }).length;
@@ -1242,7 +1242,7 @@ function renderAdminUpload() {
     }
   });
   sel.innerHTML = opts;
-  sel.value = S.cat === 'all' ? 'other' : S.cat;
+  sel.value = (S.cat && S.cat !== 'all' && S.cat !== 'other') ? S.cat : getTree()[0].id;
 
   var zone = document.getElementById('uploadZone');
   var input = document.getElementById('fileInput');
@@ -1522,7 +1522,7 @@ function saveCategoryEdit(catId) {
 }
 
 function deleteCategory(catId) {
-  if (!confirm('确定删除此分类？文件不会被删除，将归入"其他"分类。')) return;
+  if (!confirm('确定删除此分类？文件不会被删除，将变为未分类。')) return;
   S.customCats = S.customCats.filter(function(c){return c.id!==catId});
   // Move files to 'other'
   Object.keys(S.fileCats).forEach(function(fn) {
