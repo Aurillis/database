@@ -1231,7 +1231,7 @@ function renderAdminUpload() {
 
   // Populate category select
   var sel = document.getElementById('uploadCat');
-  var opts = '<option value="other">默认分类</option>';
+  var opts = '';
   getTree().forEach(function(cat) {
     if (cat.children) {
       opts += '<optgroup label="'+esc(cat.name)+'">';
@@ -1533,7 +1533,7 @@ function deleteCategory(catId) {
 }
 
 function moveFileModal(filename) {
-  var opts = '<option value="other">默认分类</option>';
+  var opts = '';
   getTree().forEach(function(cat) {
     if (cat.children) {
       opts += '<optgroup label="'+esc(cat.name)+'">';
