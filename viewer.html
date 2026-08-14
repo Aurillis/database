@@ -15,6 +15,9 @@
   .vh-title{flex:1;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .vh-dl{color:#fff;text-decoration:none;font-size:13px;font-weight:600;background:var(--accent,#4f7cff);padding:5px 12px;border-radius:5px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
   .vh-dl:hover{opacity:.9}
+  .vh-open{color:#fff;text-decoration:none;font-size:13px;font-weight:600;background:#2f9e44;padding:5px 12px;border-radius:5px;white-space:nowrap;display:none;align-items:center;gap:6px}
+  .vh-open:hover{opacity:.9}
+  .vh-note{display:none;padding:8px 16px;background:#fff8e1;color:#8a6d00;font-size:12.5px;border-bottom:1px solid #ffe59e;align-items:center;gap:8px}
   .vh-body{flex:1;position:relative;overflow:hidden;background:#fff}
   .vh-body iframe{width:100%;height:100%;border:none;background:#fff}
   .vh-msg{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#646a73;padding:40px;text-align:center}
@@ -27,7 +30,9 @@
     <a class="vh-back" href="javascript:void(0)" onclick="closeViewer()"><i class="fas fa-times"></i> 关闭</a>
     <span class="vh-title" id="vt">报告预览</span>
     <a class="vh-dl" id="dl" href="#" download><i class="fas fa-download"></i> 下载原文件</a>
+    <a class="vh-open" id="openStandalone" href="#" target="_blank"><i class="fas fa-external-link-alt"></i> 直接打开（可保存勾选）</a>
   </header>
+  <div class="vh-note" id="note"><i class="fas fa-info-circle"></i> 当前为沙箱预览，勾选状态不会保存。点右上角「直接打开」在新标签页打开，即可本地保存勾选进度。</div>
   <div class="vh-body" id="body">
     <iframe id="frame" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
   </div>
@@ -86,6 +91,10 @@
     if (ext === 'html' || ext === 'htm') {
       // HTML：直接加载 reports/ 路径（相对资源可正常显示），沙箱使其运行在透明源
       frame.src = rawUrl;
+      // 沙箱内 localStorage 被禁用，勾选无法保存；提供「直接打开」按钮用独立页面(同域)打开以启用本地保存
+      var ob = document.getElementById('openStandalone');
+      ob.href = rawUrl; ob.style.display = 'inline-flex';
+      document.getElementById('note').style.display = 'flex';
       return;
     }
 
