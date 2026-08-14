@@ -1554,9 +1554,22 @@ function moveFileModal(filename) {
 
 function moveFile(filename) {
   var cat = document.getElementById('moveCatSelect').value;
+  if (!cat) { toast('请先选择目标分类'); return; }
+  // 1) 本地立即生效(覆盖层), 保证界面即时反馈
   S.fileCats[filename] = cat;
-  Save(); syncMetaToCloud(); closeModal(); renderAdminFiles(); renderSidebar();
-  toast('已移动到: '+catName(cat));
+  Save(); closeModal(); renderAdminFiles(); renderMain(); renderSidebar();
+  toast('已移动到: ' + catName(cat));
+  // 2) 持久化到云端(管理员令牌下写 manifest.category, 权威源; 其他登录用户/刷新都一致)
+  if (!S.adminToken) { toast('未登录，仅本机生效（请先在后台登录再移动以同步云端）'); return; }
+  adminApi('move', { filename: filename, targetCat: cat }).then(function (resp) {
+    if (!resp.ok || !resp.j || !resp.j.ok) {
+      toast('云端同步失败，仅本机生效：' + ((resp.j && resp.j.error) || '未知错误'));
+    } else {
+      // 云端已更新 manifest.category, 重拉使 FILES 权威分类生效(主页/侧栏计数等)
+      refreshManifest(function () { renderAdminFiles(); renderMain(); renderSidebar(); });
+      toast('已移动到「' + catName(cat) + '」并已同步到云端');
+    }
+  }).catch(function () { toast('云端同步失败，仅本机生效：网络错误'); });
 }
 
 function editTagsModal(filename) {

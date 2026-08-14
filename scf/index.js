@@ -278,6 +278,34 @@ async function handleMeta(body, origin) {
   }
 }
 
+// ---------- 文件移动(改 manifest.category + 同步 meta.fileCats, 云端权威源) ----------
+async function handleMove(body, origin) {
+  const branch = env('GITHUB_BRANCH', 'main');
+  const filename = (body && body.filename) || '';
+  const targetCat = (body && body.targetCat) || '';
+  if (!filename || !targetCat) return send(400, { error: '缺少 filename 或 targetCat' }, origin);
+  try {
+    const m = await getManifest(branch);
+    if (!m) return send(404, { error: 'manifest 不存在' }, origin);
+    const data = m.data || [];
+    const item = data.find(function (f) { return f.filename === filename; });
+    if (!item) return send(404, { error: '文件不存在于 manifest: ' + filename }, origin);
+    item.category = targetCat;
+    await putManifest(data, m.sha, branch, 'manifest: move ' + filename + ' -> ' + targetCat);
+    // 同步 meta.fileCats 覆盖层(冗余, 便于未登录态/快速回退)
+    try {
+      const meta = await getMeta(branch);
+      const mdata = meta ? meta.data : { fileCats: {}, customCats: [], fileTags: {}, allTags: [] };
+      if (!mdata.fileCats) mdata.fileCats = {};
+      mdata.fileCats[filename] = targetCat;
+      await putMeta(mdata, meta ? meta.sha : null, branch, 'meta: move ' + filename);
+    } catch (e) { /* meta 覆盖层同步失败不阻断主流程 */ }
+    return send(200, { ok: true }, origin);
+  } catch (err) {
+    return send(500, { error: '移动失败: ' + (err && err.message ? err.message : err) }, origin);
+  }
+}
+
 // ---------- 看板勾选状态云同步(按文件名存到 state/<name>.json) ----------
 async function getState(filename, branch) {
   const safe = safeNameOf(filename);
@@ -635,6 +663,7 @@ exports.main_handler = async (event, context) => {
   if (op === 'purge') return await handlePurge(body, origin);
   if (op === 'purgeall') return await handlePurgeAll(body, origin);
   if (op === 'meta') return await handleMeta(body, origin);
+  if (op === 'move') return await handleMove(body, origin);
   if (op === 'state') return await handleState(body, origin);
   if (op === 'share') return await handleShare(body, origin);
   return send(400, { error: '未知操作: ' + op }, origin);
