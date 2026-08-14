@@ -32,7 +32,7 @@
     <a class="vh-dl" id="dl" href="#" download><i class="fas fa-download"></i> 下载原文件</a>
     <a class="vh-open" id="openStandalone" href="#" target="_blank"><i class="fas fa-external-link-alt"></i> 直接打开（可保存勾选）</a>
   </header>
-  <div class="vh-note" id="note"><i class="fas fa-info-circle"></i> 当前为沙箱预览，勾选状态不会保存。点右上角「直接打开」在新标签页打开，即可本地保存勾选进度。</div>
+  <div class="vh-note" id="note"></div>
   <div class="vh-body" id="body">
     <iframe id="frame" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
   </div>
@@ -123,24 +123,33 @@
 
     if (ext === 'html' || ext === 'htm') {
       // 看板类 HTML：同域 iframe 打开(localStorage 可用) + 云端同步勾选状态。点击即直接用，无需再点「直接打开」。
+      // 看板显示不依赖云端：云端 get 带 4s 超时 + 容错，挂了也不阻塞渲染（用本地 localStorage）。
       frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
       var token = (localStorage.getItem('kb_admin_token') || sessionStorage.getItem('kb_admin_token') || '');
-      showMsg('正在加载看板并同步勾选状态…', false);
+      var boardDir = new URL('reports/', location.href).href;
+      showMsg('正在加载看板…', false);
+      // 1) 先取看板内容（同源，应很快）
       fetch(rawUrl).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
         .then(function(htmlText){
-          return fetch(KB_SCF_API, { method:'POST', headers:{'Content-Type':'application/json','x-admin-token':token},
-            body: JSON.stringify({ op:'state', action:'get', filename:f }) })
+          // 2) 并行拉云端勾选状态：带 4s 超时 + 容错，绝不阻塞看板显示
+          var cloud = null;
+          var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+          var timer = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 4000);
+          return fetch(KB_SCF_API, {
+              method:'POST',
+              headers:{'Content-Type':'application/json','x-admin-token':token},
+              body: JSON.stringify({ op:'state', action:'get', filename:f }),
+              signal: ctrl ? ctrl.signal : undefined
+            })
             .then(function(r){ return r.status===200 ? r.json() : null; })
-            .then(function(j){ return { html: htmlText, cloud: (j && j.ok) ? { data:j.data, ts:j.ts } : null }; });
+            .then(function(j){ if(j && j.ok) cloud = { data:j.data, ts:j.ts }; })
+            .catch(function(){ /* 云端不可用则用本地存储，不影响显示 */ })
+            .then(function(){ clearTimeout(timer); return htmlText; });
         })
-        .then(function(res){
-          var boardDir = new URL('reports/', location.href).href;
-          frame.srcdoc = injectHead(res.html, boardDir, buildStateShim(KB_SCF_API, f, res.cloud));
-          var note = document.getElementById('note');
-          note.style.display = 'flex';
-          note.innerHTML = '<i class="fas fa-cloud"></i> 勾选状态已自动同步到云端：刷新或换设备打开均保留进度。';
-          var ob = document.getElementById('openStandalone');
-          ob.href = rawUrl; ob.style.display = 'none';
+        .then(function(htmlText){
+          // 3) 渲染看板（cloud 为 null 时走本地 localStorage，跨设备还原仅在云端可达时生效）
+          frame.srcdoc = injectHead(htmlText, boardDir, buildStateShim(KB_SCF_API, f, cloud));
+          // 按用户要求：不再显示同步提示条
         })
         .catch(function(){ showMsg('加载失败，请重试或下载原文件', true); });
       return;
