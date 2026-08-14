@@ -20,9 +20,12 @@
   .vh-note{display:none;padding:8px 16px;background:#fff8e1;color:#8a6d00;font-size:12.5px;border-bottom:1px solid #ffe59e;align-items:center;gap:8px}
   .vh-body{flex:1;position:relative;overflow:hidden;background:#fff}
   .vh-body iframe{width:100%;height:100%;border:none;background:#fff}
+  .vh-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;color:#646a73;background:#fff;z-index:5}
   .vh-msg{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#646a73;padding:40px;text-align:center}
   .vh-msg i{font-size:40px;color:#d0d3d9}
   .vh-msg.err i{color:#e5534b}
+  .vh-msg .vh-actions{margin-top:14px;display:flex;gap:10px;justify-content:center}
+  .vh-msg .vh-actions a{position:static}
 </style>
 </head>
 <body>
@@ -35,6 +38,7 @@
   <div class="vh-note" id="note"></div>
   <div class="vh-body" id="body">
     <iframe id="frame" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
+    <div class="vh-loading" id="loading" style="display:none"><i class="fas fa-spinner fa-spin"></i> 正在加载看板…</div>
   </div>
 
   <script src="vendor/marked/marked.min.js"></script>
@@ -63,6 +67,33 @@
       body.innerHTML = '<div class="vh-msg' + (isErr ? ' err' : '') + '">' +
         '<i class="fas ' + (isErr ? 'fa-exclamation-triangle' : 'fa-spinner fa-spin') + '"></i>' +
         '<div>' + text + '</div></div>';
+    }
+
+    // 加载失败时的可操作错误态：显示真实错误 + 重试 + 直接打开原文件(绕过查看页)
+    function showError(text, rawUrl, err) {
+      var body = document.getElementById('body');
+      body.innerHTML = '';
+      var msg = document.createElement('div');
+      msg.className = 'vh-msg err';
+      var icon = document.createElement('i'); icon.className = 'fas fa-exclamation-triangle'; msg.appendChild(icon);
+      var t = document.createElement('div'); t.textContent = text; msg.appendChild(t);
+      if (err && err.message) {
+        var e = document.createElement('div');
+        e.style.cssText = 'font-size:12px;color:#999;margin-top:6px;word-break:break-all';
+        e.textContent = String(err.message);
+        msg.appendChild(e);
+      }
+      var actions = document.createElement('div');
+      actions.className = 'vh-actions';
+      var retry = document.createElement('a');
+      retry.className = 'vh-dl'; retry.href = 'javascript:location.reload()';
+      retry.innerHTML = '<i class="fas fa-redo"></i> 重试';
+      var open = document.createElement('a');
+      open.className = 'vh-dl'; open.href = rawUrl; open.target = '_blank'; open.style.background = '#2f9e44';
+      open.innerHTML = '<i class="fas fa-external-link-alt"></i> 直接打开原文件';
+      actions.appendChild(retry); actions.appendChild(open);
+      msg.appendChild(actions);
+      body.appendChild(msg);
     }
 
     var KB_SCF_API = 'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.com';
@@ -117,17 +148,19 @@
         var doc = MD_TMPL.replace('__BODY__', body);
         frame.removeAttribute('src');
         frame.srcdoc = doc;
-      }).catch(function() { showMsg('加载失败，请重试或下载原文件', true); });
+      }).catch(function(err) { showError('加载失败，请重试或下载原文件', rawUrl, err); });
       return;
     }
 
     if (ext === 'html' || ext === 'htm') {
       // 看板类 HTML：同域 iframe 打开(localStorage 可用) + 云端同步勾选状态。点击即直接用，无需再点「直接打开」。
       // 看板显示不依赖云端：云端 get 带 4s 超时 + 容错，挂了也不阻塞渲染（用本地 localStorage）。
+      // 注意：必须用 overlay 显示「加载中」，绝不能 showMsg 改写 body.innerHTML —— 那会把 iframe 从 DOM 移除导致永不渲染。
       frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
       var token = (localStorage.getItem('kb_admin_token') || sessionStorage.getItem('kb_admin_token') || '');
       var boardDir = new URL('reports/', location.href).href;
-      showMsg('正在加载看板…', false);
+      var loading = document.getElementById('loading');
+      loading.style.display = 'flex';
       // 1) 先取看板内容（同源，应很快）
       fetch(rawUrl).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
         .then(function(htmlText){
@@ -148,10 +181,14 @@
         })
         .then(function(htmlText){
           // 3) 渲染看板（cloud 为 null 时走本地 localStorage，跨设备还原仅在云端可达时生效）
+          loading.style.display = 'none';
           frame.srcdoc = injectHead(htmlText, boardDir, buildStateShim(KB_SCF_API, f, cloud));
           // 按用户要求：不再显示同步提示条
         })
-        .catch(function(){ showMsg('加载失败，请重试或下载原文件', true); });
+        .catch(function(err){
+          loading.style.display = 'none';
+          showError('加载失败，请重试或下载原文件', rawUrl, err);
+        });
       return;
     }
 
