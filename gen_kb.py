@@ -1548,14 +1548,14 @@ function moveFileModal(filename) {
     <select id="moveCatSelect" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:var(--radius)">${opts}</select>
   `, [
     {text:'取消', cls:'btn-ghost', action:'closeModal()'},
-    {text:'移动', cls:'btn-primary', action:'moveFile("'+esc(filename)+'")'}
+    {text:'移动', cls:'btn-primary', action:'moveFile(\''+esc(filename)+'\')'}
   ]);
 }
 
 function moveFile(filename) {
   var cat = document.getElementById('moveCatSelect').value;
   S.fileCats[filename] = cat;
-  Save(); closeModal(); renderAdminFiles(); renderSidebar();
+  Save(); syncMetaToCloud(); closeModal(); renderAdminFiles(); renderSidebar();
   toast('已移动到: '+catName(cat));
 }
 
