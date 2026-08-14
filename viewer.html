@@ -153,41 +153,61 @@
     }
 
     if (ext === 'html' || ext === 'htm') {
-      // 看板类 HTML：同域 iframe 打开(localStorage 可用) + 云端同步勾选状态。点击即直接用，无需再点「直接打开」。
-      // 看板显示不依赖云端：云端 get 带 4s 超时 + 容错，挂了也不阻塞渲染（用本地 localStorage）。
-      // 注意：必须用 overlay 显示「加载中」，绝不能 showMsg 改写 body.innerHTML —— 那会把 iframe 从 DOM 移除导致永不渲染。
+      // 看板类 HTML：
+      // 优先用 fetch+srcdoc 加载（可在 <head> 注入云端同步桥，支持跨设备勾选还原）。
+      // 若 fetch 因 网络/浏览器扩展/CORS/超时/404 失败，则退化为「浏览器原生直接导航」打开原文件 —— 保证看板一定能显示。
       frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
       var token = (localStorage.getItem('kb_admin_token') || sessionStorage.getItem('kb_admin_token') || '');
       var boardDir = new URL('reports/', location.href).href;
       var loading = document.getElementById('loading');
       loading.style.display = 'flex';
-      // 1) 先取看板内容（同源，应很快）
-      fetch(rawUrl).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
-        .then(function(htmlText){
-          // 2) 并行拉云端勾选状态：带 4s 超时 + 容错，绝不阻塞看板显示
+
+      // 退化方案：直接用浏览器原生导航打开原文件（同源 localStorage 可用，本地勾选持久化照常工作）
+      var fallback = function () {
+        loading.style.display = 'none';
+        frame.removeAttribute('srcdoc');
+        frame.src = rawUrl;
+        frame.onload = function () {
+          // 退化模式下仍尽力注入同步桥：捕获后续勾选并回写云端（跨设备还原为尽力而为）
+          try {
+            var s = frame.contentDocument.createElement('script');
+            s.textContent = buildStateShim(KB_SCF_API, f, null);
+            frame.contentDocument.head.appendChild(s);
+          } catch (e) {}
+        };
+      };
+
+      // 1) 取看板内容（同源），带 8s 超时，失败则退化
+      var bCtrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var bTimer = setTimeout(function () { if (bCtrl) bCtrl.abort(); }, 8000);
+      fetch(rawUrl, bCtrl ? { signal: bCtrl.signal } : undefined)
+        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+        .then(function (htmlText) {
+          clearTimeout(bTimer);
+          // 2) 拉云端勾选状态（4s 超时 + 容错，绝不阻塞渲染）
           var cloud = null;
-          var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-          var timer = setTimeout(function(){ if(ctrl) ctrl.abort(); }, 4000);
+          var cCtrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+          var cTimer = setTimeout(function () { if (cCtrl) cCtrl.abort(); }, 4000);
           return fetch(KB_SCF_API, {
-              method:'POST',
-              headers:{'Content-Type':'application/json','x-admin-token':token},
-              body: JSON.stringify({ op:'state', action:'get', filename:f }),
-              signal: ctrl ? ctrl.signal : undefined
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+              body: JSON.stringify({ op: 'state', action: 'get', filename: f }),
+              signal: cCtrl ? cCtrl.signal : undefined
             })
-            .then(function(r){ return r.status===200 ? r.json() : null; })
-            .then(function(j){ if(j && j.ok) cloud = { data:j.data, ts:j.ts }; })
-            .catch(function(){ /* 云端不可用则用本地存储，不影响显示 */ })
-            .then(function(){ clearTimeout(timer); return htmlText; });
+            .then(function (r) { return r.status === 200 ? r.json() : null; })
+            .then(function (j) { if (j && j.ok) cloud = { data: j.data, ts: j.ts }; })
+            .catch(function () { /* 云端不可用则用本地存储，不影响显示 */ })
+            .then(function () { clearTimeout(cTimer); return htmlText; });
         })
-        .then(function(htmlText){
-          // 3) 渲染看板（cloud 为 null 时走本地 localStorage，跨设备还原仅在云端可达时生效）
+        .then(function (htmlText) {
           loading.style.display = 'none';
           frame.srcdoc = injectHead(htmlText, boardDir, buildStateShim(KB_SCF_API, f, cloud));
           // 按用户要求：不再显示同步提示条
         })
-        .catch(function(err){
-          loading.style.display = 'none';
-          showError('加载失败，请重试或下载原文件', rawUrl, err);
+        .catch(function (err) {
+          // fetch 失败（网络/扩展/CORS/超时/404）—— 退化为原生打开，保证看板可见
+          console.warn('[viewer] board fetch failed, fallback to direct navigation:', err);
+          fallback();
         });
       return;
     }
