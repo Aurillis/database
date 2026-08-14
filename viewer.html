@@ -126,25 +126,53 @@
 
     var KB_SCF_API = 'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.com';
 
-    // 生成注入看板 <head> 的同步桥脚本：还原云端状态 + 拦截 localStorage 写入自动同步回云端
-    function buildStateShim(api, file, cloud) {
-      var cloudJson = JSON.stringify(cloud || null);
+    // 看板同步桥回传的状态：仅在出错时提示（成功静默，不打扰）；用于排查「另一台电脑看不到进度」
+    window.addEventListener('message', function (e) {
+      if (!e.data || !e.data.__kbSync) return;
+      var note = document.getElementById('note');
+      if (!note) return;
+      if (e.data.__kbSync === 'err') {
+        note.style.display = 'flex';
+        note.innerHTML = '<i class="fas fa-exclamation-circle"></i> 云端进度读取失败，已使用本机记录（如本机也无，则看板为空）。';
+      } else if (e.data.__kbSync === 'expired') {
+        note.style.display = 'flex';
+        note.innerHTML = '<i class="fas fa-exclamation-circle"></i> 登录已过期，请回到主站重新登录后刷新本页，云端进度才会保存。';
+      }
+    });
+
+    // 生成注入看板 <head> 的同步桥脚本：
+    //   · 用「同步 XHR」直接读同源 state/<file>.json，并在看板 loadState() 之前写入 localStorage
+    //     —— 决定性方案，彻底消除「异步拉取晚于 loadState」的竞态（这是另一台电脑看不到进度的根因）。
+    //   · 拦截 localStorage.setItem：勾选/填写后自动经 SCF 写回云端（带去重，避免初始化渲染把云端覆盖成空）。
+    //   · 打印由父页面接管(__kbPrint)。
+    function buildStateShim(api, file, stateUrl) {
       var lines = [
         "var KB_API=" + JSON.stringify(api) + ";",
         "var KB_FILE=" + JSON.stringify(file) + ";",
-        "var KB_CLOUD=" + cloudJson + ";",
+        "var KB_STATE=" + JSON.stringify(stateUrl) + ";",
         "(function(){",
+        "  function getTok(){ try{ return (window.parent.localStorage.getItem('kb_admin_token')||window.parent.sessionStorage.getItem('kb_admin_token')||''); }catch(e){ return ''; } }",
+        "  function report(kind){ try{ window.parent.postMessage({__kbSync:kind,file:KB_FILE},'*'); }catch(e){} }",
         "  var _origPrint = window.print ? window.print.bind(window) : function(){};",
         "  try { window.print = function(){ if(window.parent && window.parent.__kbPrint){ window.parent.__kbPrint(); return; } _origPrint(); }; } catch(e){}",
-        "  function getTok(){ try{ return (window.parent.localStorage.getItem('kb_admin_token')||window.parent.sessionStorage.getItem('kb_admin_token')||''); }catch(e){ return ''; } }",
-        "  var _set=Storage.prototype.setItem,_get=Storage.prototype.getItem;",
+        "  // 同步读取云端共享状态(绝对 URL，避开 <base href=reports/> 把相对路径带偏)，必须在 board loadState() 之前完成写入",
+        "  try {",
+        "    var xhr=new XMLHttpRequest();",
+        "    xhr.open('GET',KB_STATE+'?t='+Date.now(),false);",
+        "    xhr.send();",
+        "    if(xhr.status===200){ var j=JSON.parse(xhr.responseText); if(j&&j.data){",
+        "      var lts=parseInt(localStorage.getItem('__kbst_ts')||'0',10);",
+        "      if((j.ts||0)>lts){ for(var k in j.data){ if(j.data.hasOwnProperty(k)) localStorage.setItem(k,j.data[k]); } localStorage.setItem('__kbst_ts',String(j.ts||0)); }",
+        "      report('ok');",
+        "    } else { report('empty'); }",
+        "  } catch(e){ report('err'); }",
+        "  var _set=Storage.prototype.setItem;",
         "  var PREFIX='__kbst_';",
         "  function isOwn(k){ return !k||k.indexOf('kb_')===0||k.toLowerCase().indexOf('token')>=0||k.indexOf(PREFIX)===0; }",
         "  function snap(){ var d={}; for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); if(isOwn(k)) continue; d[k]=localStorage.getItem(k);} return d; }",
-        "  var pend=false;",
-        "  function push(){ var data=snap(); var body=JSON.stringify({op:'state',action:'put',filename:KB_FILE,data:data,ts:Date.now()}); fetch(KB_API,{method:'POST',headers:{'Content-Type':'application/json','x-admin-token':getTok()},body:body}).then(function(r){ if(r.status===401){ var n=window.parent.document.getElementById('note'); if(n){ n.style.display='flex'; n.innerHTML='<i class=\"fas fa-exclamation-circle\"></i> 登录已过期，请回到主站重新登录后刷新本页。'; } } }).catch(function(){}); }",
-        "  Storage.prototype.setItem=function(k,v){ _set.apply(this,arguments); if(isOwn(k)) return; if(pend) return; pend=true; setTimeout(function(){ pend=false; push(); },700); };",
-        "  if(KB_CLOUD&&KB_CLOUD.data){ var lts=parseInt(_get.call(localStorage,PREFIX+'ts')||'0',10); if(KB_CLOUD.ts>lts){ for(var k in KB_CLOUD.data){ if(KB_CLOUD.data.hasOwnProperty(k)) _set.call(localStorage,k,KB_CLOUD.data[k]); } _set.call(localStorage,PREFIX+'ts',String(KB_CLOUD.ts)); } }",
+        "  var lastSent='';",
+        "  function push(){ var data=snap(); var key=JSON.stringify(data); if(key===lastSent) return; lastSent=key; var body=JSON.stringify({op:'state',action:'put',filename:KB_FILE,data:data,ts:Date.now()}); fetch(KB_API,{method:'POST',headers:{'Content-Type':'application/json','x-admin-token':getTok()},body:body}).then(function(r){ if(r.status===401){ report('expired'); } }).catch(function(){}); }",
+        "  Storage.prototype.setItem=function(k,v){ _set.apply(this,arguments); if(isOwn(k)) return; setTimeout(function(){ push(); },700); };",
         "})();"
       ];
       return '<script>' + lines.join('\n') + '<\/script>';
@@ -186,13 +214,15 @@
       // 看板类 HTML：
       // 用 fetch+srcdoc 加载（可在 <head> 注入同步桥）。
       // 勾选状态「共享」= 同域 state/<文件名>.json（由 SCF 写入仓库、GitHub Pages 同源托管）。
-      //   · 读取：走同源 fetch，无需令牌、无 CORS、不怕 SCF 抖动 —— 可靠；且在看板 loadState() 之前注入，别人打开即见最新进度。
-      //   · 写入：仍走 SCF op:'state' put（唯一能把数据提交进仓库的通道，登录已验证可达）。未登录者不写（push 直接 return）。
+      //   · 读取：注入脚本在 iframe 内用「同步 XHR」直接读该文件，并在看板 loadState() 之前写入
+      //          localStorage —— 决定性、无竞态；任何登录的人打开即见最新进度。
+      //   · 写入：勾选/填写触发 localStorage.setItem 时被拦截，经 SCF op:'state' put 写回云端
+      //          （唯一能把数据提交进仓库的通道；未登录则鉴权失败、不写，本地仍可用）。
       // 若看板内容 fetch 失败（网络/扩展/超时/404），退化为「浏览器原生直接导航」打开原文件，保证看板一定可见。
       frame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-modals allow-downloads');
       var boardDir = new URL('reports/', location.href).href;
-      // 同域共享状态文件地址（与站点同域，直接可读，不怕 SCF/CORS/令牌问题）
-      var stateUrl = new URL('state/' + encodeURIComponent(f) + '.json', location.href).href;
+      // 同域共享状态文件的「绝对」地址（必须绝对，否则会被 iframe 内的 <base href=reports/> 带偏成 reports/state/... 而 404）
+      var stateUrlAbs = new URL('state/' + encodeURIComponent(f) + '.json', location.href).href;
       var loading = document.getElementById('loading');
       loading.style.display = 'flex';
 
@@ -204,32 +234,22 @@
         frame.onload = function () {
           try {
             var s = frame.contentDocument.createElement('script');
-            s.textContent = buildStateShim(KB_SCF_API, f, null);
+            s.textContent = buildStateShim(KB_SCF_API, f, stateUrlAbs);
             frame.contentDocument.head.appendChild(s);
           } catch (e) {}
         };
       };
 
-      // 1) 取看板内容（同源），带 8s 超时，失败则退化
+      // 取看板内容（同源），带 8s 超时，失败则退化
       var bCtrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
       var bTimer = setTimeout(function () { if (bCtrl) bCtrl.abort(); }, 8000);
       fetch(rawUrl, bCtrl ? { signal: bCtrl.signal } : undefined)
         .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
         .then(function (htmlText) {
           clearTimeout(bTimer);
-          // 2) 取同域共享勾选状态（带缓存击穿；文件不存在/失败均不影响显示）
-          var sep = stateUrl.indexOf('?') >= 0 ? '&' : '?';
-          return fetch(stateUrl + sep + 't=' + Date.now(), { cache: 'no-store' })
-            .then(function (r) { return r.status === 200 ? r.json() : null; })
-            .then(function (j) {
-              var cloud = (j && j.data) ? { data: j.data, ts: j.ts } : null;
-              loading.style.display = 'none';
-              frame.srcdoc = injectHead(htmlText, boardDir, buildStateShim(KB_SCF_API, f, cloud));
-            })
-            .catch(function () {
-              loading.style.display = 'none';
-              frame.srcdoc = injectHead(htmlText, boardDir, buildStateShim(KB_SCF_API, f, null));
-            });
+          loading.style.display = 'none';
+          // 同步桥内部用同步 XHR 读云端并先于 board loadState 写入，保证共享进度可见
+          frame.srcdoc = injectHead(htmlText, boardDir, buildStateShim(KB_SCF_API, f, stateUrlAbs));
         })
         .catch(function (err) {
           // 看板内容 fetch 失败 —— 退化为原生打开，保证看板可见
