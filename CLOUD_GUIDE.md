@@ -1,7 +1,7 @@
 # report-portal / database — 云端恢复指南（CLOUD_GUIDE）
 
 > 本文件是「换设备也能立刻接手」的唯一真相源。它汇总了项目坐标、架构、SCF 配置、本地开发/部署流程与历史事故。
-> 最后更新：2026-08-14
+> 最后更新：2026-08-14（新增第十节：看板勾选状态云同步）
 
 ---
 
@@ -138,3 +138,22 @@ git -c http.proxy=http://127.0.0.1:7897 push origin main
 3. 若后端异常 → 按「四、重部署 SCF」重新上传 `scf/index.js` 并核对环境变量
 4. 本地改代码按「五」流程；改完推 `main`
 5. 本对话已在 WorkBuddy 云端（同账号任意设备可见），历史上下文可用对话检索找回
+
+---
+
+## 十、看板类 HTML 的勾选状态云同步
+
+**需求**：上传的看板 HTML（如行动看板）带勾选框+完成度统计，希望「点击即直接打开、勾选后自动保存到网站、换设备也能看到」。
+
+**实现**（commit `cd4a8f4`）：
+- `viewer.html` 打开 HTML 时改用 **同域 iframe**（`sandbox="allow-scripts allow-same-origin"`），使看板自身的 `localStorage` 可用（之前沙箱禁用导致刷新即丢）。
+- 同时向看板 `<head>` 注入一段「同步桥」脚本：
+  - 打开时先从 SCF 拉取该文件已存的勾选状态（`op:'state' action:'get'`），注入 `localStorage` 让看板即时还原；
+  - 拦截 `localStorage.setItem`，防抖 700ms 后自动把状态回写 SCF（`op:'state' action:'put'`）。
+- 状态按文件名存到仓库 `state/<文件名>.json`（走 GitHub Contents API）。
+
+**SCF 必须重部署**：本次新增了 `op:'state'` 接口（get/put + 令牌鉴权），**只改前端不重部署 SCF 则同步无效**。重部署步骤见「四」。
+
+**安全说明**：同域 iframe 意味着看板脚本可读取本域 `localStorage`（含管理员令牌）。因看板为用户自己上传的可信文件，个人使用可接受；若改为放不可信第三方 HTML 需重新评估。
+
+**注意**：同步键已排除 `kb_` 前缀的管理态与任何含 `token` 的键，避免把管理员令牌写进公开仓库的 state 文件。
