@@ -154,11 +154,15 @@
 
     if (ext === 'html' || ext === 'htm') {
       // 看板类 HTML：
-      // 优先用 fetch+srcdoc 加载（可在 <head> 注入云端同步桥，支持跨设备勾选还原）。
-      // 若 fetch 因 网络/浏览器扩展/CORS/超时/404 失败，则退化为「浏览器原生直接导航」打开原文件 —— 保证看板一定能显示。
+      // 用 fetch+srcdoc 加载（可在 <head> 注入同步桥）。
+      // 勾选状态「共享」= 同域 state/<文件名>.json（由 SCF 写入仓库、GitHub Pages 同源托管）。
+      //   · 读取：走同源 fetch，无需令牌、无 CORS、不怕 SCF 抖动 —— 可靠；且在看板 loadState() 之前注入，别人打开即见最新进度。
+      //   · 写入：仍走 SCF op:'state' put（唯一能把数据提交进仓库的通道，登录已验证可达）。未登录者不写（push 直接 return）。
+      // 若看板内容 fetch 失败（网络/扩展/超时/404），退化为「浏览器原生直接导航」打开原文件，保证看板一定可见。
       frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-      var token = (localStorage.getItem('kb_admin_token') || sessionStorage.getItem('kb_admin_token') || '');
       var boardDir = new URL('reports/', location.href).href;
+      // 同域共享状态文件地址（与站点同域，直接可读，不怕 SCF/CORS/令牌问题）
+      var stateUrl = new URL('state/' + encodeURIComponent(f) + '.json', location.href).href;
       var loading = document.getElementById('loading');
       loading.style.display = 'flex';
 
@@ -168,7 +172,6 @@
         frame.removeAttribute('srcdoc');
         frame.src = rawUrl;
         frame.onload = function () {
-          // 退化模式下仍尽力注入同步桥：捕获后续勾选并回写云端（跨设备还原为尽力而为）
           try {
             var s = frame.contentDocument.createElement('script');
             s.textContent = buildStateShim(KB_SCF_API, f, null);
@@ -184,28 +187,22 @@
         .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
         .then(function (htmlText) {
           clearTimeout(bTimer);
-          // 2) 拉云端勾选状态（4s 超时 + 容错，绝不阻塞渲染）
-          var cloud = null;
-          var cCtrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-          var cTimer = setTimeout(function () { if (cCtrl) cCtrl.abort(); }, 4000);
-          return fetch(KB_SCF_API, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
-              body: JSON.stringify({ op: 'state', action: 'get', filename: f }),
-              signal: cCtrl ? cCtrl.signal : undefined
-            })
+          // 2) 取同域共享勾选状态（带缓存击穿；文件不存在/失败均不影响显示）
+          var sep = stateUrl.indexOf('?') >= 0 ? '&' : '?';
+          return fetch(stateUrl + sep + 't=' + Date.now(), { cache: 'no-store' })
             .then(function (r) { return r.status === 200 ? r.json() : null; })
-            .then(function (j) { if (j && j.ok) cloud = { data: j.data, ts: j.ts }; })
-            .catch(function () { /* 云端不可用则用本地存储，不影响显示 */ })
-            .then(function () { clearTimeout(cTimer); return htmlText; });
-        })
-        .then(function (htmlText) {
-          loading.style.display = 'none';
-          frame.srcdoc = injectHead(htmlText, boardDir, buildStateShim(KB_SCF_API, f, cloud));
-          // 按用户要求：不再显示同步提示条
+            .then(function (j) {
+              var cloud = (j && j.data) ? { data: j.data, ts: j.ts } : null;
+              loading.style.display = 'none';
+              frame.srcdoc = injectHead(htmlText, boardDir, buildStateShim(KB_SCF_API, f, cloud));
+            })
+            .catch(function () {
+              loading.style.display = 'none';
+              frame.srcdoc = injectHead(htmlText, boardDir, buildStateShim(KB_SCF_API, f, null));
+            });
         })
         .catch(function (err) {
-          // fetch 失败（网络/扩展/CORS/超时/404）—— 退化为原生打开，保证看板可见
+          // 看板内容 fetch 失败 —— 退化为原生打开，保证看板可见
           console.warn('[viewer] board fetch failed, fallback to direct navigation:', err);
           fallback();
         });
