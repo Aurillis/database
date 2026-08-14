@@ -17,6 +17,7 @@
 //   POST {op:'restore', entryId}                      -> 需带 x-admin-token(从回收站恢复)
 //   POST {op:'purge', entryId}                        -> 需带 x-admin-token(彻底删除单条)
 //   POST {op:'purgeall'}                              -> 需带 x-admin-token(清空回收站)
+//   POST {op:'state', action:'get'|'put', filename}  -> 需带 x-admin-token(看板勾选状态云同步)
 //   POST {op:'share', ...}                            -> 需带 x-admin-token(前端已未调用)
 //
 // 服务端限制: 来源白名单 / 文件类型白名单 / 大小上限 / 频率限制 / 覆盖前自动备份
@@ -272,6 +273,55 @@ async function handleMeta(body, origin) {
       });
     }
     return send(200, { ok: true }, origin);
+  } catch (err) {
+    return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
+  }
+}
+
+// ---------- 看板勾选状态云同步(按文件名存到 state/<name>.json) ----------
+async function getState(filename, branch) {
+  const safe = safeNameOf(filename);
+  const path = '/contents/state/' + encodeURIComponent(safe) + '.json';
+  const res = await ghRequest('GET', path + '?ref=' + branch);
+  if (res.status !== 200 || !res.json || !res.json.content) return null;
+  try { return { sha: res.json.sha, data: JSON.parse(Buffer.from(res.json.content, 'base64').toString('utf8')) }; } catch (e) { return null; }
+}
+async function putState(filename, data, branch) {
+  const safe = safeNameOf(filename);
+  const path = '/contents/state/' + encodeURIComponent(safe) + '.json';
+  const content = Buffer.from(JSON.stringify(data, null, 2), 'utf8').toString('base64');
+  const existing = await getState(filename, branch);
+  const putBody = { message: 'state: ' + safe, content: content, branch: branch };
+  if (existing) putBody.sha = existing.sha;
+  const res = await ghRequest('PUT', path, putBody);
+  if (res.status >= 300) throw new Error('保存状态失败: ' + ((res.json && res.json.message) || res.status));
+  return res;
+}
+async function handleState(body, origin) {
+  const branch = env('GITHUB_BRANCH', 'main');
+  const filename = body && body.filename;
+  if (!filename) return send(400, { error: '缺少 filename' }, origin);
+  const action = (body && body.action) || 'get';
+  try {
+    if (action === 'get') {
+      const s = await getState(filename, branch);
+      if (!s) return send(404, { error: 'no state' }, origin);
+      return send(200, { ok: true, data: s.data.data, ts: s.data.ts }, origin);
+    }
+    if (action === 'put') {
+      const data = body.data;
+      const ts = body.ts || Date.now();
+      if (!data || typeof data !== 'object') return send(400, { error: '缺少 data' }, origin);
+      // 仅存看板自身的 localStorage 键(排除 kb_ 前缀的管理态与任何含 token 的键), 避免泄露管理令牌
+      const clean = {};
+      for (const k of Object.keys(data)) {
+        if (k.indexOf('kb_') === 0 || k.toLowerCase().indexOf('token') >= 0) continue;
+        clean[k] = data[k];
+      }
+      await putState(filename, { filename: safeNameOf(filename), data: clean, ts: ts }, branch);
+      return send(200, { ok: true }, origin);
+    }
+    return send(400, { error: '未知 action: ' + action }, origin);
   } catch (err) {
     return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
   }
@@ -585,6 +635,7 @@ exports.main_handler = async (event, context) => {
   if (op === 'purge') return await handlePurge(body, origin);
   if (op === 'purgeall') return await handlePurgeAll(body, origin);
   if (op === 'meta') return await handleMeta(body, origin);
+  if (op === 'state') return await handleState(body, origin);
   if (op === 'share') return await handleShare(body, origin);
   return send(400, { error: '未知操作: ' + op }, origin);
 };

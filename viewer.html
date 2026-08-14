@@ -65,6 +65,39 @@
         '<div>' + text + '</div></div>';
     }
 
+    var KB_SCF_API = 'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.com';
+
+    // 生成注入看板 <head> 的同步桥脚本：还原云端状态 + 拦截 localStorage 写入自动同步回云端
+    function buildStateShim(api, file, cloud) {
+      var cloudJson = JSON.stringify(cloud || null);
+      var lines = [
+        "var KB_API=" + JSON.stringify(api) + ";",
+        "var KB_FILE=" + JSON.stringify(file) + ";",
+        "var KB_CLOUD=" + cloudJson + ";",
+        "(function(){",
+        "  function getTok(){ try{ return (window.parent.localStorage.getItem('kb_admin_token')||window.parent.sessionStorage.getItem('kb_admin_token')||''); }catch(e){ return ''; } }",
+        "  var _set=Storage.prototype.setItem,_get=Storage.prototype.getItem;",
+        "  var PREFIX='__kbst_';",
+        "  function isOwn(k){ return !k||k.indexOf('kb_')===0||k.toLowerCase().indexOf('token')>=0||k.indexOf(PREFIX)===0; }",
+        "  function snap(){ var d={}; for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); if(isOwn(k)) continue; d[k]=localStorage.getItem(k);} return d; }",
+        "  var pend=false;",
+        "  function push(){ var data=snap(); var body=JSON.stringify({op:'state',action:'put',filename:KB_FILE,data:data,ts:Date.now()}); fetch(KB_API,{method:'POST',headers:{'Content-Type':'application/json','x-admin-token':getTok()},body:body}).then(function(r){ if(r.status===401){ var n=window.parent.document.getElementById('note'); if(n){ n.style.display='flex'; n.innerHTML='<i class=\"fas fa-exclamation-circle\"></i> 登录已过期，请回到主站重新登录后刷新本页。'; } } }).catch(function(){}); }",
+        "  Storage.prototype.setItem=function(k,v){ _set.apply(this,arguments); if(isOwn(k)) return; if(pend) return; pend=true; setTimeout(function(){ pend=false; push(); },700); };",
+        "  if(KB_CLOUD&&KB_CLOUD.data){ var lts=parseInt(_get.call(localStorage,PREFIX+'ts')||'0',10); if(KB_CLOUD.ts>lts){ for(var k in KB_CLOUD.data){ if(KB_CLOUD.data.hasOwnProperty(k)) _set.call(localStorage,k,KB_CLOUD.data[k]); } _set.call(localStorage,PREFIX+'ts',String(KB_CLOUD.ts)); } }",
+        "})();"
+      ];
+      return '<script>' + lines.join('\n') + '<\/script>';
+    }
+
+    // 在 <head> 起始处注入 <base>(让相对资源正确解析) 与同步桥脚本
+    function injectHead(html, baseHref, shim) {
+      var base = '<base href="' + baseHref + '">';
+      var inject = base + shim;
+      if (/<head[^>]*>/i.test(html)) return html.replace(/<head([^>]*)>/i, '<head$1>' + inject);
+      if (/<html[^>]*>/i.test(html)) return html.replace(/<html([^>]*)>/i, '<html$1><head>' + inject + '</head>');
+      return '<head>' + inject + '</head>' + html;
+    }
+
     if (!f) { showMsg('缺少文件参数', true); return; }
 
     var ext = (f.split('.').pop() || '').toLowerCase();
@@ -89,12 +122,27 @@
     }
 
     if (ext === 'html' || ext === 'htm') {
-      // HTML：直接加载 reports/ 路径（相对资源可正常显示），沙箱使其运行在透明源
-      frame.src = rawUrl;
-      // 沙箱内 localStorage 被禁用，勾选无法保存；提供「直接打开」按钮用独立页面(同域)打开以启用本地保存
-      var ob = document.getElementById('openStandalone');
-      ob.href = rawUrl; ob.style.display = 'inline-flex';
-      document.getElementById('note').style.display = 'flex';
+      // 看板类 HTML：同域 iframe 打开(localStorage 可用) + 云端同步勾选状态。点击即直接用，无需再点「直接打开」。
+      frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+      var token = (localStorage.getItem('kb_admin_token') || sessionStorage.getItem('kb_admin_token') || '');
+      showMsg('正在加载看板并同步勾选状态…', false);
+      fetch(rawUrl).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
+        .then(function(htmlText){
+          return fetch(KB_SCF_API, { method:'POST', headers:{'Content-Type':'application/json','x-admin-token':token},
+            body: JSON.stringify({ op:'state', action:'get', filename:f }) })
+            .then(function(r){ return r.status===200 ? r.json() : null; })
+            .then(function(j){ return { html: htmlText, cloud: (j && j.ok) ? { data:j.data, ts:j.ts } : null }; });
+        })
+        .then(function(res){
+          var boardDir = new URL('reports/', location.href).href;
+          frame.srcdoc = injectHead(res.html, boardDir, buildStateShim(KB_SCF_API, f, res.cloud));
+          var note = document.getElementById('note');
+          note.style.display = 'flex';
+          note.innerHTML = '<i class="fas fa-cloud"></i> 勾选状态已自动同步到云端：刷新或换设备打开均保留进度。';
+          var ob = document.getElementById('openStandalone');
+          ob.href = rawUrl; ob.style.display = 'none';
+        })
+        .catch(function(){ showMsg('加载失败，请重试或下载原文件', true); });
       return;
     }
 
