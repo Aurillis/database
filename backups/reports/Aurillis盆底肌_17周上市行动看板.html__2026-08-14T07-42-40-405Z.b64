@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aurillis盆底肌产品上市准备｜17周行动路线图</title>
+<style>
+  :root{
+    --teal:#0e7d72;
+    --teal-dark:#0a5f57;
+    --teal-soft:#e6f4f1;
+    --mint:#cfe9e3;
+    --grayblue:#5b7a95;
+    --grayblue-soft:#eef2f6;
+    --warm:#faf8f3;
+    --ink:#263032;
+    --muted:#6b757c;
+    --line:#e6eaec;
+    --card:#ffffff;
+    --p1:#0e7d72;
+    --p2:#2c7fa6;
+    --p3:#3f9b8a;
+    --p4:#7a6fa8;
+    --s-todo:#9aa3a8;
+    --s-doing:#2c7fa6;
+    --s-review:#e08a3c;
+    --s-done:#3a9d6e;
+    --s-delay:#d9534f;
+    --s-pause:#b0a99f;
+    --risk-o:#e08a3c;
+    --risk-r:#d9534f;
+    --shadow:0 1px 3px rgba(20,40,40,.06),0 6px 18px rgba(20,40,40,.05);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    color:var(--ink);
+    background:var(--warm);
+    line-height:1.6;
+    font-size:14px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--teal);text-decoration:none;}
+  h1,h2,h3,h4{margin:0;font-weight:600;color:var(--ink);}
+  .wrap{max-width:1480px;margin:0 auto;padding:0 28px 80px;}
+
+  /* ===== Top bar ===== */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(180deg,var(--teal-dark),var(--teal));
+    color:#fff;padding:14px 28px;box-shadow:0 2px 10px rgba(0,0,0,.12);
+  }
+  .topbar .t1{font-size:19px;font-weight:700;letter-spacing:.3px;}
+  .topbar .t2{font-size:12.5px;opacity:.86;margin-top:3px;}
+
+  /* ===== Toolbar ===== */
+  .toolbar{
+    position:sticky;top:64px;z-index:40;
+    background:#fff;border-bottom:1px solid var(--line);
+    padding:10px 28px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;
+    box-shadow:0 2px 8px rgba(20,40,40,.04);
+  }
+  .toolbar .grp{display:flex;align-items:center;gap:6px;}
+  .toolbar label{font-size:12px;color:var(--muted);}
+  .toolbar input[type=text],.toolbar select{
+    border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:12.5px;color:var(--ink);background:#fff;outline:none;
+  }
+  .toolbar input[type=text]:focus,.toolbar select:focus{border-color:var(--teal);}
+  .chk{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none;}
+  .chk input{accent-color:var(--teal);}
+  .btn{
+    border:1px solid var(--line);background:#fff;color:var(--ink);
+    border-radius:8px;padding:6px 12px;font-size:12.5px;cursor:pointer;transition:.15s;font-family:inherit;
+  }
+  .btn:hover{border-color:var(--teal);color:var(--teal);}
+  .btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);}
+  .btn.primary:hover{background:var(--teal-dark);color:#fff;}
+  .btn.ghost{background:transparent;}
+  .spacer{flex:1;}
+
+  /* ===== Section title ===== */
+  .sec{padding-top:30px;}
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .sec-h .dot{width:9px;height:22px;border-radius:4px;background:var(--teal);}
+  .sec-h h2{font-size:18px;}
+  .sec-h .sub{font-size:12.5px;color:var(--muted);margin-left:auto;}
+
+  /* ===== Dashboard ===== */
+  .dash{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 14px;box-shadow:var(--shadow);}
+  .tile .k{font-size:11.5px;color:var(--muted);margin-bottom:5px;}
+  .tile .v{font-size:21px;font-weight:700;color:var(--teal-dark);}
+  .tile .v small{font-size:12px;font-weight:500;color:var(--muted);}
+  .dash-wide{grid-column:span 6;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .mini{background:var(--grayblue-soft);border-radius:10px;padding:10px 12px;}
+  .mini .k{font-size:11px;color:var(--muted);}
+  .mini .v{font-size:15px;font-weight:700;margin-top:3px;}
+  .ctrl-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px;}
+  .ctrl-row .lbl{font-size:12px;color:var(--muted);}
+
+  /* progress bar */
+  .pbar{height:8px;border-radius:6px;background:#eef1f2;overflow:hidden;margin-top:6px;}
+  .pbar > i{display:block;height:100%;background:var(--teal);border-radius:6px;transition:width .3s;}
+
+  /* ===== Roadmap ===== */
+  .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .phase{border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;}
+  .phase .ph-head{padding:12px 14px;color:#fff;}
+  .phase.p1 .ph-head{background:var(--p1);}
+  .phase.p2 .ph-head{background:var(--p2);}
+  .phase.p3 .ph-head{background:var(--p3);}
+  .phase.p4 .ph-head{background:var(--p4);}
+  .phase .ph-head .pn{font-size:12px;opacity:.85;}
+  .phase .ph-head .pt{font-size:16px;font-weight:700;margin-top:2px;}
+  .phase .ph-head .pr{font-size:11.5px;opacity:.9;margin-top:3px;}
+  .phase .ph-body{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:8px;}
+  .phase .ph-goal{font-size:12.5px;color:var(--ink);}
+  .phase .tag{display:inline-block;font-size:11px;background:var(--teal-soft);color:var(--teal-dark);border-radius:20px;padding:2px 9px;margin:2px 4px 0 0;}
+  .phase .ph-out{font-size:12px;color:var(--muted);}
+  .phase .ph-out li{margin:2px 0 2px 16px;}
+  .phase .ph-prog{margin-top:auto;}
+
+  .flow{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);}
+  .flow .ft{font-size:12.5px;color:var(--muted);margin-bottom:8px;}
+  .flow-strip{display:flex;flex-wrap:wrap;align-items:center;gap:4px;}
+  .flow-node{font-size:12px;background:var(--teal-soft);color:var(--teal-dark);border-radius:8px;padding:5px 10px;white-space:nowrap;}
+  .flow-arrow{color:var(--muted);font-size:13px;}
+
+  /* ===== Phase tabs ===== */
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 16px;font-size:13px;cursor:pointer;color:var(--muted);}
+  .tab.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+
+  /* ===== Week card ===== */
+  .week{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:16px;box-shadow:var(--shadow);overflow:hidden;}
+  .week.hidden{display:none;}
+  .week .w-head{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;}
+  .week .w-num{font-size:13px;font-weight:700;color:#fff;background:var(--teal);border-radius:8px;padding:4px 10px;white-space:nowrap;}
+  .week.p1 .w-num{background:var(--p1);}
+  .week.p2 .w-num{background:var(--p2);}
+  .week.p3 .w-num{background:var(--p3);}
+  .week.p4 .w-num{background:var(--p4);}
+  .week .w-title{font-size:16px;font-weight:600;flex:1;}
+  .week .w-title small{display:block;font-size:12px;font-weight:400;color:var(--muted);margin-top:1px;}
+  .week .w-caret{transition:transform .2s;color:var(--muted);font-size:13px;}
+  .week.open .w-caret{transform:rotate(90deg);}
+  .w-badges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .badge{font-size:11px;border-radius:20px;padding:3px 10px;font-weight:600;white-space:nowrap;}
+  .badge.status{color:#fff;}
+  .badge.st-todo{background:var(--s-todo);}
+  .badge.st-doing{background:var(--s-doing);}
+  .badge.st-review{background:var(--s-review);}
+  .badge.st-done{background:var(--s-done);}
+  .badge.st-delay{background:var(--s-delay);}
+  .badge.st-pause{background:var(--s-pause);}
+  .badge.tbc{background:#fff;border:1px solid var(--risk-o);color:var(--risk-o);}
+  .badge.prec{background:#fff;border:1px solid var(--risk-r);color:var(--risk-r);}
+  .badge.ms{background:#fff;border:1px solid var(--p4);color:var(--p4);}
+
+  .w-stats{display:flex;gap:14px;font-size:11.5px;color:var(--muted);padding:0 18px 12px;flex-wrap:wrap;}
+  .w-stats b{color:var(--teal-dark);}
+
+  .week .w-body{display:none;border-top:1px solid var(--line);padding:18px;}
+  .week.open .w-body{display:block;}
+  .block{margin-bottom:16px;}
+  .block:last-child{margin-bottom:0;}
+  .block .bh{font-size:12.5px;font-weight:700;color:var(--teal-dark);margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+  .block .bh .ic{width:6px;height:14px;border-radius:3px;background:var(--teal);display:inline-block;}
+  .block .bt{font-size:13px;color:var(--ink);}
+
+  .tasklist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 22px;}
+  .tasklist li{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:3px 0;}
+  .tasklist input[type=checkbox]{margin-top:3px;accent-color:var(--teal);width:15px;height:15px;flex:none;}
+  .tasklist li.done span{color:var(--muted);text-decoration:line-through;}
+
+  .deliv{display:flex;flex-wrap:wrap;gap:7px;}
+  .chip{font-size:12px;background:var(--grayblue-soft);color:var(--grayblue);border-radius:8px;padding:5px 11px;}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+  .field label{font-size:11.5px;color:var(--muted);font-weight:600;}
+  .field input,.field textarea,.field select{
+    border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;font-family:inherit;color:var(--ink);background:#fff;outline:none;width:100%;resize:vertical;
+  }
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--teal);}
+  .field textarea{min-height:42px;}
+
+  .status-sel{font-weight:600;}
+
+  .ceo{background:var(--teal-soft);border:1px solid var(--mint);border-radius:12px;padding:14px;}
+  .ceo .ceo-h{font-size:13px;font-weight:700;color:var(--teal-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .qbox{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 11px;}
+  .qbox .ql{font-size:11.5px;color:var(--teal-dark);font-weight:700;margin-bottom:4px;}
+  .qbox textarea{border:none;background:transparent;padding:0;font-size:12.5px;min-height:40px;width:100%;outline:none;resize:vertical;font-family:inherit;color:var(--ink);}
+
+  /* ===== Milestones ===== */
+  .ms-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .ms{border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:var(--shadow);overflow:hidden;}
+  .ms .ms-top{background:var(--p4);color:#fff;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;}
+  .ms .ms-top .mt{font-size:15px;font-weight:700;}
+  .ms .ms-top .mw{font-size:12px;opacity:.9;}
+  .ms .ms-body{padding:14px 16px;}
+  .ms .ms-goal{font-size:13px;margin-bottom:10px;}
+  .ms .ms-dec{font-size:12.5px;color:var(--muted);}
+  .ms .ms-dec li{margin:3px 0 3px 16px;}
+
+  /* ===== Adjustment ===== */
+  .adj-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+  .adj-table th,.adj-table td{border-bottom:1px solid var(--line);padding:11px 14px;font-size:13px;text-align:left;vertical-align:top;}
+  .adj-table th{background:var(--teal-soft);color:var(--teal-dark);font-weight:700;}
+  .adj-table tr:last-child td{border-bottom:none;}
+  .adj-note{background:#fff7ef;border:1px solid #f3d9bf;border-radius:10px;padding:12px 14px;margin-top:14px;font-size:12.5px;color:#8a5a2b;}
+  .adj-note b{color:var(--risk-o);}
+  .prod-status{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;}
+  .ps-card{display:none;background:var(--teal-soft);border:1px solid var(--mint);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;}
+  .ps-card.show{display:block;}
+  .ps-card .ps-k{font-weight:700;color:var(--teal-dark);}
+
+  /* legend */
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:11.5px;color:var(--muted);}
+  .legend .badge{position:relative;}
+
+  /* floating */
+  .totop{position:fixed;right:24px;bottom:24px;z-index:60;background:var(--teal);color:#fff;border:none;border-radius:50%;width:46px;height:46px;font-size:20px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.2);}
+  .totop:hover{background:var(--teal-dark);}
+
+  .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted);text-align:center;}
+
+  /* modal */
+  .modal-mask{position:fixed;inset:0;background:rgba(20,30,30,.45);display:none;align-items:center;justify-content:center;z-index:80;}
+  .modal-mask.show{display:flex;}
+  .modal{background:#fff;border-radius:14px;padding:22px;max-width:560px;width:92%;box-shadow:0 12px 40px rgba(0,0,0,.25);}
+  .modal h3{margin-bottom:10px;font-size:16px;}
+  .modal p{font-size:13px;color:var(--muted);margin:6px 0 14px;}
+  .modal textarea{width:100%;min-height:160px;border:1px solid var(--line);border-radius:8px;padding:9px;font-family:monospace;font-size:11.5px;outline:none;}
+  .modal .m-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;}
+
+  @media (max-width:1200px){
+    .dash{grid-template-columns:repeat(3,1fr);}
+    .dash-wide{grid-column:span 3;}
+    .phases{grid-template-columns:repeat(2,1fr);}
+    .tasklist,.grid2,.qgrid,.ms-grid{grid-template-columns:1fr;}
+  }
+
+  @media print{
+    .topbar{position:static;background:var(--teal);}
+    .toolbar,.totop,.no-print,.modal-mask{display:none !important;}
+    body{background:#fff;}
+    .wrap{max-width:none;padding:0 12px;}
+    .week{break-inside:avoid;box-shadow:none;border:1px solid #ccc;margin-bottom:10px;}
+    .week .w-body{display:block !important;}
+    .week .w-caret{display:none;}
+    .tab,.ctrl-row{display:none !important;}
+    .phase,.dash .tile,.ms,.adj-table{box-shadow:none;}
+    .ceo{background:#f3f8f7;}
+    .field input,.field textarea{border:none;border-bottom:1px solid #ccc;border-radius:0;}
+    .tasklist input[type=checkbox]{accent-color:#000;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar no-print">
+  <div class="t1">Aurillis盆底肌产品上市准备｜17周行动路线图</div>
+  <div class="t2">从市场研究、用户洞察到上市联调，让产品研发期同步转化为上市准备期。</div>
+</div>
+
+<div class="toolbar no-print">
+  <div class="grp"><input type="text" id="f-search" placeholder="关键词搜索…" style="width:150px"></div>
+  <div class="grp"><label>阶段</label><select id="f-phase"><option value="">全部</option><option value="1">第一阶段 看清市场</option><option value="2">第二阶段 形成上市方案</option><option value="3">第三阶段 验证方向并建设资产</option><option value="4">第四阶段 正式上市准备</option></select></div>
+  <div class="grp"><label>周次</label><select id="f-week"><option value="">全部</option></select></div>
+  <div class="grp"><label>负责人</label><input type="text" id="f-owner" placeholder="姓名" style="width:90px"></div>
+  <div class="grp"><label>状态</label><select id="f-status"><option value="">全部</option><option value="未开始">未开始</option><option value="进行中">进行中</option><option value="待审核">待审核</option><option value="已完成">已完成</option><option value="延期">延期</option><option value="暂停">暂停</option></select></div>
+  <label class="chk"><input type="checkbox" id="f-delay">仅延期</label>
+  <label class="chk"><input type="checkbox" id="f-tbc">仅待专业确认</label>
+  <label class="chk"><input type="checkbox" id="f-thisweek">仅本周</label>
+  <label class="chk"><input type="checkbox" id="f-review">仅待管理层审核</label>
+  <div class="spacer"></div>
+  <button class="btn" id="btn-expand">展开全部</button>
+  <button class="btn" id="btn-collapse">折叠全部</button>
+  <button class="btn" id="btn-print">打印</button>
+  <button class="btn" id="btn-export">导出JSON</button>
+  <button class="btn" id="btn-import">导入JSON</button>
+  <button class="btn ghost" id="btn-reset">重置数据</button>
+  <input type="file" id="file-input" accept="application/json" style="display:none">
+</div>
+
+<div class="wrap">
+
+  <!-- ===== Module 6: Dashboard ===== -->
+  <div class="sec" id="dash">
+    <div class="sec-h"><span class="dot"></span><h2>项目总览仪表盘</h2><span class="sub">数据随填写实时更新，自动保存在本机浏览器</span></div>
+    <div class="dash">
+      <div class="tile"><div class="k">当前周次</div><div class="v" id="d-week">未开始</div></div>
+      <div class="tile"><div class="k">当前阶段</div><div class="v" id="d-phase" style="font-size:15px">—</div></div>
+      <div class="tile"><div class="k">总体完成率</div><div class="v" id="d-overall">0%</div><div class="pbar"><i id="d-overall-bar" style="width:0%"></i></div></div>
+      <div class="tile"><div class="k">已完成 / 进行中 / 待审核</div><div class="v" id="d-status" style="font-size:16px">0 / 0 / 0</div></div>
+      <div class="tile"><div class="k">延期周数</div><div class="v" id="d-delay">0</div></div>
+      <div class="tile"><div class="k">待专业确认事项</div><div class="v" id="d-tbc">0</div></div>
+
+      <div class="dash-wide">
+        <div class="mini"><div class="k">下一里程碑</div><div class="v" id="d-nextms">—</div></div>
+        <div class="mini"><div class="k">距下一里程碑</div><div class="v" id="d-remain">—</div></div>
+        <div class="mini" style="grid-column:span 2;"><div class="k">本周必须交付成果</div><div class="v" id="d-thisdeliv" style="font-size:12.5px;font-weight:500;line-height:1.5">项目尚未开始 / 请在上方设置当前周次</div></div>
+      </div>
+    </div>
+    <div class="ctrl-row no-print">
+      <span class="lbl">设置当前周次：</span>
+      <select id="set-week"><option value="0">未开始（准备中）</option></select>
+      <span class="lbl" style="margin-left:10px;">阶段筛选快速标签：</span>
+      <div class="tabs" id="phase-tabs" style="margin:0;">
+        <span class="tab active" data-ph="0">全部</span>
+        <span class="tab" data-ph="1">第一阶段</span>
+        <span class="tab" data-ph="2">第二阶段</span>
+        <span class="tab" data-ph="3">第三阶段</span>
+        <span class="tab" data-ph="4">第四阶段</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Module 1: Roadmap ===== -->
+  <div class="sec" id="roadmap">
+    <div class="sec-h"><span class="dot"></span><h2>一、17周总路线图</h2><span class="sub">四阶段横向总览</span></div>
+    <div class="phases" id="phases"></div>
+    <div class="flow">
+      <div class="ft">全局推进链路：</div>
+      <div class="flow-strip" id="flow-strip"></div>
+    </div>
+  </div>
+
+  <!-- ===== Module 2: Weekly action list ===== -->
+  <div class="sec" id="weeks-sec">
+    <div class="sec-h"><span class="dot"></span><h2>二、17周每周行动清单</h2><span class="sub">点击周次展开 / 折叠，可勾选任务、切换状态、填写负责人与日期</span></div>
+    <div id="weeks"></div>
+  </div>
+
+  <!-- ===== Module 3: Milestones ===== -->
+  <div class="sec" id="milestones">
+    <div class="sec-h"><span class="dot"></span><h2>三、关键里程碑</h2><span class="sub">四个阶段结束节点的管理层决策点</span></div>
+    <div class="ms-grid" id="ms-grid"></div>
+  </div>
+
+  <!-- ===== Module 4: Dynamic adjustment ===== -->
+  <div class="sec" id="adjust">
+    <div class="sec-h"><span class="dot"></span><h2>四、产品进度变化时的调整规则（动态调整区）</h2></div>
+    <table class="adj-table">
+      <thead><tr><th style="width:30%">产品状态</th><th>对应调整</th></tr></thead>
+      <tbody>
+        <tr><td>样机未完成</td><td>深化用户、竞品、内容和专业资源建设</td></tr>
+        <tr><td>功能未定型</td><td>不定稿 Listing 和产品效果文案</td></tr>
+        <tr><td>FDA 路径未确认</td><td>不发布 FDA 及医疗相关内容</td></tr>
+        <tr><td>外观未定型</td><td>不进行最终商业拍摄</td></tr>
+        <tr><td>上市时间推迟</td><td>暂缓大规模达人合作和付费预热</td></tr>
+        <tr><td>产品基本定型</td><td>加快样机测试、素材、Listing 和网站定稿</td></tr>
+      </tbody>
+    </table>
+
+    <div class="prod-status no-print">
+      <span class="lbl" style="font-size:12.5px;color:var(--muted);">当前产品状态（用于即时提示对应调整）：</span>
+      <select id="prod-status" style="border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:12.5px;">
+        <option value="">— 请选择 —</option>
+        <option value="样机未完成">样机未完成</option>
+        <option value="功能未定型">功能未定型</option>
+        <option value="FDA路径未确认">FDA 路径未确认</option>
+        <option value="外观未定型">外观未定型</option>
+        <option value="上市时间推迟">上市时间推迟</option>
+        <option value="产品基本定型">产品基本定型</option>
+      </select>
+    </div>
+    <div class="ps-card" id="ps-card"><span class="ps-k" id="ps-k"></span> &nbsp;→&nbsp; <span id="ps-v"></span></div>
+
+    <div class="adj-note">
+      <b>项目预警规则：</b>
+      ① 某项工作缺少前置条件 → 自动显示「<b>前置条件未满足</b>」；
+      ② 涉及医疗、FDA、功效、安全或禁忌 → 显示「<b>待专业确认</b>」标签；
+      ③ 计划完成日期已过但未完成 → 显示「<b>延期</b>」；
+      ④ 产品进度发生变化 → 对应周任务须按上表调整。
+    </div>
+
+    <div class="legend no-print">
+      <span style="color:var(--muted);">状态图例：</span>
+      <span class="badge status st-todo">未开始</span>
+      <span class="badge status st-doing">进行中</span>
+      <span class="badge status st-review">待审核</span>
+      <span class="badge status st-done">已完成</span>
+      <span class="badge status st-delay">延期</span>
+      <span class="badge status st-pause">暂停</span>
+      <span class="badge tbc">待专业确认</span>
+      <span class="badge prec">前置条件未满足</span>
+      <span class="badge ms">里程碑</span>
+    </div>
+  </div>
+
+  <div class="foot no-print">
+    Aurillis 盆底肌产品上市准备 · 17周行动路线图 · 单文件离线看板 · 数据仅保存在本机浏览器（localStorage）<br>
+    本看板仅整合已提供的项目计划内容，不擅自补充市场数据、产品参数、医疗功效或 FDA 结论；涉及医疗/FDA/功效/安全/禁忌的内容请标记「待专业确认」并经专业审核。
+  </div>
+
+</div>
+
+<button class="totop no-print" id="totop" title="返回顶部">↑</button>
+
+<div class="modal-mask" id="modal">
+  <div class="modal">
+    <h3 id="modal-title">导入项目数据</h3>
+    <p id="modal-desc">粘贴之前导出的 JSON，或在此查看当前数据；点击「确认」应用。</p>
+    <textarea id="modal-text"></textarea>
+    <div class="m-actions">
+      <button class="btn" id="modal-cancel">取消</button>
+      <button class="btn primary" id="modal-ok">确认</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   数据层：所有周次内容均来自已提供的项目计划，不做额外补充
+   ========================================================= */
+const START_DATE = "2026-09-07"; // 第1周计划完成基准（周一），可在此调整
+const VERSION = 1;
+
+const WEEKS = [
+  {
+    n:1, phase:1, theme:"产品、类目与竞品全景",
+    goal:"看清美国盆底健康市场中的主要解决方案、产品类型和竞争对象。",
+    core:"美国盆底健康市场到底由哪些解决方案和竞品构成？我们真正的竞争对手是谁？",
+    tasks:[
+      "建立美国盆底健康解决方案地图",
+      "覆盖普通 Kegel 训练、生物反馈、探头式电刺激、外部穿戴式或座椅式设备、App 控制产品及专业康复服务",
+      "建立 20—30 个产品的基础竞品池",
+      "选出 8—10 个重点竞品",
+      "确定 3—5 个深度研究对象",
+      "记录品牌、产品、价格、渠道、功能、目标用户、核心主张、信任证据及站外布局",
+      "区分直接竞品、间接竞品、品牌内容参考和技术参考"
+    ],
+    deliverables:["《美国盆底健康解决方案地图》","《盆底肌产品竞品数据库》","《8—10个重点竞品初步判断》","《第1周结论汇报》"],
+    accept:"能够回答市场如何划分、真正竞品是谁、主要价格带是什么、用户比较哪些因素，以及下一周最值得验证的 5 个问题。",
+    precond:"依赖项目启动；无特殊外部前置条件，需保留竞品数据来源、链接与查询日期。",
+    risk:"竞品数据须保留来源、链接与查询日期；价格与功能以公开信息为准，待专业确认项另列。",
+    next:"将竞品地图与「最值得验证的 5 个问题」移交第 2 周用户研究，并预留站外样本采集渠道。"
+  },
+  {
+    n:2, phase:1, theme:"用户需求与真实语言",
+    goal:"弄清用户的真实问题、生活场景、情绪、购买动机和购买障碍。",
+    core:"用户的真实问题、生活场景、情绪、购买动机和购买障碍分别是什么？",
+    tasks:[
+      "覆盖产后、运动漏尿、不会正确 Kegel、更年期、专业治疗后居家训练等人群",
+      "从 Amazon、Reddit、YouTube、TikTok、Instagram、论坛及品牌网站采集用户原话",
+      "采集不少于 300 条有效用户原话",
+      "Amazon 样本不超过总样本的 60%",
+      "至少覆盖 5 类信息来源",
+      "分析用户场景、需求、顾虑、情绪和购买阶段",
+      "整理用户常用英文表达",
+      "识别对产品、Listing 及内容的影响"
+    ],
+    deliverables:["《美国盆底健康用户原话数据库》","《目标用户分群及典型场景》","《用户痛点、顾虑与购买障碍地图》","《用户常用英文表达词库》","《用户洞察对产品定义的反馈清单》","《用户洞察对Listing和内容的启示》"],
+    accept:"每个重要结论后至少附 3—5 条可回溯的用户原话证据。",
+    precond:"依赖第 1 周竞品地图与解决方案分类。",
+    risk:"用户原话须可回溯（来源+日期）；不得对样本做医疗化解读。",
+    next:"将用户原话库与痛点地图移交第 3 周竞品内容审计，作为内容分析对照。"
+  },
+  {
+    n:3, phase:1, theme:"竞品站外营销与内容",
+    goal:"研究竞品如何让用户认识、理解并信任产品。",
+    core:"竞品如何让用户认识、理解并信任这类产品？哪些内容真正带来讨论与转化？",
+    tasks:[
+      "选择 8—10 个重点品牌",
+      "检查独立站、Instagram、TikTok、YouTube、Facebook、Google 及 Amazon",
+      "分析目标用户、核心问题、内容表达和信任建立方式",
+      "研究竞品如何解释盆底肌、电刺激及插入式使用",
+      "研究 UGC、达人及专业人士合作",
+      "对内容进行分类",
+      "记录高互动内容的评论、问题、收藏、分享和购买意向",
+      "标记可能存在的医疗宣传风险"
+    ],
+    deliverables:["《重点品牌站外传播审计》","《竞品内容主题分类表》","《高互动内容案例库》","《达人和UGC合作案例库》","《专业人士合作方式案例库》","《Aurillis可借鉴及应避免的表达》","《Aurillis第一版内容选题池》（不少于 50 个题目）"],
+    accept:"不能只看播放量，必须判断内容是否带来真实讨论、购买意向和转化价值。",
+    precond:"依赖第 1—2 周竞品池与用户洞察。",
+    risk:"注意竞品可能存在的医疗宣传风险，Aurillis 须避免同类表达；合规边界待专业确认。",
+    next:"将竞品传播审计与内容选题池移交第 4 周渠道与独立站路径判断。"
+  },
+  {
+    n:4, phase:1, theme:"渠道、独立站与成交路径", milestone:1,
+    goal:"判断 Aurillis 首批站外渠道及用户成交路径。",
+    core:"首批站外渠道应主攻哪些？用户最终应从哪条路径成交？",
+    tasks:[
+      "研究 Instagram、TikTok、Google Search、YouTube、微型达人、UGC、专业人士、独立站、Email 和 Reddit",
+      "分析各渠道目标用户、认知阶段、内容形式和投放适配性",
+      "判断流量应导向独立站还是 Amazon",
+      "研究渠道追踪方式",
+      "研究 8—10 个女性健康或医疗器械品牌网站",
+      "分析首页、产品页、FAQ、安全、专业背书、用户评价及跳转方式",
+      "对渠道进行四档判断（优先投入 / 小规模测试 / 建立资源暂不执行 / 暂不投入）"
+    ],
+    deliverables:["《Aurillis站外渠道优先级建议》","《各渠道用户角色与内容形式》","《独立站与Amazon分流规则》","《独立站竞品案例研究》","《Aurillis第一版独立站信息架构》","《上市前60天渠道行动建议》","《首轮调研综合汇报》"],
+    accept:"形成明确的用户、竞品、内容和渠道判断，而不是单纯罗列平台特点。",
+    precond:"依赖第 1—3 周市场、用户与竞品内容研究。",
+    risk:"渠道合规与医疗品类广告政策待确认；独立站医疗/安全表述须合规。",
+    next:"将渠道优先级与独立站信息架构移交第 5 周定位收敛。",
+    msGoal:"完成市场、用户、竞品、内容及渠道的首轮判断。",
+    msDec:["核心目标用户是否清晰","重点竞品是否找准","渠道方向是否合理","是否进入第二阶段"]
+  },
+  {
+    n:5, phase:2, theme:"目标用户与产品定位收敛",
+    goal:"把首月调研资料转化为明确的用户和产品定位。",
+    core:"我们首要卖给谁、解决什么问题、为什么选择 Aurillis？",
+    tasks:[
+      "确定 1 个首要目标用户群",
+      "确定 1—2 个次要用户群",
+      "梳理首要购买场景",
+      "总结用户最关心的 5—8 个问题",
+      "明确现有替代方案",
+      "分析 Aurillis 潜在差异点",
+      "梳理用户选择、犹豫及放弃购买的原因",
+      "建立用户购买决策路径"
+    ],
+    deliverables:["《Aurillis目标用户优先级》","《核心用户画像与典型场景》","《用户购买决策路径》","《产品定位建议V1.0》","《产品差异化假设清单》","《需要产品团队验证的问题》"],
+    accept:"必须明确「主要卖给谁、解决什么问题、为什么选择 Aurillis」。",
+    precond:"依赖首轮调研综合汇报（第 4 周）。",
+    risk:"产品定位与差异化假设须产品团队验证；涉及功效/医疗表述待专业确认。",
+    next:"将目标用户与定位 V1 移交第 6 周品牌信息与内容体系。"
+  },
+  {
+    n:6, phase:2, theme:"品牌信息与内容体系",
+    goal:"确定 Aurillis 将来应该对用户讲什么，以及如何讲。",
+    core:"我们应该对用户讲什么、怎么讲，才能降低门槛并建立信任？",
+    tasks:[
+      "建立品牌核心信息层级",
+      "明确用户问题、产品定义、工作原理和适用人群",
+      "梳理与普通 Kegel 及其他方案的差异",
+      "研究如何降低插入式设备的心理门槛",
+      "建立安全与专业信任",
+      "建立内容支柱",
+      "建立医疗及合规待审核表达清单"
+    ],
+    deliverables:["《品牌核心信息框架V1.0》","《用户问题—信息回应对照表》","《内容支柱与选题体系》","《100个内容选题库》","《30天内容发布日历》","《短视频脚本模板》","《医疗及合规待审核表达清单》"],
+    accept:"所有内容必须能够对应明确的用户问题，不能停留在泛泛的品牌口号。",
+    precond:"依赖第 5 周定位收敛结论。",
+    risk:"所有对外信息须通过医疗及合规待审核清单；插入式设备心理门槛表达需谨慎。",
+    next:"将品牌信息框架与选题库移交第 7 周达人及资源库建设。"
+  },
+  {
+    n:7, phase:2, theme:"达人、UGC及专业人士资源库",
+    goal:"建立后续内容生产和站外合作的资源基础。",
+    core:"哪些达人、UGC 和专业人士能支撑后续内容与合作？如何评估与分级？",
+    tasks:[
+      "搜集女性健康、产后恢复、妈妈、健身、跑步及更年期创作者",
+      "搜集盆底物理治疗师、女性健康医生、护士及 UGC 创作者",
+      "记录受众、内容方向、互动质量、合作方式、报价及授权",
+      "分析是否适合广告二次投放",
+      "标记医疗和合规风险",
+      "建立达人分级与评分标准",
+      "准备首轮沟通话术和合作 Brief"
+    ],
+    deliverables:["100—150 个候选达人数据库","20—30 个重点候选名单","10—20 个专业人士候选名单","达人评分标准","首轮沟通话术","UGC合作Brief模板","报价及授权询问模板","内容授权登记表"],
+    accept:"重点评估受众匹配度和评论区质量，不能仅以粉丝数量判断。",
+    precond:"依赖第 6 周品牌信息与内容选题体系。",
+    risk:"达人及专业人士内容须标记医疗/合规风险；合作表述不得越界承诺功效。",
+    next:"将达人库与内容 Brief 移交第 8 周独立站需求规划。"
+  },
+  {
+    n:8, phase:2, theme:"独立站需求规划", milestone:2,
+    goal:"形成可交给建站团队执行和报价的完整需求。",
+    core:"独立站要建什么、交给谁、花多少钱、多久能上线？",
+    tasks:[
+      "明确独立站作用",
+      "设计用户浏览和转化路径",
+      "确定网站页面结构",
+      "梳理每个页面内容",
+      "设计 Amazon 跳转及邮件留资方式",
+      "确定数据追踪需求",
+      "调研建站平台和服务商",
+      "估算预算、周期及维护成本"
+    ],
+    deliverables:["《独立站项目需求书》","网站信息架构","用户浏览和转化路径","首页及产品页线框内容","FAQ目录","SEO文章规划","功能与数据追踪清单","3—5家服务商比较","建站预算和时间建议"],
+    accept:"需求书应达到外部服务商可以据此进行报价和项目排期的程度。",
+    precond:"依赖第 4 周独立站信息架构与第 7 周资源库。",
+    risk:"独立站医疗/安全/禁忌页面须合规审核；FDA 相关表述待确认。",
+    next:"将独立站需求与内容体系移交第 9 周内容样稿制作。",
+    msGoal:"完成定位、内容体系、达人资源和独立站需求规划。",
+    msDec:["是否启动独立站制作","是否开始品牌账号内容测试","是否开始达人询价和接触","产品差异点是否需要调整"]
+  },
+  {
+    n:9, phase:3, theme:"内容样稿与内部测试",
+    goal:"把内容体系转化为第一批可评审的实际内容。",
+    core:"第一批可评审内容（图文/短视频/UGC）应该长什么样？",
+    tasks:[
+      "从内容库中选择 20—30 个重点选题",
+      "制作用户教育、场景、FAQ、原理和品牌内容",
+      "编写图文稿、短视频脚本和 UGC 脚本",
+      "建立品牌语气及用词规范",
+      "建立内容审核流程",
+      "进行内部内容评审"
+    ],
+    deliverables:["10—15 篇完整图文稿","10 条短视频脚本","5 套 UGC 脚本方向","FAQ 第一版","品牌语气及用词规范","内容审核流程","首批合规审核记录"],
+    accept:"未定型产品内容以用户教育和品牌认知为主，不得提前承诺产品功能或效果。",
+    precond:"依赖第 6—8 周内容体系、资源库与独立站需求。",
+    risk:"未定型产品内容仅限用户教育与品牌认知，不得提前承诺功能或效果。",
+    next:"将首批样稿与审核流程移交第 10 周小规模内容测试。"
+  },
+  {
+    n:10, phase:3, theme:"小规模内容测试",
+    goal:"用较低成本验证用户对不同内容方向的反应。",
+    core:"用户对哪些内容方向有真实反应？如何据此调整？",
+    tasks:[
+      "测试用户症状、生活场景、盆底科普、Kegel 误区及隐私话题",
+      "观察停留、完播、收藏、分享、评论和主页访问",
+      "收集用户问题",
+      "判断高潜和低效内容",
+      "根据数据调整内容方向",
+      "如不适合公开发布，则采用小样本访谈或概念测试"
+    ],
+    deliverables:["《首轮内容测试报告》","高潜内容主题","低效内容及原因","用户评论和问题补充库","内容方向调整建议","第二轮测试方案"],
+    accept:"测试必须形成下一步调整建议，不能只汇报播放量和点赞量。",
+    precond:"依赖第 9 周内容样稿与审核流程。",
+    risk:"测试内容不得含未确认功效承诺；数据解读避免医疗化结论。",
+    next:"将内容测试结论移交第 11 周 Amazon 结构准备。"
+  },
+  {
+    n:11, phase:3, theme:"Amazon上市结构准备",
+    goal:"在产品最终定型前，先搭建 Amazon Listing 及广告结构。",
+    core:"产品定型前，Amazon Listing 与广告结构应如何先搭起来？",
+    tasks:[
+      "进行关键词研究",
+      "划分搜索意图",
+      "建立核心词、长尾词和场景词数据库",
+      "设计标题、五点描述和图片信息结构",
+      "规划视频、A+ 和品牌旗舰店",
+      "建立 FAQ 和客服问答",
+      "设计广告结构",
+      "建立竞品 ASIN 监控表"
+    ],
+    deliverables:["《关键词数据库V1.0》","《Listing文案框架V1.0》","《Amazon图片需求清单》","《产品视频需求Brief》","《A+页面结构》","《Amazon FAQ及客服知识库》","《广告结构初步规划》","《竞品ASIN跟踪表》"],
+    accept:"未经确认的参数、功效和医疗信息必须标记为「待确认」，不能自行补齐。",
+    precond:"依赖第 5—6 周定位与品牌信息、第 10 周内容测试结论。",
+    risk:"参数、功效、医疗信息未确认须标记「待确认」，不得自行补齐。",
+    next:"将 Amazon 结构草案移交第 12 周阶段复盘。"
+  },
+  {
+    n:12, phase:3, theme:"阶段复盘与转正汇报", milestone:3,
+    goal:"总结前三个月成果，判断岗位能力和下一阶段方向。",
+    core:"前三个月成果能否支撑进入正式上市冲刺？最大风险是什么？",
+    tasks:[
+      "汇总三个月交付成果",
+      "分析哪些调研影响了产品或上市决策",
+      "给出目标用户最终判断",
+      "总结内容测试结果",
+      "汇报独立站、达人和 Amazon 准备程度",
+      "识别当前最大风险",
+      "提出下一阶段建议",
+      "制定上市后 90 天运营设想"
+    ],
+    deliverables:["《三个月阶段成果汇报》","《目标用户与产品定位阶段结论》","《当前项目风险清单》","《下一阶段工作建议》","《上市后90天运营初步设想》"],
+    accept:"重点评估独立分析、全链路思维、成果转化、跨部门协同、医疗合规意识和项目资产沉淀能力。",
+    precond:"依赖第 1—11 周全部交付成果。",
+    risk:"医疗合规与 FDA 进度为最大不确定性之一；须持续跟踪。",
+    next:"若进入冲刺，待样机到位后启动第 13 周用户测试。",
+    msGoal:"完成三个月阶段复盘及转正汇报。",
+    msDec:["运营主管是否具备独立负责能力","内容测试方向是否成立","Amazon 准备是否符合要求","是否进入正式上市冲刺阶段"]
+  },
+  {
+    n:13, phase:4, theme:"样机体验与用户测试",
+    goal:"验证样机的操作理解、舒适度、心理门槛、说明书和包装体验。",
+    core:"样机的使用体验、理解障碍和心理门槛具体在哪里？",
+    tasks:[
+      "建立样机测试流程",
+      "设计测试问卷和访谈提纲",
+      "确定测试人群",
+      "建立使用记录表",
+      "收集安装、操作、强度调节、清洁和卫生反馈",
+      "观察用户对探头的心理接受程度",
+      "记录说明书和包装问题",
+      "收集用户描述产品时使用的真实语言"
+    ],
+    deliverables:["用户测试方案","问卷及访谈提纲","测试记录表","使用问题清单","产品及说明书改善建议","FAQ 更新版","测试总结报告"],
+    accept:"重点研究使用体验和理解障碍，不得自行判断或验证医疗效果。",
+    precond:"已有可安全使用的样机，并获得产品团队或工厂确认。",
+    risk:"仅研究使用体验与理解障碍，不得自行判断或验证医疗效果；样机须安全可用。",
+    next:"将样机测试结论与产品定型状态移交第 14 周拍摄准备。"
+  },
+  {
+    n:14, phase:4, theme:"最终内容与拍摄准备",
+    goal:"根据定型产品完成商业素材的制作规划。",
+    core:"定型后商业素材应拍什么、怎么拍、由谁拍、花多少？",
+    tasks:[
+      "确定总体拍摄清单",
+      "编制品牌素材 Brief",
+      "编制 Amazon 图片 Brief",
+      "编制 UGC 拍摄 Brief",
+      "确定场景、模特、道具和操作演示",
+      "规划产品教学内容",
+      "明确文案审核责任人",
+      "确认素材授权及使用范围",
+      "制定制作预算和排期"
+    ],
+    deliverables:["总体素材清单","拍摄脚本和分镜","Amazon图片文案","UGC脚本","达人合作Brief","产品使用教学脚本","授权文件模板","素材制作预算和排期"],
+    accept:"所有拍摄内容必须对应具体渠道和使用目的，避免制作大量无法使用的素材。",
+    precond:"依赖第 13 周样机测试结论与产品基本定型。",
+    risk:"外观未定型前不进行最终商业拍摄；素材须获授权。",
+    next:"将素材 Brief 与定型参数移交第 15 周各渠道定稿。"
+  },
+  {
+    n:15, phase:4, theme:"Listing、网站和渠道内容定稿",
+    goal:"完成各渠道对外内容和销售页面定稿。",
+    core:"各渠道对外内容与销售页面如何定稿且保持一致？",
+    tasks:[
+      "根据最终参数完成 Listing",
+      "完成 Amazon 图片及 A+ 文案",
+      "完成独立站主要页面",
+      "完成 FAQ 和客服资料",
+      "完成达人信息包",
+      "核对包装、说明书、网站和 Amazon 表达",
+      "确认 FDA 相关表述",
+      "检查安全、禁忌和医疗宣传内容"
+    ],
+    deliverables:["Listing 最终稿","Amazon图片和A+最终文案","独立站核心页面最终稿","FAQ 最终版","客服知识库","达人信息包","全渠道宣传用语对照表","合规审核记录"],
+    accept:"不同渠道的产品名称、参数、功能、适用人群、安全提示及 FDA 表达必须保持一致。",
+    precond:"依赖产品基本定型、最终参数与 FDA 路径确认。",
+    risk:"各渠道 FDA/安全/禁忌/医疗宣传表述必须一致且合规；未经确认不得发布。",
+    next:"将定稿内容与页面移交第 16 周上市联调。"
+  },
+  {
+    n:16, phase:4, theme:"上市联调与预热准备",
+    goal:"联调 Amazon、独立站、达人、广告、数据和客服体系。",
+    core:"Amazon、独立站、达人、广告、数据和客服能否联调跑通？",
+    tasks:[
+      "检查 Amazon 后台",
+      "确认库存和入仓时间",
+      "检查独立站跳转",
+      "设置 UTM 和渠道追踪",
+      "确认达人发布排期",
+      "准备品牌内容排期",
+      "设计首批广告结构",
+      "建立销售和流量看板",
+      "准备差评、退货及安全问题处理流程"
+    ],
+    deliverables:["上市倒计时表","渠道排期表","UTM命名规则","数据看板","广告上线清单","达人发布计划","客服及风险应急预案","每日数据复盘模板"],
+    accept:"确保每一个流量入口、跳转链接、数据追踪和客服流程都能够正常运行。",
+    precond:"依赖 Listing/网站/达人内容定稿与库存入仓排期。",
+    risk:"广告与站外合规政策待确认；差评/退货/安全问题流程须就位。",
+    next:"将联调结果与排期移交第 17 周上市演练。"
+  },
+  {
+    n:17, phase:4, theme:"上市演练与最终检查", milestone:4,
+    goal:"模拟完整购买路径，完成上市前最终排查。",
+    core:"完整购买路径能否模拟跑通？上市前排查是否全部闭环？",
+    tasks:[
+      "分别模拟用户从 TikTok 或 Instagram 内容进入",
+      "分别模拟用户从达人内容进入",
+      "分别模拟用户从 Google 搜索进入",
+      "分别模拟用户从品牌独立站进入",
+      "分别模拟用户从 Amazon Listing 进入",
+      "分别模拟用户从购买后的客服及使用环节进入",
+      "逐项排查：信息一致性、链接正确性、用户理解、使用方式、医疗表述合规、安全提示、数据追踪、客服能力、素材授权、库存价格优惠"
+    ],
+    deliverables:["《上市准备总检查表》","《问题整改清单》","《上市后30天行动计划》","《上市后90天运营框架》","《首月广告和站外预算建议》","《每日、每周及每月数据复盘机制》"],
+    accept:"所有影响上线的问题必须明确负责人、整改措施、完成时间和复查结果。",
+    precond:"依赖全部上线前准备完成（样机、素材、Listing、网站、达人、联调）。",
+    risk:"上市前所有医疗/安全/FDA 表述须完成合规审核；遗留问题须闭环。",
+    next:"输出上市后 30/90 天行动计划，移交给运营执行。",
+    msGoal:"完成全部上市演练和最终检查。",
+    msDec:["是否具备正式上线条件","是否存在必须整改的问题","首月预算如何分配","上市后30天和90天如何执行"]
+  }
+];
+
+const PHASES = {
+  1:{name:"第一阶段｜看清市场", range:"第 1—4 周", kw:"市场、竞品、用户、内容、渠道", goal:"明确卖给谁、与谁竞争、通过什么方式触达。",
+     out:["市场/竞品/用户/内容/渠道首轮判断","竞品数据库与用户原话库","渠道优先级与独立站信息架构雏形"]},
+  2:{name:"第二阶段｜形成上市方案", range:"第 5—8 周", kw:"用户定位、产品定位、品牌信息、内容体系、达人资源、独立站", goal:"把调研结论转化为可以执行的上市方案。",
+     out:["目标用户优先级与定位 V1.0","品牌信息框架与 100 选题库","达人资源库与独立站需求书"]},
+  3:{name:"第三阶段｜验证方向并建设资产", range:"第 9—12 周", kw:"内容样稿、内容测试、Amazon结构、阶段复盘", goal:"低成本验证方向，形成可继续使用的上市资产。",
+     out:["首批内容样稿与审核流程","内容测试报告与方向调整","Amazon 结构草案与三个月转正汇报"]},
+  4:{name:"第四阶段｜正式上市准备", range:"第 13—17 周", kw:"样机测试、素材拍摄、Listing定稿、渠道联调、上市演练", goal:"完成所有上线前准备，达到「产品一到即可上线」的状态。",
+     out:["样机测试报告与改善建议","商业素材与各渠道定稿","上市联调与上市演练总检查"]}
+};
+
+const FLOW = ["市场研究","用户洞察","定位收敛","内容与资源建设","小规模测试","Amazon与独立站准备","样机验证","素材与文案定稿","上市联调","正式上线"];
+
+const MS = {
+  1:{week:4, title:"里程碑1｜第4周结束", goal:"完成市场、用户、竞品、内容及渠道的首轮判断。", dec:WEEKS.find(w=>w.n===4).msDec},
+  2:{week:8, title:"里程碑2｜第8周结束", goal:"完成定位、内容体系、达人资源和独立站需求规划。", dec:WEEKS.find(w=>w.n===8).msDec},
+  3:{week:12, title:"里程碑3｜第12周结束", goal:"完成三个月阶段复盘及转正汇报。", dec:WEEKS.find(w=>w.n===12).msDec},
+  4:{week:17, title:"里程碑4｜第17周结束", goal:"完成全部上市演练和最终检查。", dec:WEEKS.find(w=>w.n===17).msDec}
+};
+
+const ADJ = {
+  "样机未完成":"深化用户、竞品、内容和专业资源建设",
+  "功能未定型":"不定稿 Listing 和产品效果文案",
+  "FDA路径未确认":"不发布 FDA 及医疗相关内容",
+  "外观未定型":"不进行最终商业拍摄",
+  "上市时间推迟":"暂缓大规模达人合作和付费预热",
+  "产品基本定型":"加快样机测试、素材、Listing 和网站定稿"
+};
+
+const STATUS_OPTS = ["未开始","进行中","待审核","已完成","延期","暂停"];
+const STATUS_CLASS = {"未开始":"st-todo","进行中":"st-doing","待审核":"st-review","已完成":"st-done","延期":"st-delay","暂停":"st-pause"};
+const VERDICT_OPTS = ["通过","修改后通过","需要返工","暂缓决策"];
+
+/* =========================================================
+   状态层
+   ========================================================= */
+function defaultState(){
+  const w = {};
+  WEEKS.forEach(d=>{
+    w[d.n] = {
+      tasks: d.tasks.map(()=>false),
+      status:"未开始",
+      owner:"",
+      planned: addDays(START_DATE, d.n*7),
+      actual:"",
+      feedback:"",
+      precondMet:false,
+      tbc:false,
+      expanded:false,
+      ceo:{
+        q1:"",q2:"",q3:"",q4:"",q5:"",
+        conclusion:"", links:"", influence:"",
+        mgmt:"", verdict:"", rework:"", next:""
+      }
+    };
+  });
+  return { version:VERSION, currentWeek:0, productStatus:"", weeks:w };
+}
+function addDays(dateStr, days){
+  const d = new Date(dateStr+"T00:00:00");
+  d.setDate(d.getDate()+days);
+  return d.toISOString().slice(0,10);
+}
+const STORE_KEY = "aurillis_pelvic_17w_v1";
+let state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) return defaultState();
+    const s = JSON.parse(raw);
+    if(!s || s.version !== VERSION || !s.weeks) return defaultState();
+    // 兼容补全
+    const def = defaultState();
+    WEEKS.forEach(d=>{
+      if(!s.weeks[d.n]) s.weeks[d.n] = def.weeks[d.n];
+      else{
+        if(!Array.isArray(s.weeks[d.n].tasks) || s.weeks[d.n].tasks.length !== d.tasks.length)
+          s.weeks[d.n].tasks = def.weeks[d.n].tasks;
+        if(!s.weeks[d.n].ceo) s.weeks[d.n].ceo = def.weeks[d.n].ceo;
+        if(typeof s.weeks[d.n].planned !== "string") s.weeks[d.n].planned = def.weeks[d.n].planned;
+      }
+    });
+    return s;
+  }catch(e){ return defaultState(); }
+}
+function saveState(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+}
+
+/* =========================================================
+   渲染
+   ========================================================= */
+function buildWeekSelectors(){
+  const fw = document.getElementById("f-week");
+  const sw = document.getElementById("set-week");
+  for(let i=1;i<=17;i++){
+    fw.insertAdjacentHTML("beforeend", `<option value="${i}">第 ${i} 周</option>`);
+    sw.insertAdjacentHTML("beforeend", `<option value="${i}">第 ${i} 周</option>`);
+  }
+}
+
+function renderRoadmap(){
+  const ph = document.getElementById("phases");
+  ph.innerHTML = Object.keys(PHASES).map(p=>{
+    const d = PHASES[p];
+    return `<div class="phase p${p}">
+      <div class="ph-head">
+        <div class="pn">${d.range}</div>
+        <div class="pt">${d.name.split("｜")[1]||d.name}</div>
+        <div class="pr">关键词：${d.kw}</div>
+      </div>
+      <div class="ph-body">
+        <div class="ph-goal"><b>目标：</b>${d.goal}</div>
+        <div>${d.out.map(o=>`<span class="tag">${o}</span>`).join("")}</div>
+        <div class="ph-out"><b>核心成果：</b><ul style="margin:4px 0 0;padding-left:18px;">${d.out.map(o=>`<li>${o}</li>`).join("")}</ul></div>
+        <div class="ph-prog">
+          <div style="font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between;"><span>当前完成进度</span><span data-ph-prog="${p}">0%</span></div>
+          <div class="pbar"><i data-ph-bar="${p}" style="width:0%"></i></div>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+  document.getElementById("flow-strip").innerHTML = FLOW.map((f,i)=>
+    `${i>0?'<span class="flow-arrow">→</span>':''}<span class="flow-node">${f}</span>`
+  ).join("");
+}
+
+function weekHTML(d){
+  const st = state.weeks[d.n];
+  const tasksHTML = d.tasks.map((t,i)=>
+    `<li class="${st.tasks[i]?'done':''}"><input type="checkbox" class="task-cb" data-w="${d.n}" data-i="${i}" ${st.tasks[i]?'checked':''}><span>${t}</span></li>`
+  ).join("");
+  const delivHTML = d.deliverables.map(x=>`<span class="chip">${x}</span>`).join("");
+  const msBadge = d.milestone ? `<span class="badge ms">里程碑 ${d.milestone}</span>` : "";
+  return `
+  <section class="week p${d.phase} ${st.expanded?'open':''}" data-week="${d.n}" data-phase="${d.phase}">
+    <div class="w-head" data-toggle="${d.n}">
+      <span class="w-num">第${d.n}周</span>
+      <span class="w-title">${d.theme}<small>阶段${d.phase} · 计划完成 ${st.planned}</small></span>
+      <span class="w-badges">
+        <span class="badge status ${STATUS_CLASS[st.status]}" data-status-badge="${d.n}">${st.status}</span>
+        <span class="badge tbc" data-tbc="${d.n}" style="${st.tbc?'':'display:none'}">待专业确认</span>
+        <span class="badge prec" data-prec="${d.n}" style="${st.precondMet?'display:none':''}">前置条件未满足</span>
+        ${msBadge}
+      </span>
+      <span class="w-caret">▶</span>
+    </div>
+    <div class="w-stats">
+      <span>本周任务完成：<b data-stat-done="${d.n}">0/0</b></span>
+      <span>本周完成率：<b data-stat-pct="${d.n}">0%</b></span>
+      <span>累计完成率：<b data-stat-cum="${d.n}">0%</b></span>
+      <span>延期任务：<b data-stat-delay="${d.n}">0</b></span>
+    </div>
+    <div class="w-body">
+      <div class="block"><div class="bh"><span class="ic"></span>本周目标</div><div class="bt">${d.goal}</div></div>
+      <div class="block"><div class="bh"><span class="ic"></span>核心问题</div><div class="bt">${d.core}</div></div>
+      <div class="block"><div class="bh"><span class="ic"></span>主要任务（可勾选）</div><ul class="tasklist">${tasksHTML}</ul></div>
+      <div class="block"><div class="bh"><span class="ic"></span>交付成果</div><div class="deliv">${delivHTML}</div></div>
+      <div class="block"><div class="bh"><span class="ic"></span>验收标准</div><div class="bt">${d.accept}</div></div>
+      <div class="grid2">
+        <div class="block"><div class="bh"><span class="ic"></span>前置条件或依赖</div>
+          <div class="bt">${d.precond}</div>
+          <label class="chk" style="margin-top:8px;"><input type="checkbox" class="precond-cb" data-w="${d.n}" ${st.precondMet?'checked':''}> 前置条件已满足</label>
+        </div>
+        <div class="block"><div class="bh"><span class="ic"></span>风险与待确认事项</div><div class="bt">${d.risk}</div>
+          <label class="chk" style="margin-top:8px;"><input type="checkbox" class="tbc-cb" data-w="${d.n}" ${st.tbc?'checked':''}> 本周含待专业确认事项（医疗/FDA/功效/安全/禁忌）</label>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="bh"><span class="ic"></span>执行与状态</div>
+        <div class="grid2">
+          <div class="field"><label>负责人</label><input type="text" class="owner-in" data-w="${d.n}" value="${esc(st.owner)}" placeholder="填写负责人"></div>
+          <div class="field"><label>完成状态</label>
+            <select class="status-sel" data-w="${d.n}">${STATUS_OPTS.map(o=>`<option ${o===st.status?'selected':''}>${o}</option>`).join("")}</select>
+          </div>
+          <div class="field"><label>计划完成日期</label><input type="date" class="planned-in" data-w="${d.n}" value="${st.planned}"></div>
+          <div class="field"><label>实际完成日期</label><input type="date" class="actual-in" data-w="${d.n}" value="${st.actual}"></div>
+        </div>
+      </div>
+
+      <div class="block"><div class="bh"><span class="ic"></span>管理层反馈</div>
+        <textarea class="feedback-in" data-w="${d.n}" placeholder="填写管理层反馈意见">${esc(st.feedback)}</textarea>
+      </div>
+
+      <div class="block ceo">
+        <div class="ceo-h"><span class="ic"></span>CEO 每周验收区（5 个核心问题 + 验收记录）</div>
+        <div class="qgrid">
+          <div class="qbox"><div class="ql">1. 你本周发现了什么？</div><textarea data-ceo="q1" data-w="${d.n}">${esc(st.ceo.q1)}</textarea></div>
+          <div class="qbox"><div class="ql">2. 证据是什么？</div><textarea data-ceo="q2" data-w="${d.n}">${esc(st.ceo.q2)}</textarea></div>
+          <div class="qbox"><div class="ql">3. 为什么对 Aurillis 重要？</div><textarea data-ceo="q3" data-w="${d.n}">${esc(st.ceo.q3)}</textarea></div>
+          <div class="qbox"><div class="ql">4. 影响产品 / 内容 / Listing / 渠道的哪个决定？</div><textarea data-ceo="q4" data-w="${d.n}">${esc(st.ceo.q4)}</textarea></div>
+          <div class="qbox"><div class="ql">5. 下一步准备如何验证？</div><textarea data-ceo="q5" data-w="${d.n}">${esc(st.ceo.q5)}</textarea></div>
+          <div class="qbox"><div class="ql">本周核心结论</div><textarea data-ceo="conclusion" data-w="${d.n}">${esc(st.ceo.conclusion)}</textarea></div>
+          <div class="qbox"><div class="ql">关键证据链接</div><textarea data-ceo="links" data-w="${d.n}">${esc(st.ceo.links)}</textarea></div>
+          <div class="qbox"><div class="ql">对 Aurillis 的影响</div><textarea data-ceo="influence" data-w="${d.n}">${esc(st.ceo.influence)}</textarea></div>
+        </div>
+        <div class="grid2" style="margin-top:12px;">
+          <div class="field" style="flex:1;"><label>管理层意见</label><textarea data-ceo="mgmt" data-w="${d.n}" placeholder="管理层意见">${esc(st.ceo.mgmt)}</textarea></div>
+          <div class="field" style="flex:1;"><label>需要返工的内容</label><textarea data-ceo="rework" data-w="${d.n}" placeholder="需要返工的内容">${esc(st.ceo.rework)}</textarea></div>
+        </div>
+        <div class="grid2" style="margin-top:0;">
+          <div class="field"><label>验收结果</label>
+            <select data-ceo="verdict" data-w="${d.n}"><option value="">未填写</option>${VERDICT_OPTS.map(o=>`<option ${o===st.ceo.verdict?'selected':''}>${o}</option>`).join("")}</select>
+          </div>
+          <div class="field"><label>下周重点</label><textarea data-ceo="next" data-w="${d.n}" placeholder="下周重点">${esc(st.ceo.next)}</textarea></div>
+        </div>
+      </div>
+
+      <div class="block"><div class="bh"><span class="ic"></span>下一周衔接事项</div><div class="bt">${d.next}</div></div>
+    </div>
+  </section>`;
+}
+
+function renderWeeks(){
+  document.getElementById("weeks").innerHTML = WEEKS.map(weekHTML).join("");
+  // 绑定事件
+  WEEKS.forEach(d=>bindWeek(d.n));
+}
+
+function bindWeek(n){
+  const sec = document.querySelector(`.week[data-week="${n}"]`);
+  if(!sec) return;
+  // toggle
+  sec.querySelector(`.w-head`).addEventListener("click", ()=>{
+    state.weeks[n].expanded = !state.weeks[n].expanded;
+    sec.classList.toggle("open", state.weeks[n].expanded);
+    saveState();
+  });
+  // task checkbox
+  sec.querySelectorAll(".task-cb").forEach(cb=>{
+    cb.addEventListener("change", ()=>{
+      const i = +cb.dataset.i;
+      state.weeks[n].tasks[i] = cb.checked;
+      cb.closest("li").classList.toggle("done", cb.checked);
+      saveState(); updateWeekStats(n); updateDashboard();
+    });
+  });
+  // precond
+  const pc = sec.querySelector(".precond-cb");
+  pc.addEventListener("change", ()=>{
+    state.weeks[n].precondMet = pc.checked;
+    sec.querySelector(`[data-prec="${n}"]`).style.display = pc.checked ? "none":"inline-block";
+    saveState();
+  });
+  // tbc
+  const tbc = sec.querySelector(".tbc-cb");
+  tbc.addEventListener("change", ()=>{
+    state.weeks[n].tbc = tbc.checked;
+    sec.querySelector(`[data-tbc="${n}"]`).style.display = tbc.checked ? "inline-block":"none";
+    saveState(); updateDashboard();
+  });
+  // status
+  const sel = sec.querySelector(".status-sel");
+  sel.addEventListener("change", ()=>{
+    state.weeks[n].status = sel.value;
+    const b = sec.querySelector(`[data-status-badge="${n}"]`);
+    b.textContent = sel.value;
+    b.className = "badge status "+STATUS_CLASS[sel.value];
+    saveState(); updateWeekStats(n); updateDashboard();
+  });
+  // owner / dates / feedback
+  sec.querySelector(".owner-in").addEventListener("input", e=>{ state.weeks[n].owner=e.target.value; saveState(); });
+  sec.querySelector(".planned-in").addEventListener("change", e=>{ state.weeks[n].planned=e.target.value; saveState(); updateWeekStats(n); });
+  sec.querySelector(".actual-in").addEventListener("change", e=>{ state.weeks[n].actual=e.target.value; saveState(); });
+  sec.querySelector(".feedback-in").addEventListener("input", e=>{ state.weeks[n].feedback=e.target.value; saveState(); });
+  // ceo
+  sec.querySelectorAll("[data-ceo]").forEach(el=>{
+    const key = el.dataset.ceo;
+    el.addEventListener("input", ()=>{ state.weeks[n].ceo[key]=el.value; saveState(); });
+  });
+}
+
+function renderMilestones(){
+  document.getElementById("ms-grid").innerHTML = Object.keys(MS).map(k=>{
+    const m = MS[k];
+    return `<div class="ms">
+      <div class="ms-top"><span class="mt">${m.title}</span><span class="mw">第 ${m.week} 周结束</span></div>
+      <div class="ms-body">
+        <div class="ms-goal"><b>节点目标：</b>${m.goal}</div>
+        <div style="font-size:12px;color:var(--muted);font-weight:700;margin:8px 0 4px;">管理层决策：</div>
+        <ul class="ms-dec">${m.dec.map(x=>`<li>${x}</li>`).join("")}</ul>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function renderAdjustment(){
+  const ps = document.getElementById("prod-status");
+  ps.addEventListener("change", ()=>{
+    state.productStatus = ps.value; saveState();
+    const card = document.getElementById("ps-card");
+    if(ps.value && ADJ[ps.value]){
+      document.getElementById("ps-k").textContent = ps.value;
+      document.getElementById("ps-v").textContent = ADJ[ps.value];
+      card.classList.add("show");
+    }else card.classList.remove("show");
+  });
+  // 恢复
+  if(state.productStatus){ ps.value = state.productStatus;
+    document.getElementById("ps-k").textContent = state.productStatus;
+    document.getElementById("ps-v").textContent = ADJ[state.productStatus]||"";
+    document.getElementById("ps-card").classList.add("show");
+  }
+}
+
+/* =========================================================
+   计算与统计
+   ========================================================= */
+function todayStr(){ const d=new Date(); return d.toISOString().slice(0,10); }
+function isDelayed(n){
+  const s = state.weeks[n];
+  if(s.status==="已完成"||s.status==="暂停") return false;
+  if(!s.planned) return false;
+  return s.planned < todayStr();
+}
+function weekStats(n){
+  const t = state.weeks[n].tasks;
+  const done = t.filter(Boolean).length;
+  return {done, total:t.length, pct: t.length? Math.round(done/t.length*100):0};
+}
+function overallStats(){
+  let done=0,total=0;
+  const sc = {未开始:0,进行中:0,待审核:0,已完成:0,延期:0,暂停:0};
+  let delayed=0, tbc=0;
+  WEEKS.forEach(d=>{
+    const s=state.weeks[d.n];
+    done += s.tasks.filter(Boolean).length;
+    total += s.tasks.length;
+    sc[s.status] = (sc[s.status]||0)+1;
+    if(isDelayed(d.n)) delayed++;
+    if(s.tbc) tbc++;
+  });
+  return {done,total,pct: total? Math.round(done/total*100):0, sc, delayed, tbc};
+}
+function phaseProgress(p){
+  const ws = WEEKS.filter(d=>d.phase==p);
+  let done=0,total=0;
+  ws.forEach(d=>{ done+=state.weeks[d.n].tasks.filter(Boolean).length; total+=state.weeks[d.n].tasks.length; });
+  return total? Math.round(done/total*100):0;
+}
+
+function updateWeekStats(n){
+  const st = weekStats(n);
+  const sec = document.querySelector(`.week[data-week="${n}"]`);
+  if(!sec) return;
+  sec.querySelector(`[data-stat-done="${n}"]`).textContent = `${st.done}/${st.total}`;
+  sec.querySelector(`[data-stat-pct="${n}"]`).textContent = st.pct+"%";
+  const ov = overallStats();
+  sec.querySelector(`[data-stat-cum="${n}"]`).textContent = ov.pct+"%";
+  sec.querySelector(`[data-stat-delay="${n}"]`).textContent = isDelayed(n)?1:0;
+  // 延期徽章
+  const badge = sec.querySelector(`[data-status-badge="${n}"]`);
+  if(isDelayed(n) && state.weeks[n].status!=="延期"){
+    // 显示额外延期标记但保留原状态
+    let dtag = sec.querySelector(`[data-delaytag="${n}"]`);
+    if(!dtag){
+      dtag=document.createElement("span");
+      dtag.className="badge status st-delay"; dtag.dataset.delaytag=n; dtag.textContent="延期";
+      badge.after(dtag);
+    }
+  }else{
+    const dtag = sec.querySelector(`[data-delaytag="${n}"]`);
+    if(dtag) dtag.remove();
+  }
+  // 阶段进度
+  for(let p=1;p<=4;p++){
+    const v=phaseProgress(p);
+    const el=document.querySelector(`[data-ph-prog="${p}"]`);
+    const bar=document.querySelector(`[data-ph-bar="${p}"]`);
+    if(el) el.textContent=v+"%";
+    if(bar) bar.style.width=v+"%";
+  }
+}
+
+function updateDashboard(){
+  const ov = overallStats();
+  const cw = state.currentWeek;
+  document.getElementById("d-week").textContent = cw===0 ? "未开始（准备中）" : ("第 "+cw+" 周");
+  // 阶段
+  let phName="—";
+  if(cw>=1&&cw<=4) phName="第一阶段｜看清市场";
+  else if(cw>=5&&cw<=8) phName="第二阶段｜形成上市方案";
+  else if(cw>=9&&cw<=12) phName="第三阶段｜验证方向并建设资产";
+  else if(cw>=13&&cw<=17) phName="第四阶段｜正式上市准备";
+  document.getElementById("d-phase").textContent=phName;
+  document.getElementById("d-overall").textContent=ov.pct+"%";
+  document.getElementById("d-overall-bar").style.width=ov.pct+"%";
+  document.getElementById("d-status").textContent=`${ov.sc.已完成} / ${ov.sc.进行中} / ${ov.sc.待审核}`;
+  document.getElementById("d-delay").textContent=ov.delayed;
+  document.getElementById("d-tbc").textContent=ov.tbc;
+  // next milestone
+  let nm=null;
+  [4,8,12,17].forEach(w=>{ if(cw<w && nm===null) nm=w; });
+  if(nm===null){ document.getElementById("d-nextms").textContent="全部里程碑已完成"; document.getElementById("d-remain").textContent="—"; }
+  else{
+    const info = Object.values(MS).find(m=>m.week===nm);
+    document.getElementById("d-nextms").textContent=info.title;
+    const remainW = nm - cw;
+    const remainD = (nm - cw)*7;
+    document.getElementById("d-remain").textContent=`剩余 ${remainW} 周（约 ${remainD} 天）`;
+  }
+  // this week deliverables
+  const td = document.getElementById("d-thisdeliv");
+  if(cw>=1 && cw<=17){
+    const d=WEEKS.find(x=>x.n===cw);
+    td.innerHTML = d.deliverables.map(x=>`• ${x}`).join("<br>");
+  }else{
+    td.textContent="项目尚未开始 / 请在上方设置当前周次";
+  }
+}
+
+/* =========================================================
+   筛选
+   ========================================================= */
+function applyFilters(){
+  const q = document.getElementById("f-search").value.trim().toLowerCase();
+  const ph = document.getElementById("f-phase").value;
+  const wk = document.getElementById("f-week").value;
+  const owner = document.getElementById("f-owner").value.trim().toLowerCase();
+  const st = document.getElementById("f-status").value;
+  const onlyDelay = document.getElementById("f-delay").checked;
+  const onlyTbc = document.getElementById("f-tbc").checked;
+  const onlyThis = document.getElementById("f-thisweek").checked;
+  const onlyReview = document.getElementById("f-review").checked;
+  const cw = state.currentWeek;
+
+  WEEKS.forEach(d=>{
+    const s = state.weeks[d.n];
+    const sec = document.querySelector(`.week[data-week="${d.n}"]`);
+    if(!sec) return;
+    let show = true;
+    if(ph && String(d.phase)!==ph) show=false;
+    if(wk && String(d.n)!==wk) show=false;
+    if(owner && !(s.owner||"").toLowerCase().includes(owner)) show=false;
+    if(st && s.status!==st) show=false;
+    if(onlyDelay && !isDelayed(d.n)) show=false;
+    if(onlyTbc && !s.tbc) show=false;
+    if(onlyThis && d.n!==cw) show=false;
+    if(onlyReview && s.status!=="待审核") show=false;
+    if(q){
+      const hay = (d.theme+" "+d.goal+" "+d.core+" "+d.deliverables.join(" ")+" "+(s.owner||"")+" "+d.tasks.join(" ")).toLowerCase();
+      if(!hay.includes(q)) show=false;
+    }
+    sec.classList.toggle("hidden", !show);
+  });
+  // 同步阶段 tab 高亮
+  document.querySelectorAll("#phase-tabs .tab").forEach(t=>{
+    t.classList.toggle("active", t.dataset.ph===ph);
+  });
+}
+
+/* =========================================================
+   工具
+   ========================================================= */
+function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+/* =========================================================
+   导入 / 导出 / 重置 / 打印
+   ========================================================= */
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(state,null,2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const ts = new Date().toISOString().slice(0,10);
+  a.href=url; a.download=`Aurillis盆底肌_17周行动看板_${ts}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+function openModal(title, desc, content, okLabel, onOk){
+  document.getElementById("modal-title").textContent=title;
+  document.getElementById("modal-desc").textContent=desc;
+  document.getElementById("modal-text").value=content;
+  document.getElementById("modal-text").readOnly=false;
+  const mask=document.getElementById("modal");
+  mask.classList.add("show");
+  const okBtn=document.getElementById("modal-ok");
+  const cancelBtn=document.getElementById("modal-cancel");
+  okBtn.textContent=okLabel||"确认";
+  const handler=()=>{
+    mask.classList.remove("show");
+    okBtn.removeEventListener("click",handler);
+    cancelBtn.removeEventListener("click",hideModal);
+    if(onOk) onOk(document.getElementById("modal-text").value);
+  };
+  okBtn.addEventListener("click",handler);
+  cancelBtn.addEventListener("click",hideModal);
+}
+function hideModal(){ document.getElementById("modal").classList.remove("show"); }
+
+function importJSON(){
+  openModal("导入项目数据","粘贴之前导出的 JSON 后点击「确认」应用；将覆盖当前所有填写与勾选。","", "应用导入", (val)=>{
+    try{
+      const s=JSON.parse(val);
+      if(!s || s.version!==VERSION || !s.weeks) throw new Error("格式不匹配");
+      state=s; saveState(); location.reload();
+    }catch(e){ alert("JSON 解析失败或版本不匹配，未导入。"); }
+  });
+}
+function resetData(){
+  if(!confirm("确定要重置所有填写数据吗？此操作不可撤销。")) return;
+  if(!confirm("再次确认：所有勾选与填写内容将被清空并恢复默认，是否继续？")) return;
+  localStorage.removeItem(STORE_KEY);
+  state=defaultState(); saveState(); location.reload();
+}
+
+/* =========================================================
+   初始化
+   ========================================================= */
+function init(){
+  buildWeekSelectors();
+  renderRoadmap();
+  renderWeeks();
+  renderMilestones();
+  renderAdjustment();
+  // 设置当前周
+  document.getElementById("set-week").value = state.currentWeek;
+  document.getElementById("set-week").addEventListener("change", e=>{
+    state.currentWeek = +e.target.value; saveState(); applyFilters(); updateDashboard();
+  });
+  // 筛选事件
+  ["f-search","f-phase","f-week","f-owner","f-status"].forEach(id=>{
+    document.getElementById(id).addEventListener("input", applyFilters);
+    document.getElementById(id).addEventListener("change", applyFilters);
+  });
+  ["f-delay","f-tbc","f-thisweek","f-review"].forEach(id=>{
+    document.getElementById(id).addEventListener("change", applyFilters);
+  });
+  // 阶段 tab
+  document.querySelectorAll("#phase-tabs .tab").forEach(t=>{
+    t.addEventListener("click", ()=>{
+      const ph=t.dataset.ph;
+      document.getElementById("f-phase").value=ph;
+      applyFilters();
+    });
+  });
+  // 展开/折叠
+  document.getElementById("btn-expand").addEventListener("click", ()=>{
+    WEEKS.forEach(d=>{ state.weeks[d.n].expanded=true;
+      const sec=document.querySelector(`.week[data-week="${d.n}"]`); if(sec) sec.classList.add("open"); });
+    saveState();
+  });
+  document.getElementById("btn-collapse").addEventListener("click", ()=>{
+    WEEKS.forEach(d=>{ state.weeks[d.n].expanded=false;
+      const sec=document.querySelector(`.week[data-week="${d.n}"]`); if(sec) sec.classList.remove("open"); });
+    saveState();
+  });
+  // 顶栏按钮
+  document.getElementById("btn-print").addEventListener("click", ()=>window.print());
+  document.getElementById("btn-export").addEventListener("click", exportJSON);
+  document.getElementById("btn-import").addEventListener("click", ()=>document.getElementById("file-input").click());
+  document.getElementById("file-input").addEventListener("change", e=>{
+    const f=e.target.files[0]; if(!f) return;
+    const r=new FileReader();
+    r.onload=()=>{ openModal("导入项目数据","确认以下 JSON 后点击「应用导入」，将覆盖当前数据。",r.result,"应用导入",(val)=>{
+      try{ const s=JSON.parse(val); if(!s||s.version!==VERSION||!s.weeks) throw 0; state=s; saveState(); location.reload(); }
+      catch(err){ alert("导入失败：格式不匹配。"); }
+    }); };
+    r.readAsText(f);
+  });
+  document.getElementById("btn-reset").addEventListener("click", resetData);
+  document.getElementById("totop").addEventListener("click", ()=>window.scrollTo({top:0,behavior:"smooth"}));
+
+  // 统计
+  WEEKS.forEach(d=>updateWeekStats(d.n));
+  updateDashboard();
+  applyFilters();
+}
+init();
+</script>
+</body>
+</html>
