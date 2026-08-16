@@ -5,6 +5,12 @@
       "name": "其他",
       "icon": "fas fa-folder",
       "parentId": null
+    },
+    {
+      "id": "cat_1786872823403",
+      "name": "团队建设",
+      "icon": "fas fa-folder",
+      "parentId": null
     }
   ],
   "fileCats": {
