@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurillis｜南京核心研发团队接触计划</title>
+<style>
+  :root{
+    --bg:#f5f7f9;
+    --card:#ffffff;
+    --ink:#132431;
+    --ink-soft:#5f7280;
+    --line:#e2e8ee;
+    --teal:#0d9488;
+    --teal-soft:#e6f7f5;
+    --star:#f59e0b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);font-size:13.5px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:20px 16px 36px}
+  header{border-left:4px solid var(--teal);padding:3px 0 3px 13px;margin-bottom:16px}
+  h1{font-size:21px;letter-spacing:.4px;font-weight:700}
+  .sub{color:var(--ink-soft);font-size:12.5px;margin-top:3px}
+  .module{margin-bottom:16px}
+  .mt{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:1.8px;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+  .mt::before{content:"";width:5px;height:5px;background:var(--teal);border-radius:1px}
+
+  /* module1 */
+  .goal{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+  .gcard{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:11px}
+  .gcard .num{font-size:18px;font-weight:800;color:var(--teal);line-height:1}
+  .gcard h3{font-size:12.5px;margin:5px 0 3px}
+  .gcard p{font-size:11.5px;color:var(--ink-soft);line-height:1.45}
+
+  /* module2 */
+  .qlist{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 11px;display:flex;gap:10px;align-items:flex-start;position:relative}
+  .q .qi{font-weight:800;color:var(--ink-soft);font-size:12.5px;min-width:22px;line-height:1.5}
+  .q .qt{flex:1;font-size:13px;line-height:1.55}
+  .q.hot{border:1.5px solid var(--teal);background:var(--teal-soft)}
+  .q.hot .qi{color:var(--teal)}
+  .hot-stars{color:var(--teal);font-size:11.5px;margin-left:5px;white-space:nowrap}
+
+  /* module3 */
+  .rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .rcard{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 11px;display:flex;justify-content:space-between;align-items:center}
+  .rcard .dim{font-size:12px;color:var(--ink-soft)}
+  .stars{cursor:pointer;font-size:13px;letter-spacing:.5px;user-select:none;white-space:nowrap}
+  .stars .s{color:#d7e0e5}
+  .stars .s.on{color:var(--star)}
+  .watch{margin-top:8px;background:var(--card);border:1px dashed var(--teal);border-radius:8px;padding:9px 12px;font-size:12px;color:var(--ink-soft)}
+  .watch b{color:var(--ink);font-weight:700}
+
+  /* module4 */
+  .people{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+  .pcard{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:11px}
+  .pname{font-size:14px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .pname .pos{font-size:11px;font-weight:500;color:var(--ink-soft);flex-shrink:0}
+  .row{display:flex;gap:5px;margin-top:5px;font-size:11.5px}
+  .row .k{color:var(--ink-soft);min-width:52px}
+  .row .v{flex:1;color:var(--ink)}
+  .plk{margin-top:6px}
+  .plk .stars{font-size:12px}
+  .verdict{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+  .vc{font-size:10.5px;border:1px solid var(--line);border-radius:20px;padding:2px 8px;cursor:pointer;color:var(--ink-soft);background:#fff}
+  .vc.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .vc.A.on{background:var(--teal);border-color:var(--teal)}
+
+  /* module5 */
+  .puzzle{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:12px}
+  .ptree{font-family:"SF Mono",Menlo,monospace;font-size:11.5px;color:var(--ink);background:#f9fbfc;border:1px solid var(--line);border-radius:7px;padding:10px;white-space:pre;line-height:1.45;overflow-x:auto;text-align:center}
+  .slots{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:10px}
+  .slot{background:#f9fbfc;border:1px solid var(--line);border-radius:7px;padding:8px 5px;text-align:center;font-size:11px;color:var(--ink-soft)}
+  .slot b{display:block;color:var(--ink);font-size:11.5px;margin-bottom:3px}
+  .slot .fill{color:#c2ccd3;font-size:12px}
+  .verdict-q{margin-top:10px;background:var(--teal-soft);border:1px solid var(--teal);border-radius:7px;padding:9px 11px;font-size:12px}
+  .verdict-q .tag{display:inline-block;margin-top:6px}
+  .vtag{cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:6px;padding:2px 8px;margin-right:5px;font-size:11.5px;color:var(--ink-soft)}
+  .vtag.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+  /* module6 */
+  .tl{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:12px 14px}
+  .tnode{display:flex;gap:11px;position:relative;padding-bottom:11px}
+  .tnode:last-child{padding-bottom:0}
+  .tnode::before{content:"";position:absolute;left:5px;top:14px;bottom:0;width:2px;background:var(--line)}
+  .tnode:last-child::before{display:none}
+  .dot{width:11px;height:11px;border-radius:50%;background:var(--teal);margin-top:2px;flex:none;z-index:1;box-shadow:0 0 0 2.5px var(--teal-soft)}
+  .tnode .tt b{display:block;font-size:12.5px;margin-bottom:1px}
+  .tnode .tt span{color:var(--ink-soft);font-size:11.5px}
+
+  /* review + slogan */
+  .review{background:var(--card);border:1px solid var(--line);border-radius:9px;padding:12px}
+  .rr{display:flex;gap:8px;font-size:12.5px;padding:4px 0;border-bottom:1px solid #f1f4f6}
+  .rr:last-child{border-bottom:none}
+  .rr .rn{color:var(--teal);font-weight:700;min-width:16px}
+  .slogan{margin-top:16px;background:var(--ink);color:#fff;border-radius:9px;padding:16px 14px;text-align:center;font-size:14px;font-weight:600;letter-spacing:.4px;line-height:1.55}
+  .slogan .hl{color:#2dd4bf}
+
+  @media(max-width:680px){
+    .goal{grid-template-columns:repeat(2,1fr)}
+    .qlist{grid-template-columns:1fr}
+    .rate{grid-template-columns:1fr 1fr}
+    .people{grid-template-columns:1fr}
+    .slots{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Aurillis｜南京核心研发团队接触计划</h1>
+    <div class="sub">目标：识别核心人才 · 判断团队完整性 · 建立长期关系</div>
+  </header>
+
+  <!-- 模块1 -->
+  <div class="module">
+    <div class="mt">模块 1 ｜ 本次目标</div>
+    <div class="goal">
+      <div class="gcard"><div class="num">①</div><h3>找对人</h3><p>确认谁真正参与过麦澜德智能盆底核心产品研发。</p></div>
+      <div class="gcard"><div class="num">②</div><h3>找团队</h3><p>判断"研发负责人+硬件+结构+其他核心"能否成建制加入。</p></div>
+      <div class="gcard"><div class="num">③</div><h3>找缺口</h3><p>搞清楚从0开发 无线+APP+EMG生物反馈 还缺什么能力。</p></div>
+      <div class="gcard"><div class="num">④</div><h3>建关系</h3><p>建立麦澜德、伟思及南京盆底医疗行业核心人才网络。</p></div>
+    </div>
+  </div>
+
+  <!-- 模块2 -->
+  <div class="module">
+    <div class="mt">模块 2 ｜ 晚宴必问 8 题</div>
+    <div class="qlist">
+      <div class="q"><div class="qi">01</div><div class="qt">你们分别参与过麦澜德哪些盆底产品？</div></div>
+      <div class="q"><div class="qi">02</div><div class="qt">哪一代产品研发难度最大？为什么？</div></div>
+      <div class="q"><div class="qi">03</div><div class="qt">你们几个人以前是否一起完整做过项目？</div></div>
+      <div class="q hot">
+        <div class="qi">04</div>
+        <div class="qt">如果今天重新从0做一款"无线+APP+后续EMG"的盆底产品，只允许带4个人，你会带哪4种人？<span class="hot-stars">★★★★★</span></div>
+      </div>
+      <div class="q hot">
+        <div class="qi">05</div>
+        <div class="qt">目前你们这3–4个人如果出来一起做，还缺哪两类关键人才？<span class="hot-stars">★★★★★</span></div>
+      </div>
+      <div class="q"><div class="qi">06</div><div class="qt">硬件、嵌入式、结构、APP、算法，哪些必须内部掌握？</div></div>
+      <div class="q"><div class="qi">07</div><div class="qt">方案公司最多可以替代哪些研发工作？</div></div>
+      <div class="q"><div class="qi">08</div><div class="qt">如果重新做一次盆底产品，你最想改掉现有产品什么问题？</div></div>
+    </div>
+  </div>
+
+  <!-- 模块3 -->
+  <div class="module">
+    <div class="mt">模块 3 ｜ 重点观察</div>
+    <div class="rate">
+      <div class="rcard"><div class="dim">技术能力</div><div class="stars" data-def="5"></div></div>
+      <div class="rcard"><div class="dim">产品理解</div><div class="stars" data-def="5"></div></div>
+      <div class="rcard"><div class="dim">系统能力</div><div class="stars" data-def="5"></div></div>
+      <div class="rcard"><div class="dim">团队协作</div><div class="stars" data-def="5"></div></div>
+      <div class="rcard"><div class="dim">创业适应度</div><div class="stars" data-def="5"></div></div>
+      <div class="rcard"><div class="dim">加入可能性</div><div class="stars" data-def="5"></div></div>
+    </div>
+    <div class="watch">重点观察：<b>谁是真正 Leader？</b>　<b>谁是技术核心？</b>　<b>谁是不可替代的人？</b></div>
+  </div>
+
+  <!-- 模块4 -->
+  <div class="module">
+    <div class="mt">模块 4 ｜ 人员卡片</div>
+    <div class="people" id="people"></div>
+  </div>
+
+  <!-- 模块5 -->
+  <div class="module">
+    <div class="mt">模块 5 ｜ 团队拼图</div>
+    <div class="puzzle">
+      <div class="ptree">研发负责人
+     │
+ ┌───┼───┐
+硬件   结构   ？
+             │
+          还缺谁？</div>
+      <div class="slots">
+        <div class="slot"><b>研发负责人</b><span class="fill">________</span></div>
+        <div class="slot"><b>硬件</b><span class="fill">________</span></div>
+        <div class="slot"><b>结构</b><span class="fill">________</span></div>
+        <div class="slot"><b>嵌入式/软件</b><span class="fill">________</span></div>
+        <div class="slot"><b>产品/算法</b><span class="fill">________</span></div>
+      </div>
+      <div class="verdict-q">
+        这5个人能不能从0做出 Aurillis 第二代智能盆底产品？
+        <div class="tag">
+          <span class="vtag" data-v="green">🟢 可以</span>
+          <span class="vtag" data-v="yellow">🟡 还缺1–2人</span>
+          <span class="vtag" data-v="red">🔴 团队不完整</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模块6 -->
+  <div class="module">
+    <div class="mt">模块 6 ｜ 关系推进</div>
+    <div class="tl">
+      <div class="tnode"><div class="dot"></div><div class="tt"><b>第一次晚宴</b><span>目标：认识 + 判断人</span></div></div>
+      <div class="tnode"><div class="dot"></div><div class="tt"><b>3 天内</b><span>CEO 单独感谢 + 微信保持联系</span></div></div>
+      <div class="tnode"><div class="dot"></div><div class="tt"><b>2–4 周</b><span>围绕产品进行一次专业交流</span></div></div>
+      <div class="tnode"><div class="dot"></div><div class="tt"><b>1–2 个月</b><span>邀请核心人员来深圳做产品 Workshop</span></div></div>
+      <div class="tnode"><div class="dot"></div><div class="tt"><b>2–6 个月</b><span>顾问合作 / 核心人才正式沟通 / 团队式引进</span></div></div>
+    </div>
+  </div>
+
+  <!-- 复盘 -->
+  <div class="module">
+    <div class="mt">页面底部 ｜ 南京行最终复盘</div>
+    <div class="review">
+      <div class="rr"><span class="rn">1</span>谁是真正的研发 Leader？</div>
+      <div class="rr"><span class="rn">2</span>谁最值得优先挖？</div>
+      <div class="rr"><span class="rn">3</span>现有 3–4 个人能否组成种子团队？</div>
+      <div class="rr"><span class="rn">4</span>还缺什么人？</div>
+      <div class="rr"><span class="rn">5</span>哪些技术可以继续外包？</div>
+      <div class="rr"><span class="rn">6</span>下一步约谁、什么时候再见？</div>
+    </div>
+  </div>
+
+  <div class="slogan">这次南京行的目标，不是当晚挖到人，<br>而是找到<span class="hl">真正能带出一支研发团队的人</span>。</div>
+
+</div>
+
+<script>
+  function makeStars(el){
+    var def=parseInt(el.dataset.def||'5',10);
+    function paint(n){el.innerHTML='';for(var i=1;i<=5;i++){var s=document.createElement('span');s.className='s'+(i<=n?' on':'');s.textContent='★';s.onclick=function(idx){return function(){paint(idx);};}(i);el.appendChild(s);}}
+    paint(def);
+  }
+  document.querySelectorAll('.rate .stars').forEach(makeStars);
+
+  var people=[
+    {name:'（姓名）',pos:'现职位',dir:'技术方向',prod:'参与过的核心产品',rel:'与其他人的合作关系',lk:3,v:'B'},
+    {name:'（姓名）',pos:'现职位',dir:'技术方向',prod:'参与过的核心产品',rel:'与其他人的合作关系',lk:3,v:'B'},
+    {name:'（姓名）',pos:'现职位',dir:'技术方向',prod:'参与过的核心产品',rel:'与其他人的合作关系',lk:3,v:'C'},
+    {name:'（姓名）',pos:'现职位',dir:'技术方向',prod:'参与过的核心产品',rel:'与其他人的合作关系',lk:3,v:'C'}
+  ];
+  var vmap={A:'重点争取',B:'保持深入沟通',C:'行业关系',D:'暂不推进'};
+  var pbox=document.getElementById('people');
+  people.forEach(function(p){
+    var card=document.createElement('div');card.className='pcard';
+    card.innerHTML=
+      '<div class="pname">'+p.name+'<span class="pos">'+p.pos+'</span></div>'+
+      '<div class="row"><span class="k">技术方向</span><span class="v">'+p.dir+'</span></div>'+
+      '<div class="row"><span class="k">核心产品</span><span class="v">'+p.prod+'</span></div>'+
+      '<div class="row"><span class="k">合作关系</span><span class="v">'+p.rel+'</span></div>'+
+      '<div class="row plk"><span class="k">加入可能</span><span class="stars" data-def="'+p.lk+'"></span></div>'+
+      '<div class="verdict" data-cur="'+p.v+'">'+
+        Object.keys(vmap).map(function(k){return '<span class="vc '+k+(k===p.v?' on':'')+'" data-k="'+k+'">'+k+'｜'+vmap[k]+'</span>';}).join('')+
+      '</div>';
+    pbox.appendChild(card);
+  });
+  pbox.querySelectorAll('.pcard').forEach(function(card){
+    card.querySelectorAll('.stars').forEach(makeStars);
+    card.querySelectorAll('.vc').forEach(function(c){
+      c.onclick=function(){card.querySelectorAll('.vc').forEach(function(x){x.classList.remove('on');});c.classList.add('on');};
+    });
+  });
+
+  document.querySelectorAll('.vtag').forEach(function(t){
+    t.onclick=function(){document.querySelectorAll('.vtag').forEach(function(x){x.classList.remove('on');});t.classList.add('on');};
+  });
+</script>
+</body>
+</html>
