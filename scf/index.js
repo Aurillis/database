@@ -556,6 +556,35 @@ async function handlePurgeAll(body, origin) {
 }
 
 // ---------- 上传 ----------
+// 自动注入云同步桥：让每个上传的 HTML 都自带「跨设备共享进度」能力。
+//  · 行为与服务中 viewer 的 buildStateShim 完全一致(免登录 editKey 写、SCF 实时读+同源 state 备读、toast 提示)。
+//  · 幂等：文件已含 KB_EDIT_KEY(如已烤入的盆底肌看板)则跳过，避免重复注入。
+//  · 直接打开 / 经网站列表打开 两种路径都会同步。
+function injectSyncScript(html) {
+  if (!html || html.indexOf('KB_EDIT_KEY') >= 0) return html; // 已含同步脚本则跳过(幂等)
+  var script = '<script>(function(){ if(window.__KB_SYNC_INJECTED) return; window.__KB_SYNC_INJECTED=true; try {'
+    + ' var kbFile=(window.__KB_FILE)||location.pathname.split(\'/\').pop(); if(!kbFile) return;'
+    + ' var base=location.href.split(\'/viewer.html\')[0].split(\'/reports/\')[0];'
+    + ' var KB_STATE=base+\'/state/\'+encodeURIComponent(kbFile)+\'.json\';'
+    + ' var KB_API=\'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.com\';'
+    + ' var KB_EDIT_KEY=\'kbSync_8f3a2c91d4e5\';'
+    + ' function toast(msg,ok){ try { var d=document.getElementById(\'__kb_toast\'); if(!d){ d=document.createElement(\'div\'); d.id=\'__kb_toast\'; d.style.cssText=\'position:fixed;right:12px;bottom:12px;z-index:2147483647;max-width:260px;padding:8px 12px;border-radius:8px;font:13px/1.5 system-ui,sans-serif;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:.96;\'; document.body.appendChild(d); } d.textContent=msg; d.style.background=ok?\'#0e7d72\':\'#c0392b\'; d.style.display=\'block\'; clearTimeout(d.__t); d.__t=setTimeout(function(){ if(d) d.style.display=\'none\'; }, 2800); } catch(e){} }'
+    + ' function applyState(j){ try { if(!j||!j.data) return; var lts=parseInt(localStorage.getItem(\'__kbst_ts\')||\'0\',10); if((j.ts||0)>lts){ for(var k in j.data){ if(j.data.hasOwnProperty(k)) localStorage.setItem(k,j.data[k]); } localStorage.setItem(\'__kbst_ts\',String(j.ts||0)); toast(\'已同步云端最新进度\', true); } } catch(e){} }'
+    + ' function readPages(){ try { var x=new XMLHttpRequest(); x.open(\'GET\', KB_STATE+\'?t=\'+Date.now(), false); x.send(); if(x.status===200){ try { applyState(JSON.parse(x.responseText)); } catch(e){} } } catch(e){} }'
+    + ' function readSCF(){ try { var x=new XMLHttpRequest(); x.open(\'POST\', KB_API, true); x.setRequestHeader(\'Content-Type\',\'application/json\'); x.onload=function(){ if(x.status===200){ try { applyState(JSON.parse(x.responseText)); } catch(e){ readPages(); } } else { readPages(); } }; x.onerror=function(){ readPages(); }; x.send(JSON.stringify({op:\'state\',action:\'get\',filename:kbFile})); } catch(e){ readPages(); } }'
+    + ' readSCF();'
+    + ' var _set=Storage.prototype.setItem; var PREFIX=\'__kbst_\'; var lastSent=\'\'; var _inflight=false; var _pending=false;'
+    + ' function isOwn(k){ return !k||k.indexOf(\'kb_\')===0||(k&&k.toLowerCase().indexOf(\'token\')>=0)||k.indexOf(PREFIX)===0; }'
+    + ' function snap(){ var d={}; for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); if(isOwn(k)) continue; d[k]=localStorage.getItem(k); } return d; }'
+    + ' function push(){ var data=snap(); var key=JSON.stringify(data); if(key===lastSent&&!_inflight) return; if(_inflight){ _pending=true; lastSent=key; return; } lastSent=key; _inflight=true; var body=JSON.stringify({op:\'state\',action:\'put\',filename:kbFile,data:data,ts:Date.now(),editKey:KB_EDIT_KEY}); fetch(KB_API,{method:\'POST\',headers:{\'Content-Type\':\'application/json\'},body:body}).then(function(r){ if(r.ok){ toast(\'已自动保存到云端\', true); } else { toast(\'云端保存失败(\'+r.status+\')\', false); } }).catch(function(){ toast(\'云端保存失败，请检查网络\', false); }).finally(function(){ _inflight=false; if(_pending){ _pending=false; setTimeout(push,0); } }); }'
+    + ' var _origPrint=window.print?window.print.bind(window):function(){}; try { window.print=function(){ if(window.parent&&window.parent.__kbPrint){ window.parent.__kbPrint(); return; } _origPrint(); }; } catch(e){}'
+    + ' Storage.prototype.setItem=function(k,v){ _set.apply(this,arguments); if(isOwn(k)) return; setTimeout(function(){ push(); }, 800); };'
+    + ' } catch(e){} })();<\/script>';
+  if (/<head[^>]*>/i.test(html)) return html.replace(/<head[^>]*>/i, function (m) { return m + '\n' + script; });
+  if (/<html[^>]*>/i.test(html)) return html.replace(/<html[^>]*>/i, function (m) { return m + '\n' + script; });
+  return script + '\n' + html;
+}
+
 async function handleUpload(body, origin) {
   const { filename, content, category } = body || {};
   if (!filename || !content) return send(400, { error: '缺少 filename 或 content' }, origin);
@@ -575,6 +604,15 @@ async function handleUpload(body, origin) {
     .replace(/[^\w.\-\u4e00-\u9fa5 ()]/g, '_')
     .replace(/^\.+/, '')
     .slice(0, 200);
+
+  // 自动注入云同步桥：HTML 文件上传时即烤入共享脚本(直接打开也同步、重传不丢)
+  if (/\.(html?)$/i.test(filename)) {
+    try {
+      const decoded = Buffer.from(content, 'base64').toString('utf8');
+      const injected = injectSyncScript(decoded);
+      content = Buffer.from(injected, 'utf8').toString('base64');
+    } catch (e) { /* 解码失败则保持原样上传 */ }
+  }
 
   const branch = env('GITHUB_BRANCH', 'main');
   const filePath = '/contents/reports/' + encodeURIComponent(safeName);
