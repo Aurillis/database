@@ -585,6 +585,19 @@ function injectSyncScript(html) {
   return script + '\n' + html;
 }
 
+// 公开诊断接口：在线上真实运行注入函数，验证新代码已部署且注入逻辑可用(免登录、免上传)
+function handleInjectCheck(origin) {
+  try {
+    const sample = '<!DOCTYPE html><html><head><title>sample</title></head><body><h1>hi</h1></body></html>';
+    const out = injectSyncScript(sample);
+    const hasMarker = out.indexOf("KB_EDIT_KEY") >= 0;
+    const inHead = out.indexOf('<script>') > out.indexOf('<head>') && out.indexOf('<script>') < out.indexOf('</head>');
+    return send(200, { ok: true, hasInject: typeof injectSyncScript === 'function', injectedHasMarker: hasMarker, scriptInHead: inHead, version: 'auto-inject-v1' }, origin);
+  } catch (e) {
+    return send(500, { ok: false, error: 'injectcheck failed: ' + (e && e.message ? e.message : e) }, origin);
+  }
+}
+
 async function handleUpload(body, origin) {
   const { filename, content, category } = body || {};
   if (!filename || !content) return send(400, { error: '缺少 filename 或 content' }, origin);
@@ -714,6 +727,7 @@ exports.main_handler = async (event, context) => {
   // 看板勾选状态云同步：get 公开读取(状态本就在公开 Pages 上)；
   // put 需 admin 令牌 或 看板自带 editKey(凭此即可写回，无需先登录后台)。
   if (op === 'state') return await handleState(body, origin, event);
+  if (op === 'injectcheck') return handleInjectCheck(origin);
 
   // 其余操作必须令牌鉴权
   const authErr = requireAuth(event, origin);
