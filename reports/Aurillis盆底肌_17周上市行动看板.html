@@ -1,6 +1,47 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+<script>
+/* 看板自包含云端同步（植入文件本身，不依赖查看页注入时机）：
+   · 仅当本文件以「reports/<file>.html」形式打开时生效（直接打开 / 查看页退化打开）；
+   · 在页面主脚本 loadState() 之前同步读取云端 state/<file>.json 并写回 localStorage；
+   · 拦截 localStorage.setItem，勾选/填写后防抖经 SCF 写回云端（带去重）。 */
+(function(){
+  try {
+    var kbFile = location.pathname.split('/').pop();
+    var base = location.href.split('/reports/')[0];
+    if (!kbFile || base.indexOf('/reports/') < 0) return; // 非 reports 打开（如 srcdoc 查看页）交由查看页注入处理
+    var KB_STATE = base + '/state/' + encodeURIComponent(kbFile) + '.json';
+    var KB_API = 'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.com';
+    var KB_FILE = kbFile;
+    function getTok(){ try{ return (localStorage.getItem('kb_admin_token')||sessionStorage.getItem('kb_admin_token')||''); }catch(e){ return ''; } }
+    try {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', KB_STATE + '?t=' + Date.now(), false);
+      xhr.send();
+      if (xhr.status === 200) {
+        var j = JSON.parse(xhr.responseText);
+        if (j && j.data) {
+          var lts = parseInt(localStorage.getItem('__kbst_ts')||'0', 10);
+          if ((j.ts||0) > lts) {
+            for (var k in j.data) { if (j.data.hasOwnProperty(k)) localStorage.setItem(k, j.data[k]); }
+            localStorage.setItem('__kbst_ts', String(j.ts||0));
+          }
+        }
+      }
+    } catch(e) {}
+    var _origPrint = window.print ? window.print.bind(window) : function(){};
+    try { window.print = function(){ if (window.parent && window.parent.__kbPrint) { window.parent.__kbPrint(); return; } _origPrint(); }; } catch(e) {}
+    var _set = Storage.prototype.setItem;
+    var PREFIX = '__kbst_';
+    var lastSent = '';
+    function isOwn(k){ return !k || k.indexOf('kb_')===0 || (k && k.toLowerCase().indexOf('token')>=0) || k.indexOf(PREFIX)===0; }
+    function snap(){ var d={}; for (var i=0; i < localStorage.length; i++){ var k=localStorage.key(i); if (isOwn(k)) continue; d[k]=localStorage.getItem(k); } return d; }
+    function push(){ var data=snap(); var key=JSON.stringify(data); if (key===lastSent) return; lastSent=key; var body=JSON.stringify({op:'state',action:'put',filename:KB_FILE,data:data,ts:Date.now()}); try { fetch(KB_API,{method:'POST',headers:{'Content-Type':'application/json','x-admin-token':getTok()},body:body}).catch(function(){}); } catch(e){} }
+    Storage.prototype.setItem = function(k,v){ _set.apply(this,arguments); if (isOwn(k)) return; setTimeout(function(){ push(); },700); };
+  } catch(e) {}
+})();
+</script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Aurillis盆底肌产品上市准备｜17周行动路线图</title>
