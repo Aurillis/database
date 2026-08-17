@@ -223,6 +223,8 @@
       var boardDir = new URL('reports/', location.href).href;
       // 同域共享状态文件的「绝对」地址（必须绝对，否则会被 iframe 内的 <base href=reports/> 带偏成 reports/state/... 而 404）
       var stateUrlAbs = new URL('state/' + encodeURIComponent(f) + '.json', location.href).href;
+      // 把文件名告知看板自身携带的同步脚本（window.__KB_FILE），使其在 srcdoc / 直接打开 两种模式下都能先于 loadState 同步云端
+      var preShim = '<script>window.__KB_FILE=' + JSON.stringify(f) + ';<\/script>';
       var loading = document.getElementById('loading');
       loading.style.display = 'flex';
 
@@ -234,7 +236,7 @@
         frame.onload = function () {
           try {
             var s = frame.contentDocument.createElement('script');
-            s.textContent = buildStateShim(KB_SCF_API, f, stateUrlAbs);
+            s.textContent = preShim + buildStateShim(KB_SCF_API, f, stateUrlAbs);
             frame.contentDocument.head.appendChild(s);
           } catch (e) {}
         };
@@ -249,7 +251,7 @@
           clearTimeout(bTimer);
           loading.style.display = 'none';
           // 同步桥内部用同步 XHR 读云端并先于 board loadState 写入，保证共享进度可见
-          frame.srcdoc = injectHead(htmlText, boardDir, buildStateShim(KB_SCF_API, f, stateUrlAbs));
+          frame.srcdoc = injectHead(htmlText, boardDir, preShim + buildStateShim(KB_SCF_API, f, stateUrlAbs));
         })
         .catch(function (err) {
           // 看板内容 fetch 失败 —— 退化为原生打开，保证看板可见
