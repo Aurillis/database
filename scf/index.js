@@ -321,12 +321,23 @@ async function putState(filename, data, branch) {
   const safe = safeNameOf(filename);
   const path = '/contents/state/' + encodeURIComponent(safe) + '.json';
   const content = Buffer.from(JSON.stringify(data, null, 2), 'utf8').toString('base64');
-  const existing = await getState(filename, branch);
-  const putBody = { message: 'state: ' + safe, content: content, branch: branch };
-  if (existing) putBody.sha = existing.sha;
-  const res = await ghRequest('PUT', path, putBody);
-  if (res.status >= 300) throw new Error('保存状态失败: ' + ((res.json && res.json.message) || res.status));
-  return res;
+  let lastErr = null;
+  // 并发写入会让 GitHub 的 blob sha 失效(返回 409/422/412)。重新拉取最新 sha 后重试，
+  // 避免「另一台设备/上一个防抖写入刚提交」就导致本次直接 500。最多重试 6 次(带递增退避)。
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const existing = await getState(filename, branch);
+    const putBody = { message: 'state: ' + safe, content: content, branch: branch };
+    if (existing) putBody.sha = existing.sha;
+    const res = await ghRequest('PUT', path, putBody);
+    if (res.status < 300) return res;
+    if (res.status === 409 || res.status === 422 || res.status === 412) {
+      lastErr = res;
+      await new Promise((r) => setTimeout(r, 120 * (attempt + 1)));
+      continue;
+    }
+    throw new Error('保存状态失败: ' + ((res.json && res.json.message) || res.status));
+  }
+  throw new Error('保存状态失败(并发冲突，已重试): ' + ((lastErr && lastErr.json && lastErr.json.message) || 'conflict'));
 }
 async function handleState(body, origin, event) {
   const branch = env('GITHUB_BRANCH', 'main');
