@@ -38,6 +38,9 @@ const ADMIN_PASSWORD = env('ADMIN_PASSWORD', '');
 const SESSION_SECRET = env('SESSION_SECRET', '');
 const ALLOWED_ORIGIN = env('ALLOWED_ORIGIN', '');                      // 例如 https://Aurillis.github.io (可逗号分隔多个; 留空则自动按 SITE_BASE 推导)
 const MAX_UPLOAD_BYTES = Number(env('MAX_UPLOAD_BYTES', 15 * 1024 * 1024)); // 默认 15MB
+// 看板勾选状态云同步用的「共享编辑密钥」：与前端(看板/查看页)内嵌值一致即可。
+// 留空则仅 admin 令牌可写；设置后看板凭此密钥即可写回，无需先登录后台。
+const STATE_EDIT_KEY = env('STATE_EDIT_KEY', 'kbSync_8f3a2c91d4e5');
 
 // 允许的跨域来源：支持逗号分隔多个；自动忽略末尾斜杠与大小写差异。
 // 若未配置 ALLOWED_ORIGIN，则根据 SITE_BASE 自动推导(并额外允许 localhost 便于本地调试)。
@@ -325,13 +328,14 @@ async function putState(filename, data, branch) {
   if (res.status >= 300) throw new Error('保存状态失败: ' + ((res.json && res.json.message) || res.status));
   return res;
 }
-async function handleState(body, origin) {
+async function handleState(body, origin, event) {
   const branch = env('GITHUB_BRANCH', 'main');
   const filename = body && body.filename;
   if (!filename) return send(400, { error: '缺少 filename' }, origin);
   const action = (body && body.action) || 'get';
   try {
     if (action === 'get') {
+      // 公开读取：看板状态本身已在公开 Pages 上，任何来源均可读取最新进度
       const s = await getState(filename, branch);
       if (!s) return send(404, { error: 'no state' }, origin);
       return send(200, { ok: true, data: s.data.data, ts: s.data.ts }, origin);
@@ -340,6 +344,12 @@ async function handleState(body, origin) {
       const data = body.data;
       const ts = body.ts || Date.now();
       if (!data || typeof data !== 'object') return send(400, { error: '缺少 data' }, origin);
+      // 鉴权：admin 令牌 或 看板自带 editKey(前端内嵌，与 STATE_EDIT_KEY 一致即可免登录保存)
+      const h = (event && event.headers) || {};
+      const adminOk = verifyToken(h['x-admin-token'] || h['X-Admin-Token']);
+      const ek = (body && body.editKey) || h['x-edit-key'] || h['X-Edit-Key'];
+      const editOk = !!STATE_EDIT_KEY && ek === STATE_EDIT_KEY;
+      if (!adminOk && !editOk) return send(401, { error: '未授权：需登录后台或有效 editKey' }, origin);
       // 仅存看板自身的 localStorage 键(排除 kb_ 前缀的管理态与任何含 token 的键), 避免泄露管理令牌
       const clean = {};
       for (const k of Object.keys(data)) {
@@ -652,6 +662,10 @@ exports.main_handler = async (event, context) => {
   // 登录无需令牌
   if (op === 'login') return handleLogin(body, origin);
 
+  // 看板勾选状态云同步：get 公开读取(状态本就在公开 Pages 上)；
+  // put 需 admin 令牌 或 看板自带 editKey(凭此即可写回，无需先登录后台)。
+  if (op === 'state') return await handleState(body, origin, event);
+
   // 其余操作必须令牌鉴权
   const authErr = requireAuth(event, origin);
   if (authErr) return authErr;
@@ -664,7 +678,6 @@ exports.main_handler = async (event, context) => {
   if (op === 'purgeall') return await handlePurgeAll(body, origin);
   if (op === 'meta') return await handleMeta(body, origin);
   if (op === 'move') return await handleMove(body, origin);
-  if (op === 'state') return await handleState(body, origin);
   if (op === 'share') return await handleShare(body, origin);
   return send(400, { error: '未知操作: ' + op }, origin);
 };

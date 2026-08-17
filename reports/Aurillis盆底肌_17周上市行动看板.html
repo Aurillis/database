@@ -3,42 +3,34 @@
 <head>
 <script>
 /* 看板自包含云端同步（植入文件本身，不依赖查看页注入时机）：
-   · 仅当本文件以「reports/<file>.html」形式打开时生效（直接打开 / 查看页退化打开）；
-   · 在页面主脚本 loadState() 之前同步读取云端 state/<file>.json 并写回 localStorage；
-   · 拦截 localStorage.setItem，勾选/填写后防抖经 SCF 写回云端（带去重）。 */
+   · 读取：SCF 实时接口(主，保存即别人立即可见) + 同源 state 文件(备)；
+   · 写入：拦截 localStorage.setItem，防抖经 SCF 写回云端(内嵌 editKey，无需先登后台)；
+   · 保存失败在页面右下角弹提示；window.__KB_SYNC_INJECTED 防止与查看页注入重复。 */
 (function(){
+  if (window.__KB_SYNC_INJECTED) return;
+  window.__KB_SYNC_INJECTED = true;
   try {
     var kbFile = (window.__KB_FILE) || location.pathname.split('/').pop();
-    var base = window.__KB_FILE ? location.href.split('/viewer.html')[0] : location.href.split('/reports/')[0];
-    if (!kbFile) return; // 无法定位文件名则跳过（环境异常）
+    if (!kbFile) return;
+    var base = location.href.split('/viewer.html')[0].split('/reports/')[0];
     var KB_STATE = base + '/state/' + encodeURIComponent(kbFile) + '.json';
     var KB_API = 'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.com';
-    var KB_FILE = kbFile;
-    function getTok(){ try{ return (localStorage.getItem('kb_admin_token')||sessionStorage.getItem('kb_admin_token')||''); }catch(e){ return ''; } }
-    try {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', KB_STATE + '?t=' + Date.now(), false);
-      xhr.send();
-      if (xhr.status === 200) {
-        var j = JSON.parse(xhr.responseText);
-        if (j && j.data) {
-          var lts = parseInt(localStorage.getItem('__kbst_ts')||'0', 10);
-          if ((j.ts||0) > lts) {
-            for (var k in j.data) { if (j.data.hasOwnProperty(k)) localStorage.setItem(k, j.data[k]); }
-            localStorage.setItem('__kbst_ts', String(j.ts||0));
-          }
-        }
-      }
-    } catch(e) {}
-    var _origPrint = window.print ? window.print.bind(window) : function(){};
-    try { window.print = function(){ if (window.parent && window.parent.__kbPrint) { window.parent.__kbPrint(); return; } _origPrint(); }; } catch(e) {}
+    var KB_EDIT_KEY = 'kbSync_8f3a2c91d4e5';
+    function getTok(){ try { return (localStorage.getItem('kb_admin_token') || sessionStorage.getItem('kb_admin_token') || (window.parent && window.parent.localStorage && window.parent.localStorage.getItem('kb_admin_token')) || (window.parent && window.parent.sessionStorage && window.parent.sessionStorage.getItem('kb_admin_token')) || ''); } catch(e){ return ''; } }
+    function toast(msg, ok){ try { var d=document.getElementById('__kb_toast'); if(!d){ d=document.createElement('div'); d.id='__kb_toast'; d.style.cssText='position:fixed;right:12px;bottom:12px;z-index:2147483647;max-width:260px;padding:8px 12px;border-radius:8px;font:13px/1.5 system-ui,sans-serif;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:.96;'; document.body.appendChild(d); } d.textContent=msg; d.style.background=ok?'#0e7d72':'#c0392b'; d.style.display='block'; clearTimeout(d.__t); d.__t=setTimeout(function(){ if(d) d.style.display='none'; }, 2800); } catch(e){} }
+    function applyState(j){ try { if(!j||!j.data) return; var lts=parseInt(localStorage.getItem('__kbst_ts')||'0',10); if((j.ts||0)>lts){ for(var k in j.data){ if(j.data.hasOwnProperty(k)) localStorage.setItem(k,j.data[k]); } localStorage.setItem('__kbst_ts',String(j.ts||0)); toast('已同步云端最新进度', true); } } catch(e){} }
+    function readPages(){ try { var x=new XMLHttpRequest(); x.open('GET', KB_STATE+'?t='+Date.now(), false); x.send(); if(x.status===200){ try { applyState(JSON.parse(x.responseText)); } catch(e){} } } catch(e){} }
+    function readSCF(){ try { var x=new XMLHttpRequest(); x.open('POST', KB_API, true); x.setRequestHeader('Content-Type','application/json'); x.onload=function(){ if(x.status===200){ try { applyState(JSON.parse(x.responseText)); } catch(e){ readPages(); } } else { readPages(); } }; x.onerror=function(){ readPages(); }; x.send(JSON.stringify({op:'state',action:'get',filename:kbFile})); } catch(e){ readPages(); } }
+    readSCF();
     var _set = Storage.prototype.setItem;
     var PREFIX = '__kbst_';
     var lastSent = '';
     function isOwn(k){ return !k || k.indexOf('kb_')===0 || (k && k.toLowerCase().indexOf('token')>=0) || k.indexOf(PREFIX)===0; }
     function snap(){ var d={}; for (var i=0; i < localStorage.length; i++){ var k=localStorage.key(i); if (isOwn(k)) continue; d[k]=localStorage.getItem(k); } return d; }
-    function push(){ var data=snap(); var key=JSON.stringify(data); if (key===lastSent) return; lastSent=key; var body=JSON.stringify({op:'state',action:'put',filename:KB_FILE,data:data,ts:Date.now()}); try { fetch(KB_API,{method:'POST',headers:{'Content-Type':'application/json','x-admin-token':getTok()},body:body}).catch(function(){}); } catch(e){} }
-    Storage.prototype.setItem = function(k,v){ _set.apply(this,arguments); if (isOwn(k)) return; setTimeout(function(){ push(); },700); };
+    function push(){ var data=snap(); var key=JSON.stringify(data); if (key===lastSent) return; lastSent=key; var body=JSON.stringify({op:'state',action:'put',filename:kbFile,data:data,ts:Date.now(),editKey:KB_EDIT_KEY}); try { fetch(KB_API,{method:'POST',headers:{'Content-Type':'application/json'},body:body}).then(function(r){ if(r.ok){ toast('已自动保存到云端', true); } else { toast('云端保存失败('+r.status+')', false); } }).catch(function(){ toast('云端保存失败，请检查网络', false); }); } catch(e){ toast('云端保存失败', false); } }
+    var _origPrint = window.print ? window.print.bind(window) : function(){};
+    try { window.print = function(){ if (window.parent && window.parent.__kbPrint) { window.parent.__kbPrint(); return; } _origPrint(); }; } catch(e) {}
+    Storage.prototype.setItem = function(k,v){ _set.apply(this,arguments); if (isOwn(k)) return; setTimeout(function(){ push(); },800); };
   } catch(e) {}
 })();
 </script>
