@@ -1400,14 +1400,24 @@ function addCategoryModal() {
   });
 }
 
+function slugifyCat(s) {
+  return String(s || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
 function addCategory() {
   var name = document.getElementById('catNameInput').value.trim();
-  var id = document.getElementById('catIdInput').value.trim() || 'cat_'+Date.now();
-  var parent = document.getElementById('catParentInput').value;
   if (!name) { toast('请输入分类名称'); return; }
+  // id 优先用填写值, 否则用名称生成 slug; 杜绝 cat_<时间戳> 这类孤儿 id
+  var id = slugifyCat(document.getElementById('catIdInput').value.trim() || name);
+  if (!id) { toast('分类ID 只能含英文/数字/短横线，请填写英文ID（如 market-research）'); return; }
+  // 重复校验
+  var allIds = [];
+  getTree().forEach(function(c){ allIds.push(c.id); if (c.children) c.children.forEach(function(ch){ allIds.push(ch.id); }); });
+  if (allIds.indexOf(id) >= 0) { toast('分类ID已存在：' + id); return; }
+  var parent = document.getElementById('catParentInput').value;
   S.customCats.push({id:id, name:name, icon:'fas fa-folder', parentId:parent||null});
   Save(); closeModal(); renderAdminCats(); renderSidebar();
-  toast('分类已创建');
+  toast('分类已创建：' + name + ' (' + id + ')');
 }
 
 function editCategoryModal(catId) {
@@ -1484,6 +1494,10 @@ function moveFileModal(filename) {
 function moveFile(filename) {
   var cat = document.getElementById('moveCatSelect').value;
   if (!cat) { toast('请先选择目标分类'); return; }
+  // 校验目标分类真实存在(防止写入孤儿 id)
+  var exists = false;
+  getTree().forEach(function(c){ if (c.id === cat) exists = true; if (c.children) c.children.forEach(function(ch){ if (ch.id === cat) exists = true; }); });
+  if (!exists) { toast('目标分类无效，请重新选择'); return; }
   // 1) 本地立即生效(覆盖层), 保证界面即时反馈
   S.fileCats[filename] = cat;
   Save(); closeModal(); renderAdminFiles(); renderMain(); renderSidebar();

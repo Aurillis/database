@@ -287,6 +287,8 @@ async function handleMove(body, origin) {
   const filename = (body && body.filename) || '';
   const targetCat = (body && body.targetCat) || '';
   if (!filename || !targetCat) return send(400, { error: '缺少 filename 或 targetCat' }, origin);
+  // 拒绝系统自动生成的临时分类 id(cat_<时间戳>), 防止产生孤儿分类
+  if (/^cat_\d+$/.test(targetCat)) return send(400, { error: '非法的分类ID：不能为系统临时分类(' + targetCat + ')' }, origin);
   try {
     const m = await getManifest(branch);
     if (!m) return send(404, { error: 'manifest 不存在' }, origin);
