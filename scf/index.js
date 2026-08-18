@@ -601,6 +601,10 @@ function handleInjectCheck(origin) {
 async function handleUpload(body, origin) {
   const { filename, content, category } = body || {};
   if (!filename || !content) return send(400, { error: '缺少 filename 或 content' }, origin);
+  // 必须指定归属分类, 否则拒绝上传(防止产生孤儿/未分类文件)
+  if (!category || !String(category).trim()) {
+    return send(400, { error: '未选择分类：请先在后台上传面板选择归属分类文件夹后再上传' }, origin);
+  }
 
   // 文件类型白名单
   if (!ALLOWED_EXT.test(filename)) {

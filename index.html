@@ -1123,7 +1123,7 @@ function renderAdminUpload() {
     <div style="background:var(--accent-light);border:1px solid #cfe8e3;border-radius:12px;padding:18px;margin-bottom:18px">
       <h3 style="font-size:16px;font-weight:700;margin-bottom:6px">📤 上传文件到知识库</h3>
       <p style="font-size:13px;color:var(--muted);line-height:1.9">
-        ① 点击下方「选择文件」按钮，或直接把文件拖到下方虚线框　② 选择归属分类　③ 自动上传到服务器<br>
+        ① 点击下方「选择文件」按钮，或直接把文件拖到下方虚线框　② <b>必须选择归属分类（不选将无法上传）</b>　③ 自动上传到服务器<br>
         支持 <b>所有文件类型</b>（可一次选多个）。<br>
         上传成功后文件会出现在对应分类，刷新页面约 1 分钟即可见。
       </p>
@@ -1142,9 +1142,9 @@ function renderAdminUpload() {
     <div id="uploadResult"></div>
   `;
 
-  // Populate category select
+  // Populate category select (第一项为占位「请选择」, 默认强制不选)
   var sel = document.getElementById('uploadCat');
-  var opts = '';
+  var opts = '<option value="" disabled selected>— 请选择分类文件夹 —</option>';
   getTree().forEach(function(cat) {
     if (cat.children) {
       opts += '<optgroup label="'+esc(cat.name)+'">';
@@ -1155,7 +1155,16 @@ function renderAdminUpload() {
     }
   });
   sel.innerHTML = opts;
-  sel.value = (S.cat && S.cat !== 'all' && S.cat !== 'other') ? S.cat : getTree()[0].id;
+  // 仅当用户正停留在某个具体分类页时才预选该分类; 否则留空以强制其主动选择
+  var cur = (S.cat && S.cat !== 'all' && S.cat !== 'other') ? S.cat : '';
+  if (cur) {
+    var exists = false;
+    getTree().forEach(function(c){
+      if (c.id === cur) exists = true;
+      if (c.children) c.children.forEach(function(ch){ if (ch.id === cur) exists = true; });
+    });
+    if (exists) sel.value = cur;
+  }
 
   var zone = document.getElementById('uploadZone');
   var input = document.getElementById('fileInput');
@@ -1175,6 +1184,13 @@ function renderAdminUpload() {
 function handleUpload(fileList) {
   var cat = document.getElementById('uploadCat').value;
   var result = document.getElementById('uploadResult');
+
+  // 强制先选分类: 没选则拦截上传并提示
+  if (!cat) {
+    result.innerHTML = '<p style="color:var(--danger)">⚠ 请先在上方「上传到分类」中选择一个文件夹，否则无法上传。</p>';
+    toast('请先选择分类文件夹', false);
+    return;
+  }
 
   // 接受所有文件类型(不再按后缀过滤)。兜底:过滤掉空名文件。
   var files = Array.from(fileList).filter(function(f) {
