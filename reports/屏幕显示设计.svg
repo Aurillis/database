@@ -1,0 +1,230 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 730" width="680" height="730">
+  <defs>
+    <linearGradient id="scr" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e2438" />
+      <stop offset="100%" stop-color="#0a1b2c" />
+    </linearGradient>
+  </defs>
+
+  <rect width="680" height="730" rx="10" fill="#f1f5f9" />
+  <text x="340" y="28" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="bold" fill="#1f3864">Aurillis 盆底肌修复仪 · 屏幕显示设计（血压计风格 · 全英文 · 数码屏）</text>
+  <text x="340" y="46" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10.5" fill="#6b7280">显示项：logo · 电量 · 锁定 · 暂停 · 电极异常 · 模式名 · STR: · Time · 断连 · 当前/总组数（历史屏）</text>
+
+  
+  <g transform="translate(40, 78)">
+    <rect x="0" y="0" width="200" height="270" rx="14" fill="url(#scr)" stroke="#1e3a5f" />
+    
+    <g transform="translate(14,17)">
+      <rect x="0" y="0" width="22" height="16" rx="4" fill="#1b2f4a" stroke="#c084fc" stroke-width="1.4" />
+      <path d="M5 12 A5 5 0 0 1 17 12" fill="none" stroke="#c084fc" stroke-width="1.6" stroke-linecap="round" />
+      <circle cx="11" cy="7" r="2.2" fill="#c084fc" />
+    </g>
+    <g transform="translate(140,17)">
+      <rect x="0" y="4" width="14" height="10" rx="2" fill="none" stroke="#94a3b8" stroke-width="1.4" />
+      <path d="M3 4 V1 A4 4 0 0 1 11 1 V4" fill="none" stroke="#94a3b8" stroke-width="1.4" />
+    </g>
+    <g transform="translate(172,17)">
+      <rect x="0" y="0" width="20" height="11" rx="2" fill="none" stroke="#94a3b8" stroke-width="1.3" />
+      <rect x="20" y="3" width="2.5" height="5" rx="1" fill="#94a3b8" />
+      <rect x="2.5" y="2.5" width="12" height="6" rx="1" fill="#86efac" />
+    </g>
+    
+    <text x="14" y="62" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#ffffff">STRES</text>
+    
+    <text x="28" y="134" font-family="Arial, sans-serif" font-size="12" fill="#ffffff">STR:</text>
+    <text x="60" y="168" font-family="Arial, sans-serif" font-size="46" font-weight="bold" fill="#ffffff">42</text>
+    
+    <g transform="translate(14, 228)">
+      
+      <circle cx="11" cy="13" r="9" fill="none" stroke="#94a3b8" stroke-width="1.4" />
+      <line x1="11" y1="13" x2="11" y2="7" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round" />
+      <line x1="11" y1="13" x2="15" y2="15" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round" />
+      
+      <g transform="translate(26, 0)" fill="#ffffff">
+        <polygon points="2,0 14,0 12,2 4,2" />
+        <polygon points="14,2 16,4 16,12 14,14 12,12 12,4" />
+        <polygon points="2,14 4,12 12,12 14,14 12,16 4,16" />
+        <polygon points="0,18 2,16 4,18 4,26 2,28 0,26" />
+        <polygon points="2,28 14,28 12,26 4,26" />
+      </g>
+      
+      <g transform="translate(46, 0)" fill="#ffffff">
+        <polygon points="2,0 14,0 12,2 4,2" />
+        <polygon points="14,2 16,4 16,12 14,14 12,12 12,4" />
+        <polygon points="14,16 16,18 16,26 14,28 12,26 12,18" />
+        <polygon points="2,28 14,28 12,26 4,26" />
+        <polygon points="0,18 2,16 4,18 4,26 2,28 0,26" />
+        <polygon points="0,4 2,2 4,4 4,12 2,14 0,12" />
+      </g>
+      <text x="70" y="20" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">MIN</text>
+    </g>
+  </g>
+  <text x="140" y="372" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#1f3864">A · 治疗中（运行）</text>
+
+  
+  <g transform="translate(250, 78)">
+    <rect x="0" y="0" width="200" height="270" rx="14" fill="url(#scr)" stroke="#1e3a5f" />
+    
+    <g transform="translate(14,17)">
+      <rect x="0" y="0" width="22" height="16" rx="4" fill="#1b2f4a" stroke="#c084fc" stroke-width="1.4" />
+      <path d="M5 12 A5 5 0 0 1 17 12" fill="none" stroke="#c084fc" stroke-width="1.6" stroke-linecap="round" />
+      <circle cx="11" cy="7" r="2.2" fill="#c084fc" />
+    </g>
+    <g transform="translate(118,17)">
+      <polygon points="0,1 7,7 0,13" fill="#94a3b8" />
+      <rect x="9" y="1" width="3" height="12" rx="1" fill="#94a3b8" />
+      <rect x="14" y="1" width="3" height="12" rx="1" fill="#94a3b8" />
+    </g>
+    <g transform="translate(144,17)" fill="none" stroke="#94a3b8" stroke-width="1.4">
+      <rect x="0" y="4" width="11" height="8" rx="1.5" />
+      <path d="M2.5 4 V2 A3 3 0 0 1 8.5 2 V4" />
+    </g>
+    <g transform="translate(172,17)">
+      <rect x="0" y="0" width="20" height="11" rx="2" fill="none" stroke="#94a3b8" stroke-width="1.3" />
+      <rect x="20" y="3" width="2.5" height="5" rx="1" fill="#94a3b8" />
+      <rect x="2.5" y="2.5" width="12" height="6" rx="1" fill="#86efac" />
+    </g>
+    
+    <text x="14" y="62" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#ffffff">STRES</text>
+    
+    <text x="28" y="134" font-family="Arial, sans-serif" font-size="12" fill="#ffffff">STR:</text>
+    <text x="60" y="168" font-family="Arial, sans-serif" font-size="46" font-weight="bold" fill="#ffffff">00</text>
+    
+    <g transform="translate(14, 228)">
+      <circle cx="11" cy="13" r="9" fill="none" stroke="#94a3b8" stroke-width="1.4" />
+      <line x1="11" y1="13" x2="11" y2="7" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round" />
+      <line x1="11" y1="13" x2="15" y2="15" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round" />
+      <g transform="translate(26, 0)" fill="#ffffff">
+        <polygon points="2,0 14,0 12,2 4,2" />
+        <polygon points="14,2 16,4 16,12 14,14 12,12 12,4" />
+        <polygon points="2,14 4,12 12,12 14,14 12,16 4,16" />
+        <polygon points="0,18 2,16 4,18 4,26 2,28 0,26" />
+        <polygon points="2,28 14,28 12,26 4,26" />
+      </g>
+      <g transform="translate(46, 0)" fill="#ffffff">
+        <polygon points="2,0 14,0 12,2 4,2" />
+        <polygon points="14,2 16,4 16,12 14,14 12,12 12,4" />
+        <polygon points="14,16 16,18 16,26 14,28 12,26 12,18" />
+        <polygon points="2,28 14,28 12,26 4,26" />
+        <polygon points="0,18 2,16 4,18 4,26 2,28 0,26" />
+        <polygon points="0,4 2,2 4,4 4,12 2,14 0,12" />
+      </g>
+      <text x="70" y="20" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">MIN</text>
+    </g>
+  </g>
+  <text x="350" y="372" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#1f3864">B · 暂停（▶|| + 锁图标，暂停后可锁定叠加）</text>
+
+  
+  <g transform="translate(460, 78)">
+    <rect x="0" y="0" width="200" height="270" rx="14" fill="url(#scr)" stroke="#1e3a5f" />
+    
+    <g transform="translate(14,17)">
+      <rect x="0" y="0" width="22" height="16" rx="4" fill="#1b2f4a" stroke="#c084fc" stroke-width="1.4" />
+      <path d="M5 12 A5 5 0 0 1 17 12" fill="none" stroke="#c084fc" stroke-width="1.6" stroke-linecap="round" />
+      <circle cx="11" cy="7" r="2.2" fill="#c084fc" />
+    </g>
+    <g transform="translate(172,17)">
+      <rect x="0" y="0" width="20" height="11" rx="2" fill="none" stroke="#94a3b8" stroke-width="1.3" />
+      <rect x="20" y="3" width="2.5" height="5" rx="1" fill="#94a3b8" />
+      <rect x="2.5" y="2.5" width="12" height="6" rx="1" fill="#86efac" />
+    </g>
+    
+    <text x="14" y="62" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#ffffff">STRES</text>
+    
+    <text x="28" y="134" font-family="Arial, sans-serif" font-size="12" fill="#ffffff">STR:</text>
+    <rect x="44" y="104" width="112" height="70" rx="12" fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.25" />
+    <g transform="translate(100,140)" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="-11" y="-11" width="22" height="22" rx="4" />
+      <line x1="-20" y1="0" x2="-11" y2="0" />
+      <line x1="11" y1="-3" x2="20" y2="-3" />
+      <line x1="11" y1="3" x2="20" y2="3" />
+      <line x1="-8" y1="-8" x2="8" y2="8" />
+    </g>
+    <text x="100" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ffffff">CHECK PROBE / LEADS</text>
+    <text x="100" y="224" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ffffff">检查探头电极连接</text>
+  </g>
+  <text x="560" y="372" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#1f3864">E · 电极异常提示</text>
+
+  
+  <g transform="translate(472, 408)">
+    <rect x="0" y="0" width="196" height="300" rx="12" fill="#ffffff" stroke="#d3dbe6" />
+    <text x="14" y="24" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#1f3864">显示元素图例</text>
+    <line x1="14" y1="34" x2="182" y2="34" stroke="#e5e9f0" />
+    <g font-family="Arial, sans-serif" font-size="10" fill="#334155">
+      <text x="14" y="56">● logo — 品牌图形标识（左上）</text>
+      <text x="14" y="80">● 电量 — 电池图标（顶部）</text>
+      <text x="14" y="104">● 模式名 — 屏幕直接显示，不显示 MODE 标签</text>
+      <text x="14" y="128">● <tspan fill="#7dd3fc">STR:</tspan> — 强度 1–99（大字号核心）</text>
+      <text x="14" y="152">● 时间 — 时钟图标 + 7段码数值 + MIN（如 20 MIN）</text>
+      <text x="14" y="176">● 锁定 — 锁图标（右上，A 屏；B 屏暂停后可叠加）</text>
+      <text x="14" y="200">● 暂停 — ▶|| 图标（右上，B 屏；可与锁定叠加）</text>
+      <text x="14" y="224">● 断连 — Disconnect 插头图标（屏幕提示）</text>
+      <text x="14" y="248">● 电极异常 — 矩形斜杠断开图标（E 屏，黄色告警）</text>
+      <text x="14" y="272">● 当前/总组数 — 如 1/12（历史单组屏 D，红色）</text>
+    </g>
+  </g>
+
+  
+  <g transform="translate(40, 408)">
+    <rect x="0" y="0" width="200" height="290" rx="14" fill="url(#scr)" stroke="#1e3a5f" />
+    <text x="14" y="28" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#ffffff">HISTORY</text>
+    <text x="120" y="28" font-family="Arial, sans-serif" font-size="9" fill="#ffffff">TOTAL 45</text>
+    <line x1="14" y1="38" x2="186" y2="38" stroke="#23364d" />
+    <g font-family="Arial, sans-serif" font-size="12" fill="#dbeafe">
+      <rect x="10" y="50" width="180" height="22" rx="4" fill="#15324d" />
+      <text x="16" y="65" fill="#ffffff">STRES</text><text x="170" y="65" text-anchor="end" fill="#ffffff">×12</text>
+      <text x="16" y="89" fill="#ffffff">URGE</text><text x="170" y="89" text-anchor="end" fill="#ffffff">×8</text>
+      <text x="16" y="113" fill="#ffffff">MIXED</text><text x="170" y="113" text-anchor="end" fill="#ffffff">×15</text>
+      <text x="16" y="137" fill="#ffffff">ENDUR</text><text x="170" y="137" text-anchor="end" fill="#ffffff">×6</text>
+      <text x="16" y="161" fill="#ffffff">PAIN</text><text x="170" y="161" text-anchor="end" fill="#ffffff">×4</text>
+    </g>
+    <text x="14" y="206" font-family="Arial, sans-serif" font-size="9" fill="#ffffff">短按「历史」进入 · ◀MODE▶切换 · 再按退出</text>
+    <text x="14" y="232" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">◀ STRES ▶  ·  EXIT</text>
+  </g>
+  <text x="140" y="722" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#1f3864">C · 历史数据总览（各模式累计次数）</text>
+
+  
+  <g transform="translate(250, 408)">
+    <rect x="0" y="0" width="200" height="290" rx="14" fill="url(#scr)" stroke="#1e3a5f" />
+    
+    <g transform="translate(14,17)">
+      <rect x="0" y="0" width="22" height="16" rx="4" fill="#1b2f4a" stroke="#c084fc" stroke-width="1.4" />
+      <path d="M5 12 A5 5 0 0 1 17 12" fill="none" stroke="#c084fc" stroke-width="1.6" stroke-linecap="round" />
+      <circle cx="11" cy="7" r="2.2" fill="#c084fc" />
+    </g>
+    <g transform="translate(172,17)">
+      <rect x="0" y="0" width="20" height="11" rx="2" fill="none" stroke="#94a3b8" stroke-width="1.3" />
+      <rect x="20" y="3" width="2.5" height="5" rx="1" fill="#94a3b8" />
+      <rect x="2.5" y="2.5" width="12" height="6" rx="1" fill="#86efac" />
+    </g>
+    
+    <text x="14" y="62" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#ffffff">STRES</text>
+    <text x="186" y="62" text-anchor="end" font-family="Arial, sans-serif" font-size="15" font-weight="bold" fill="#ffffff">1/12</text>
+    
+    <text x="28" y="134" font-family="Arial, sans-serif" font-size="12" fill="#ffffff">STR:</text>
+    <text x="60" y="168" font-family="Arial, sans-serif" font-size="46" font-weight="bold" fill="#ffffff">42</text>
+    
+    <g transform="translate(14, 228)">
+      <circle cx="11" cy="13" r="9" fill="none" stroke="#94a3b8" stroke-width="1.4" />
+      <line x1="11" y1="13" x2="11" y2="7" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round" />
+      <line x1="11" y1="13" x2="15" y2="15" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round" />
+      <g transform="translate(26, 0)" fill="#ffffff">
+        <polygon points="2,0 14,0 12,2 4,2" />
+        <polygon points="14,2 16,4 16,12 14,14 12,12 12,4" />
+        <polygon points="2,14 4,12 12,12 14,14 12,16 4,16" />
+        <polygon points="0,18 2,16 4,18 4,26 2,28 0,26" />
+        <polygon points="2,28 14,28 12,26 4,26" />
+      </g>
+      <g transform="translate(46, 0)" fill="#ffffff">
+        <polygon points="2,0 14,0 12,2 4,2" />
+        <polygon points="14,2 16,4 16,12 14,14 12,12 12,4" />
+        <polygon points="14,16 16,18 16,26 14,28 12,26 12,18" />
+        <polygon points="2,28 14,28 12,26 4,26" />
+        <polygon points="0,18 2,16 4,18 4,26 2,28 0,26" />
+        <polygon points="0,4 2,2 4,4 4,12 2,14 0,12" />
+      </g>
+      <text x="70" y="20" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">MIN</text>
+    </g>
+  </g>
+  <text x="350" y="722" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12.5" font-weight="bold" fill="#1f3864">D · 历史单组数据（当前第1组 / 共12组）</text>
+</svg>
