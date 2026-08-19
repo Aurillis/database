@@ -1499,7 +1499,7 @@ function editCategoryModal(catId) {
     <input type="text" id="editCatIcon" value="${cat.icon||'fas fa-folder'}" placeholder="Font Awesome 图标类名">
   `, [
     {text:'取消', cls:'btn-ghost', action:'closeModal()'},
-    {text:'保存', cls:'btn-primary', action:'saveCategoryEdit("'+catId+'")'}
+    {text:'保存', cls:'btn-primary', action:'saveCategoryEdit(\''+catId+'\')'}
   ]);
 }
 
