@@ -528,9 +528,33 @@ function loadMeta(cb) {
       var hasLocalOnly = localCats.some(function(c){ return c && c.id && !cloudCats.some(function(x){return x && x.id===c.id;}); });
       if (hasLocalOnly && S.adminToken) syncMetaToCloud();
     }
-    if (d.fileCats && typeof d.fileCats === 'object') S.fileCats = d.fileCats;
-    if (d.fileTags && typeof d.fileTags === 'object') S.fileTags = d.fileTags;
-    if (Array.isArray(d.allTags)) S.allTags = d.allTags;
+    if (d.fileCats && typeof d.fileCats === 'object') {
+      // fileCats: 云端为权威源, 但保留本机独有项
+      var localFC = S.fileCats || {};
+      S.fileCats = d.fileCats;
+      Object.keys(localFC).forEach(function(fn) { if (!(fn in S.fileCats)) S.fileCats[fn] = localFC[fn]; });
+    }
+    if (d.fileTags && typeof d.fileTags === 'object') {
+      // fileTags: 同 fileCats
+      var localFT = S.fileTags || {};
+      S.fileTags = d.fileTags;
+      Object.keys(localFT).forEach(function(fn) { if (!(fn in S.fileTags)) S.fileTags[fn] = localFT[fn]; });
+    }
+    // allTags: 云端+本机取并集, 但排除本机已删除的标签(防止删除后刷新从云端复活)
+    if (Array.isArray(d.allTags)) {
+      var cloudTags = d.allTags;
+      var localTags = (S.allTags || []).slice();
+      var deleted = (S.deletedTags || []).slice();
+      var seenT = {}; var mergedT = [];
+      cloudTags.concat(localTags).forEach(function(t) {
+        if (!t || seenT[t] || deleted.indexOf(t) >= 0) return;
+        seenT[t] = true; mergedT.push(t);
+      });
+      S.allTags = mergedT;
+      // 本机有而云端没有的标签(且未被删除) -> 已登录则补传
+      var hasLocalOnlyT = localTags.some(function(t) { return t && cloudTags.indexOf(t) < 0 && deleted.indexOf(t) < 0; });
+      if (hasLocalOnlyT && S.adminToken) syncMetaToCloud();
+    }
     if (cb) cb();
     renderSidebar(); renderMain();
   }).catch(function() { if (cb) cb(); });
@@ -565,7 +589,8 @@ function flushMetaNow() {
     customCats: S.customCats || [],
     fileCats: S.fileCats || {},
     fileTags: S.fileTags || {},
-    allTags: S.allTags || []
+    allTags: S.allTags || [],
+    deletedTags: S.deletedTags || []
   };
   try {
     var xhr = new XMLHttpRequest();
@@ -587,7 +612,8 @@ function syncMetaToCloud() {
       customCats: S.customCats || [],
       fileCats: S.fileCats || {},
       fileTags: S.fileTags || {},
-      allTags: S.allTags || []
+      allTags: S.allTags || [],
+      deletedTags: S.deletedTags || []
     };
     fetch(UPLOAD_API, {
       method: 'POST',
@@ -597,7 +623,7 @@ function syncMetaToCloud() {
       if (r.status === 401) { clearAdminToken(); } // 令牌过期: 弹重新登录并排队补传
       else if (!r.ok) { toast('分类保存到云端失败（服务端错误 ' + r.status + '），已暂存本机', false); }
     }).catch(function(e) { toast('分类保存失败（网络错误），已暂存本机', false); });
-  }, 500);
+  }, 150);
 }
 // 页面隐藏/卸载前兜底送达, 避免分类因未刷新而丢失
 document.addEventListener('visibilitychange', function() { if (document.visibilityState === 'hidden') flushMetaNow(); });
@@ -626,6 +652,7 @@ var S = {
   recent: LS('kb_recent', []),
   fileTags: LS('kb_fileTags', {}),
   allTags: LS('kb_allTags', []),
+  deletedTags: LS('kb_deletedTags', []), // 本机已删除的标签(防止刷新后从云端复活)
   customCats: LS('kb_customCats', []),
   uploaded: LS('kb_uploaded', []),
   adminToken: localStorage.getItem('kb_admin_token') || sessionStorage.getItem('kb_admin_token') || '',
@@ -640,6 +667,7 @@ function Save() {
   localStorage.setItem('kb_recent', JSON.stringify(S.recent));
   localStorage.setItem('kb_fileTags', JSON.stringify(S.fileTags));
   localStorage.setItem('kb_allTags', JSON.stringify(S.allTags));
+  localStorage.setItem('kb_deletedTags', JSON.stringify(S.deletedTags));
   localStorage.setItem('kb_customCats', JSON.stringify(S.customCats));
   localStorage.setItem('kb_uploaded', JSON.stringify(S.uploaded));
   localStorage.setItem('kb_fileCats', JSON.stringify(S.fileCats));
@@ -1433,6 +1461,7 @@ function resetData() {
   localStorage.removeItem('kb_recent');
   localStorage.removeItem('kb_fileTags');
   localStorage.removeItem('kb_allTags');
+  localStorage.removeItem('kb_deletedTags');
   localStorage.removeItem('kb_customCats');
   localStorage.removeItem('kb_uploaded');
   localStorage.removeItem('kb_fileCats');
@@ -1708,18 +1737,27 @@ function purgeAllTrash() {
 }
 
 function addTag() {
-  var tag = document.getElementById('newTagInput').value.trim();
-  if (!tag) return;
-  if (S.allTags.indexOf(tag) >= 0) { toast('标签已存在'); return; }
-  S.allTags.push(tag); Save();
-  renderAdminTags(); renderSidebar();
-  toast('标签已添加');
+  try {
+    var tag = document.getElementById('newTagInput').value.trim();
+    if (!tag) { toast('请输入标签名称'); return; }
+    if (S.allTags.indexOf(tag) >= 0) { toast('标签已存在'); return; }
+    S.allTags.push(tag);
+    // 从已删除列表中移除(重新添加先前删除过的标签)
+    S.deletedTags = (S.deletedTags || []).filter(function(t) { return t !== tag; });
+    Save();
+    renderAdminTags(); renderSidebar();
+    toast('标签已添加');
+  } catch(e) { toast('添加标签出错: ' + e.message); console.error('[addTag]', e); }
 }
 
 function removeTag(tag) {
   S.allTags = S.allTags.filter(function(t){return t!==tag});
+  // 记录已删除标签, 防止刷新时从云端复活
+  if ((S.deletedTags || []).indexOf(tag) < 0) {
+    S.deletedTags = (S.deletedTags || []).concat([tag]);
+  }
   Object.keys(S.fileTags).forEach(function(fn) {
-    S.fileTags[fn] = S.fileTags[fn].filter(function(t){return t!==tag});
+    S.fileTags[fn] = (S.fileTags[fn] || []).filter(function(t){return t!==tag});
   });
   Save(); renderAdminTags(); renderSidebar();
   toast('标签已移除');
