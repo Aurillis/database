@@ -59,7 +59,22 @@
     document.getElementById('vt').textContent = title;
     document.title = title;
     var frame = document.getElementById('frame');
-    var rawUrl = f ? 'reports/' + encodeURIComponent(f) : '';
+    function rawReportUrl(name) {
+      // 直读 raw.githubusercontent.com: 永远最新, 无需等 Pages 重新构建(否则新上传文件要 1~2 分钟后才打得开)
+      try {
+        var u = new URL(location.href);
+        if (u.hostname.endsWith('.github.io')) {
+          var parts = u.pathname.split('/').filter(function (p) { return p; });
+          if (parts.length >= 1) {
+            var user = u.hostname.split('.')[0];
+            var repo = parts[0];
+            return 'https://raw.githubusercontent.com/' + user + '/' + repo + '/main/reports/' + encodeURIComponent(name);
+          }
+        }
+      } catch (e) {}
+      return 'reports/' + encodeURIComponent(name);
+    }
+    var rawUrl = f ? rawReportUrl(f) : '';
     document.getElementById('dl').href = rawUrl;
 
     // 看板「打印」由父页面接管：打开洁净新窗口打印看板(含实时勾选/填写)，避免沙箱 iframe 打印被裁剪、并带上查看器外壳。
@@ -235,7 +250,8 @@
       var fallback = function () {
         loading.style.display = 'none';
         frame.removeAttribute('srcdoc');
-        frame.src = rawUrl;
+        // 退化为同源 Pages 打开(渲染为 HTML, 而非 raw 的 text/plain)
+        frame.src = 'reports/' + encodeURIComponent(f);
         frame.onload = function () {
           try {
             var s = frame.contentDocument.createElement('script');

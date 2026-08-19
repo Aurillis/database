@@ -525,8 +525,32 @@ function loadMeta(cb) {
 
 // 把分类/标签推送到云端 meta.json(管理员令牌鉴权, 最近写入优先; 防抖合并)
 var _metaTimer = null;
+function clearAdminToken() {
+  S.adminToken = '';
+  try { localStorage.removeItem('kb_admin_token'); sessionStorage.removeItem('kb_admin_token'); } catch (e) {}
+  toast('后台登录已过期，请重新登录以同步分类/标签到云端', false);
+}
+// 页面卸载/隐藏前的同步兜底(尽力送达, 避免分类因未刷新而丢失)
+function flushMetaNow() {
+  if (!S.adminToken) return false;
+  var data = {
+    customCats: S.customCats || [],
+    fileCats: S.fileCats || {},
+    fileTags: S.fileTags || {},
+    allTags: S.allTags || []
+  };
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', UPLOAD_API, false);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('x-admin-token', S.adminToken);
+    xhr.send(JSON.stringify({ op: 'meta', data: data }));
+    if (xhr.status === 401) { clearAdminToken(); return false; }
+    return xhr.status < 300;
+  } catch (e) { return false; }
+}
 function syncMetaToCloud() {
-  if (!S.adminToken) return; // 仅管理员可写云端元数据
+  if (!S.adminToken) return; // 仅管理员可写云端元数据(未登录则仅本机可见)
   if (_metaTimer) clearTimeout(_metaTimer);
   _metaTimer = setTimeout(function() {
     var data = {
@@ -539,9 +563,14 @@ function syncMetaToCloud() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-admin-token': S.adminToken },
       body: JSON.stringify({ op: 'meta', data: data })
-    }).catch(function() { /* 静默: 云端不可达时本地仍可用 */ });
-  }, 600);
+    }).then(function(r) {
+      if (r.status === 401) clearAdminToken();
+      else if (!r.ok) console.error('[meta] 同步失败:', r.status);
+    }).catch(function(e) { console.error('[meta] 同步错误:', e); });
+  }, 500);
 }
+// 页面隐藏/卸载前兜底送达, 避免分类因未刷新而丢失
+document.addEventListener('visibilitychange', function() { if (document.visibilityState === 'hidden') flushMetaNow(); });
 
 // Load the dynamic manifest (rewritten by the upload function after each upload).
 // 直读 raw(无构建延迟), 失败回退到嵌入数据.
@@ -1417,7 +1446,11 @@ function addCategory() {
   var parent = document.getElementById('catParentInput').value;
   S.customCats.push({id:id, name:name, icon:'fas fa-folder', parentId:parent||null});
   Save(); closeModal(); renderAdminCats(); renderSidebar();
-  toast('分类已创建：' + name + ' (' + id + ')');
+  if (S.adminToken) {
+    toast('分类已创建：' + name + ' (' + id + ')');
+  } else {
+    toast('分类已创建（仅本机可见，登录后台后会同步到云端）：' + name, false);
+  }
 }
 
 function editCategoryModal(catId) {
