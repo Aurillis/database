@@ -75,7 +75,7 @@
       return 'reports/' + encodeURIComponent(name);
     }
     var rawUrl = f ? rawReportUrl(f) : '';
-    document.getElementById('dl').href = rawUrl;
+    document.getElementById('dl').href = 'reports/' + encodeURIComponent(f); // 下载走同源 Pages(行为正常), 预览走 raw(即时)
 
     // 看板「打印」由父页面接管：打开洁净新窗口打印看板(含实时勾选/填写)，避免沙箱 iframe 打印被裁剪、并带上查看器外壳。
     window.__kbPrint = function () {
