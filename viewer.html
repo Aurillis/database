@@ -18,8 +18,24 @@
   .vh-open{color:#fff;text-decoration:none;font-size:13px;font-weight:600;background:#2f9e44;padding:5px 12px;border-radius:5px;white-space:nowrap;display:none;align-items:center;gap:6px}
   .vh-open:hover{opacity:.9}
   .vh-note{display:none;padding:8px 16px;background:#fff8e1;color:#8a6d00;font-size:12.5px;border-bottom:1px solid #ffe59e;align-items:center;gap:8px}
-  .vh-body{flex:1;position:relative;overflow:hidden;background:#fff}
-  .vh-body iframe{width:100%;height:100%;border:none;background:#fff}
+  .vh-body{flex:1;position:relative;overflow:auto;background:#fff;-webkit-overflow-scrolling:touch}
+  .frame-wrap{position:relative;transform-origin:top left;margin:0 auto;transition:width .15s,height .15s}
+  .frame-wrap iframe{display:block;border:none;background:#fff}
+  .vh-fitbar{position:absolute;z-index:8;top:8px;right:8px;display:none;background:rgba(26,26,46,.86);border-radius:8px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .vh-fitbar button{font-size:12px;padding:6px 11px;border:none;background:none;color:#fff;cursor:pointer;font-family:inherit;font-weight:600}
+  .vh-fitbar button.active{background:#4f7cff}
+  .vh-fitbar button+button{border-left:1px solid rgba(255,255,255,.18)}
+  @media(max-width:760px){.vh-fitbar{display:flex}}
+  @media(max-width:560px){
+    .vh{padding:8px 12px;gap:8px;height:auto;flex-wrap:wrap}
+    .vh-back span{display:none}
+    .vh-title{font-size:12px;white-space:normal;line-height:1.35;flex-basis:100%;order:3;padding-top:2px}
+    .vh-dl span{display:none}
+    .vh-dl,.vh-open{padding:5px 9px}
+    .vh-fitbar button{padding:6px 9px}
+    .vh-fitbar button i{margin-right:0}
+    .vh-fitbar button span{display:none}
+  }
   .vh-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;color:#646a73;background:#fff;z-index:5}
   .vh-msg{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#646a73;padding:40px;text-align:center}
   .vh-msg i{font-size:40px;color:#d0d3d9}
@@ -37,8 +53,14 @@
   </header>
   <div class="vh-note" id="note"></div>
   <div class="vh-body" id="body">
-    <iframe id="frame" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
+    <div class="frame-wrap" id="fwrap">
+      <iframe id="frame" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
+    </div>
     <div class="vh-loading" id="loading" style="display:none"><i class="fas fa-spinner fa-spin"></i> 正在加载看板…</div>
+    <div class="vh-fitbar" id="fitbar">
+      <button id="fitBtn" class="active" onclick="setFitMode(true)"><i class="fas fa-compress"></i><span>适应屏幕</span></button>
+      <button id="origBtn" onclick="setFitMode(false)"><i class="fas fa-expand"></i><span>原尺寸</span></button>
+    </div>
   </div>
 
   <script src="vendor/marked/marked.min.js"></script>
@@ -125,6 +147,42 @@
     }
 
     var KB_SCF_API = 'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.com';
+
+    // 移动端「适应屏幕」缩放：报告是固定宽度的海报式看板，窄屏下等比缩放到容器宽度，避免溢出/看不清
+    var fitMode = true;
+    var frameEl = document.getElementById('frame');
+    var frameWrap = document.getElementById('fwrap');
+    function setFitMode(fit) {
+      fitMode = fit;
+      document.getElementById('fitBtn').classList.toggle('active', fit);
+      document.getElementById('origBtn').classList.toggle('active', !fit);
+      applyFit();
+    }
+    function measureDoc(doc) {
+      if (!doc || !doc.body) return null;
+      var inner = doc.querySelector('.poster') || doc.body;
+      var w = inner.scrollWidth || doc.body.scrollWidth || doc.documentElement.scrollWidth;
+      var h = inner.scrollHeight || doc.body.scrollHeight || doc.documentElement.scrollHeight;
+      return { w: w || 0, h: h || 0 };
+    }
+    function applyFit() {
+      var doc;
+      try { doc = frameEl.contentDocument; } catch (e) { return; }
+      var m = measureDoc(doc);
+      if (!m || !m.w) return;
+      var avail = document.getElementById('body').clientWidth;
+      var scale = fitMode ? Math.min(avail / m.w, 1) : 1;
+      frameEl.style.width = m.w + 'px';
+      frameEl.style.height = m.h + 'px';
+      frameEl.style.transformOrigin = 'top left';
+      frameEl.style.transform = 'scale(' + scale + ')';
+      frameWrap.style.width = (m.w * scale) + 'px';
+      frameWrap.style.height = (m.h * scale) + 'px';
+    }
+    function scheduleFit() {
+      [60, 300, 800, 1500].forEach(function (d) { setTimeout(applyFit, d); });
+    }
+    window.addEventListener('resize', applyFit);
 
     // 看板同步桥回传的状态：仅在出错时提示（成功静默，不打扰）；用于排查「另一台电脑看不到进度」
     window.addEventListener('message', function (e) {
@@ -242,6 +300,7 @@
             s.textContent = preShim + buildStateShim(KB_SCF_API, f, stateUrlAbs);
             frame.contentDocument.head.appendChild(s);
           } catch (e) {}
+          scheduleFit();
         };
       };
 
@@ -255,6 +314,7 @@
           loading.style.display = 'none';
           // 同步桥内部用同步 XHR 读云端并先于 board loadState 写入，保证共享进度可见
           frame.srcdoc = injectHead(htmlText, boardDir, preShim + buildStateShim(KB_SCF_API, f, stateUrlAbs));
+          scheduleFit();
         })
         .catch(function (err) {
           // 看板内容 fetch 失败 —— 退化为原生打开，保证看板可见
