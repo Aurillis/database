@@ -514,7 +514,20 @@ function loadMeta(cb) {
     return r.json();
   }).then(function(d) {
     if (!d) return;
-    if (Array.isArray(d.customCats)) S.customCats = d.customCats;
+    // 分类: 云端为权威源, 但与本机 localStorage 取并集(按 id 去重), 避免云端写入偶发失败/令牌过期时本机新增被刷新清空
+    if (Array.isArray(d.customCats)) {
+      var cloudCats = d.customCats;
+      var localCats = (S.customCats || []).slice();
+      var seen = {}; var merged = [];
+      cloudCats.concat(localCats).forEach(function(c){
+        if (!c || !c.id || seen[c.id]) return;
+        seen[c.id] = true; merged.push(c);
+      });
+      S.customCats = merged;
+      // 本机有而云端没有的分类 -> 已登录则立即补传到云端(让其他设备也能看到)
+      var hasLocalOnly = localCats.some(function(c){ return c && c.id && !cloudCats.some(function(x){return x && x.id===c.id;}); });
+      if (hasLocalOnly && S.adminToken) syncMetaToCloud();
+    }
     if (d.fileCats && typeof d.fileCats === 'object') S.fileCats = d.fileCats;
     if (d.fileTags && typeof d.fileTags === 'object') S.fileTags = d.fileTags;
     if (Array.isArray(d.allTags)) S.allTags = d.allTags;
@@ -525,10 +538,25 @@ function loadMeta(cb) {
 
 // 把分类/标签推送到云端 meta.json(管理员令牌鉴权, 最近写入优先; 防抖合并)
 var _metaTimer = null;
-function clearAdminToken() {
+var _pendingMetaSync = false; // 本机有待补传到云端的改动(登录/解锁后自动补传)
+// 强制重新登录弹窗(令牌过期时调用), 并标记"有待补传到云端的本地改动"
+function promptRelogin(msg) {
+  _pendingMetaSync = true;
+  try {
+    var e = document.getElementById('adminError');
+    if (e && msg) e.textContent = msg;
+    var box = document.getElementById('adminLogin');
+    if (box) { box.classList.add('show'); var i = document.getElementById('adminPwdInput'); if (i) i.focus(); }
+  } catch (_) {}
+}
+// relogin=true(默认): 令牌过期 -> 切回未登录界面并弹重新登录; relogin=false: 仅提示(如切后台时静默失效)
+function clearAdminToken(relogin) {
   S.adminToken = '';
+  S.isAdmin = false;
   try { localStorage.removeItem('kb_admin_token'); sessionStorage.removeItem('kb_admin_token'); } catch (e) {}
-  toast('后台登录已过期，请重新登录以同步分类/标签到云端', false);
+  renderSidebar(); renderMain();
+  if (relogin === false) { toast('后台登录已过期，请重新登录以同步分类/标签到云端', false); }
+  else { promptRelogin('后台登录已过期，请重新登录以同步分类/标签到云端'); }
 }
 // 页面卸载/隐藏前的同步兜底(尽力送达, 避免分类因未刷新而丢失)
 function flushMetaNow() {
@@ -545,14 +573,16 @@ function flushMetaNow() {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('x-admin-token', S.adminToken);
     xhr.send(JSON.stringify({ op: 'meta', data: data }));
-    if (xhr.status === 401) { clearAdminToken(); return false; }
+    if (xhr.status === 401) { clearAdminToken(false); return false; }
     return xhr.status < 300;
   } catch (e) { return false; }
 }
 function syncMetaToCloud() {
   if (!S.adminToken) return; // 仅管理员可写云端元数据(未登录则仅本机可见)
+  _pendingMetaSync = true;
   if (_metaTimer) clearTimeout(_metaTimer);
   _metaTimer = setTimeout(function() {
+    _pendingMetaSync = false;
     var data = {
       customCats: S.customCats || [],
       fileCats: S.fileCats || {},
@@ -564,9 +594,9 @@ function syncMetaToCloud() {
       headers: { 'Content-Type': 'application/json', 'x-admin-token': S.adminToken },
       body: JSON.stringify({ op: 'meta', data: data })
     }).then(function(r) {
-      if (r.status === 401) clearAdminToken();
-      else if (!r.ok) console.error('[meta] 同步失败:', r.status);
-    }).catch(function(e) { console.error('[meta] 同步错误:', e); });
+      if (r.status === 401) { clearAdminToken(); } // 令牌过期: 弹重新登录并排队补传
+      else if (!r.ok) { toast('分类保存到云端失败（服务端错误 ' + r.status + '），已暂存本机', false); }
+    }).catch(function(e) { toast('分类保存失败（网络错误），已暂存本机', false); });
   }, 500);
 }
 // 页面隐藏/卸载前兜底送达, 避免分类因未刷新而丢失
