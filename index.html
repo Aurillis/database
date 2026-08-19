@@ -332,7 +332,7 @@ input,select{font-family:inherit}
 /* ===== RESPONSIVE ===== */
 @media(max-width:900px){
   .menu-toggle{display:flex}
-  .sidebar{position:fixed;top:52px;left:-280px;bottom:0;z-index:99;width:min(280px,82vw);transition:left .25s ease;box-shadow:2px 0 18px rgba(0,0,0,.14)}
+  .sidebar{position:fixed;top:56px;left:-280px;bottom:0;z-index:99;transition:left .25s ease;box-shadow:2px 0 18px rgba(0,0,0,.14)}
   .sidebar.show{left:0}
   .sidebar-backdrop{display:block;opacity:0;pointer-events:none}
   .sidebar-backdrop.show{opacity:1;pointer-events:auto}
@@ -340,45 +340,10 @@ input,select{font-family:inherit}
   .file-grid{grid-template-columns:1fr}
   .logo-text{display:none}
 }
-@media(max-width:900px){
-  .nav-item{padding:9px 12px;font-size:13px}
-  .nav-child{padding:7px 12px 7px 34px;font-size:12px}
-}
 @media(max-width:560px){
-  .header{gap:8px;padding:0 12px;height:52px}
-  .layout{min-height:calc(100vh - 52px)}
+  .header{gap:10px;padding:0 14px}
   .admin-entry-txt{display:none}
-  .search-bar input{padding-left:32px;font-size:12px}
-  .search-bar i{font-size:12px}
-  .header-right .icon-btn{width:34px;height:34px}
-  .admin-entry{height:34px;padding:0 10px}
-  .main{padding:12px}
-  .main-header{flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:14px}
-  .main-title{font-size:17px}
-  .main-tools{width:100%;justify-content:space-between}
-  .sort-select{min-width:96px;max-width:120px;font-size:12px;padding:6px 8px}
-  .view-btn{width:30px;height:30px}
-  .file-grid{gap:10px}
-  .file-card{padding:12px;gap:6px;border-radius:10px}
-  .file-card-icon{width:32px;height:32px;font-size:14px}
-  .file-card-title{font-size:13px;line-height:1.35}
-  .file-card-cat{font-size:10px}
-  .file-card-footer{padding-top:6px;font-size:10px}
-  .file-card-footer .left{gap:8px}
-  .file-card-footer span:last-child{font-size:11px}
-  .file-tag{font-size:9px;padding:1px 5px}
-  .fav-btn{width:26px;height:26px}
-  .list-item{padding:9px 10px;gap:10px}
-  .list-item .li-title{font-size:12px}
-  .list-item .li-date,.list-item .li-size,.list-item .li-cat{display:none}
-  .list-item .li-fmt{width:auto}
-  .list-item .fav-btn{width:22px;height:22px}
-}
-@media(max-width:400px){
-  .header-right #favBtn,.header-right #recentBtn{display:none}
-  .main-tools{gap:6px}
-  .sort-select{max-width:110px}
-  .file-card-footer .left{flex-direction:column;align-items:flex-start;gap:2px}
+  .search-bar input{padding-left:34px}
 }
 
 /* ===== VIEWER GATE（查看密码，防止外人直接浏览全部文件） ===== */
@@ -1042,13 +1007,6 @@ function toggleFav(filename) {
 document.getElementById('searchInput').addEventListener('input', function(e) {
   S.search = e.target.value; renderMain();
 });
-function updateSearchPlaceholder() {
-  var inp = document.getElementById('searchInput');
-  if (!inp) return;
-  inp.placeholder = window.innerWidth <= 560 ? '搜索...' : '搜索文件名、标签、分类...';
-}
-updateSearchPlaceholder();
-window.addEventListener('resize', updateSearchPlaceholder);
 
 // ===== HEADER BUTTONS =====
 document.getElementById('favBtn').addEventListener('click', function() {
