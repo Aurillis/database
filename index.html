@@ -362,6 +362,15 @@ input,select{font-family:inherit}
 .vl-box .btn{width:100%;padding:11px;border-radius:8px;font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;transition:all .15s}
 .vl-box .btn:hover{background:var(--accent-dark)}
 .vl-err{color:var(--danger);font-size:12px;min-height:16px}
+
+/* 自定义分类下拉(select 透明叠 div): 选中后显示"一级 - 二级"完整路径, 下拉打开的 option 仍用简短名 */
+.cat-select-wrap{position:relative;width:100%}
+.cat-select-display{position:relative;padding:8px 28px 8px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);font-size:14px;color:var(--text);min-height:18px;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:none;line-height:20px}
+.cat-select-display::after{content:"▾";position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:11px;pointer-events:none}
+.cat-select-display.placeholder{color:var(--muted)}
+.cat-select-real{position:absolute;left:0;right:0;top:0;bottom:0;width:100%;height:100%;opacity:0;cursor:pointer;border:none;background:transparent;padding:0;margin:0}
+.cat-select-real:focus{outline:none}
+.cat-select-real:focus + .cat-select-display{border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -1251,7 +1260,10 @@ function renderAdminUpload() {
     <input type="file" id="fileInput" multiple style="display:none">
     <div id="uploadCatSelect" style="margin:16px 0 12px">
       <label style="font-size:12px;color:var(--muted)">上传到分类:</label>
-      <select id="uploadCat" class="sort-select" style="width:100%;margin-top:4px;padding:8px"></select>
+      <div class="cat-select-wrap" style="margin-top:4px">
+        <div class="cat-select-display placeholder" id="uploadCatDisplay">— 请选择分类文件夹 —</div>
+        <select id="uploadCat" class="cat-select-real"></select>
+      </div>
       <div id="uploadNewCatRow" style="display:none;margin-top:8px">
         <input type="text" id="uploadNewCatName" placeholder="新分类名称（如：渠道复盘）" style="width:100%;padding:8px;box-sizing:border-box;border:1px solid var(--line);border-radius:var(--radius)">
         <select id="uploadNewCatParent" style="width:100%;margin-top:6px;padding:8px;box-sizing:border-box;border:1px solid var(--line);border-radius:var(--radius)">
@@ -1274,7 +1286,7 @@ function renderAdminUpload() {
     if (c.children) c.children.forEach(function(ch){ if (ch.id === cur) exists = true; });
   });
   if (cur && exists) sel.value = cur;
-  // 选中「新建分类」时展开输入行(并回到占位, 避免误选后直接上传)
+  // 选中「新建分类」时展开输入行(并回到占位, 避免误选后直接上传); 同时更新自定义显示路径
   sel.onchange = function() {
     var row = document.getElementById('uploadNewCatRow');
     if (this.value === '__new_cat__') {
@@ -1284,7 +1296,9 @@ function renderAdminUpload() {
     } else {
       row.style.display = 'none';
     }
+    updateCatSelectDisplay(this, 'uploadCatDisplay');
   };
+  updateCatSelectDisplay(sel, 'uploadCatDisplay');
   document.getElementById('uploadNewCatBtn').onclick = createUploadCat;
   // 新建分类的父分类下拉: 列出所有顶级分类(含内置一级与自定义顶级)
   var psel = document.getElementById('uploadNewCatParent');
@@ -1310,14 +1324,13 @@ function renderAdminUpload() {
   input.onchange = function() { handleUpload(this.files); };
 }
 
-// 上传分类下拉选项: 有子分类时一级分类也可选(optgroup 内第一项), 末尾提供「新建分类」
+// 上传分类下拉选项: 一级分类只作 optgroup 标签(避免与子项重复), 二级只用简短名; 末尾提供「新建分类」
 function uploadCatOptions(cur) {
   var opts = '<option value="" disabled'+(cur?'':' selected')+'>— 请选择分类文件夹 —</option>';
   getTree().forEach(function(cat) {
     if (cat.children) {
       opts += '<optgroup label="'+esc(cat.name)+'">';
-      opts += '<option value="'+cat.id+'"'+(cur===cat.id?' selected':'')+'>'+esc(cat.name)+'</option>';
-      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'"'+(cur===ch.id?' selected':'')+'>'+esc(cat.name)+' - '+esc(ch.name)+'</option>'; });
+      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'"'+(cur===ch.id?' selected':'')+'>'+esc(ch.name)+'</option>'; });
       opts += '</optgroup>';
     } else {
       opts += '<option value="'+cat.id+'"'+(cur===cat.id?' selected':'')+'>'+esc(cat.name)+'</option>';
@@ -1325,6 +1338,31 @@ function uploadCatOptions(cur) {
   });
   opts += '<option value="__new_cat__">＋ 新建分类…</option>';
   return opts;
+}
+
+// 自定义下拉显示层: 根据 select.value 渲染完整路径(一级 - 二级)或占位
+function updateCatSelectDisplay(sel, displayId) {
+  var disp = document.getElementById(displayId);
+  if (!disp) return;
+  var v = sel.value;
+  var label = '';
+  if (!v || v === '__new_cat__') {
+    disp.textContent = '— 请选择分类文件夹 —';
+    disp.classList.add('placeholder');
+    return;
+  }
+  disp.classList.remove('placeholder');
+  // 找一级分类(若 v 是二级)
+  var tree = getTree();
+  for (var i=0;i<tree.length;i++) {
+    var cat = tree[i];
+    if (cat.id === v) { label = cat.name; break; }
+    if (cat.children) {
+      var ch = cat.children.find(function(c){ return c.id===v; });
+      if (ch) { label = cat.name + ' - ' + ch.name; break; }
+    }
+  }
+  disp.textContent = label || v;
 }
 
 // 上传弹窗内联新建分类: 可选择挂到某个一级分类下(成为二级), 创建后自动选中该分类
@@ -1655,19 +1693,29 @@ function moveFileModal(filename) {
   getTree().forEach(function(cat) {
     if (cat.children) {
       opts += '<optgroup label="'+esc(cat.name)+'">';
-      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'"'+(getFileCat(filename)===ch.id?' selected':'')+'>'+esc(cat.name)+' - '+esc(ch.name)+'</option>'; });
+      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'"'+(getFileCat(filename)===ch.id?' selected':'')+'>'+esc(ch.name)+'</option>'; });
       opts += '</optgroup>';
     } else {
       opts += '<option value="'+cat.id+'"'+(getFileCat(filename)===cat.id?' selected':'')+'>'+esc(cat.name)+'</option>';
     }
   });
+  var selVal = getFileCat(filename) || '';
   showModal('移动文件', `
     <p style="font-size:13px;margin-bottom:8px">${esc(filename)}</p>
-    <select id="moveCatSelect" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:var(--radius)">${opts}</select>
+    <div class="cat-select-wrap">
+      <div class="cat-select-display placeholder" id="moveCatDisplay">— 请选择分类文件夹 —</div>
+      <select id="moveCatSelect" class="cat-select-real">${opts}</select>
+    </div>
   `, [
     {text:'取消', cls:'btn-ghost', action:'closeModal()'},
     {text:'移动', cls:'btn-primary', action:'moveFile(\''+esc(filename)+'\')'}
   ]);
+  // 初始化显示 + change 同步
+  var ms = document.getElementById('moveCatSelect');
+  if (ms) {
+    ms.onchange = function() { updateCatSelectDisplay(this, 'moveCatDisplay'); };
+    updateCatSelectDisplay(ms, 'moveCatDisplay');
+  }
 }
 
 function moveFile(filename) {
