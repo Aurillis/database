@@ -1966,7 +1966,10 @@ function deleteFile(filename) {
     delete S.fileTags[filename];
     delete S.fileCats[filename];
     Save();
-    refreshManifest(function() { renderAdminFiles(); renderSidebar(); });
+    // 同步即时从首页/列表移除(不依赖异步拉取), 之后 refreshManifest 用权威数据再渲染一次
+    FILES = FILES.filter(function(f){ return f.filename !== filename; });
+    renderMain();
+    refreshManifest(function() { renderAdminFiles(); renderSidebar(); renderMain(); });
     toast('已删除，可在「垃圾箱」恢复');
   }).catch(function() {
     toast('删除失败：网络错误，请确认函数 URL 可达');
@@ -2047,7 +2050,7 @@ function restoreFile(entryId) {
   if (!confirm('确定恢复该文件？将重新出现在文件列表中。')) return;
   adminApi('restore', { entryId: entryId }).then(function(resp) {
     if (!resp.ok || !resp.j.ok) { toast('恢复失败：' + (resp.j.error || '未知错误')); return; }
-    refreshManifest(function() { renderAdminTrash(); renderSidebar(); });
+    refreshManifest(function() { renderAdminTrash(); renderSidebar(); renderMain(); });
     toast('已恢复');
   }).catch(function() { toast('恢复失败：网络错误'); });
 }
