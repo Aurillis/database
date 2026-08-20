@@ -703,7 +703,26 @@ function getFileCat(filename) {
   return f ? f.category : 'other';
 }
 
-function getTree() { return TREE.concat(S.customCats); }
+// 合并分类树: 内置 TREE + 自定义分类; 带 parentId 的自定义分类挂到对应父分类 children 下(成为二级分类), 否则作为顶级分类
+function getTree() {
+  var tree = [];
+  TREE.forEach(function(c){ tree.push(c); });
+  (S.customCats || []).forEach(function(c){
+    if (!c || !c.id) return;
+    if (tree.find(function(x){ return x.id === c.id; })) return; // 防重
+    if (c.parentId) {
+      var p = tree.find(function(x){ return x.id === c.parentId; });
+      if (p) {
+        if (!p.children) p.children = [];
+        if (!p.children.find(function(ch){ return ch.id === c.id; })) p.children.push(c);
+        return;
+      }
+      // 父分类不存在: 退化为顶级分类
+    }
+    tree.push(c);
+  });
+  return tree;
+}
 
 function catName(catId) {
   if (catId === 'other') return '未分类';
@@ -1235,6 +1254,9 @@ function renderAdminUpload() {
       <select id="uploadCat" class="sort-select" style="width:100%;margin-top:4px;padding:8px"></select>
       <div id="uploadNewCatRow" style="display:none;margin-top:8px">
         <input type="text" id="uploadNewCatName" placeholder="新分类名称（如：渠道复盘）" style="width:100%;padding:8px;box-sizing:border-box;border:1px solid var(--line);border-radius:var(--radius)">
+        <select id="uploadNewCatParent" style="width:100%;margin-top:6px;padding:8px;box-sizing:border-box;border:1px solid var(--line);border-radius:var(--radius)">
+          <option value="">无（顶级分类）</option>
+        </select>
         <button class="btn btn-sm btn-primary" id="uploadNewCatBtn" style="margin-top:6px;width:100%"><i class="fas fa-plus"></i> 创建并使用此分类</button>
       </div>
     </div>
@@ -1264,6 +1286,14 @@ function renderAdminUpload() {
     }
   };
   document.getElementById('uploadNewCatBtn').onclick = createUploadCat;
+  // 新建分类的父分类下拉: 列出所有顶级分类(含内置一级与自定义顶级)
+  var psel = document.getElementById('uploadNewCatParent');
+  var parentOpts = '<option value="">无（顶级分类）</option>';
+  getTree().forEach(function(cat) {
+    if (cat.id === 'other' || cat.parentId) return;
+    parentOpts += '<option value="'+cat.id+'">'+esc(cat.name)+'</option>';
+  });
+  psel.innerHTML = parentOpts;
 
   var zone = document.getElementById('uploadZone');
   var input = document.getElementById('fileInput');
@@ -1287,7 +1317,7 @@ function uploadCatOptions(cur) {
     if (cat.children) {
       opts += '<optgroup label="'+esc(cat.name)+'">';
       opts += '<option value="'+cat.id+'"'+(cur===cat.id?' selected':'')+'>'+esc(cat.name)+'</option>';
-      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'"'+(cur===ch.id?' selected':'')+'>'+esc(ch.name)+'</option>'; });
+      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'"'+(cur===ch.id?' selected':'')+'>'+esc(cat.name)+' - '+esc(ch.name)+'</option>'; });
       opts += '</optgroup>';
     } else {
       opts += '<option value="'+cat.id+'"'+(cur===cat.id?' selected':'')+'>'+esc(cat.name)+'</option>';
@@ -1297,23 +1327,25 @@ function uploadCatOptions(cur) {
   return opts;
 }
 
-// 上传弹窗内联新建分类: 创建后自动选中该分类
+// 上传弹窗内联新建分类: 可选择挂到某个一级分类下(成为二级), 创建后自动选中该分类
 function createUploadCat() {
   var inp = document.getElementById('uploadNewCatName');
   var name = inp.value.trim();
   if (!name) { toast('请输入新分类名称'); inp.focus(); return; }
+  var parent = document.getElementById('uploadNewCatParent').value;
   var id = makeCatId(name);
   var allIds = [];
   getTree().forEach(function(c){ allIds.push(c.id); if (c.children) c.children.forEach(function(ch){ allIds.push(ch.id); }); });
   if (allIds.indexOf(id) >= 0) { toast('该名称对应的分类已存在：' + id + '，请换一个名称'); return; }
-  S.customCats.push({id:id, name:name, icon:'fas fa-folder', parentId:null, updatedAt:Date.now()});
+  S.customCats.push({id:id, name:name, icon:'fas fa-folder', parentId:parent||null, updatedAt:Date.now()});
   Save();
   var sel = document.getElementById('uploadCat');
   sel.innerHTML = uploadCatOptions(id);
   sel.value = id;
   document.getElementById('uploadNewCatRow').style.display = 'none';
   inp.value = '';
-  toast('分类已创建并选中：' + name + (S.adminToken ? '' : '（仅本机可见，登录后台后同步云端）'));
+  var pName = parent ? (getTree().find(function(c){ return c.id===parent; }) || {}).name : '';
+  toast('分类已创建并选中：' + (pName ? pName+' - ' : '') + name + (S.adminToken ? '' : '（仅本机可见，登录后台后同步云端）'));
 }
 
 function handleUpload(fileList) {
@@ -1623,7 +1655,7 @@ function moveFileModal(filename) {
   getTree().forEach(function(cat) {
     if (cat.children) {
       opts += '<optgroup label="'+esc(cat.name)+'">';
-      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'"'+(getFileCat(filename)===ch.id?' selected':'')+'>'+esc(ch.name)+'</option>'; });
+      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'"'+(getFileCat(filename)===ch.id?' selected':'')+'>'+esc(cat.name)+' - '+esc(ch.name)+'</option>'; });
       opts += '</optgroup>';
     } else {
       opts += '<option value="'+cat.id+'"'+(getFileCat(filename)===cat.id?' selected':'')+'>'+esc(cat.name)+'</option>';
