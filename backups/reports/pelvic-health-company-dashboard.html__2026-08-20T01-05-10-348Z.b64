@@ -1,0 +1,2196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国内盆底康复企业研究与对比 | Pelvic Health Company Landscape</title>
+<style>
+:root{
+  --bg:#F6F7F9;
+  --text-main:#172033;
+  --text-secondary:#667085;
+  --card-bg:#FFFFFF;
+  --divider:#E8EAF0;
+  --medlander:#6576E8;
+  --vishee:#18A6A0;
+  --shiguang:#D86F9B;
+  --conclusion:#8067D9;
+  --risk:#E59A38;
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow:0 1px 3px rgba(23,32,51,.04),0 8px 24px rgba(23,32,51,.05);
+  --shadow-hover:0 4px 12px rgba(23,32,51,.06),0 12px 40px rgba(23,32,51,.08);
+  --nav-h:56px;
+  --max-w:1200px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px)}
+body{
+  font-family:'Inter','PingFang SC','Microsoft YaHei',system-ui,-apple-system,sans-serif;
+  background:var(--bg);
+  color:var(--text-main);
+  line-height:1.65;
+  font-size:15px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+
+/* ===== NAV ===== */
+.nav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);
+  background:rgba(255,255,255,.82);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--divider);
+  z-index:1000;
+  display:flex;align-items:center;
+}
+.nav-inner{
+  width:100%;max-width:var(--max-w);margin:0 auto;
+  padding:0 20px;
+  display:flex;align-items:center;gap:24px;
+}
+.nav-brand{
+  font-weight:700;font-size:14px;white-space:nowrap;
+  color:var(--text-main);letter-spacing:-.02em;
+}
+.nav-brand span{color:var(--conclusion)}
+.nav-links{
+  display:flex;gap:2px;overflow-x:auto;flex:1;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{
+  font-size:12.5px;padding:6px 10px;border-radius:8px;
+  color:var(--text-secondary);white-space:nowrap;
+  transition:all .2s ease;font-weight:500;
+}
+.nav-links a:hover{color:var(--text-main);background:rgba(23,32,51,.04)}
+.nav-links a.active{
+  color:var(--conclusion);background:rgba(128,103,217,.08);
+}
+
+/* ===== LAYOUT ===== */
+.section{
+  max-width:var(--max-w);margin:0 auto;
+  padding:56px 20px 24px;
+}
+.section-head{
+  display:flex;align-items:baseline;gap:12px;
+  margin-bottom:28px;
+}
+.section-num{
+  font-size:13px;font-weight:700;color:var(--conclusion);
+  font-variant-numeric:tabular-nums;
+  opacity:.7;
+}
+.section-title{
+  font-size:24px;font-weight:700;letter-spacing:-.02em;
+  color:var(--text-main);
+}
+.section-sub{
+  font-size:13px;color:var(--text-secondary);margin-left:auto;
+}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;padding:calc(var(--nav-h) + 40px) 20px 48px;
+  max-width:var(--max-w);margin:0 auto;
+}
+.hero-eyebrow{
+  font-size:12px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--conclusion);
+  margin-bottom:12px;
+}
+.hero h1{
+  font-size:clamp(32px,5vw,52px);font-weight:800;
+  letter-spacing:-.03em;line-height:1.15;
+  margin-bottom:8px;
+}
+.hero-sub-en{
+  font-size:clamp(16px,2.5vw,22px);color:var(--text-secondary);
+  font-weight:400;margin-bottom:8px;letter-spacing:-.01em;
+}
+.hero-meta{
+  font-size:13px;color:var(--text-secondary);
+  margin-bottom:32px;
+}
+.hero-judgment{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  padding:24px 28px;
+  box-shadow:var(--shadow);
+  margin-bottom:32px;
+  border-left:4px solid var(--conclusion);
+}
+.hero-judgment p{
+  font-size:15px;line-height:1.7;color:var(--text-main);
+}
+
+/* Company summary cards */
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.summary-card{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  padding:24px;
+  box-shadow:var(--shadow);
+  transition:box-shadow .25s ease,transform .25s ease;
+  display:flex;flex-direction:column;
+}
+.summary-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px)}
+.summary-card .co-name{
+  font-size:18px;font-weight:700;margin-bottom:4px;
+}
+.summary-card .co-tagline{
+  font-size:13px;color:var(--text-secondary);
+  margin-bottom:16px;line-height:1.5;
+}
+.summary-card .co-tags{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;
+}
+.tag{
+  font-size:11.5px;padding:3px 10px;border-radius:20px;
+  background:#F0F2F5;color:var(--text-secondary);
+  font-weight:500;
+}
+.tag-ml{background:rgba(101,118,232,.10);color:var(--medlander)}
+.tag-vs{background:rgba(24,166,160,.10);color:var(--vishee)}
+.tag-sg{background:rgba(216,111,155,.10);color:var(--shiguang)}
+
+/* ===== POSITIONING ===== */
+.positioning-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.pos-card{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  padding:28px 24px;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.pos-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  border-radius:var(--radius) var(--radius) 0 0;
+}
+.pos-ml::before{background:var(--medlander)}
+.pos-vs::before{background:var(--vishee)}
+.pos-sg::before{background:var(--shiguang)}
+.pos-card h3{
+  font-size:16px;font-weight:700;margin-bottom:12px;
+}
+.pos-ml h3{color:var(--medlander)}
+.pos-vs h3{color:var(--vishee)}
+.pos-sg h3{color:var(--shiguang)}
+.pos-card p{
+  font-size:14px;color:var(--text-secondary);line-height:1.65;
+}
+
+/* ===== TABLE ===== */
+.table-wrap{
+  overflow-x:auto;
+  border-radius:var(--radius);
+  border:1px solid var(--divider);
+  background:var(--card-bg);
+  box-shadow:var(--shadow);
+  -webkit-overflow-scrolling:touch;
+}
+table{
+  width:100%;border-collapse:collapse;font-size:13.5px;
+  min-width:680px;
+}
+thead th{
+  text-align:left;padding:14px 16px;
+  font-weight:600;color:var(--text-secondary);
+  border-bottom:1.5px solid var(--divider);
+  white-space:nowrap;background:#FAFBFC;
+}
+thead th:first-child{color:var(--text-main)}
+tbody td{
+  padding:12px 16px;border-bottom:1px solid var(--divider);
+  vertical-align:top;
+}
+tbody tr:last-child td{border-bottom:none}
+tbody td:first-child{
+  font-weight:600;color:var(--text-main);
+  background:#FAFBFC;
+}
+.co-ml{color:var(--medlander)!important;font-weight:600!important}
+.co-vs{color:var(--vishee)!important;font-weight:600!important}
+.co-sg{color:var(--shiguang)!important;font-weight:600!important}
+
+/* ===== BAR CHARTS ===== */
+.chart-block{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  padding:28px;
+  box-shadow:var(--shadow);
+  margin-bottom:16px;
+}
+.chart-title{
+  font-size:15px;font-weight:700;margin-bottom:20px;
+  color:var(--text-main);
+}
+.bar-row{
+  display:flex;align-items:center;gap:12px;
+  margin-bottom:14px;
+}
+.bar-label{
+  width:90px;font-size:13px;font-weight:600;
+  text-align:right;flex-shrink:0;
+}
+.bar-track{
+  flex:1;height:32px;background:#F0F2F5;
+  border-radius:8px;overflow:hidden;position:relative;
+}
+.bar-fill{
+  height:100%;border-radius:8px;
+  transition:width 1s cubic-bezier(.4,0,.2,1);
+  display:flex;align-items:center;justify-content:flex-end;
+  padding-right:12px;
+}
+.bar-fill .bar-val{
+  font-size:12.5px;font-weight:700;color:#fff;
+  white-space:nowrap;
+}
+.bar-fill.ml{background:var(--medlander)}
+.bar-fill.vs{background:var(--vishee)}
+.bar-fill.sg{
+  background:repeating-linear-gradient(45deg,#E8E0E6,#E8E0E6 6px,#F0EBEF 6px,#F0EBEF 12px);
+}
+.bar-fill.sg .bar-val{color:var(--text-secondary);font-size:11.5px}
+.bar-na{color:var(--text-secondary);font-size:12px}
+
+.chart-grid-2col{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+}
+.chart-conclusion{
+  background:linear-gradient(135deg,rgba(128,103,217,.04),rgba(128,103,217,.01));
+  border:1px solid rgba(128,103,217,.12);
+  border-radius:var(--radius);
+  padding:20px 24px;
+  margin-top:16px;
+}
+.chart-conclusion p{
+  font-size:13.5px;color:var(--text-main);line-height:1.7;
+}
+.chart-conclusion p::before{
+  content:'结论';display:inline-block;
+  font-size:11px;font-weight:700;color:var(--conclusion);
+  background:rgba(128,103,217,.10);padding:2px 8px;
+  border-radius:6px;margin-right:8px;vertical-align:1px;
+}
+
+/* ===== STAGES ===== */
+.stages-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  align-items:end;
+}
+.stage-card{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  padding:28px 24px 24px;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.stage-card .stage-step{
+  font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:8px;
+}
+.stage-vs .stage-step{color:var(--vishee)}
+.stage-ml .stage-step{color:var(--medlander)}
+.stage-sg .stage-step{color:var(--shiguang)}
+.stage-card h3{
+  font-size:16px;font-weight:700;margin-bottom:16px;
+}
+.stage-vs h3{color:var(--vishee)}
+.stage-ml h3{color:var(--medlander)}
+.stage-sg h3{color:var(--shiguang)}
+.stage-card ul{
+  list-style:none;padding:0;
+}
+.stage-card li{
+  font-size:13px;color:var(--text-secondary);
+  padding:5px 0;padding-left:16px;position:relative;
+  line-height:1.55;
+}
+.stage-card li::before{
+  content:'';position:absolute;left:0;top:11px;
+  width:5px;height:5px;border-radius:50%;
+}
+.stage-vs li::before{background:var(--vishee)}
+.stage-ml li::before{background:var(--medlander)}
+.stage-sg li::before{background:var(--shiguang)}
+.stages-conclusion{
+  margin-top:24px;
+}
+.stages-conclusion p{
+  font-size:13.5px;color:var(--text-main);line-height:1.7;
+}
+
+/* ===== COMPANY PROFILE (Collapsible) ===== */
+.profile{
+  margin-bottom:24px;
+}
+.profile-header{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius) var(--radius) 0 0;
+  border-bottom:none;
+  padding:24px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;user-select:none;
+  box-shadow:var(--shadow);
+  transition:background .2s ease;
+}
+.profile-header:hover{background:#FAFBFC}
+.profile-header .ph-left{display:flex;align-items:center;gap:14px}
+.profile-header .ph-badge{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.ph-ml .ph-badge{background:var(--medlander)}
+.ph-vs .ph-badge{background:var(--vishee)}
+.ph-sg .ph-badge{background:var(--shiguang)}
+.profile-header h2{
+  font-size:20px;font-weight:700;letter-spacing:-.02em;
+}
+.ph-ml h2{color:var(--medlander)}
+.ph-vs h2{color:var(--vishee)}
+.ph-sg h2{color:var(--shiguang)}
+.profile-header .ph-sub{
+  font-size:12.5px;color:var(--text-secondary);margin-top:2px;
+}
+.toggle-icon{
+  width:28px;height:28px;display:flex;align-items:center;
+  justify-content:center;border-radius:8px;
+  background:#F0F2F5;font-size:14px;
+  transition:transform .3s ease,background .2s ease;
+  flex-shrink:0;
+}
+.profile.collapsed .toggle-icon{transform:rotate(-90deg)}
+.profile-body{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:0 0 var(--radius) var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition:max-height .4s ease,opacity .3s ease;
+  max-height:12000px;opacity:1;
+}
+.profile.collapsed .profile-body{
+  max-height:0;opacity:0;
+}
+.profile-content{padding:28px}
+
+/* Sub-section within profile */
+.sub-section{margin-bottom:32px}
+.sub-section:last-child{margin-bottom:0}
+.sub-title{
+  font-size:14px;font-weight:700;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.sub-title::before{
+  content:'';width:3px;height:14px;border-radius:2px;
+}
+.ss-ml .sub-title::before{background:var(--medlander)}
+.ss-vs .sub-title::before{background:var(--vishee)}
+.ss-sg .sub-title::before{background:var(--shiguang)}
+.sub-body{
+  font-size:14px;color:var(--text-main);line-height:1.75;
+}
+.sub-body p{margin-bottom:10px}
+.sub-body p:last-child{margin-bottom:0}
+
+/* One-liner positioning */
+.one-liner{
+  background:linear-gradient(135deg,rgba(128,103,217,.03),rgba(128,103,217,.01));
+  border:1px solid rgba(128,103,217,.10);
+  border-radius:var(--radius-sm);
+  padding:16px 20px;margin-bottom:20px;
+}
+.one-liner p{font-size:14px;color:var(--text-main);line-height:1.7}
+
+/* Timeline */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{
+  content:'';position:absolute;left:7px;top:4px;bottom:4px;
+  width:2px;background:var(--divider);
+}
+.tl-item{position:relative;margin-bottom:20px}
+.tl-item:last-child{margin-bottom:0}
+.tl-dot{
+  position:absolute;left:-28px;top:5px;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--card-bg);border:3px solid;
+}
+.ss-ml .tl-dot{border-color:var(--medlander)}
+.ss-vs .tl-dot{border-color:var(--vishee)}
+.ss-sg .tl-dot{border-color:var(--shiguang)}
+.tl-year{
+  font-size:13px;font-weight:700;margin-bottom:4px;
+}
+.ss-ml .tl-year{color:var(--medlander)}
+.ss-vs .tl-year{color:var(--vishee)}
+.ss-sg .tl-year{color:var(--shiguang)}
+.tl-text{font-size:13.5px;color:var(--text-secondary);line-height:1.6}
+
+/* Product matrix */
+.prod-group{margin-bottom:20px}
+.prod-group:last-child{margin-bottom:0}
+.prod-group-title{
+  font-size:13px;font-weight:700;color:var(--text-main);
+  margin-bottom:10px;
+}
+.prod-tags{display:flex;flex-wrap:wrap;gap:6px}
+.prod-tag{
+  font-size:12px;padding:5px 12px;border-radius:8px;
+  background:#F5F6F8;color:var(--text-secondary);
+  border:1px solid var(--divider);
+}
+
+/* Data cards */
+.data-cards{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:12px;
+}
+.data-card{
+  background:#FAFBFC;border:1px solid var(--divider);
+  border-radius:var(--radius-sm);padding:16px 18px;
+}
+.data-card .dc-label{
+  font-size:12px;color:var(--text-secondary);margin-bottom:6px;
+}
+.data-card .dc-value{
+  font-size:22px;font-weight:700;letter-spacing:-.02em;
+}
+.ss-ml .data-card .dc-value{color:var(--medlander)}
+.ss-vs .data-card .dc-value{color:var(--vishee)}
+.ss-sg .data-card .dc-value{color:var(--shiguang)}
+
+/* Number cards (R&D) */
+.num-cards{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:12px;
+}
+.num-card{
+  background:#FAFBFC;border:1px solid var(--divider);
+  border-radius:var(--radius-sm);padding:18px;text-align:center;
+}
+.num-card .nc-value{
+  font-size:28px;font-weight:800;letter-spacing:-.02em;
+  margin-bottom:4px;
+}
+.ss-ml .num-card .nc-value{color:var(--medlander)}
+.ss-vs .num-card .nc-value{color:var(--vishee)}
+.num-card .nc-label{font-size:11.5px;color:var(--text-secondary)}
+
+/* Proportion bars */
+.prop-bars{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.prop-row{display:flex;align-items:center;gap:10px}
+.prop-label{
+  width:110px;font-size:12.5px;font-weight:600;
+  text-align:right;flex-shrink:0;
+}
+.prop-track{
+  flex:1;height:24px;background:#F0F2F5;
+  border-radius:6px;overflow:hidden;
+}
+.prop-fill{
+  height:100%;border-radius:6px;
+  transition:width .8s cubic-bezier(.4,0,.2,1);
+}
+.prop-val{font-size:12px;font-weight:600;width:60px;flex-shrink:0}
+.ss-ml .prop-fill{background:var(--medlander)}
+.ss-vs .prop-fill{background:var(--vishee)}
+
+/* Feature cards (Shiguang) */
+.feature-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+}
+.feature-card{
+  background:#FAFBFC;border:1px solid var(--divider);
+  border-radius:var(--radius-sm);padding:18px;
+}
+.feature-card h4{
+  font-size:14px;font-weight:700;margin-bottom:8px;
+  color:var(--shiguang);
+}
+.feature-card p{font-size:12.5px;color:var(--text-secondary);line-height:1.55}
+
+/* Highlight note */
+.note-box{
+  background:rgba(229,154,56,.06);
+  border:1px solid rgba(229,154,56,.18);
+  border-radius:var(--radius-sm);
+  padding:14px 18px;margin-top:16px;
+}
+.note-box p{font-size:13px;color:var(--text-main);line-height:1.65}
+
+/* Advantages/Risks lists */
+.ad-list{
+  list-style:none;padding:0;
+}
+.ad-list li{
+  font-size:13.5px;padding:6px 0 6px 18px;
+  position:relative;line-height:1.6;
+}
+.ad-list.adv li::before{
+  content:'';position:absolute;left:0;top:11px;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--vishee);
+}
+.ad-list.risk li::before{
+  content:'';position:absolute;left:0;top:11px;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--risk);
+}
+.ss-ml .ad-list.adv li::before{background:var(--medlander)}
+.ss-vs .ad-list.adv li::before{background:var(--vishee)}
+.ss-sg .ad-list.adv li::before{background:var(--shiguang)}
+
+/* Future plan path */
+.plan-path{
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  margin-bottom:12px;
+}
+.plan-step{
+  font-size:12.5px;padding:6px 12px;border-radius:8px;
+  background:#F5F6F8;border:1px solid var(--divider);
+  font-weight:500;color:var(--text-main);
+}
+.ss-ml .plan-step{border-color:rgba(101,118,232,.25);color:var(--medlander)}
+.ss-vs .plan-step{border-color:rgba(24,166,160,.25);color:var(--vishee)}
+.ss-sg .plan-step{border-color:rgba(216,111,155,.25);color:var(--shiguang)}
+.plan-arrow{color:var(--text-secondary);font-size:12px}
+.plan-keywords{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;
+}
+.kw{
+  font-size:11.5px;padding:3px 10px;border-radius:16px;
+  font-weight:500;
+}
+.ss-ml .kw{background:rgba(101,118,232,.08);color:var(--medlander)}
+.ss-vs .kw{background:rgba(24,166,160,.08);color:var(--vishee)}
+.ss-sg .kw{background:rgba(216,111,155,.08);color:var(--shiguang)}
+
+/* ===== CAPABILITY MATRIX ===== */
+.matrix-wrap{
+  overflow-x:auto;
+  border-radius:var(--radius);
+  border:1px solid var(--divider);
+  background:var(--card-bg);
+  box-shadow:var(--shadow);
+  -webkit-overflow-scrolling:touch;
+}
+.matrix-table{min-width:680px}
+.matrix-table thead th{
+  text-align:center;padding:16px 12px;
+}
+.matrix-table thead th:first-child{text-align:left}
+.matrix-table tbody td{
+  text-align:center;padding:10px 12px;
+}
+.matrix-table tbody td:first-child{
+  text-align:left;font-size:13px;
+}
+.badge{
+  display:inline-block;font-size:12px;font-weight:600;
+  padding:4px 12px;border-radius:6px;min-width:50px;
+}
+.b-strong{background:rgba(24,166,160,.12);color:#0d7d77}
+.b-good{background:rgba(101,118,232,.10);color:#4a5bd4}
+.b-mid{background:#F0F2F5;color:var(--text-secondary)}
+.b-start{background:rgba(229,154,56,.10);color:#b87a1e}
+.b-na{background:#F0F2F5;color:#a0a8b5}
+.b-weak{background:rgba(229,154,56,.10);color:#b87a1e}
+.b-prod{background:rgba(216,111,155,.10);color:#b85a82}
+.b-verify{background:rgba(229,154,56,.10);color:#b87a1e}
+.b-high{background:rgba(24,166,160,.12);color:#0d7d77}
+.b-low{background:rgba(229,154,56,.10);color:#b87a1e}
+.b-mature{background:rgba(101,118,232,.10);color:#4a5bd4}
+.b-early{background:rgba(229,154,56,.10);color:#b87a1e}
+
+.matrix-conclusion{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  margin-top:20px;
+}
+.mc-card{
+  border-radius:var(--radius-sm);padding:16px 20px;
+  border:1px solid;
+}
+.mc-ml{border-color:rgba(101,118,232,.20);background:rgba(101,118,232,.03)}
+.mc-vs{border-color:rgba(24,166,160,.20);background:rgba(24,166,160,.03)}
+.mc-sg{border-color:rgba(216,111,155,.20);background:rgba(216,111,155,.03)}
+.mc-card p{font-size:13px;line-height:1.6}
+.mc-ml p strong{color:var(--medlander)}
+.mc-vs p strong{color:var(--vishee)}
+.mc-sg p strong{color:var(--shiguang)}
+
+/* ===== BUSINESS MODEL ===== */
+.bm-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.bm-card{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  padding:28px 24px;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.bm-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  border-radius:var(--radius) var(--radius) 0 0;
+}
+.bm-ml::before{background:var(--medlander)}
+.bm-vs::before{background:var(--vishee)}
+.bm-sg::before{background:var(--shiguang)}
+.bm-card h3{
+  font-size:15px;font-weight:700;margin-bottom:6px;
+}
+.bm-ml h3{color:var(--medlander)}
+.bm-vs h3{color:var(--vishee)}
+.bm-sg h3{color:var(--shiguang)}
+.bm-card .bm-desc{
+  font-size:12.5px;color:var(--text-secondary);margin-bottom:16px;
+}
+.bm-flow{
+  display:flex;flex-direction:column;gap:6px;margin-bottom:16px;
+}
+.bm-flow-item{
+  font-size:12.5px;padding:7px 12px;border-radius:8px;
+  background:#F5F6F8;border:1px solid var(--divider);
+  text-align:center;font-weight:500;
+}
+.bm-plus{
+  text-align:center;color:var(--text-secondary);
+  font-size:11px;line-height:1;
+}
+.bm-card ul{list-style:none;padding:0}
+.bm-card li{
+  font-size:12.5px;color:var(--text-secondary);
+  padding:4px 0 4px 14px;position:relative;line-height:1.5;
+}
+.bm-card li::before{
+  content:'';position:absolute;left:0;top:9px;
+  width:4px;height:4px;border-radius:50%;
+}
+.bm-ml li::before{background:var(--medlander)}
+.bm-vs li::before{background:var(--vishee)}
+.bm-sg li::before{background:var(--shiguang)}
+
+/* ===== PROS/CONS ===== */
+.pc-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.pc-card{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  padding:24px;
+  box-shadow:var(--shadow);
+}
+.pc-card h3{
+  font-size:15px;font-weight:700;margin-bottom:16px;
+  padding-bottom:10px;border-bottom:1px solid var(--divider);
+}
+.pc-ml h3{color:var(--medlander)}
+.pc-vs h3{color:var(--vishee)}
+.pc-sg h3{color:var(--shiguang)}
+.pc-section{margin-bottom:14px}
+.pc-section:last-child{margin-bottom:0}
+.pc-label{
+  font-size:12px;font-weight:700;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.pc-label.adv{color:#0d7d77}
+.pc-label.risk{color:var(--risk)}
+.pc-label-dot{width:8px;height:8px;border-radius:50%}
+.pc-label.adv .pc-label-dot{background:var(--vishee)}
+.pc-label.risk .pc-label-dot{background:var(--risk)}
+.pc-ml .pc-label.adv .pc-label-dot{background:var(--medlander)}
+.pc-sg .pc-label.adv .pc-label-dot{background:var(--shiguang)}
+.pc-card ul{list-style:none;padding:0}
+.pc-card li{
+  font-size:12.5px;color:var(--text-secondary);
+  padding:4px 0 4px 14px;position:relative;line-height:1.5;
+}
+.pc-card li::before{
+  content:'';position:absolute;left:0;top:9px;
+  width:4px;height:4px;border-radius:50%;background:var(--divider);
+}
+
+/* ===== FUTURE PLANS ===== */
+.fp-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.fp-card{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  padding:28px 24px;
+  box-shadow:var(--shadow);
+}
+.fp-card h3{
+  font-size:15px;font-weight:700;margin-bottom:16px;
+}
+.fp-ml h3{color:var(--medlander)}
+.fp-vs h3{color:var(--vishee)}
+.fp-sg h3{color:var(--shiguang)}
+
+/* ===== CONCLUSION ===== */
+.conclusion-block{
+  max-width:var(--max-w);margin:0 auto;
+  padding:56px 20px 48px;
+}
+.conc-main{
+  background:linear-gradient(135deg,rgba(128,103,217,.06),rgba(128,103,217,.02));
+  border:1px solid rgba(128,103,217,.15);
+  border-radius:var(--radius);
+  padding:36px 36px;
+  margin-bottom:20px;
+}
+.conc-main p{
+  font-size:clamp(17px,2.5vw,21px);font-weight:600;
+  line-height:1.55;color:var(--text-main);
+  letter-spacing:-.01em;
+}
+.conc-full{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  padding:28px 32px;
+  box-shadow:var(--shadow);
+  margin-bottom:20px;
+}
+.conc-full p{
+  font-size:15px;line-height:1.75;color:var(--text-main);
+}
+.conc-second{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius);
+  padding:28px 32px;
+  box-shadow:var(--shadow);
+  border-left:4px solid var(--conclusion);
+}
+.conc-second p{
+  font-size:14.5px;line-height:1.75;color:var(--text-main);
+}
+.conc-label{
+  font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--conclusion);
+  margin-bottom:10px;display:block;
+}
+
+/* ===== SOURCES ===== */
+.sources-list{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:12px;
+}
+.source-card{
+  background:var(--card-bg);
+  border:1px solid var(--divider);
+  border-radius:var(--radius-sm);
+  padding:14px 18px;
+  transition:border-color .2s ease;
+}
+.source-card:hover{border-color:rgba(128,103,217,.25)}
+.source-card .src-num{
+  font-size:11px;font-weight:700;color:var(--conclusion);
+  margin-bottom:4px;
+}
+.source-card .src-title{
+  font-size:13.5px;font-weight:600;margin-bottom:4px;
+  color:var(--text-main);
+}
+.source-card .src-link{
+  font-size:11.5px;color:var(--text-secondary);
+  word-break:break-all;
+  display:block;
+}
+.source-card .src-link:hover{color:var(--conclusion)}
+.sources-disclaimer{
+  margin-top:24px;
+  background:#FAFBFC;border:1px solid var(--divider);
+  border-radius:var(--radius-sm);padding:16px 20px;
+}
+.sources-disclaimer p{
+  font-size:12.5px;color:var(--text-secondary);line-height:1.65;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+  max-width:var(--max-w);margin:0 auto;
+  padding:32px 20px 48px;
+  border-top:1px solid var(--divider);
+}
+.footer p{
+  font-size:12px;color:var(--text-secondary);
+  text-align:center;line-height:1.6;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .summary-grid,.positioning-grid,.stages-grid,
+  .bm-grid,.pc-grid,.fp-grid,.matrix-conclusion,
+  .chart-grid-2col{
+    grid-template-columns:1fr;
+  }
+  .feature-grid{grid-template-columns:repeat(2,1fr)}
+  .section{padding:40px 16px 16px}
+  .section-title{font-size:20px}
+  .hero{padding:calc(var(--nav-h) + 24px) 16px 32px}
+  .hero h1{font-size:30px}
+  .hero-sub-en{font-size:15px}
+  .hero-judgment{padding:18px 20px}
+  .conc-main{padding:24px}
+  .conc-full,.conc-second{padding:20px}
+  .conc-main p{font-size:16px}
+  .profile-content{padding:20px 16px}
+  .profile-header{padding:18px 20px}
+  .profile-header h2{font-size:17px}
+  .data-cards{grid-template-columns:repeat(2,1fr)}
+  .num-cards{grid-template-columns:repeat(3,1fr)}
+  .nav-brand{display:none}
+  .nav-inner{padding:0 12px;gap:8px}
+  .nav-links{gap:0}
+  .nav-links a{padding:6px 8px;font-size:12px}
+}
+@media(max-width:520px){
+  .feature-grid{grid-template-columns:1fr}
+  .data-cards{grid-template-columns:1fr}
+  .num-cards{grid-template-columns:repeat(2,1fr)}
+  .bar-label{width:70px;font-size:12px}
+  .prop-label{width:90px;font-size:11.5px}
+}
+
+/* ===== PRINT ===== */
+@media print{
+  .nav{display:none!important}
+  html{scroll-padding-top:0}
+  body{background:#fff;font-size:12px}
+  .section,.hero,.conclusion-block,.footer{
+    max-width:100%;padding:16px 0;
+    page-break-inside:avoid;
+  }
+  .hero{min-height:auto;padding-top:16px}
+  .hero h1{font-size:28px}
+  .profile.collapsed .profile-body{
+    max-height:none!important;opacity:1!important;
+  }
+  .profile{page-break-inside:avoid;margin-bottom:16px}
+  .profile-body{border-radius:0 0 var(--radius) var(--radius)}
+  .card,.summary-card,.pos-card,.stage-card,
+  .chart-block,.bm-card,.pc-card,.fp-card,
+  .source-card,.conc-main,.conc-full,.conc-second{
+    page-break-inside:avoid;box-shadow:none;
+  }
+  .table-wrap,.matrix-wrap{
+    page-break-inside:avoid;overflow:visible;
+  }
+  table,.matrix-table{min-width:auto;width:100%}
+  .toggle-icon{display:none}
+  .summary-grid,.positioning-grid,.stages-grid,
+  .bm-grid,.pc-grid,.fp-grid,.matrix-conclusion,
+  .chart-grid-2col{grid-template-columns:repeat(3,1fr)}
+  .feature-grid{grid-template-columns:repeat(3,1fr)}
+  .sources-list{grid-template-columns:repeat(2,1fr)}
+  .bar-fill,.prop-fill{transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">盆底康复企业研究 <span>·</span> 对比看板</div>
+    <div class="nav-links" id="navLinks">
+      <a href="#hero" class="active">核心结论</a>
+      <a href="#positioning">公司定位</a>
+      <a href="#core-metrics">指标对比</a>
+      <a href="#stages">发展阶段</a>
+      <a href="#medlander">麦澜德</a>
+      <a href="#vishee">伟思医疗</a>
+      <a href="#shiguang">拾光医疗</a>
+      <a href="#capability-matrix">能力矩阵</a>
+      <a href="#business-model">商业模式</a>
+      <a href="#pros-cons">优劣势</a>
+      <a href="#future-plans">未来规划</a>
+      <a href="#conclusion">综合结论</a>
+      <a href="#sources">资料来源</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== 1. HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-eyebrow">PELVIC HEALTH COMPANY LANDSCAPE</div>
+  <h1>国内盆底康复企业研究与对比</h1>
+  <div class="hero-sub-en">Pelvic Health Company Landscape</div>
+  <div class="hero-meta">研究对象：麦澜德 × 伟思医疗 × 拾光医疗 &nbsp;|&nbsp; 公开资料更新至2026年8月</div>
+
+  <div class="hero-judgment">
+    <p>三家公司虽然都进入盆底康复与女性健康领域，但代表了三种不同的企业形态：伟思医疗代表底层技术与综合康复平台，麦澜德代表女性健康临床产业化体系，拾光医疗代表家用产品与女性消费体验。</p>
+  </div>
+
+  <div class="summary-grid">
+    <!-- 麦澜德 -->
+    <div class="summary-card">
+      <div class="co-name" style="color:var(--medlander)">麦澜德</div>
+      <div class="co-tagline">女性健康与盆底康复专业化平台</div>
+      <div class="co-tags">
+        <span class="tag tag-ml">科创板上市</span>
+        <span class="tag tag-ml">女性健康</span>
+        <span class="tag tag-ml">盆底与妇产康复</span>
+        <span class="tag tag-ml">医院整体解决方案</span>
+        <span class="tag tag-ml">设备与耗材闭环</span>
+      </div>
+    </div>
+    <!-- 伟思医疗 -->
+    <div class="summary-card">
+      <div class="co-name" style="color:var(--vishee)">伟思医疗</div>
+      <div class="co-tagline">以磁刺激和电生理为核心的综合康复平台</div>
+      <div class="co-tags">
+        <span class="tag tag-vs">科创板上市</span>
+        <span class="tag tag-vs">磁刺激</span>
+        <span class="tag tag-vs">电生理</span>
+        <span class="tag tag-vs">综合康复</span>
+        <span class="tag tag-vs">多科室技术平台</span>
+      </div>
+    </div>
+    <!-- 拾光医疗 -->
+    <div class="summary-card">
+      <div class="co-name" style="color:var(--shiguang)">拾光医疗</div>
+      <div class="co-tagline">围绕家用盆底治疗仪打造的消费医疗新品牌</div>
+      <div class="co-tags">
+        <span class="tag tag-sg">创业公司</span>
+        <span class="tag tag-sg">家用医疗</span>
+        <span class="tag tag-sg">女性用户体验</span>
+        <span class="tag tag-sg">App服务</span>
+        <span class="tag tag-sg">消费化产品设计</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. POSITIONING ===== -->
+<section class="section" id="positioning">
+  <div class="section-head">
+    <span class="section-num">02</span>
+    <h2 class="section-title">三家公司一句话定位</h2>
+  </div>
+  <div class="positioning-grid">
+    <div class="pos-card pos-ml">
+      <h3>麦澜德</h3>
+      <p>从盆底及产后康复切入，逐步构建"评估—诊断—治疗—耗材—数据—培训"的女性健康专科生态。</p>
+    </div>
+    <div class="pos-card pos-vs">
+      <h3>伟思医疗</h3>
+      <p>从代理和市场销售起步，逐步建立磁刺激、电刺激和电生理技术平台，发展成为多科室综合康复医疗器械公司。</p>
+    </div>
+    <div class="pos-card pos-sg">
+      <h3>拾光医疗</h3>
+      <p>从女性用户和产后康复体验切入，把医院式盆底治疗转化为更加私密、友好和适合家庭坚持使用的产品。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. CORE METRICS ===== -->
+<section class="section" id="core-metrics">
+  <div class="section-head">
+    <span class="section-num">03</span>
+    <h2 class="section-title">核心指标横向对比</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th class="co-ml">麦澜德</th>
+          <th class="co-vs">伟思医疗</th>
+          <th class="co-sg">拾光医疗</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>公司主体</td><td>南京麦澜德医疗科技股份有限公司</td><td>南京伟思医疗科技股份有限公司</td><td>苏州拾锦医疗科技有限公司</td></tr>
+        <tr><td>成立时间</td><td>2013年</td><td>2001年</td><td>2023年</td></tr>
+        <tr><td>总部所在地</td><td>南京</td><td>南京</td><td>苏州</td></tr>
+        <tr><td>上市情况</td><td>2022年科创板上市，688273</td><td>2020年科创板上市，688580</td><td>未上市</td></tr>
+        <tr><td>创始人</td><td>杨瑞嘉、史志怀、陈彬等</td><td>王志愚</td><td>孙丹印</td></tr>
+        <tr><td>当前负责人</td><td>杨瑞嘉，董事长兼总经理</td><td>王志愚，董事长兼总经理</td><td>孙丹印，创始人兼CEO</td></tr>
+        <tr><td>核心定位</td><td>盆底、妇产、生殖康复及女性抗衰</td><td>综合康复、磁刺激、电生理及神经调控</td><td>女性家用智能医疗消费品</td></tr>
+        <tr><td>主要客户</td><td>医院妇产科、盆底中心、产后康复及医美机构</td><td>医院康复科、精神科、神经科、妇产科及儿童康复机构</td><td>家庭女性用户、院外机构及代理渠道</td></tr>
+        <tr><td>2025年营收</td><td>4.32亿元</td><td>4.63亿元</td><td>未公开</td></tr>
+        <tr><td>2025年归母净利润</td><td>1.03亿元</td><td>1.38亿元</td><td>未公开</td></tr>
+        <tr><td>2025年研发投入率</td><td>15.31%</td><td>12.63%</td><td>未公开</td></tr>
+        <tr><td>最突出能力</td><td>女性健康专科方案、医院覆盖、耗材和数据闭环</td><td>磁刺激、电生理、技术平台广度和盈利能力</td><td>产品设计、隐私体验、App和家庭服务</td></tr>
+        <tr><td>国际化现状</td><td>海外收入占比不足1%</td><td>海外收入占比不足1%</td><td>暂无公开海外销售规模</td></tr>
+        <tr><td>当前发展阶段</td><td>成熟专科平台</td><td>成熟综合平台</td><td>早期家用医疗品牌</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Charts -->
+  <div style="margin-top:24px">
+    <div class="chart-grid-2col">
+      <!-- Revenue & Profit -->
+      <div class="chart-block">
+        <div class="chart-title">2025年经营规模</div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:12px">营业收入</div>
+        <div class="bar-row">
+          <div class="bar-label" style="color:var(--vishee)">伟思医疗</div>
+          <div class="bar-track"><div class="bar-fill vs" style="width:93.5%"><span class="bar-val">4.63亿元</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="color:var(--medlander)">麦澜德</div>
+          <div class="bar-track"><div class="bar-fill ml" style="width:87.2%"><span class="bar-val">4.32亿元</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="color:var(--shiguang)">拾光医疗</div>
+          <div class="bar-track"><div class="bar-fill sg" style="width:100%"><span class="bar-val">未公开</span></div></div>
+        </div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin:20px 0 12px">归母净利润</div>
+        <div class="bar-row">
+          <div class="bar-label" style="color:var(--vishee)">伟思医疗</div>
+          <div class="bar-track"><div class="bar-fill vs" style="width:100%"><span class="bar-val">1.38亿元</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="color:var(--medlander)">麦澜德</div>
+          <div class="bar-track"><div class="bar-fill ml" style="width:74.6%"><span class="bar-val">1.03亿元</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="color:var(--shiguang)">拾光医疗</div>
+          <div class="bar-track"><div class="bar-fill sg" style="width:100%"><span class="bar-val">未公开</span></div></div>
+        </div>
+      </div>
+
+      <!-- R&D Rate -->
+      <div class="chart-block">
+        <div class="chart-title">研发投入率</div>
+        <div class="bar-row">
+          <div class="bar-label" style="color:var(--medlander)">麦澜德</div>
+          <div class="bar-track"><div class="bar-fill ml" style="width:100%"><span class="bar-val">15.31%</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="color:var(--vishee)">伟思医疗</div>
+          <div class="bar-track"><div class="bar-fill vs" style="width:82.5%"><span class="bar-val">12.63%</span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label" style="color:var(--shiguang)">拾光医疗</div>
+          <div class="bar-track"><div class="bar-fill sg" style="width:100%"><span class="bar-val">未公开</span></div></div>
+        </div>
+        <div style="margin-top:24px;font-size:13px;color:var(--text-secondary);line-height:1.7">
+          <p style="margin-bottom:8px"><strong style="color:var(--medlander)">麦澜德</strong>研发投入约6607万元，研发人员约150人。</p>
+          <p><strong style="color:var(--vishee)">伟思医疗</strong>研发投入约5846万元，研发人员约137人。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-conclusion">
+      <p>2025年伟思医疗的收入、利润增速和盈利水平高于麦澜德；麦澜德的女性健康聚焦度、盆底专科生态和研发投入率更高。拾光医疗尚处于单品商业化早期，不能直接按营收规模与两家上市公司比较。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. STAGES ===== -->
+<section class="section" id="stages">
+  <div class="section-head">
+    <span class="section-num">04</span>
+    <h2 class="section-title">三家公司发展阶段</h2>
+  </div>
+
+  <div class="stages-grid">
+    <div class="stage-card stage-vs" style="margin-top:0">
+      <div class="stage-step">STAGE 1 — 最早期</div>
+      <h3>伟思医疗：成熟综合康复平台</h3>
+      <ul>
+        <li>成立时间最早</li>
+        <li>技术平台最宽</li>
+        <li>产品覆盖科室最多</li>
+        <li>磁刺激和电生理标签突出</li>
+        <li>综合康复属性强</li>
+      </ul>
+    </div>
+    <div class="stage-card stage-ml" style="margin-top:24px">
+      <div class="stage-step">STAGE 2 — 专科聚焦</div>
+      <h3>麦澜德：成熟女性健康专科平台</h3>
+      <ul>
+        <li>深耕盆底与妇产康复</li>
+        <li>女性健康定位最集中</li>
+        <li>医院科室解决方案完整</li>
+        <li>设备、耗材、数据和服务闭环</li>
+        <li>正向女性抗衰和脑机接口扩张</li>
+      </ul>
+    </div>
+    <div class="stage-card stage-sg" style="margin-top:48px">
+      <div class="stage-step">STAGE 3 — 早期</div>
+      <h3>拾光医疗：早期家用医疗品牌</h3>
+      <ul>
+        <li>从家庭女性用户切入</li>
+        <li>产品设计和隐私体验突出</li>
+        <li>目前以单一核心产品为主</li>
+        <li>App与健康服务结合</li>
+        <li>规模、渠道和产品矩阵仍待验证</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chart-conclusion stages-conclusion">
+    <p>行业地位不能只按营收判断。伟思医疗强在底层技术和综合平台，麦澜德强在女性健康专科生态，拾光医疗强在家用产品体验和消费化表达。</p>
+  </div>
+</section>
+
+<!-- ===== 5. 麦澜德 PROFILE ===== -->
+<section class="section" id="medlander">
+  <div class="section-head">
+    <span class="section-num">05</span>
+    <h2 class="section-title">麦澜德公司档案</h2>
+  </div>
+
+  <div class="profile" id="profile-ml">
+    <div class="profile-header ph-ml" onclick="toggleProfile('profile-ml')">
+      <div class="ph-left">
+        <div class="ph-badge">麦</div>
+        <div>
+          <h2>麦澜德｜女性健康临床产业化代表</h2>
+          <div class="ph-sub">南京麦澜德医疗科技股份有限公司 · 688273.SH</div>
+        </div>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="profile-body">
+      <div class="profile-content ss-ml">
+
+        <!-- 1. 简介 -->
+        <div class="sub-section">
+          <div class="sub-title">1. 公司简介</div>
+          <div class="sub-body">
+            <p>南京麦澜德医疗科技股份有限公司成立于2013年，主要从事盆底及妇产康复领域医疗器械的研发、生产、销售和服务。</p>
+            <p>公司以盆底及产后康复为起点，逐步进入女性生殖康复、生殖抗衰、皮肤抗衰、运动康复和神经调控等领域。</p>
+            <p>2022年8月，麦澜德在上海证券交易所科创板上市，股票代码688273。</p>
+            <p>目前，麦澜德已从单一盆底设备企业发展为女性健康专科设备、耗材、软件、临床方案和服务平台。</p>
+          </div>
+        </div>
+
+        <!-- 2. 创始人 -->
+        <div class="sub-section">
+          <div class="sub-title">2. 创始人与核心团队</div>
+          <div class="sub-body">
+            <p>核心创始团队以杨瑞嘉、史志怀、陈彬等为代表。</p>
+            <p>杨瑞嘉现任董事长兼总经理。</p>
+            <p>杨瑞嘉在创办麦澜德之前，曾在伟思医疗及其子公司任职，历任产品经理、市场经理和产品总监。</p>
+            <p>这一履历使麦澜德早期不仅具备产品研发经验，也具有较强的医院需求理解、产品定义和商业化能力。</p>
+            <p>公司当前实际控制人为杨瑞嘉和史志怀。</p>
+          </div>
+        </div>
+
+        <!-- 3. 发展沿革 -->
+        <div class="sub-section">
+          <div class="sub-title">3. 发展沿革</div>
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2013年</div><div class="tl-text">公司在南京成立，切入国内尚处于早期的盆底及产后康复市场。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">早期阶段</div><div class="tl-text">以生物刺激反馈、肌电评估、电刺激治疗和盆底训练产品为主。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">产品扩张阶段</div><div class="tl-text">增加盆底磁刺激、盆底超声、子宫复旧、腹直肌康复、耗材和信息化系统。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">平台化阶段</div><div class="tl-text">形成医院设备、耗材、软件、临床方案、医生培训和科室运营服务体系。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2022年</div><div class="tl-text">登陆科创板。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">当前阶段</div><div class="tl-text">从盆底与产后康复扩展至女性全生命周期健康、生殖抗衰、皮肤抗衰和脑机接口。</div></div>
+          </div>
+        </div>
+
+        <!-- 4. 核心业务与产品 -->
+        <div class="sub-section">
+          <div class="sub-title">4. 核心业务与产品</div>
+          <div class="prod-group">
+            <div class="prod-group-title">盆底与妇产康复</div>
+            <div class="prod-tags">
+              <span class="prod-tag">生物刺激反馈仪</span><span class="prod-tag">盆底肌电评估</span><span class="prod-tag">神经肌肉电刺激</span><span class="prod-tag">盆底训练仪</span><span class="prod-tag">盆底磁刺激</span><span class="prod-tag">雷达磁刺激</span><span class="prod-tag">盆底超声诊断</span><span class="prod-tag">子宫复旧</span><span class="prod-tag">腹直肌康复</span><span class="prod-tag">产后恢复设备</span>
+            </div>
+          </div>
+          <div class="prod-group">
+            <div class="prod-group-title">生殖康复与抗衰</div>
+            <div class="prod-tags">
+              <span class="prod-tag">电子阴道镜</span><span class="prod-tag">高频评估及治疗设备</span><span class="prod-tag">超声治疗设备</span><span class="prod-tag">中频治疗设备</span><span class="prod-tag">女性私密康复</span><span class="prod-tag">生殖抗衰相关产品</span>
+            </div>
+          </div>
+          <div class="prod-group">
+            <div class="prod-group-title">智能诊疗与软件</div>
+            <div class="prod-tags">
+              <span class="prod-tag">PI-ONE盆底智能诊疗系统</span><span class="prod-tag">盆底分级诊疗信息系统</span><span class="prod-tag">医疗数据平台</span><span class="prod-tag">个性化治疗方案匹配</span>
+            </div>
+          </div>
+          <div class="prod-group">
+            <div class="prod-group-title">神经与运动康复</div>
+            <div class="prod-tags">
+              <span class="prod-tag">经颅磁刺激</span><span class="prod-tag">脑电检测</span><span class="prod-tag">功能性近红外检测</span><span class="prod-tag">脑电—近红外闭环经颅磁刺激</span><span class="prod-tag">手功能及运动康复产品</span>
+            </div>
+          </div>
+          <div class="prod-group">
+            <div class="prod-group-title">耗材与配件</div>
+            <div class="prod-tags">
+              <span class="prod-tag">阴道电极</span><span class="prod-tag">直肠电极</span><span class="prod-tag">理疗电极</span><span class="prod-tag">其他一次性或重复使用耗材</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. 产品特点 -->
+        <div class="sub-section">
+          <div class="sub-title">5. 产品特点</div>
+          <div class="sub-body">
+            <p>以女性盆底与妇产康复临床需求为中心。</p>
+            <p>产品覆盖评估、诊断、治疗和康复训练。</p>
+            <p>同时使用电刺激、磁刺激、超声、射频、激光等不同能量源。</p>
+            <p>设备与电极耗材形成持续收入模式。</p>
+            <p>通过软件、数据和培训强化医院科室黏性。</p>
+            <p>强调从单台设备向整体科室解决方案发展。</p>
+            <p>部分产品已经由医院场景向家庭使用场景延伸。</p>
+          </div>
+        </div>
+
+        <!-- 6. 经营数据 -->
+        <div class="sub-section">
+          <div class="sub-title">6. 2025年经营数据</div>
+          <div class="data-cards">
+            <div class="data-card"><div class="dc-label">营业收入</div><div class="dc-value">4.32亿</div></div>
+            <div class="data-card"><div class="dc-label">同比增长</div><div class="dc-value">1.66%</div></div>
+            <div class="data-card"><div class="dc-label">归母净利润</div><div class="dc-value">1.03亿</div></div>
+            <div class="data-card"><div class="dc-label">同比增长</div><div class="dc-value">1.03%</div></div>
+            <div class="data-card"><div class="dc-label">研发投入</div><div class="dc-value">6607万</div></div>
+            <div class="data-card"><div class="dc-label">研发投入率</div><div class="dc-value">15.31%</div></div>
+            <div class="data-card"><div class="dc-label">研发人员</div><div class="dc-value">~150人</div></div>
+          </div>
+        </div>
+
+        <!-- 7. 业务结构 -->
+        <div class="sub-section">
+          <div class="sub-title">7. 2025年业务结构</div>
+          <div class="prop-bars">
+            <div class="prop-row"><div class="prop-label">盆底康复产品</div><div class="prop-track"><div class="prop-fill" style="width:37%"></div></div><div class="prop-val">~1.60亿</div></div>
+            <div class="prop-row"><div class="prop-label">生殖康复产品</div><div class="prop-track"><div class="prop-fill" style="width:29.4%;opacity:.75"></div></div><div class="prop-val">~1.27亿</div></div>
+            <div class="prop-row"><div class="prop-label">耗材及配件</div><div class="prop-track"><div class="prop-fill" style="width:28.2%;opacity:.55"></div></div><div class="prop-val">~1.22亿</div></div>
+            <div class="prop-row"><div class="prop-label">运动康复及其他</div><div class="prop-track"><div class="prop-fill" style="width:5.3%;opacity:.35"></div></div><div class="prop-val">占比较小</div></div>
+          </div>
+          <div class="sub-body" style="font-size:13px;color:var(--text-secondary)">
+            <p>盆底康复仍是核心板块，但2025年收入略有下降。生殖康复业务增长相对较快。耗材收入接近总收入的三成。国内收入超过99%。经销收入约占八成。海外收入规模仍然较小。</p>
+          </div>
+        </div>
+
+        <!-- 8. 研发与注册 -->
+        <div class="sub-section">
+          <div class="sub-title">8. 研发与注册能力</div>
+          <div class="num-cards">
+            <div class="num-card"><div class="nc-value">53</div><div class="nc-label">发明专利</div></div>
+            <div class="num-card"><div class="nc-value">127</div><div class="nc-label">实用新型专利</div></div>
+            <div class="num-card"><div class="nc-value">91</div><div class="nc-label">外观设计专利</div></div>
+            <div class="num-card"><div class="nc-value">103</div><div class="nc-label">软件著作权</div></div>
+            <div class="num-card"><div class="nc-value">1</div><div class="nc-label">三类医疗器械注册证</div></div>
+            <div class="num-card"><div class="nc-value">47</div><div class="nc-label">二类医疗器械注册证</div></div>
+            <div class="num-card"><div class="nc-value">9</div><div class="nc-label">一类医疗器械备案</div></div>
+            <div class="num-card"><div class="nc-value">65</div><div class="nc-label">国际认证</div></div>
+          </div>
+          <div class="note-box"><p>以上为公司公开披露口径。专利、注册证和认证数量不直接等同于市场占有率或海外销售能力。</p></div>
+        </div>
+
+        <!-- 9. 行业地位 -->
+        <div class="sub-section">
+          <div class="sub-title">9. 当前行业地位</div>
+          <div class="sub-body">
+            <p>麦澜德属于国内盆底及妇产康复医疗器械第一梯队。</p>
+            <p>其行业地位主要来自：对盆底及妇产康复领域的长期聚焦；完整的医院科室解决方案；较广的医院及专业机构覆盖；设备、耗材、软件和服务结合；女性健康专科品牌认知；上市公司研发和资金平台。</p>
+            <p>与伟思医疗相比，麦澜德的综合康复技术覆盖面较窄，但女性健康和妇产康复定位更加集中。</p>
+          </div>
+        </div>
+
+        <!-- 10. 核心优势 -->
+        <div class="sub-section">
+          <div class="sub-title">10. 核心优势</div>
+          <ul class="ad-list adv">
+            <li>女性健康定位集中。</li>
+            <li>盆底及妇产康复产品线完整。</li>
+            <li>对医院妇产科和盆底中心需求理解较深。</li>
+            <li>临床方案、医生教育和经销体系成熟。</li>
+            <li>设备、耗材、软件和服务形成闭环。</li>
+            <li>研发投入率较高。</li>
+            <li>女性全生命周期产品矩阵已经初步形成。</li>
+            <li>从医院向家庭延伸具备一定基础。</li>
+          </ul>
+        </div>
+
+        <!-- 11. 劣势与风险 -->
+        <div class="sub-section">
+          <div class="sub-title">11. 劣势与风险</div>
+          <ul class="ad-list risk">
+            <li>收入高度依赖国内市场。</li>
+            <li>海外认证尚未转化为明显海外收入。</li>
+            <li>传统盆底业务增长逐渐趋缓。</li>
+            <li>需要依靠生殖抗衰、医美和脑机接口寻找第二增长曲线。</li>
+            <li>产品线不断扩大，可能出现研发和销售资源分散。</li>
+            <li>医院渠道优势未必能直接转化为C端消费品牌优势。</li>
+            <li>女性抗衰和医美领域面临新的竞争者和合规要求。</li>
+          </ul>
+        </div>
+
+        <!-- 12. 未来规划 -->
+        <div class="sub-section">
+          <div class="sub-title">12. 未来规划</div>
+          <div class="plan-path">
+            <span class="plan-step">盆底康复</span><span class="plan-arrow">→</span>
+            <span class="plan-step">女性全生命周期</span><span class="plan-arrow">→</span>
+            <span class="plan-step">生殖抗衰</span><span class="plan-arrow">→</span>
+            <span class="plan-step">皮肤抗衰</span><span class="plan-arrow">→</span>
+            <span class="plan-step">脑机接口</span><span class="plan-arrow">→</span>
+            <span class="plan-step">海外市场</span>
+          </div>
+          <div class="plan-keywords">
+            <span class="kw">女性健康</span><span class="kw">智能诊疗</span><span class="kw">多能量源</span><span class="kw">脑机接口</span><span class="kw">医疗与消费结合</span>
+          </div>
+          <div class="sub-body" style="margin-top:14px;font-size:13px;color:var(--text-secondary)">
+            <p>推进"脑机接口+盆底康复"；将脑电、近红外、磁刺激和肌电反馈形成闭环；继续发展PI-ONE盆底智能诊疗系统；利用算法匹配磁、电、热等治疗方案；从产后康复扩展至生殖抗衰和皮肤抗衰；扩展肿瘤术后康复和男性泌尿场景；国内推进"更严肃医疗+更消费化"；海外优先发展东南亚市场；逐步推进美国和欧洲市场。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. 伟思医疗 PROFILE ===== -->
+<section class="section" id="vishee">
+  <div class="section-head">
+    <span class="section-num">06</span>
+    <h2 class="section-title">伟思医疗公司档案</h2>
+  </div>
+
+  <div class="profile" id="profile-vs">
+    <div class="profile-header ph-vs" onclick="toggleProfile('profile-vs')">
+      <div class="ph-left">
+        <div class="ph-badge">伟</div>
+        <div>
+          <h2>伟思医疗｜磁刺激与电生理技术平台</h2>
+          <div class="ph-sub">南京伟思医疗科技股份有限公司 · 688580.SH</div>
+        </div>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="profile-body">
+      <div class="profile-content ss-vs">
+
+        <!-- 1. 简介 -->
+        <div class="sub-section">
+          <div class="sub-title">1. 公司简介</div>
+          <div class="sub-body">
+            <p>南京伟思医疗科技股份有限公司成立于2001年，是国内较早进入康复医疗器械领域的企业之一。</p>
+            <p>公司围绕磁刺激、电刺激和电生理技术，形成覆盖精神心理、神经康复、盆底及产后康复、儿童康复、运动康复、泌尿外科和医美等领域的产品体系。</p>
+            <p>2020年7月，伟思医疗在上海证券交易所科创板上市，股票代码688580。</p>
+          </div>
+        </div>
+
+        <!-- 2. 创始人 -->
+        <div class="sub-section">
+          <div class="sub-title">2. 创始人</div>
+          <div class="sub-body">
+            <p>公司创始人为王志愚。</p>
+            <p>王志愚本科毕业于南京大学数学专业，后取得南京大学工商管理硕士学位。</p>
+            <p>2001年起担任伟思医疗执行董事兼总经理，目前仍任公司董事长兼总经理。</p>
+            <p>伟思医疗早期从代理和市场销售起步，随后逐年增加研发投入，逐步建立自主产品和技术平台。</p>
+          </div>
+        </div>
+
+        <!-- 3. 发展沿革 -->
+        <div class="sub-section">
+          <div class="sub-title">3. 发展沿革</div>
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2001年</div><div class="tl-text">公司成立，进入康复医疗器械行业。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">早期阶段</div><div class="tl-text">从代理和市场销售切入精神、神经和康复医疗市场。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">自主研发阶段</div><div class="tl-text">建立电刺激、电生理和磁刺激产品线。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">多科室扩张阶段</div><div class="tl-text">进入盆底、产后、儿童、运动和精神心理康复。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2020年</div><div class="tl-text">登陆科创板。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2022年</div><div class="tl-text">收购合肥大族科瑞达，进入钬激光和泌尿外科领域。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">当前阶段</div><div class="tl-text">继续扩展医美、射频、激光、康复机器人和脑机接口。</div></div>
+          </div>
+        </div>
+
+        <!-- 4. 核心业务与产品 -->
+        <div class="sub-section">
+          <div class="sub-title">4. 核心业务与产品</div>
+          <div class="prod-group">
+            <div class="prod-group-title">磁刺激产品</div>
+            <div class="prod-tags"><span class="prod-tag">经颅磁刺激</span><span class="prod-tag">盆底磁刺激</span><span class="prod-tag">脉冲磁治疗</span><span class="prod-tag">磁刺激康复设备</span><span class="prod-tag">磁刺激塑形相关产品</span></div>
+          </div>
+          <div class="prod-group">
+            <div class="prod-group-title">电刺激产品</div>
+            <div class="prod-tags"><span class="prod-tag">生物刺激反馈</span><span class="prod-tag">神经肌肉电刺激</span><span class="prod-tag">动态干扰电</span><span class="prod-tag">盆底及康复电刺激设备</span></div>
+          </div>
+          <div class="prod-group">
+            <div class="prod-group-title">电生理产品</div>
+            <div class="prod-tags"><span class="prod-tag">肌电评估</span><span class="prod-tag">多参数生理检测</span><span class="prod-tag">群体生物反馈</span><span class="prod-tag">新生儿脑电</span><span class="prod-tag">精神心理评估</span></div>
+          </div>
+          <div class="prod-group">
+            <div class="prod-group-title">综合康复</div>
+            <div class="prod-tags"><span class="prod-tag">精神心理康复</span><span class="prod-tag">神经康复</span><span class="prod-tag">儿童康复</span><span class="prod-tag">运动康复</span><span class="prod-tag">康复机器人</span><span class="prod-tag">手功能及步态康复</span></div>
+          </div>
+          <div class="prod-group">
+            <div class="prod-group-title">激光与射频</div>
+            <div class="prod-tags"><span class="prod-tag">钬激光</span><span class="prod-tag">皮秒激光</span><span class="prod-tag">射频设备</span><span class="prod-tag">强脉冲光</span><span class="prod-tag">私密及医美设备</span></div>
+          </div>
+          <div class="prod-group">
+            <div class="prod-group-title">软件与耗材</div>
+            <div class="prod-tags"><span class="prod-tag">伟思云信息系统</span><span class="prod-tag">电极及相关耗材</span><span class="prod-tag">配件和临床应用系统</span></div>
+          </div>
+        </div>
+
+        <!-- 5. 产品特点 -->
+        <div class="sub-section">
+          <div class="sub-title">5. 产品特点</div>
+          <div class="sub-body">
+            <p>以磁刺激、电刺激和电生理为底层技术平台。</p>
+            <p>同一技术可以延伸至多个科室。</p>
+            <p>产品覆盖精神、神经、盆底、儿童、运动和泌尿等领域。</p>
+            <p>医疗专业性和技术平台属性突出。</p>
+            <p>产品结构比单一女性健康企业更加多元。</p>
+            <p>以医院及专业医疗机构为主要客户。</p>
+            <p>通过经销商实现全国市场覆盖。</p>
+          </div>
+        </div>
+
+        <!-- 6. 经营数据 -->
+        <div class="sub-section">
+          <div class="sub-title">6. 2025年经营数据</div>
+          <div class="data-cards">
+            <div class="data-card"><div class="dc-label">营业收入</div><div class="dc-value">4.63亿</div></div>
+            <div class="data-card"><div class="dc-label">同比增长</div><div class="dc-value">15.66%</div></div>
+            <div class="data-card"><div class="dc-label">归母净利润</div><div class="dc-value">1.38亿</div></div>
+            <div class="data-card"><div class="dc-label">同比增长</div><div class="dc-value">35.41%</div></div>
+            <div class="data-card"><div class="dc-label">扣非归母净利润</div><div class="dc-value">1.21亿</div></div>
+            <div class="data-card"><div class="dc-label">经营现金流</div><div class="dc-value">1.77亿</div></div>
+            <div class="data-card"><div class="dc-label">研发投入</div><div class="dc-value">5846万</div></div>
+            <div class="data-card"><div class="dc-label">研发投入率</div><div class="dc-value">12.63%</div></div>
+            <div class="data-card"><div class="dc-label">研发人员</div><div class="dc-value">~137人</div></div>
+          </div>
+        </div>
+
+        <!-- 7. 业务结构 -->
+        <div class="sub-section">
+          <div class="sub-title">7. 2025年业务结构</div>
+          <div class="prop-bars">
+            <div class="prop-row"><div class="prop-label">磁刺激类</div><div class="prop-track"><div class="prop-fill" style="width:40.8%"></div></div><div class="prop-val">~1.89亿</div></div>
+            <div class="prop-row"><div class="prop-label">电生理类</div><div class="prop-track"><div class="prop-fill" style="width:19.2%;opacity:.75"></div></div><div class="prop-val">~0.89亿</div></div>
+            <div class="prop-row"><div class="prop-label">耗材及配件</div><div class="prop-track"><div class="prop-fill" style="width:18.1%;opacity:.55"></div></div><div class="prop-val">~0.84亿</div></div>
+            <div class="prop-row"><div class="prop-label">激光射频类</div><div class="prop-track"><div class="prop-fill" style="width:9.9%;opacity:.40"></div></div><div class="prop-val">~0.46亿</div></div>
+            <div class="prop-row"><div class="prop-label">电刺激类</div><div class="prop-track"><div class="prop-fill" style="width:8.4%;opacity:.30"></div></div><div class="prop-val">~0.39亿</div></div>
+          </div>
+          <div class="sub-body" style="font-size:13px;color:var(--text-secondary)">
+            <p>磁刺激是最大业务板块。电生理业务增长较快。激光射频业务增速较高。经销收入约占九成以上。海外收入占比不足1%。2025年经营表现整体好于2024年。</p>
+          </div>
+        </div>
+
+        <!-- 8. 研发与知识产权 -->
+        <div class="sub-section">
+          <div class="sub-title">8. 研发与知识产权</div>
+          <div class="num-cards">
+            <div class="num-card"><div class="nc-value">142</div><div class="nc-label">专利总数</div></div>
+            <div class="num-card"><div class="nc-value">46</div><div class="nc-label">发明专利</div></div>
+            <div class="num-card"><div class="nc-value">63</div><div class="nc-label">实用新型专利</div></div>
+            <div class="num-card"><div class="nc-value">33</div><div class="nc-label">外观设计专利</div></div>
+            <div class="num-card"><div class="nc-value">118</div><div class="nc-label">软件著作权</div></div>
+          </div>
+          <div class="note-box"><p>不同公司对专利和知识产权的统计口径可能存在差异，不应仅按数量判断技术水平。</p></div>
+        </div>
+
+        <!-- 9. 行业地位 -->
+        <div class="sub-section">
+          <div class="sub-title">9. 当前行业地位</div>
+          <div class="sub-body">
+            <p>伟思医疗属于国内康复医疗器械第一梯队。</p>
+            <p>其行业地位主要来自：二十多年的行业积累；磁刺激和电生理技术平台；多科室产品覆盖；较成熟的医院渠道；上市公司研发和资金能力；综合康复解决方案能力。</p>
+            <p>与麦澜德相比，伟思医疗的技术平台和科室覆盖更广，但女性健康和盆底康复品牌定位相对不够集中。</p>
+          </div>
+        </div>
+
+        <!-- 10. 核心优势 -->
+        <div class="sub-section">
+          <div class="sub-title">10. 核心优势</div>
+          <ul class="ad-list adv">
+            <li>成立时间最长，行业积累深。</li>
+            <li>磁刺激、电生理和神经调控标签突出。</li>
+            <li>产品适用科室广。</li>
+            <li>能够分散单一赛道风险。</li>
+            <li>2025年营收、利润和现金流表现较好。</li>
+            <li>医院产品研发、注册和质量体系经验成熟。</li>
+            <li>具备较完整的硬件、电路、算法和嵌入式研发能力。</li>
+            <li>技术平台可以向不同疾病和科室延伸。</li>
+          </ul>
+        </div>
+
+        <!-- 11. 劣势与风险 -->
+        <div class="sub-section">
+          <div class="sub-title">11. 劣势与风险</div>
+          <ul class="ad-list risk">
+            <li>综合康复定位导致女性用户品牌心智不够集中。</li>
+            <li>收入高度依赖经销商。</li>
+            <li>对最终家庭用户的直接理解相对有限。</li>
+            <li>海外商业化规模仍然很小。</li>
+            <li>医美、泌尿和机器人等新业务需要验证协同效果。</li>
+            <li>产品方向较多，可能出现资源分散。</li>
+            <li>医院设备的研发逻辑不一定适合家用和C端市场。</li>
+            <li>家用产品的易用性、隐私和品牌表达能力相对不突出。</li>
+          </ul>
+        </div>
+
+        <!-- 12. 未来规划 -->
+        <div class="sub-section">
+          <div class="sub-title">12. 未来规划</div>
+          <div class="plan-path">
+            <span class="plan-step">综合康复</span><span class="plan-arrow">→</span>
+            <span class="plan-step">精准神经调控</span><span class="plan-arrow">→</span>
+            <span class="plan-step">康复机器人</span><span class="plan-arrow">→</span>
+            <span class="plan-step">泌尿与医美</span><span class="plan-arrow">→</span>
+            <span class="plan-step">高端国产替代</span><span class="plan-arrow">→</span>
+            <span class="plan-step">国际化</span>
+          </div>
+          <div class="plan-keywords">
+            <span class="kw">磁刺激</span><span class="kw">电生理</span><span class="kw">神经调控</span><span class="kw">康复机器人</span><span class="kw">多科室平台</span>
+          </div>
+          <div class="sub-body" style="margin-top:14px;font-size:13px;color:var(--text-secondary)">
+            <p>实行"康复主业+新兴业务"双轮驱动；继续以磁刺激作为核心技术方向；提升精准神经调控能力；强化电生理评估和智能康复；推进脑机接口和康复机器人闭环；发展泌尿外科产品；扩展医美激光和射频设备；推动高端医疗设备国产替代；扩大海外注册和经销网络；在盆底业务上推进女性全生命周期和专病中心建设。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7. 拾光医疗 PROFILE ===== -->
+<section class="section" id="shiguang">
+  <div class="section-head">
+    <span class="section-num">07</span>
+    <h2 class="section-title">拾光医疗公司档案</h2>
+  </div>
+
+  <div class="profile" id="profile-sg">
+    <div class="profile-header ph-sg" onclick="toggleProfile('profile-sg')">
+      <div class="ph-left">
+        <div class="ph-badge">拾</div>
+        <div>
+          <h2>拾光医疗｜家用盆底产品体验代表</h2>
+          <div class="ph-sub">苏州拾锦医疗科技有限公司 · 品牌名：拾光医疗</div>
+        </div>
+      </div>
+      <div class="toggle-icon">▾</div>
+    </div>
+    <div class="profile-body">
+      <div class="profile-content ss-sg">
+
+        <!-- 1. 简介 -->
+        <div class="sub-section">
+          <div class="sub-title">1. 公司简介</div>
+          <div class="sub-body">
+            <p>拾光医疗的公司主体为苏州拾锦医疗科技有限公司。</p>
+            <p>公司成立于2023年8月，注册资本1000万元，位于苏州。</p>
+            <p>公司专注于围绕女性全生命周期健康问题，研发智能医疗科技消费品。</p>
+            <p>目前的核心产品是拾光家用盆底肌治疗仪。</p>
+          </div>
+        </div>
+
+        <!-- 2. 创始人 -->
+        <div class="sub-section">
+          <div class="sub-title">2. 创始人</div>
+          <div class="sub-body">
+            <p>拾光医疗创始人兼CEO为孙丹印。</p>
+            <p>孙丹印是南京大学商学院2016级MBA校友。</p>
+            <p>拾光的创业故事带有较强的女性用户和母亲视角，产品出发点是改善传统产后盆底康复体验，把专业治疗转变为更适合家庭使用的产品。</p>
+            <p>与麦澜德、伟思医疗相比，拾光的创始路径更偏用户洞察、品牌和产品体验，而不是从医院设备或底层医疗技术平台起步。</p>
+          </div>
+        </div>
+
+        <!-- 3. 发展沿革 -->
+        <div class="sub-section">
+          <div class="sub-title">3. 发展沿革</div>
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2023年8月</div><div class="tl-text">苏州拾锦医疗科技有限公司成立。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">产品研发阶段</div><div class="tl-text">围绕家用盆底肌治疗仪进行用户研究、产品定义、工业设计和医疗器械注册。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2025年</div><div class="tl-text">盆底肌治疗仪获得江苏省二类医疗器械注册。注册证号：苏械注准20252090226</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2025年</div><div class="tl-text">拾光App正式上线。</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">当前阶段</div><div class="tl-text">通过电商、院外机构、代理商及女性健康渠道进行早期商业化。</div></div>
+          </div>
+        </div>
+
+        <!-- 4. 核心产品 -->
+        <div class="sub-section">
+          <div class="sub-title">4. 核心产品</div>
+          <div class="sub-body">
+            <p><strong>产品名称：</strong>拾光家用盆底肌治疗仪</p>
+          </div>
+          <div class="prod-group">
+            <div class="prod-group-title">产品组成</div>
+            <div class="prod-tags">
+              <span class="prod-tag">主机</span><span class="prod-tag">充电底座</span><span class="prod-tag">阴道电极</span><span class="prod-tag">理疗用体表电极</span><span class="prod-tag">电极连接线</span><span class="prod-tag">拾光App</span>
+            </div>
+          </div>
+          <div class="prod-group">
+            <div class="prod-group-title">主要功能</div>
+            <div class="prod-tags">
+              <span class="prod-tag">盆底肌表面肌电采集</span><span class="prod-tag">盆底功能评估</span><span class="prod-tag">神经肌肉电刺激</span><span class="prod-tag">肌电触发电刺激</span><span class="prod-tag">生物反馈训练</span><span class="prod-tag">自由训练</span><span class="prod-tag">健康档案</span><span class="prod-tag">个性化治疗方案</span><span class="prod-tag">女性健康内容</span><span class="prod-tag">健康顾问服务</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. 产品特点 -->
+        <div class="sub-section">
+          <div class="sub-title">5. 产品特点</div>
+          <div class="feature-grid">
+            <div class="feature-card"><h4>肌电评估</h4><p>采集和分析盆底肌表面肌电信号，帮助用户了解盆底肌状态。</p></div>
+            <div class="feature-card"><h4>电刺激与生物反馈</h4><p>结合神经肌肉电刺激、肌电触发电刺激和生物反馈训练。</p></div>
+            <div class="feature-card"><h4>双通道连接</h4><p>A/B双通道连接线整合，减少家庭用户连接复杂度。</p></div>
+            <div class="feature-card"><h4>腹部体表电极</h4><p>采用一体化腹部电极设计，用于帮助识别腹部代偿和辅助训练。</p></div>
+            <div class="feature-card"><h4>隐私收纳</h4><p>使用贝壳式充电收纳盒，强调隐私、收纳和女性化设计。</p></div>
+            <div class="feature-card"><h4>App服务</h4><p>App提供评估、治疗、自由训练、健康档案、内容学院和健康顾问。</p></div>
+          </div>
+          <div class="note-box"><p>拾光治疗仪需要配合App使用。App提升了智能化和服务体验，同时也增加了连接、软件维护、数据隐私和客服成本。</p></div>
+        </div>
+
+        <!-- 6. 行业地位 -->
+        <div class="sub-section">
+          <div class="sub-title">6. 当前行业地位</div>
+          <div class="sub-body">
+            <p>拾光目前不属于营收规模或医院覆盖上的行业龙头。</p>
+            <p>更准确的定位是：产品设计和女性消费体验比较突出的家用盆底医疗器械新品牌。</p>
+            <p>其代表性主要来自：女性用户视角；家庭使用场景；消费电子式设计；隐私体验；App和健康服务；医疗器械属性与消费品牌结合。</p>
+          </div>
+        </div>
+
+        <!-- 7. 商业模式 -->
+        <div class="sub-section">
+          <div class="sub-title">7. 商业模式</div>
+          <div class="sub-body">
+            <p>当前公开信息显示，拾光正在同时探索：</p>
+          </div>
+          <div class="prod-tags" style="margin-bottom:12px">
+            <span class="prod-tag">电商零售</span><span class="prod-tag">家庭消费者</span><span class="prod-tag">产后康复机构</span><span class="prod-tag">美容及女性健康机构</span><span class="prod-tag">代理商</span><span class="prod-tag">院外渠道</span><span class="prod-tag">诊所及专业机构</span>
+          </div>
+          <div class="sub-body">
+            <p>公开招商资料显示：注册及招商主体为苏州拾锦医疗科技有限公司；生产单位为苏州格瑞林达医疗科技有限公司。</p>
+          </div>
+          <div class="note-box"><p>公开资料显示其可能采用委托生产或合作生产模式，但具体质量责任、知识产权和供应链关系未公开披露。</p></div>
+        </div>
+
+        <!-- 8. 核心优势 -->
+        <div class="sub-section">
+          <div class="sub-title">8. 核心优势</div>
+          <ul class="ad-list adv">
+            <li>创始人用户视角较强。</li>
+            <li>产品设计与女性真实使用场景结合紧密。</li>
+            <li>隐私、收纳、外观和App体验更加消费化。</li>
+            <li>已获得二类医疗器械注册。</li>
+            <li>产品功能覆盖评估、治疗和训练。</li>
+            <li>家用场景定位清晰。</li>
+            <li>团队年轻，决策链可能较短。</li>
+            <li>相比传统医院设备，更重视消费者理解和使用体验。</li>
+          </ul>
+        </div>
+
+        <!-- 9. 劣势与风险 -->
+        <div class="sub-section">
+          <div class="sub-title">9. 劣势与风险</div>
+          <ul class="ad-list risk">
+            <li>公司成立时间较短。</li>
+            <li>目前高度依赖一款核心产品。</li>
+            <li>无公开营收、销量和利润数据。</li>
+            <li>无公开医院覆盖及临床机构数量。</li>
+            <li>无公开研发团队规模和完整专利数据。</li>
+            <li>用户长期依从性和疗程完成率缺少公开证据。</li>
+            <li>退货率、售后成本和获客成本未公开。</li>
+            <li>App强绑定会提高软件维护和客服成本。</li>
+            <li>生产主体与品牌主体分离，供应链和质量责任关系需要进一步验证。</li>
+            <li>暂无公开FDA、欧洲MDR或成熟海外销售资料。</li>
+            <li>尚未证明大规模交付和售后服务能力。</li>
+          </ul>
+        </div>
+
+        <!-- 10. 未来规划 -->
+        <div class="sub-section">
+          <div class="sub-title">10. 未来规划</div>
+          <div class="sub-body">
+            <p><strong>公开信息能够确认的方向：</strong></p>
+            <p>围绕女性全生命周期健康布局；继续发展智能医疗科技消费品；从盆底产品向更广泛的女性健康品牌延伸；通过App、健康内容和健康顾问增强用户服务。</p>
+          </div>
+          <div class="sub-body" style="margin-top:8px">
+            <p><strong>目前尚未公开：</strong></p>
+            <p>三至五年产品管线；下一款核心产品；海外注册计划；美国FDA路径；海外市场时间表；明确的收入和渠道目标；ODM、联合开发或技术授权规划。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 8. CAPABILITY MATRIX ===== -->
+<section class="section" id="capability-matrix">
+  <div class="section-head">
+    <span class="section-num">08</span>
+    <h2 class="section-title">产品与能力矩阵</h2>
+  </div>
+
+  <div class="table-wrap matrix-wrap">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>能力维度</th>
+          <th class="co-ml">麦澜德</th>
+          <th class="co-vs">伟思医疗</th>
+          <th class="co-sg">拾光医疗</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>女性健康聚焦度</td><td><span class="badge b-strong">强</span></td><td><span class="badge b-mid">一般</span></td><td><span class="badge b-strong">强</span></td></tr>
+        <tr><td>盆底临床方案</td><td><span class="badge b-strong">强</span></td><td><span class="badge b-good">较强</span></td><td><span class="badge b-start">起步</span></td></tr>
+        <tr><td>磁刺激技术</td><td><span class="badge b-good">较强</span></td><td><span class="badge b-strong">强</span></td><td><span class="badge b-na">未披露</span></td></tr>
+        <tr><td>电刺激与肌电</td><td><span class="badge b-strong">强</span></td><td><span class="badge b-strong">强</span></td><td><span class="badge b-prod">已产品化</span></td></tr>
+        <tr><td>医院渠道</td><td><span class="badge b-strong">强</span></td><td><span class="badge b-strong">强</span></td><td><span class="badge b-start">起步</span></td></tr>
+        <tr><td>家用产品体验</td><td><span class="badge b-good">较强</span></td><td><span class="badge b-mid">一般</span></td><td><span class="badge b-strong">强</span></td></tr>
+        <tr><td>消费品牌表达</td><td><span class="badge b-good">较强</span></td><td><span class="badge b-mid">一般</span></td><td><span class="badge b-strong">强</span></td></tr>
+        <tr><td>App与用户服务</td><td><span class="badge b-good">较强</span></td><td><span class="badge b-mid">一般</span></td><td><span class="badge b-strong">强</span></td></tr>
+        <tr><td>耗材闭环</td><td><span class="badge b-strong">强</span></td><td><span class="badge b-good">较强</span></td><td><span class="badge b-verify">待验证</span></td></tr>
+        <tr><td>综合康复平台</td><td><span class="badge b-mid">一般</span></td><td><span class="badge b-strong">强</span></td><td><span class="badge b-weak">弱</span></td></tr>
+        <tr><td>临床和专家体系</td><td><span class="badge b-strong">强</span></td><td><span class="badge b-strong">强</span></td><td><span class="badge b-na">未披露</span></td></tr>
+        <tr><td>产品矩阵完整度</td><td><span class="badge b-strong">强</span></td><td><span class="badge b-strong">强</span></td><td><span class="badge b-start">起步</span></td></tr>
+        <tr><td>海外商业化</td><td><span class="badge b-start">起步</span></td><td><span class="badge b-start">起步</span></td><td><span class="badge b-na">未披露</span></td></tr>
+        <tr><td>财务及经营透明度</td><td><span class="badge b-high">高</span></td><td><span class="badge b-high">高</span></td><td><span class="badge b-low">低</span></td></tr>
+        <tr><td>当前企业规模</td><td><span class="badge b-mature">成熟</span></td><td><span class="badge b-mature">成熟</span></td><td><span class="badge b-early">早期</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="matrix-conclusion">
+    <div class="mc-card mc-vs"><p><strong>伟思医疗：</strong>底层技术和综合康复平台最突出。</p></div>
+    <div class="mc-card mc-ml"><p><strong>麦澜德：</strong>女性健康专科和临床产业化能力最突出。</p></div>
+    <div class="mc-card mc-sg"><p><strong>拾光医疗：</strong>家用产品体验和消费化表达最突出。</p></div>
+  </div>
+</section>
+
+<!-- ===== 9. BUSINESS MODEL ===== -->
+<section class="section" id="business-model">
+  <div class="section-head">
+    <span class="section-num">09</span>
+    <h2 class="section-title">商业模式对比</h2>
+  </div>
+
+  <div class="bm-grid">
+    <div class="bm-card bm-ml">
+      <h3>麦澜德</h3>
+      <div class="bm-desc">医院专科解决方案模式</div>
+      <div class="bm-flow">
+        <div class="bm-flow-item">设备销售</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">耗材复购</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">软件系统</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">医生培训</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">临床服务</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">经销网络</div>
+      </div>
+      <ul>
+        <li>医院和专业机构为核心</li>
+        <li>设备与耗材结合</li>
+        <li>科室整体方案能力强</li>
+        <li>女性健康垂直定位突出</li>
+      </ul>
+    </div>
+
+    <div class="bm-card bm-vs">
+      <h3>伟思医疗</h3>
+      <div class="bm-desc">底层技术平台延伸模式</div>
+      <div class="bm-flow">
+        <div class="bm-flow-item">磁刺激</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">电刺激</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">电生理</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">多科室产品</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">耗材</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">经销网络</div>
+      </div>
+      <ul>
+        <li>技术平台覆盖多个科室</li>
+        <li>产品矩阵较宽</li>
+        <li>经销商占比较高</li>
+        <li>综合康复属性突出</li>
+      </ul>
+    </div>
+
+    <div class="bm-card bm-sg">
+      <h3>拾光医疗</h3>
+      <div class="bm-desc">家用产品与服务模式</div>
+      <div class="bm-flow">
+        <div class="bm-flow-item">硬件销售</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">App</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">健康档案</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">健康内容</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">健康顾问</div>
+        <div class="bm-plus">+</div>
+        <div class="bm-flow-item">院外渠道</div>
+      </div>
+      <ul>
+        <li>家庭女性用户为中心</li>
+        <li>产品体验和品牌表达突出</li>
+        <li>单品驱动特征明显</li>
+        <li>服务模式仍在验证阶段</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 10. PROS & CONS ===== -->
+<section class="section" id="pros-cons">
+  <div class="section-head">
+    <span class="section-num">10</span>
+    <h2 class="section-title">优劣势对比</h2>
+  </div>
+
+  <div class="pc-grid">
+    <div class="pc-card pc-ml">
+      <h3>麦澜德</h3>
+      <div class="pc-section">
+        <div class="pc-label adv"><span class="pc-label-dot"></span>优势</div>
+        <ul>
+          <li>女性健康定位最集中</li>
+          <li>盆底及妇产临床方案完整</li>
+          <li>医院及专业机构覆盖较广</li>
+          <li>设备与耗材闭环成熟</li>
+          <li>研发投入率较高</li>
+          <li>女性全生命周期布局清晰</li>
+        </ul>
+      </div>
+      <div class="pc-section">
+        <div class="pc-label risk"><span class="pc-label-dot"></span>劣势</div>
+        <ul>
+          <li>国内市场依赖度高</li>
+          <li>海外商业化仍处于早期</li>
+          <li>传统盆底业务增长趋缓</li>
+          <li>新业务扩张可能分散资源</li>
+          <li>C端消费品牌能力仍需验证</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pc-card pc-vs">
+      <h3>伟思医疗</h3>
+      <div class="pc-section">
+        <div class="pc-label adv"><span class="pc-label-dot"></span>优势</div>
+        <ul>
+          <li>行业积累时间最长</li>
+          <li>磁刺激和电生理技术突出</li>
+          <li>产品覆盖科室广</li>
+          <li>综合研发与质量体系成熟</li>
+          <li>2025年经营表现较好</li>
+          <li>技术平台延展性强</li>
+        </ul>
+      </div>
+      <div class="pc-section">
+        <div class="pc-label risk"><span class="pc-label-dot"></span>劣势</div>
+        <ul>
+          <li>女性健康品牌定位不够集中</li>
+          <li>经销模式占比较高</li>
+          <li>家庭用户理解相对有限</li>
+          <li>海外收入规模较小</li>
+          <li>新业务较多，协同效果需要验证</li>
+          <li>产品可能带有较强医院设备思维</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pc-card pc-sg">
+      <h3>拾光医疗</h3>
+      <div class="pc-section">
+        <div class="pc-label adv"><span class="pc-label-dot"></span>优势</div>
+        <ul>
+          <li>女性用户洞察突出</li>
+          <li>家用产品定位清晰</li>
+          <li>隐私和收纳设计较好</li>
+          <li>产品消费化表达较强</li>
+          <li>App与服务结合</li>
+          <li>团队年轻、产品迭代可能较快</li>
+        </ul>
+      </div>
+      <div class="pc-section">
+        <div class="pc-label risk"><span class="pc-label-dot"></span>劣势</div>
+        <ul>
+          <li>成立时间短</li>
+          <li>产品线单一</li>
+          <li>经营数据未公开</li>
+          <li>研发及临床积累未充分披露</li>
+          <li>App强绑定增加使用门槛</li>
+          <li>生产和质量责任关系需要验证</li>
+          <li>海外注册及商业化尚未证明</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 11. FUTURE PLANS ===== -->
+<section class="section" id="future-plans">
+  <div class="section-head">
+    <span class="section-num">11</span>
+    <h2 class="section-title">未来规划对比</h2>
+  </div>
+
+  <div class="fp-grid">
+    <div class="fp-card fp-ml">
+      <h3>麦澜德</h3>
+      <div class="plan-path">
+        <span class="plan-step">盆底康复</span><span class="plan-arrow">→</span>
+        <span class="plan-step">女性全生命周期</span><span class="plan-arrow">→</span>
+        <span class="plan-step">生殖抗衰</span><span class="plan-arrow">→</span>
+        <span class="plan-step">皮肤抗衰</span><span class="plan-arrow">→</span>
+        <span class="plan-step">脑机接口</span><span class="plan-arrow">→</span>
+        <span class="plan-step">海外市场</span>
+      </div>
+      <div class="plan-keywords">
+        <span class="kw">女性健康</span><span class="kw">智能诊疗</span><span class="kw">多能量源</span><span class="kw">脑机接口</span><span class="kw">医疗与消费结合</span>
+      </div>
+    </div>
+
+    <div class="fp-card fp-vs">
+      <h3>伟思医疗</h3>
+      <div class="plan-path">
+        <span class="plan-step">综合康复</span><span class="plan-arrow">→</span>
+        <span class="plan-step">精准神经调控</span><span class="plan-arrow">→</span>
+        <span class="plan-step">康复机器人</span><span class="plan-arrow">→</span>
+        <span class="plan-step">泌尿与医美</span><span class="plan-arrow">→</span>
+        <span class="plan-step">高端国产替代</span><span class="plan-arrow">→</span>
+        <span class="plan-step">国际化</span>
+      </div>
+      <div class="plan-keywords">
+        <span class="kw">磁刺激</span><span class="kw">电生理</span><span class="kw">神经调控</span><span class="kw">康复机器人</span><span class="kw">多科室平台</span>
+      </div>
+    </div>
+
+    <div class="fp-card fp-sg">
+      <h3>拾光医疗</h3>
+      <div class="plan-path">
+        <span class="plan-step">家用盆底产品</span><span class="plan-arrow">→</span>
+        <span class="plan-step">App与健康服务</span><span class="plan-arrow">→</span>
+        <span class="plan-step">女性健康消费品</span><span class="plan-arrow">→</span>
+        <span class="plan-step">产品矩阵扩展</span><span class="plan-arrow">→</span>
+        <span class="plan-step">潜在海外市场</span>
+      </div>
+      <div class="plan-keywords">
+        <span class="kw">家用医疗</span><span class="kw">女性体验</span><span class="kw">隐私设计</span><span class="kw">智能服务</span><span class="kw">女性全生命周期</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note-box" style="margin-top:16px">
+    <p>拾光医疗尚未公开清晰的三至五年产品管线，其未来规划主要依据公司公开定位和现有产品方向概括。</p>
+  </div>
+</section>
+
+<!-- ===== 12. CONCLUSION ===== -->
+<section class="conclusion-block" id="conclusion">
+  <div class="section-head">
+    <span class="section-num">12</span>
+    <h2 class="section-title">综合结论</h2>
+  </div>
+
+  <div class="conc-main">
+    <span class="conc-label">主结论</span>
+    <p>伟思医疗代表技术底座，麦澜德代表女性健康临床产业化，拾光医疗代表家用产品与消费体验。</p>
+  </div>
+
+  <div class="conc-full">
+    <span class="conc-label">完整结论</span>
+    <p>伟思医疗、麦澜德和拾光医疗虽然处于相近赛道，但并不是完全同类的企业。伟思医疗的核心竞争力来自磁刺激、电生理和综合康复技术平台；麦澜德的核心竞争力来自对盆底及妇产康复的长期聚焦，以及设备、耗材、软件、数据和临床服务形成的专科生态；拾光医疗则以家庭女性用户为中心，通过工业设计、隐私体验、App和健康服务推动盆底康复产品消费化。</p>
+  </div>
+
+  <div class="conc-second">
+    <span class="conc-label">第二结论</span>
+    <p>从企业发展阶段看，伟思医疗是成熟综合平台，麦澜德是成熟女性健康专科平台，拾光医疗是早期家用医疗品牌。前两家公司已经证明了医院市场的产品和商业化能力，拾光则仍需要通过销量、用户依从性、产品矩阵和持续经营数据证明其商业模式。</p>
+  </div>
+</section>
+
+<!-- ===== 13. SOURCES ===== -->
+<section class="section" id="sources">
+  <div class="section-head">
+    <span class="section-num">13</span>
+    <h2 class="section-title">公开资料来源</h2>
+  </div>
+
+  <div class="sources-list">
+    <a class="source-card" href="https://file.finance.sina.com.cn/211.154.219.97%3A9494/MRGG/CNSESH_STOCK/2026/2026-4/2026-04-16/12096111.PDF" target="_blank" rel="noopener">
+      <div class="src-num">01</div>
+      <div class="src-title">麦澜德2025年年度报告</div>
+      <span class="src-link">file.finance.sina.com.cn/...12096111.PDF</span>
+    </a>
+    <a class="source-card" href="https://www.medlander.com/" target="_blank" rel="noopener">
+      <div class="src-num">02</div>
+      <div class="src-title">麦澜德官方网站</div>
+      <span class="src-link">www.medlander.com</span>
+    </a>
+    <a class="source-card" href="https://basic.10jqka.com.cn/688273/company.html" target="_blank" rel="noopener">
+      <div class="src-num">03</div>
+      <div class="src-title">麦澜德公司及杨瑞嘉资料</div>
+      <span class="src-link">basic.10jqka.com.cn/688273/company.html</span>
+    </a>
+    <a class="source-card" href="https://money.finance.sina.com.cn/corp/view/vCB_AllBulletinDetail.php?id=12217958&stockid=688580" target="_blank" rel="noopener">
+      <div class="src-num">04</div>
+      <div class="src-title">伟思医疗2025年年度报告</div>
+      <span class="src-link">money.finance.sina.com.cn/...stockid=688580</span>
+    </a>
+    <a class="source-card" href="https://www.vishee.com/" target="_blank" rel="noopener">
+      <div class="src-num">05</div>
+      <div class="src-title">伟思医疗官方网站</div>
+      <span class="src-link">www.vishee.com</span>
+    </a>
+    <a class="source-card" href="https://vip.stock.finance.sina.com.cn/corp/view/vCI_CorpManagerInfo.php?Pcode=30391077&stockid=688580" target="_blank" rel="noopener">
+      <div class="src-num">06</div>
+      <div class="src-title">王志愚公开履历</div>
+      <span class="src-link">vip.stock.finance.sina.com.cn/...stockid=688580</span>
+    </a>
+    <a class="source-card" href="https://www.qcc.com/ccomment/fd2f2629dd68e63fe73f31119c775e59" target="_blank" rel="noopener">
+      <div class="src-num">07</div>
+      <div class="src-title">苏州拾锦医疗企业信息</div>
+      <span class="src-link">www.qcc.com/ccomment/fd2f2629dd68e63fe73f31119c775e59</span>
+    </a>
+    <a class="source-card" href="https://www.mbaedu.cn/schnews/view/id/24507.html" target="_blank" rel="noopener">
+      <div class="src-num">08</div>
+      <div class="src-title">拾光医疗创始人资料</div>
+      <span class="src-link">www.mbaedu.cn/schnews/view/id/24507.html</span>
+    </a>
+    <a class="source-card" href="https://www.puxiang.com/galleries/2f52040844511948e9c17b12941e634d" target="_blank" rel="noopener">
+      <div class="src-num">09</div>
+      <div class="src-title">拾光盆底肌治疗仪产品设计介绍</div>
+      <span class="src-link">www.puxiang.com/galleries/2f52040844511948e9c17b12941e634d</span>
+    </a>
+    <a class="source-card" href="https://apps.apple.com/in/app/%E6%8B%BE%E5%85%89-%E7%9B%86%E5%BA%95%E8%82%8C%E4%BA%A7%E5%90%8E%E4%BF%AE%E5%A4%8D%E7%B4%A7%E8%87%B4%E6%B2%BB%E7%96%97%E9%94%BB%E7%82%BC/id6747416267" target="_blank" rel="noopener">
+      <div class="src-num">10</div>
+      <div class="src-title">拾光App介绍</div>
+      <span class="src-link">apps.apple.com/in/app/拾光-盆底肌产后修复紧致治疗</span>
+    </a>
+    <a class="source-card" href="https://ylqx.qgyyzs.net/business/zs277693.htm" target="_blank" rel="noopener">
+      <div class="src-num">11</div>
+      <div class="src-title">拾光产品注册及生产公开信息</div>
+      <span class="src-link">ylqx.qgyyzs.net/business/zs277693.htm</span>
+    </a>
+  </div>
+
+  <div class="sources-disclaimer">
+    <p>本看板基于上市公司年报、公司官网、公开产品资料和企业信息整理。行业地位、优势和劣势属于基于公开信息的分析判断。拾光医疗为非上市创业公司，其经营、研发及未来规划公开信息相对有限。</p>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  <p>国内盆底康复企业研究与对比 · Pelvic Health Company Landscape<br>公开资料更新至2026年8月 · 仅供研究分析用途</p>
+</div>
+
+<script>
+// Toggle profile collapse
+function toggleProfile(id){
+  var el=document.getElementById(id);
+  el.classList.toggle('collapsed');
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('.nav-links a').forEach(function(link){
+  link.addEventListener('click',function(e){
+    e.preventDefault();
+    var target=document.querySelector(this.getAttribute('href'));
+    if(target){
+      target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+
+// Scroll spy — highlight active nav item
+var sections=document.querySelectorAll('section[id]');
+var navLinks=document.querySelectorAll('.nav-links a');
+var observer=new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting){
+      var id=entry.target.getAttribute('id');
+      navLinks.forEach(function(link){
+        link.classList.remove('active');
+        if(link.getAttribute('href')==='#!'+id){
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+},{rootMargin:'-60px 0px -70% 0px',threshold:0});
+
+// Fix: update observer to match href format
+sections.forEach(function(sec){
+  observer.observe(sec);
+});
+
+// Override click handler to also set active
+navLinks.forEach(function(link){
+  link.addEventListener('click',function(){
+    navLinks.forEach(function(l){l.classList.remove('active')});
+    this.classList.add('active');
+  });
+});
+
+// Observer callback fix
+observer=new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting){
+      var id=entry.target.getAttribute('id');
+      navLinks.forEach(function(link){
+        if(link.getAttribute('href')==='#'+id){
+          link.classList.add('active');
+        }else{
+          link.classList.remove('active');
+        }
+      });
+    }
+  });
+},{rootMargin:'-60px 0px -70% 0px',threshold:0});
+
+sections.forEach(function(sec){observer.observe(sec)});
+
+// Expand all before print, restore after
+var printState=[];
+window.addEventListener('beforeprint',function(){
+  printState=[];
+  document.querySelectorAll('.profile').forEach(function(p){
+    printState.push({id:p.id,collapsed:p.classList.contains('collapsed')});
+    p.classList.remove('collapsed');
+  });
+});
+window.addEventListener('afterprint',function(){
+  printState.forEach(function(s){
+    var el=document.getElementById(s.id);
+    if(s.collapsed){el.classList.add('collapsed')}
+  });
+});
+</script>
+</body>
+</html>
