@@ -1472,7 +1472,6 @@ function resetData() {
 function addCategoryModal() {
   showModal('新增分类', `
     <input type="text" id="catNameInput" placeholder="分类名称" autofocus>
-    <input type="text" id="catIdInput" placeholder="分类ID（英文，如 market-research）">
     <select id="catParentInput">
       <option value="">无（顶级分类）</option>
     </select>
@@ -1502,12 +1501,9 @@ function autoCatId(name) {
 function addCategory() {
   var name = document.getElementById('catNameInput').value.trim();
   if (!name) { toast('请输入分类名称'); return; }
-  // id 优先用填写值, 否则用名称生成 slug; 中文名自动生成, 杜绝 cat_<时间戳> 这类孤儿 id
-  var id = slugifyCat(document.getElementById('catIdInput').value.trim() || name);
-  if (!id) {
-    id = autoCatId(name);
-    toast('分类ID 已自动生成：' + id, false);
-  }
+  // ID 完全自动生成: 名称能转英文用 slug, 否则(如纯中文)用 autoCatId; 杜绝 cat_<时间戳> 这类孤儿 id
+  var id = slugifyCat(name);
+  if (!id) id = autoCatId(name);
   // 重复校验
   var allIds = [];
   getTree().forEach(function(c){ allIds.push(c.id); if (c.children) c.children.forEach(function(ch){ allIds.push(ch.id); }); });
