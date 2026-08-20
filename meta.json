@@ -12,6 +12,12 @@
       "icon": "fas fa-folder",
       "parentId": null,
       "updatedAt": 1787193865802
+    },
+    {
+      "id": "market",
+      "name": "吸奶器1",
+      "icon": "fas fa-folder",
+      "parentId": null
     }
   ],
   "fileCats": {
@@ -23,5 +29,7 @@
   "fileTags": {
     "Bloom_乳房健康问题地图_产品机会矩阵看板.html": []
   },
-  "allTags": []
+  "allTags": [
+    "1"
+  ]
 }
