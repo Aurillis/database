@@ -1492,12 +1492,22 @@ function slugifyCat(s) {
   return String(s || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+// ID 留空且名称无法转英文(如纯中文)时自动生成合法 ID: 优先取名称里的英文/数字部分作前缀, 否则用 c-<随机后缀>
+function autoCatId(name) {
+  var ascii = String(name || '').replace(/[\u4e00-\u9fa5]/g, ' ');
+  var prefix = slugifyCat(ascii) || 'c';
+  return prefix + '-' + Date.now().toString(36).slice(-4) + Math.random().toString(36).slice(2, 6);
+}
+
 function addCategory() {
   var name = document.getElementById('catNameInput').value.trim();
   if (!name) { toast('请输入分类名称'); return; }
-  // id 优先用填写值, 否则用名称生成 slug; 杜绝 cat_<时间戳> 这类孤儿 id
+  // id 优先用填写值, 否则用名称生成 slug; 中文名自动生成, 杜绝 cat_<时间戳> 这类孤儿 id
   var id = slugifyCat(document.getElementById('catIdInput').value.trim() || name);
-  if (!id) { toast('分类ID 只能含英文/数字/短横线，请填写英文ID（如 market-research）'); return; }
+  if (!id) {
+    id = autoCatId(name);
+    toast('分类ID 已自动生成：' + id, false);
+  }
   // 重复校验
   var allIds = [];
   getTree().forEach(function(c){ allIds.push(c.id); if (c.children) c.children.forEach(function(ch){ allIds.push(ch.id); }); });
