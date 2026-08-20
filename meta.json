@@ -11,6 +11,12 @@
       "name": "吸奶器1",
       "icon": "fas fa-folder",
       "parentId": null
+    },
+    {
+      "id": "1",
+      "name": "吸1",
+      "icon": "fas fa-folder",
+      "parentId": null
     }
   ],
   "fileCats": {
