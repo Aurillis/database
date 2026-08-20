@@ -5,6 +5,13 @@
       "name": "其他",
       "icon": "fas fa-folder",
       "parentId": null
+    },
+    {
+      "id": "x",
+      "name": "x",
+      "icon": "fas fa-folder",
+      "parentId": null,
+      "updatedAt": 1787190777476
     }
   ],
   "fileCats": {
