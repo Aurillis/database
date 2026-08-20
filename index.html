@@ -277,7 +277,6 @@ input,select{font-family:inherit}
   padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius);
 }
 .cat-row .cat-name{flex:1;font-size:13px;font-weight:500}
-.cat-row .cat-id{font-size:11px;color:var(--light);font-family:monospace}
 .cat-row .act-btn{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s}
 .cat-row .act-btn:hover{background:var(--hover2)}
 
@@ -514,19 +513,28 @@ function loadMeta(cb) {
     return r.json();
   }).then(function(d) {
     if (!d) return;
-    // 分类: 云端为权威源, 但与本机 localStorage 取并集(按 id 去重), 避免云端写入偶发失败/令牌过期时本机新增被刷新清空
+    // 分类: 云端+本机取并集(按 id); 同 id 冲突时取 updatedAt 更新的一方(最近写入优先),
+    // 避免"改名后同步失败→刷新被云端旧名覆盖"以及"换设备时旧缓存覆盖云端新数据"
     if (Array.isArray(d.customCats)) {
       var cloudCats = d.customCats;
       var localCats = (S.customCats || []).slice();
-      var seen = {}; var merged = [];
+      var map = {};
       cloudCats.concat(localCats).forEach(function(c){
-        if (!c || !c.id || seen[c.id]) return;
-        seen[c.id] = true; merged.push(c);
+        if (!c || !c.id) return;
+        var ex = map[c.id];
+        if (!ex) map[c.id] = c;
+        else if ((c.updatedAt||0) > (ex.updatedAt||0)) map[c.id] = c;
       });
+      var merged = [];
+      Object.keys(map).forEach(function(k){ merged.push(map[k]); });
       S.customCats = merged;
-      // 本机有而云端没有的分类 -> 已登录则立即补传到云端(让其他设备也能看到)
-      var hasLocalOnly = localCats.some(function(c){ return c && c.id && !cloudCats.some(function(x){return x && x.id===c.id;}); });
-      if (hasLocalOnly && S.adminToken) syncMetaToCloud();
+      // 本机有更新/更新的分类(新增或改名) -> 已登录则立即补传到云端(让其他设备也能看到)
+      var hasLocalNewer = localCats.some(function(c){
+        if (!c || !c.id) return false;
+        var cl = cloudCats.find(function(x){ return x && x.id===c.id; });
+        return !cl || (c.updatedAt||0) > (cl.updatedAt||0);
+      });
+      if (hasLocalNewer && S.adminToken) syncMetaToCloud();
     }
     if (d.fileCats && typeof d.fileCats === 'object') {
       // fileCats: 云端为权威源, 但保留本机独有项
@@ -1376,7 +1384,6 @@ function renderAdminCats() {
     html += '<div class="cat-row">';
     html += '<i class="'+(cat.icon||'fas fa-folder')+'" style="color:'+catColor(cat.id)+'"></i>';
     html += '<span class="cat-name">'+esc(cat.name)+'</span>';
-    html += '<span class="cat-id">'+cat.id+'</span>';
     if (cat.id !== 'other') {
       html += '<button class="act-btn" title="编辑" onclick="editCategoryModal(\''+cat.id+'\')"><i class="fas fa-edit"></i></button>';
       if (S.customCats.find(function(c){return c.id===cat.id})) {
@@ -1389,7 +1396,6 @@ function renderAdminCats() {
         html += '<div class="cat-row" style="margin-left:20px">';
         html += '<i class="'+(ch.icon||'fas fa-file')+'" style="color:'+catColor(ch.id)+'"></i>';
         html += '<span class="cat-name">'+esc(ch.name)+'</span>';
-        html += '<span class="cat-id">'+ch.id+'</span>';
         html += '<button class="act-btn" title="编辑" onclick="editCategoryModal(\''+ch.id+'\')"><i class="fas fa-edit"></i></button>';
         html += '</div>';
       });
@@ -1509,7 +1515,7 @@ function addCategory() {
   getTree().forEach(function(c){ allIds.push(c.id); if (c.children) c.children.forEach(function(ch){ allIds.push(ch.id); }); });
   if (allIds.indexOf(id) >= 0) { toast('分类ID已存在：' + id); return; }
   var parent = document.getElementById('catParentInput').value;
-  S.customCats.push({id:id, name:name, icon:'fas fa-folder', parentId:parent||null});
+  S.customCats.push({id:id, name:name, icon:'fas fa-folder', parentId:parent||null, updatedAt:Date.now()});
   Save(); closeModal(); renderAdminCats(); renderSidebar();
   if (S.adminToken) {
     toast('分类已创建：' + name + ' (' + id + ')');
@@ -1545,13 +1551,10 @@ function saveCategoryEdit(catId) {
   // Find and update in customCats or TREE
   var custom = S.customCats.find(function(c){return c.id===catId});
   if (custom) {
-    custom.name = name; custom.icon = icon;
+    custom.name = name; custom.icon = icon; custom.updatedAt = Date.now();
   } else {
-    // It's a built-in category, add as override
-    S.customCats.push({id:catId+'_override', name:name, icon:icon, parentId:catId});
-    // Actually, let's just add to a overrides map
-    // For simplicity, we won't allow editing built-in categories
-    toast('内置分类不支持修改，请创建新分类');
+    // 内置分类(id 硬编码在 TREE 中, 无法被 customCats 覆盖), 明确提示不支持修改
+    toast('内置分类不支持修改，请创建新分类', false);
     return;
   }
   Save(); closeModal(); renderAdminCats(); renderSidebar();
