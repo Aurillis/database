@@ -572,6 +572,17 @@ function loadMeta(cb) {
       var hasLocalOnlyT = localTags.some(function(t) { return t && cloudTags.indexOf(t) < 0 && deleted.indexOf(t) < 0; });
       if (hasLocalOnlyT && S.adminToken) syncMetaToCloud();
     }
+    // 分类顺序: 取 catOrderUpdatedAt 更新的一方(最近排序优先), 本机更新且已登录则补传
+    if (Array.isArray(d.catOrder)) {
+      var cloudAt = d.catOrderUpdatedAt || 0;
+      var localAt = S.catOrderUpdatedAt || 0;
+      if (cloudAt > localAt) {
+        S.catOrder = d.catOrder.slice();
+        S.catOrderUpdatedAt = cloudAt;
+      } else if (localAt > 0 && localAt > cloudAt && S.adminToken) {
+        syncMetaToCloud();
+      }
+    }
     if (cb) cb();
     renderSidebar(); renderMain();
   }).catch(function() { if (cb) cb(); });
@@ -607,7 +618,9 @@ function flushMetaNow() {
     fileCats: S.fileCats || {},
     fileTags: S.fileTags || {},
     allTags: S.allTags || [],
-    deletedTags: S.deletedTags || []
+    deletedTags: S.deletedTags || [],
+    catOrder: S.catOrder || [],
+    catOrderUpdatedAt: S.catOrderUpdatedAt || 0
   };
   try {
     var xhr = new XMLHttpRequest();
@@ -630,7 +643,9 @@ function syncMetaToCloud() {
       fileCats: S.fileCats || {},
       fileTags: S.fileTags || {},
       allTags: S.allTags || [],
-      deletedTags: S.deletedTags || []
+      deletedTags: S.deletedTags || [],
+      catOrder: S.catOrder || [],
+      catOrderUpdatedAt: S.catOrderUpdatedAt || 0
     };
     fetch(UPLOAD_API, {
       method: 'POST',
@@ -671,6 +686,8 @@ var S = {
   allTags: LS('kb_allTags', []),
   deletedTags: LS('kb_deletedTags', []), // 本机已删除的标签(防止刷新后从云端复活)
   customCats: LS('kb_customCats', []),
+  catOrder: LS('kb_catOrder', []),              // 自定义分类顺序(id 数组, 含内置分类, 用于按用户意愿排序)
+  catOrderUpdatedAt: LS('kb_catOrderUpdatedAt', 0),
   uploaded: LS('kb_uploaded', []),
   adminToken: localStorage.getItem('kb_admin_token') || sessionStorage.getItem('kb_admin_token') || '',
   fileCats: LS('kb_fileCats', {}),  // custom category overrides
@@ -686,6 +703,8 @@ function Save() {
   localStorage.setItem('kb_allTags', JSON.stringify(S.allTags));
   localStorage.setItem('kb_deletedTags', JSON.stringify(S.deletedTags));
   localStorage.setItem('kb_customCats', JSON.stringify(S.customCats));
+  localStorage.setItem('kb_catOrder', JSON.stringify(S.catOrder));
+  localStorage.setItem('kb_catOrderUpdatedAt', JSON.stringify(S.catOrderUpdatedAt));
   localStorage.setItem('kb_uploaded', JSON.stringify(S.uploaded));
   localStorage.setItem('kb_fileCats', JSON.stringify(S.fileCats));
   // 分类/标签等云端元数据: 防抖推送到 meta.json(仅管理员)
@@ -730,7 +749,50 @@ function getTree() {
     }
     tree.push(c);
   });
-  return tree;
+  return sortTree(tree);
+}
+
+// 按 S.catOrder(id 数组) 排序分类树: 一级按顺序, 二级在各自父级内按顺序; 未列出的保持默认顺序排后
+function sortTree(tree) {
+  var order = S.catOrder || [];
+  if (!order.length) return tree;
+  var rank = {};
+  order.forEach(function(id, i){ rank[id] = i; });
+  var tops = tree.filter(function(c){ return !c.parentId; });
+  tops.sort(function(a,b){ return (rank[a.id]!=null?rank[a.id]:1e9) - (rank[b.id]!=null?rank[b.id]:1e9); });
+  tops.forEach(function(c){
+    if (c.children && c.children.length) {
+      c.children.sort(function(a,b){ return (rank[a.id]!=null?rank[a.id]:1e9) - (rank[b.id]!=null?rank[b.id]:1e9); });
+    }
+  });
+  return tops;
+}
+
+// 分类上移/下移(dir=-1 上移, 1 下移): 在"同级分类"内交换位置, 顺序持久化到本地并同步云端
+function moveCatOrder(catId, dir) {
+  var tree = getTree();
+  var sibs = null;
+  for (var i=0;i<tree.length;i++) {
+    var c = tree[i];
+    if (c.id === catId) { sibs = tree.filter(function(x){ return !x.parentId; }); break; }
+    if (c.children) {
+      var ch = c.children.find(function(x){ return x.id===catId; });
+      if (ch) { sibs = c.children; break; }
+    }
+  }
+  if (!sibs) return;
+  var ids = sibs.map(function(x){ return x.id; });
+  var pos = ids.indexOf(catId);
+  var target = pos + dir;
+  if (target < 0 || target >= ids.length) { toast('已经是第一个/最后一个了'); return; }
+  var order = (S.catOrder || []).slice();
+  ids.forEach(function(id){ if (order.indexOf(id) < 0) order.push(id); });
+  var a = order.indexOf(catId), b = order.indexOf(ids[target]);
+  if (a < 0 || b < 0) return;
+  var t = order[a]; order[a] = order[b]; order[b] = t;
+  S.catOrder = order;
+  S.catOrderUpdatedAt = Date.now();
+  Save(); renderAdminCats(); renderSidebar(); renderMain();
 }
 
 function catName(catId) {
@@ -1495,6 +1557,8 @@ function renderAdminCats() {
     html += '<i class="'+(cat.icon||'fas fa-folder')+'" style="color:'+catColor(cat.id)+'"></i>';
     html += '<span class="cat-name">'+esc(cat.name)+'</span>';
     if (cat.id !== 'other') {
+      html += '<button class="act-btn" title="上移" onclick="moveCatOrder(\''+cat.id+'\',-1)"><i class="fas fa-arrow-up"></i></button>';
+      html += '<button class="act-btn" title="下移" onclick="moveCatOrder(\''+cat.id+'\',1)"><i class="fas fa-arrow-down"></i></button>';
       html += '<button class="act-btn" title="编辑" onclick="editCategoryModal(\''+cat.id+'\')"><i class="fas fa-edit"></i></button>';
       if (S.customCats.find(function(c){return c.id===cat.id})) {
         html += '<button class="act-btn danger" title="删除" onclick="deleteCategory(\''+cat.id+'\')"><i class="fas fa-trash"></i></button>';
@@ -1506,6 +1570,8 @@ function renderAdminCats() {
         html += '<div class="cat-row" style="margin-left:20px">';
         html += '<i class="'+(ch.icon||'fas fa-file')+'" style="color:'+catColor(ch.id)+'"></i>';
         html += '<span class="cat-name">'+esc(ch.name)+'</span>';
+        html += '<button class="act-btn" title="上移" onclick="moveCatOrder(\''+ch.id+'\',-1)"><i class="fas fa-arrow-up"></i></button>';
+        html += '<button class="act-btn" title="下移" onclick="moveCatOrder(\''+ch.id+'\',1)"><i class="fas fa-arrow-down"></i></button>';
         html += '<button class="act-btn" title="编辑" onclick="editCategoryModal(\''+ch.id+'\')"><i class="fas fa-edit"></i></button>';
         html += '</div>';
       });
@@ -1579,6 +1645,8 @@ function resetData() {
   localStorage.removeItem('kb_allTags');
   localStorage.removeItem('kb_deletedTags');
   localStorage.removeItem('kb_customCats');
+  localStorage.removeItem('kb_catOrder');
+  localStorage.removeItem('kb_catOrderUpdatedAt');
   localStorage.removeItem('kb_uploaded');
   localStorage.removeItem('kb_fileCats');
   location.reload();
@@ -1680,6 +1748,8 @@ function saveCategoryEdit(catId) {
 function deleteCategory(catId) {
   if (!confirm('确定删除此分类？文件不会被删除，将变为未分类。')) return;
   S.customCats = S.customCats.filter(function(c){return c.id!==catId});
+  S.catOrder = (S.catOrder || []).filter(function(id){ return id!==catId; });
+  S.catOrderUpdatedAt = Date.now();
   // Move files to 'other'
   Object.keys(S.fileCats).forEach(function(fn) {
     if (S.fileCats[fn] === catId) delete S.fileCats[fn];
