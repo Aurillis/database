@@ -1233,33 +1233,37 @@ function renderAdminUpload() {
     <div id="uploadCatSelect" style="margin:16px 0 12px">
       <label style="font-size:12px;color:var(--muted)">上传到分类:</label>
       <select id="uploadCat" class="sort-select" style="width:100%;margin-top:4px;padding:8px"></select>
+      <div id="uploadNewCatRow" style="display:none;margin-top:8px">
+        <input type="text" id="uploadNewCatName" placeholder="新分类名称（如：渠道复盘）" style="width:100%;padding:8px;box-sizing:border-box;border:1px solid var(--line);border-radius:var(--radius)">
+        <button class="btn btn-sm btn-primary" id="uploadNewCatBtn" style="margin-top:6px;width:100%"><i class="fas fa-plus"></i> 创建并使用此分类</button>
+      </div>
     </div>
     <div id="uploadResult"></div>
   `;
 
-  // Populate category select (第一项为占位「请选择」, 默认强制不选)
+  // Populate category select (第一项为占位「请选择」, 默认强制不选; 一级分类可选; 末尾提供「新建分类」)
   var sel = document.getElementById('uploadCat');
-  var opts = '<option value="" disabled selected>— 请选择分类文件夹 —</option>';
-  getTree().forEach(function(cat) {
-    if (cat.children) {
-      opts += '<optgroup label="'+esc(cat.name)+'">';
-      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'">'+esc(ch.name)+'</option>'; });
-      opts += '</optgroup>';
-    } else {
-      opts += '<option value="'+cat.id+'">'+esc(cat.name)+'</option>';
-    }
-  });
-  sel.innerHTML = opts;
+  sel.innerHTML = uploadCatOptions('');
   // 仅当用户正停留在某个具体分类页时才预选该分类; 否则留空以强制其主动选择
   var cur = (S.cat && S.cat !== 'all' && S.cat !== 'other') ? S.cat : '';
-  if (cur) {
-    var exists = false;
-    getTree().forEach(function(c){
-      if (c.id === cur) exists = true;
-      if (c.children) c.children.forEach(function(ch){ if (ch.id === cur) exists = true; });
-    });
-    if (exists) sel.value = cur;
-  }
+  var exists = false;
+  getTree().forEach(function(c){
+    if (c.id === cur) exists = true;
+    if (c.children) c.children.forEach(function(ch){ if (ch.id === cur) exists = true; });
+  });
+  if (cur && exists) sel.value = cur;
+  // 选中「新建分类」时展开输入行(并回到占位, 避免误选后直接上传)
+  sel.onchange = function() {
+    var row = document.getElementById('uploadNewCatRow');
+    if (this.value === '__new_cat__') {
+      row.style.display = 'block';
+      var inp = document.getElementById('uploadNewCatName'); if (inp) inp.focus();
+      this.value = '';
+    } else {
+      row.style.display = 'none';
+    }
+  };
+  document.getElementById('uploadNewCatBtn').onclick = createUploadCat;
 
   var zone = document.getElementById('uploadZone');
   var input = document.getElementById('fileInput');
@@ -1276,12 +1280,48 @@ function renderAdminUpload() {
   input.onchange = function() { handleUpload(this.files); };
 }
 
+// 上传分类下拉选项: 有子分类时一级分类也可选(optgroup 内第一项), 末尾提供「新建分类」
+function uploadCatOptions(cur) {
+  var opts = '<option value="" disabled'+(cur?'':' selected')+'>— 请选择分类文件夹 —</option>';
+  getTree().forEach(function(cat) {
+    if (cat.children) {
+      opts += '<optgroup label="'+esc(cat.name)+'">';
+      opts += '<option value="'+cat.id+'"'+(cur===cat.id?' selected':'')+'>'+esc(cat.name)+'</option>';
+      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'"'+(cur===ch.id?' selected':'')+'>'+esc(ch.name)+'</option>'; });
+      opts += '</optgroup>';
+    } else {
+      opts += '<option value="'+cat.id+'"'+(cur===cat.id?' selected':'')+'>'+esc(cat.name)+'</option>';
+    }
+  });
+  opts += '<option value="__new_cat__">＋ 新建分类…</option>';
+  return opts;
+}
+
+// 上传弹窗内联新建分类: 创建后自动选中该分类
+function createUploadCat() {
+  var inp = document.getElementById('uploadNewCatName');
+  var name = inp.value.trim();
+  if (!name) { toast('请输入新分类名称'); inp.focus(); return; }
+  var id = makeCatId(name);
+  var allIds = [];
+  getTree().forEach(function(c){ allIds.push(c.id); if (c.children) c.children.forEach(function(ch){ allIds.push(ch.id); }); });
+  if (allIds.indexOf(id) >= 0) { toast('该名称对应的分类已存在：' + id + '，请换一个名称'); return; }
+  S.customCats.push({id:id, name:name, icon:'fas fa-folder', parentId:null, updatedAt:Date.now()});
+  Save();
+  var sel = document.getElementById('uploadCat');
+  sel.innerHTML = uploadCatOptions(id);
+  sel.value = id;
+  document.getElementById('uploadNewCatRow').style.display = 'none';
+  inp.value = '';
+  toast('分类已创建并选中：' + name + (S.adminToken ? '' : '（仅本机可见，登录后台后同步云端）'));
+}
+
 function handleUpload(fileList) {
   var cat = document.getElementById('uploadCat').value;
   var result = document.getElementById('uploadResult');
 
   // 强制先选分类: 没选则拦截上传并提示
-  if (!cat) {
+  if (!cat || cat === '__new_cat__') {
     result.innerHTML = '<p style="color:var(--danger)">⚠ 请先在上方「上传到分类」中选择一个文件夹，否则无法上传。</p>';
     toast('请先选择分类文件夹', false);
     return;
@@ -1504,12 +1544,18 @@ function autoCatId(name) {
   return prefix + '-' + Date.now().toString(36).slice(-4) + Math.random().toString(36).slice(2, 6);
 }
 
+// 生成唯一合法分类ID: 名称能转英文用 slug, 否则(如纯中文)用 autoCatId; 杜绝 cat_<时间戳> 这类孤儿 id
+function makeCatId(name) {
+  var id = slugifyCat(name);
+  if (!id) id = autoCatId(name);
+  return id;
+}
+
 function addCategory() {
   var name = document.getElementById('catNameInput').value.trim();
   if (!name) { toast('请输入分类名称'); return; }
   // ID 完全自动生成: 名称能转英文用 slug, 否则(如纯中文)用 autoCatId; 杜绝 cat_<时间戳> 这类孤儿 id
-  var id = slugifyCat(name);
-  if (!id) id = autoCatId(name);
+  var id = makeCatId(name);
   // 重复校验
   var allIds = [];
   getTree().forEach(function(c){ allIds.push(c.id); if (c.children) c.children.forEach(function(ch){ allIds.push(ch.id); }); });
