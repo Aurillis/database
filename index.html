@@ -515,85 +515,108 @@ function metaUrl() {
 }
 
 // 拉取云端元数据覆盖本地分类/标签(云端为权威源); 首次(404)用本地数据初始化云端
+// 读取策略: 优先直读 raw; 若 raw 被墙/超时(国内常见), 自动经 SCF 中继读取, 避免退回陈旧本地数据
 function loadMeta(cb) {
-  fetch(metaUrl() + '?t=' + Date.now()).then(function(r) {
-    if (r.status === 404) { syncMetaToCloud(); if (cb) cb(); return; } // 首次: 把本地已有数据推上云
-    if (!r.ok) { if (cb) cb(); return; }
-    return r.json();
-  }).then(function(d) {
-    if (!d) return;
-    // 分类: 云端+本机取并集(按 id); 同 id 冲突时取 updatedAt 更新的一方(最近写入优先),
-    // 避免"改名后同步失败→刷新被云端旧名覆盖"以及"换设备时旧缓存覆盖云端新数据"
-    if (Array.isArray(d.customCats)) {
-      var cloudCats = d.customCats;
-      var localCats = (S.customCats || []).slice();
-      var map = {};
-      cloudCats.concat(localCats).forEach(function(c){
-        if (!c || !c.id) return;
-        var ex = map[c.id];
-        if (!ex) map[c.id] = c;
-        else if ((c.updatedAt||0) > (ex.updatedAt||0)) map[c.id] = c;
-      });
-      var merged = [];
-      Object.keys(map).forEach(function(k){ merged.push(map[k]); });
-      S.customCats = merged;
-      // 本机有更新/更新的分类(新增或改名) -> 已登录则立即补传到云端(让其他设备也能看到)
-      var hasLocalNewer = localCats.some(function(c){
-        if (!c || !c.id) return false;
-        var cl = cloudCats.find(function(x){ return x && x.id===c.id; });
-        return !cl || (c.updatedAt||0) > (cl.updatedAt||0);
-      });
-      if (hasLocalNewer && S.adminToken) syncMetaToCloud();
-    }
-    if (d.fileCats && typeof d.fileCats === 'object') {
-      // fileCats: 云端为权威源, 但保留本机独有项
-      var localFC = S.fileCats || {};
-      S.fileCats = d.fileCats;
-      Object.keys(localFC).forEach(function(fn) { if (!(fn in S.fileCats)) S.fileCats[fn] = localFC[fn]; });
-    }
-    if (d.fileTags && typeof d.fileTags === 'object') {
-      // fileTags: 同 fileCats
-      var localFT = S.fileTags || {};
-      S.fileTags = d.fileTags;
-      Object.keys(localFT).forEach(function(fn) { if (!(fn in S.fileTags)) S.fileTags[fn] = localFT[fn]; });
-    }
-    // allTags: 云端+本机取并集, 但排除本机已删除的标签(防止删除后刷新从云端复活)
-    if (Array.isArray(d.allTags)) {
-      var cloudTags = d.allTags;
-      var localTags = (S.allTags || []).slice();
-      var deleted = (S.deletedTags || []).slice();
-      var seenT = {}; var mergedT = [];
-      cloudTags.concat(localTags).forEach(function(t) {
-        if (!t || seenT[t] || deleted.indexOf(t) >= 0) return;
-        seenT[t] = true; mergedT.push(t);
-      });
-      S.allTags = mergedT;
-      // 本机有而云端没有的标签(且未被删除) -> 已登录则补传
-      var hasLocalOnlyT = localTags.some(function(t) { return t && cloudTags.indexOf(t) < 0 && deleted.indexOf(t) < 0; });
-      if (hasLocalOnlyT && S.adminToken) syncMetaToCloud();
-    }
-    // 分类顺序: 取 catOrderUpdatedAt 更新的一方(最近排序优先), 本机更新且已登录则补传
-    if (Array.isArray(d.catOrder)) {
-      var cloudAt = d.catOrderUpdatedAt || 0;
-      var localAt = S.catOrderUpdatedAt || 0;
-      if (cloudAt > localAt) {
-        S.catOrder = d.catOrder.slice();
-        S.catOrderUpdatedAt = cloudAt;
-      } else if (localAt > 0 && localAt > cloudAt && S.adminToken) {
-        syncMetaToCloud();
-      }
-    }
-    // 已删除分类: 云端+本机取并集(删除不可逆, 任何一端删过都不复活)
-    if (Array.isArray(d.deletedCats)) {
-      var seenD = {}; var mergedD = [];
-      (d.deletedCats || []).concat(S.deletedCats || []).forEach(function(id) {
-        if (id && !seenD[id]) { seenD[id] = true; mergedD.push(id); }
-      });
-      S.deletedCats = mergedD;
-    }
+  fetchMeta().then(function(res) {
+    if (!res) { if (cb) cb(); return; }            // 两端都失败: 保留本机数据
+    if (res.missing) { syncMetaToCloud(); if (cb) cb(); return; } // 首次: 本地数据推上云
+    applyMeta(res.data);
     if (cb) cb();
     renderSidebar(); renderMain();
   }).catch(function() { if (cb) cb(); });
+}
+// raw + SCF 中继读取 meta.json; 解析为 {data} / {missing} / null
+function fetchMeta() {
+  return new Promise(function(resolve) {
+    var done = false;
+    var tryScf = function() {
+      if (done) return;
+      fetchMetaViaSCF(function(m) { if (done) return; done = true; resolve(m ? { data: m } : null); });
+    };
+    fetch(metaUrl() + '?t=' + Date.now()).then(function(r) {
+      if (r.status === 404) { if (done) return; done = true; resolve({ missing: true }); return; }
+      if (!r.ok) { tryScf(); return; }
+      return r.json();
+    }).then(function(d) {
+      if (d === undefined) return; // 已被 404 分支处理
+      if (done) return;
+      done = true;
+      resolve(d ? { data: d } : null);
+    }).catch(function() { tryScf(); });
+  });
+}
+// 处理云端 meta 数据(合并逻辑集中在此, loadMeta 调用)
+function applyMeta(d) {
+  if (!d) return;
+  // 分类: 云端+本机取并集(按 id); 同 id 冲突时取 updatedAt 更新的一方(最近写入优先),
+  // 避免"改名后同步失败→刷新被云端旧名覆盖"以及"换设备时旧缓存覆盖云端新数据"
+  if (Array.isArray(d.customCats)) {
+    var cloudCats = d.customCats;
+    var localCats = (S.customCats || []).slice();
+    var map = {};
+    cloudCats.concat(localCats).forEach(function(c){
+      if (!c || !c.id) return;
+      var ex = map[c.id];
+      if (!ex) map[c.id] = c;
+      else if ((c.updatedAt||0) > (ex.updatedAt||0)) map[c.id] = c;
+    });
+    var merged = [];
+    Object.keys(map).forEach(function(k){ merged.push(map[k]); });
+    S.customCats = merged;
+    // 本机有更新/更新的分类(新增或改名) -> 已登录则立即补传到云端(让其他设备也能看到)
+    var hasLocalNewer = localCats.some(function(c){
+      if (!c || !c.id) return false;
+      var cl = cloudCats.find(function(x){ return x && x.id===c.id; });
+      return !cl || (c.updatedAt||0) > (cl.updatedAt||0);
+    });
+    if (hasLocalNewer && S.adminToken) syncMetaToCloud();
+  }
+  if (d.fileCats && typeof d.fileCats === 'object') {
+    // fileCats: 云端为权威源, 但保留本机独有项
+    var localFC = S.fileCats || {};
+    S.fileCats = d.fileCats;
+    Object.keys(localFC).forEach(function(fn) { if (!(fn in S.fileCats)) S.fileCats[fn] = localFC[fn]; });
+  }
+  if (d.fileTags && typeof d.fileTags === 'object') {
+    // fileTags: 同 fileCats
+    var localFT = S.fileTags || {};
+    S.fileTags = d.fileTags;
+    Object.keys(localFT).forEach(function(fn) { if (!(fn in S.fileTags)) S.fileTags[fn] = localFT[fn]; });
+  }
+  // allTags: 云端+本机取并集, 但排除本机已删除的标签(防止删除后刷新从云端复活)
+  if (Array.isArray(d.allTags)) {
+    var cloudTags = d.allTags;
+    var localTags = (S.allTags || []).slice();
+    var deleted = (S.deletedTags || []).slice();
+    var seenT = {}; var mergedT = [];
+    cloudTags.concat(localTags).forEach(function(t) {
+      if (!t || seenT[t] || deleted.indexOf(t) >= 0) return;
+      seenT[t] = true; mergedT.push(t);
+    });
+    S.allTags = mergedT;
+    // 本机有而云端没有的标签(且未被删除) -> 已登录则补传
+    var hasLocalOnlyT = localTags.some(function(t) { return t && cloudTags.indexOf(t) < 0 && deleted.indexOf(t) < 0; });
+    if (hasLocalOnlyT && S.adminToken) syncMetaToCloud();
+  }
+  // 分类顺序: 取 catOrderUpdatedAt 更新的一方(最近排序优先), 本机更新且已登录则补传
+  if (Array.isArray(d.catOrder)) {
+    var cloudAt = d.catOrderUpdatedAt || 0;
+    var localAt = S.catOrderUpdatedAt || 0;
+    if (cloudAt > localAt) {
+      S.catOrder = d.catOrder.slice();
+      S.catOrderUpdatedAt = cloudAt;
+    } else if (localAt > 0 && localAt > cloudAt && S.adminToken) {
+      syncMetaToCloud();
+    }
+  }
+  // 已删除分类: 云端+本机取并集(删除不可逆, 任何一端删过都不复活)
+  if (Array.isArray(d.deletedCats)) {
+    var seenD = {}; var mergedD = [];
+    (d.deletedCats || []).concat(S.deletedCats || []).forEach(function(id) {
+      if (id && !seenD[id]) { seenD[id] = true; mergedD.push(id); }
+    });
+    S.deletedCats = mergedD;
+  }
 }
 
 // 把分类/标签推送到云端 meta.json(管理员令牌鉴权, 最近写入优先; 防抖合并)
@@ -671,12 +694,16 @@ function syncMetaToCloud() {
 document.addEventListener('visibilitychange', function() { if (document.visibilityState === 'hidden') flushMetaNow(); });
 
 // Load the dynamic manifest (rewritten by the upload function after each upload).
-// 直读 raw(无构建延迟), 失败回退到嵌入数据.
+// 优先直读 raw(无构建延迟); 若 raw 被墙/超时(国内常见), 自动经腾讯云 SCF 中继读取(国内稳定),
+// 二者皆失败才退回嵌入数据 —— 杜绝"上传成功却看不到"因读取失败退回陈旧内置列表。
 (function loadManifest() {
   var url = rawManifestUrl() + '?t=' + Date.now(); // 实时缓存破坏, 永远拉最新
   fetch(url).then(function(r) { return r.json(); }).then(function(d) {
-    if (Array.isArray(d) && d.length) { FILES = d; renderSidebar(); renderMain(); }
-  }).catch(function() { /* keep embedded fallback */ });
+    if (Array.isArray(d) && d.length) { FILES = d; renderSidebar(); renderMain(); return; }
+    fetchManifestViaSCF(function(m) { if (m) { FILES = m; renderSidebar(); renderMain(); } });
+  }).catch(function() {
+    fetchManifestViaSCF(function(m) { if (m) { FILES = m; renderSidebar(); renderMain(); } });
+  });
 })();
 
 var S = {
@@ -734,7 +761,14 @@ function getAllFiles() {
   var uploaded = S.uploaded.map(function(f) {
     return {filename:f.name, title:f.title||f.name, size:f.size, mtime:f.mtime, category:f.category||'other', isUploaded:true, data:f.data};
   });
-  return FILES.concat(uploaded);
+  // 按文件名去重: 同一文件可能同时存在于云端 manifest 与本地兜底, 只显示一次
+  var seen = {}; var out = [];
+  FILES.concat(uploaded).forEach(function(f) {
+    if (!f || !f.filename) return;
+    if (seen[f.filename]) return;
+    seen[f.filename] = true; out.push(f);
+  });
+  return out;
 }
 
 function getFileCat(filename) {
@@ -1514,6 +1548,7 @@ function handleUpload(fileList) {
 
   result.innerHTML = '<p style="color:var(--muted)">正在上传 ' + files.length + ' 个文件到服务器...</p>';
   var done = 0, ok = 0, fail = [];
+  var uploadedEntries = []; // 收集本次成功上传的文件元数据, 用于本地兜底(即使 manifest 读取失败也能立即/刷新后可见)
 
   files.forEach(function(file) {
     var reader = new FileReader();
@@ -1528,31 +1563,46 @@ function handleUpload(fileList) {
       .then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); })
       .then(function(resp) {
         done++;
-        if (resp.ok) ok++;
-        else fail.push(file.name + ' (' + (resp.j.error || '失败') + ')');
-        if (done === files.length) finishUpload(result, ok, fail, bad);
+        if (resp.ok) {
+          ok++;
+          uploadedEntries.push({
+            name: file.name,
+            title: file.name.replace(/\.[^.]+$/, ''),
+            size: file.size,
+            mtime: Math.floor(Date.now() / 1000),
+            category: cat
+          });
+        } else fail.push(file.name + ' (' + (resp.j.error || '失败') + ')');
+        if (done === files.length) finishUpload(result, ok, fail, bad, uploadedEntries);
       })
       .catch(function(e) {
         done++;
         var msg = (e && e.message) ? e.message : '无法连接服务端';
         fail.push(file.name + ' (网络错误：' + msg + '｜请确认函数 URL 可达且未开启访问保护)');
-        if (done === files.length) finishUpload(result, ok, fail, bad);
+        if (done === files.length) finishUpload(result, ok, fail, bad, uploadedEntries);
       });
     };
     reader.readAsDataURL(file);
   });
 }
 
-function finishUpload(result, ok, fail, bad) {
+function finishUpload(result, ok, fail, bad, uploadedEntries) {
   var html = '';
   if (ok > 0) html += '<p style="color:var(--accent)">✓ 成功上传 ' + ok + ' 个文件到服务器</p>';
   fail.forEach(function(n) { html += '<p style="color:var(--danger)">✗ ' + esc(n) + '</p>'; });
   bad.forEach(function(f) { html += '<p style="color:var(--warning)">⚠ ' + esc(f.name) + ' - 不支持的格式</p>'; });
   html += '<p style="font-size:12px;color:var(--muted);margin-top:8px">文件已保存到 GitHub 仓库，列表将立即刷新。</p>';
   result.innerHTML = html;
+  // 本地兜底: 把本次成功上传写入 localStorage, 即使 manifest 读取失败(如 raw 被墙), 当前浏览器也能立即显示并在刷新后保留
+  if (uploadedEntries && uploadedEntries.length) {
+    var names = {};
+    (S.uploaded || []).forEach(function(u) { names[u.name] = true; });
+    uploadedEntries.forEach(function(u) { if (!names[u.name]) { S.uploaded.push(u); names[u.name] = true; } });
+    Save();
+  }
   renderSidebar();
   toast('上传完成');
-  // 立即从 raw 重新拉取 manifest(无 Pages 构建延迟), 上传的文件立刻可见
+  // 立即重新拉取 manifest(优先 raw, 失败经 SCF 中继), 上传的文件立刻可见
   refreshManifest(function() { renderSidebar(); renderMain(); });
 }
 
@@ -1932,11 +1982,33 @@ function adminApi(op, body) {
   }).then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); });
 }
 
-// 重新拉取 manifest(直读 raw, 永远最新), 用于上传/删除/恢复后即时刷新列表
+// 重新拉取 manifest(优先 raw, 失败经 SCF 中继), 用于上传/删除/恢复后即时刷新列表
 function refreshManifest(cb) {
   fetch(rawManifestUrl() + '?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(d) {
-    if (Array.isArray(d) && d.length) FILES = d;
-  }).catch(function() { /* 保留原数据 */ }).then(function() { if (cb) cb(); });
+    if (Array.isArray(d) && d.length) { FILES = d; if (cb) cb(); return; }
+    fetchManifestViaSCF(function(m) { if (m) FILES = m; if (cb) cb(); });
+  }).catch(function() {
+    fetchManifestViaSCF(function(m) { if (m) FILES = m; if (cb) cb(); });
+  });
+}
+
+// 经腾讯云 SCF 中继读取 manifest(国内稳定), 回调传入数组或 null
+function fetchManifestViaSCF(cb) {
+  try {
+    fetch(UPLOAD_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ op: 'getmanifest' }) })
+      .then(function(r) { return r.json(); }).then(function(j) {
+        if (j && j.ok && Array.isArray(j.data)) cb(j.data); else cb(null);
+      }).catch(function() { cb(null); });
+  } catch (e) { cb(null); }
+}
+// 经 SCF 中继读取 meta.json, 回调传入对象或 null
+function fetchMetaViaSCF(cb) {
+  try {
+    fetch(UPLOAD_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ op: 'getmeta' }) })
+      .then(function(r) { return r.json(); }).then(function(j) {
+        if (j && j.ok && j.data) cb(j.data); else cb(null);
+      }).catch(function() { cb(null); });
+  } catch (e) { cb(null); }
 }
 
 function renderAdminTrash() {

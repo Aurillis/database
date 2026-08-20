@@ -238,6 +238,27 @@ async function addToManifest(safeName, branch, content, meta) {
   await putManifest(data, m.sha, branch, 'manifest: add ' + safeName);
 }
 
+// ---------- 公开读取中继: 浏览器经本函数(腾讯云, 国内稳定)读取 manifest/meta ----------
+// 避免浏览器直连 raw.githubusercontent.com 被墙/超时导致退回陈旧内置列表、上传后看不到。
+// 数据为公开内容(本就经 Pages 公开), 无需用户令牌, 仅防来源非法。
+async function readRepoJson(path, branch) {
+  const res = await ghRequest('GET', '/contents/' + path + '?ref=' + branch);
+  if (res.status !== 200 || !res.json || !res.json.content) return null;
+  try { return JSON.parse(Buffer.from(res.json.content, 'base64').toString('utf8')); } catch (e) { return null; }
+}
+async function handleGetManifest(origin) {
+  const branch = env('GITHUB_BRANCH', 'main');
+  const data = await readRepoJson('manifest.json', branch);
+  if (!data) return send(404, { error: 'manifest 不存在' }, origin);
+  return send(200, { ok: true, data: data }, origin);
+}
+async function handleGetMeta(origin) {
+  const branch = env('GITHUB_BRANCH', 'main');
+  const data = await readRepoJson('meta.json', branch);
+  if (!data) return send(404, { error: 'meta 不存在' }, origin);
+  return send(200, { ok: true, data: data }, origin);
+}
+
 // ---------- 分类/标签等元数据(云端同步, meta.json) ----------
 async function getMeta(branch) {
   const res = await ghRequest('GET', '/contents/meta.json?ref=' + branch);
@@ -668,10 +689,15 @@ async function handleUpload(body, origin) {
       category: category || 'other',
     });
     const newContent = Buffer.from(JSON.stringify(manifest, null, 2), 'utf8').toString('base64');
-    await ghRequest('PUT', '/contents/manifest.json', {
+    const manPut = await ghRequest('PUT', '/contents/manifest.json', {
       message: 'manifest: add ' + safeName,
       content: newContent, sha: man.json.sha, branch: branch,
     });
+    // 关键: 必须检查 manifest 写入结果, 否则文件已落盘但索引未更新 -> 前端显示"上传成功"却永远查不到
+    if (manPut.status >= 300) {
+      const msg = (manPut.json && manPut.json.message) || manPut.status;
+      return send(500, { error: '文件已写入, 但更新索引(manifest)失败: ' + msg + '。请重试上传。' }, origin);
+    }
 
     return send(200, { ok: true }, origin);
   } catch (err) {
@@ -734,6 +760,10 @@ exports.main_handler = async (event, context) => {
   // put 需 admin 令牌 或 看板自带 editKey(凭此即可写回，无需先登录后台)。
   if (op === 'state') return await handleState(body, origin, event);
   if (op === 'injectcheck') return handleInjectCheck(origin);
+
+  // 公开读取中继(无需令牌)：浏览器经本函数在国内稳定读取 manifest/meta, 避免 raw 被墙/超时
+  if (op === 'getmanifest') return await handleGetManifest(origin);
+  if (op === 'getmeta') return await handleGetMeta(origin);
 
   // 其余操作必须令牌鉴权
   const authErr = requireAuth(event, origin);
