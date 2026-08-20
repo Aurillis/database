@@ -731,18 +731,34 @@ function getFileCat(filename) {
   return f ? f.category : 'other';
 }
 
-// 合并分类树: 内置 TREE + 自定义分类; 带 parentId 的自定义分类挂到对应父分类 children 下(成为二级分类), 否则作为顶级分类
+// 深拷贝内置分类树(避免 getTree 覆盖/排序时污染全局 TREE, 导致删除 override 无法恢复默认)
+function cloneTree() {
+  return TREE.map(function(c){
+    var n = { id: c.id, name: c.name, icon: c.icon || 'fas fa-folder' };
+    if (c.children) {
+      n.children = c.children.map(function(ch){
+        return { id: ch.id, name: ch.name, icon: ch.icon || 'fas fa-file' };
+      });
+    }
+    return n;
+  });
+}
+
+// 合并分类树: 内置 TREE(克隆) + 自定义分类; 带 parentId 的自定义分类挂到对应父分类 children 下(成为二级分类), 否则作为顶级分类;
+// customCats 中与内置分类同 id 的条目会覆盖内置(用于内置分类改名/换图标)
 function getTree() {
-  var tree = [];
-  TREE.forEach(function(c){ tree.push(c); });
+  var tree = cloneTree();
   (S.customCats || []).forEach(function(c){
     if (!c || !c.id) return;
-    if (tree.find(function(x){ return x.id === c.id; })) return; // 防重
+    var idx = tree.findIndex(function(x){ return x.id === c.id; });
+    if (idx >= 0) { tree[idx] = c; return; } // 覆盖内置顶级分类
     if (c.parentId) {
       var p = tree.find(function(x){ return x.id === c.parentId; });
       if (p) {
         if (!p.children) p.children = [];
-        if (!p.children.find(function(ch){ return ch.id === c.id; })) p.children.push(c);
+        var ci = p.children.findIndex(function(ch){ return ch.id === c.id; });
+        if (ci >= 0) { p.children[ci] = c; return; } // 覆盖内置二级分类
+        p.children.push(c);
         return;
       }
       // 父分类不存在: 退化为顶级分类
@@ -1709,15 +1725,17 @@ function addCategory() {
 }
 
 function editCategoryModal(catId) {
+  // 先在顶级分类中查找; 找不到再查二级分类(children) —— 二级分类不在顶级列表, 原逻辑提前 return 导致编辑没反应
   var cat = getTree().find(function(c){return c.id===catId});
+  if (!cat) {
+    getTree().forEach(function(c) {
+      if (c.children) {
+        var ch = c.children.find(function(ch){return ch.id===catId});
+        if (ch) cat = ch;
+      }
+    });
+  }
   if (!cat) return;
-  // Check if it's a child
-  getTree().forEach(function(c) {
-    if (c.children) {
-      var ch = c.children.find(function(ch){return ch.id===catId});
-      if (ch) cat = ch;
-    }
-  });
 
   showModal('编辑分类', `
     <input type="text" id="editCatName" value="${esc(cat.name)}">
@@ -1737,9 +1755,12 @@ function saveCategoryEdit(catId) {
   if (custom) {
     custom.name = name; custom.icon = icon; custom.updatedAt = Date.now();
   } else {
-    // 内置分类(id 硬编码在 TREE 中, 无法被 customCats 覆盖), 明确提示不支持修改
-    toast('内置分类不支持修改，请创建新分类', false);
-    return;
+    // 内置分类: 以同 id 的 override 存入 customCats(含父分类 id), getTree 会用其覆盖内置分类的名字/图标
+    var parentId = null;
+    getTree().forEach(function(c) {
+      if (c.children && c.children.find(function(ch){ return ch.id === catId; })) parentId = c.id;
+    });
+    S.customCats.push({id:catId, name:name, icon:icon||'fas fa-folder', parentId:parentId, updatedAt:Date.now()});
   }
   Save(); closeModal(); renderAdminCats(); renderSidebar();
   toast('分类已更新');
