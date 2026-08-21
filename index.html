@@ -1556,6 +1556,19 @@ function handleUpload(fileList) {
     return;
   }
 
+  // 客户端大小前置检查：避免大文件触发 API 网关/云函数超时，导致 cryptic 的 Failed to fetch
+  // (腾讯云 API 网关默认请求体约 6MB、云函数默认超时 3s；base64 会膨胀 33%，故保守阈值 4MB)
+  var MAX_CLIENT_BYTES = 4 * 1024 * 1024;
+  var tooBig = files.filter(function (f) { return f.size > MAX_CLIENT_BYTES; });
+  if (tooBig.length) {
+    var names = tooBig.map(function (f) {
+      return esc(f.name) + ' (' + (f.size / 1024 / 1024).toFixed(1) + 'MB)';
+    }).join('、');
+    result.innerHTML = '<p style="color:var(--danger)">⚠ 以下文件过大，当前服务器配置无法接收（约 4MB 以内）：<br>' + names + '</p>'
+      + '<p style="font-size:12px;color:var(--muted);margin-top:6px">处理办法：① 压缩/拆分该文件后重试；② 或联系管理员在腾讯云控制台调高「API 网关请求体大小」与「云函数超时时间」。</p>';
+    return;
+  }
+
   result.innerHTML = '<p style="color:var(--muted)">正在上传 ' + files.length + ' 个文件到服务器...</p>';
   var done = 0, ok = 0, fail = [];
   var uploadedEntries = []; // 收集本次成功上传的文件元数据, 用于本地兜底(即使 manifest 读取失败也能立即/刷新后可见)
@@ -1588,7 +1601,10 @@ function handleUpload(fileList) {
       .catch(function(e) {
         done++;
         var msg = (e && e.message) ? e.message : '无法连接服务端';
-        fail.push(file.name + ' (网络错误：' + msg + '｜请确认函数 URL 可达且未开启访问保护)');
+        var hint = (e && (e.name === 'TimeoutError' || (e.message && /timeout/i.test(e.message))))
+          ? '（疑似文件过大导致服务端处理超时）'
+          : '（疑似文件过大触及网关限额，或网络不稳定）';
+        fail.push(file.name + ' (网络错误：' + msg + hint + ')');
         if (done === files.length) finishUpload(result, ok, fail, bad, uploadedEntries);
       });
     };
