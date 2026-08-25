@@ -447,6 +447,13 @@ async function handleDelete(body, origin) {
     await ghRequest('PUT', '/contents/trash/meta/' + encodeURIComponent(entryId) + '.json', {
       message: 'trash meta: ' + safeName, content: metaContent, branch: branch,
     });
+    // 同步回收站索引(单文件), 让 listtrash 只需 1 次读取, 避免超时
+    try {
+      const idx = await readTrashIndex(branch);
+      const arr = idx.items || [];
+      arr.push({ entryId: entryId, originalFilename: safeName, deletedAt: Date.now(), title: meta && meta.title, category: meta && meta.category, size: meta && meta.size });
+      await writeTrashIndex(branch, arr, idx.sha);
+    } catch (e) { /* 索引失败不影响主流程 */ }
 
     // 从 reports/ 删除
     const delRes = await ghRequest('DELETE', filePath, { message: 'delete: ' + safeName, sha: sha, branch: branch });
@@ -461,14 +468,58 @@ async function handleDelete(body, origin) {
   }
 }
 
+// 回收站索引(单文件 trash/index.json): 让 listtrash 只需 1 次 GitHub 调用, 避免逐个读 meta 触发云函数 3s 超时
+async function readTrashIndex(branch) {
+  try {
+    const res = await ghRequest('GET', '/contents/trash/index.json?ref=' + branch);
+    if (res.status === 200 && res.json && res.json.content) {
+      const arr = JSON.parse(Buffer.from(res.json.content, 'base64').toString('utf8'));
+      if (Array.isArray(arr)) return { items: arr, sha: res.json.sha };
+    }
+  } catch (e) {}
+  return { items: null, sha: null };
+}
+async function writeTrashIndex(branch, items, sha) {
+  const body = { message: 'trash index update', content: Buffer.from(JSON.stringify(items, null, 2), 'utf8').toString('base64'), branch: branch };
+  if (sha) body.sha = sha;
+  const res = await ghRequest('PUT', '/contents/trash/index.json', body);
+  return res.status < 300;
+}
+
 // ---------- 列出回收站 ----------
 async function handleListTrash(body, origin) {
+  const branch = env('GITHUB_BRANCH', 'main');
+  try {
+    // 优先读单文件索引(仅 1 次 GitHub 调用, 避免逐个读 meta 触发云函数超时)
+    const idx = await readTrashIndex(branch);
+    if (idx.items) {
+      const items = idx.items.slice().sort(function (a, b) { return (b.deletedAt || 0) - (a.deletedAt || 0); });
+      return send(200, { ok: true, items: items }, origin);
+    }
+    // 兼容旧数据: 无索引文件时, 仅列目录(1 次 GitHub 调用)快速建索引, 避免逐个读 meta 触发云函数 3s 超时
+    // 此路径只拿到 entryId, 拿不到原始文件名等元数据; 用户点「重建索引」(rebuildTrashIndex) 可在拉长函数超时后补全
+    const res = await ghRequest('GET', '/contents/trash/meta?ref=' + branch);
+    if (res.status !== 200 || !Array.isArray(res.json)) return send(200, { ok: true, items: [] }, origin);
+    const items = res.json.filter(function (e) { return e.name && e.name.indexOf('.json') === e.name.length - 5; }).map(function (e) {
+      const entryId = e.name.replace(/\.json$/, '');
+      return { entryId: entryId, originalFilename: entryId, title: entryId, deletedAt: 0, category: 'other', size: 0 };
+    });
+    items.sort(function (a, b) { return (b.deletedAt || 0) - (a.deletedAt || 0); });
+    try { await writeTrashIndex(branch, items, null); } catch (e) { /* 回退路径下写索引失败不致命 */ }
+    return send(200, { ok: true, items: items }, origin);
+  } catch (err) {
+    return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
+  }
+}
+
+// 重建回收站索引: 完整扫描 trash/meta(逐个读 meta), 拿到真实文件名/分类/大小后写回单文件索引
+// 注意: 逐个读 meta 调用次数 = 文件数+1, 可能超过云函数默认 3s 超时; 请在腾讯云控制台把函数「超时时间」调到 60s 后再点「重建索引」
+async function handleRebuildTrashIndex(body, origin) {
   const branch = env('GITHUB_BRANCH', 'main');
   try {
     const res = await ghRequest('GET', '/contents/trash/meta?ref=' + branch);
     if (res.status !== 200 || !Array.isArray(res.json)) return send(200, { ok: true, items: [] }, origin);
     const items = [];
-    // meta 目录文件通常很少, 逐一读取可接受的请求量
     for (const e of res.json) {
       if (!e.name || e.name.indexOf('.json') !== e.name.length - 5) continue;
       const mRes = await ghRequest('GET', '/contents/trash/meta/' + encodeURIComponent(e.name) + '?ref=' + branch);
@@ -486,9 +537,10 @@ async function handleListTrash(body, origin) {
       } catch (err) { /* 跳过坏数据 */ }
     }
     items.sort(function (a, b) { return (b.deletedAt || 0) - (a.deletedAt || 0); });
+    try { await writeTrashIndex(branch, items, null); } catch (e) { /* 写索引失败不致命, 仍返回本次扫描结果 */ }
     return send(200, { ok: true, items: items }, origin);
   } catch (err) {
-    return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
+    return send(500, { error: '重建索引失败（可能因云函数 3s 超时，请在腾讯云控制台把函数「超时时间」调到 60s 后重试）：' + (err && err.message ? err.message : err) }, origin);
   }
 }
 
@@ -526,6 +578,11 @@ async function handleRestore(body, origin) {
     const mSha = (mRes.json && mRes.json.sha) || null;
     await ghRequest('DELETE', '/contents/trash/reports/' + encodeURIComponent(entryId), { message: 'purge trash: ' + entryId, sha: tSha, branch: branch });
     if (mSha) await ghRequest('DELETE', '/contents/trash/meta/' + encodeURIComponent(entryId) + '.json', { message: 'purge trash meta', sha: mSha, branch: branch });
+    // 从回收站索引移除
+    try {
+      const idx = await readTrashIndex(branch);
+      if (idx.items) { const arr = idx.items.filter(function (x) { return x.entryId !== entryId; }); await writeTrashIndex(branch, arr, idx.sha); }
+    } catch (e) { /* 索引失败不影响主流程 */ }
 
     return send(200, { ok: true }, origin);
   } catch (err) {
@@ -547,6 +604,11 @@ async function handlePurge(body, origin) {
     if (mRes.status === 200 && mRes.json && mRes.json.sha) {
       await ghRequest('DELETE', '/contents/trash/meta/' + encodeURIComponent(entryId) + '.json', { message: 'purge meta: ' + entryId, sha: mRes.json.sha, branch: branch });
     }
+    // 从回收站索引移除
+    try {
+      const idx = await readTrashIndex(branch);
+      if (idx.items) { const arr = idx.items.filter(function (x) { return x.entryId !== entryId; }); await writeTrashIndex(branch, arr, idx.sha); }
+    } catch (e) { /* 索引失败不影响主流程 */ }
     return send(200, { ok: true }, origin);
   } catch (err) {
     return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
@@ -572,6 +634,8 @@ async function handlePurgeAll(body, origin) {
       }
       count++;
     }
+    // 清空回收站索引
+    try { await writeTrashIndex(branch, [], null); } catch (e) { /* 忽略 */ }
     return send(200, { ok: true, count: count }, origin);
   } catch (err) {
     return send(500, { error: '服务器错误: ' + (err && err.message ? err.message : err) }, origin);
@@ -772,6 +836,7 @@ exports.main_handler = async (event, context) => {
   if (op === 'upload') return await handleUpload(body, origin);
   if (op === 'delete') return await handleDelete(body, origin);
   if (op === 'listtrash') return await handleListTrash(body, origin);
+  if (op === 'rebuildTrashIndex') return await handleRebuildTrashIndex(body, origin);
   if (op === 'restore') return await handleRestore(body, origin);
   if (op === 'purge') return await handlePurge(body, origin);
   if (op === 'purgeall') return await handlePurgeAll(body, origin);

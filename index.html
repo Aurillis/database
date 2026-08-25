@@ -1352,7 +1352,7 @@ document.getElementById('adminLoginBtn').addEventListener('click', function() {
       S.adminToken = resp.j.token;
       S.isAdmin = true;
       loadMeta(); // 登录后刷新云端分类/标签(若其他设备改过)
-      loadTrashItems(function(){}); // 预热回收站缓存，进入文件管理时秒开
+      loadTrashItems(function(items){ ADMIN_FILES.deleted = items || []; if (typeof renderAdminFiles === 'function') renderAdminFiles(); }); // 登录后立即拉回收站并刷新(若已打开文件管理)
       try { localStorage.setItem('kb_admin_token', S.adminToken); } catch(e) {}
       document.getElementById('adminLogin').classList.remove('show');
       document.getElementById('adminPwdInput').value = '';
@@ -1696,31 +1696,63 @@ function renderAdminFiles() {
 // _trashState: init|loading|ok|unauthorized|error —— 用于「已删除」tab 透明展示加载/登录状态, 不再静默显示 0
 var _trashCache = { ts: 0, items: [], authorized: false };
 var _trashState = 'init';
+var _trashError = '';
+// 回收站加载: 失败会显示具体原因(401/超时/网络/服务端错误), 并提供「重试」与「登录」两个出口, 不再无声失败
 function loadTrashItems(cb) {
+  // 未登录: 直接走「需登录」, 避免带 undefined token 的请求在某些浏览器被网络层拒绝(status 0)而误报「加载失败」
+  if (!S.adminToken) { _trashState = 'unauthorized'; _trashError = ''; if (cb) cb([]); return; }
   var now = Date.now();
-  if (_trashCache.ts && now - _trashCache.ts < 60000 && _trashCache.authorized) { _trashState = 'ok'; cb(_trashCache.items); return; }
-  _trashState = 'loading';
+  if (_trashCache.ts && now - _trashCache.ts < 60000 && _trashCache.authorized) { _trashState = 'ok'; if (cb) cb(_trashCache.items); return; }
+  _trashState = 'loading'; if (cb) paintAdminFiles(); // 立即显示「加载中」, 重试也有即时反馈
   var settled = false;
   var timer = setTimeout(function() {
     if (settled) return; settled = true;
     _trashState = _trashCache.authorized ? 'ok' : 'error';
-    cb(_trashCache.authorized ? _trashCache.items : []);
-  }, 5000);
+    if (!_trashCache.authorized) _trashError = '加载超时（8 秒内服务端未响应，通常是云函数超时或网络较慢；可在腾讯云控制台把函数「超时时间」调到 60s）';
+    if (cb) cb(_trashCache.authorized ? _trashCache.items : []);
+  }, 8000);
   adminApi('listtrash', {}).then(function(resp) {
     if (settled) return; settled = true; clearTimeout(timer);
-    if (resp.status === 401) { onTokenExpired(); _trashState = 'unauthorized'; _trashCache = { ts: 0, items: [], authorized: false }; cb([]); return; }
+    if (resp.status === 401) { onTokenExpired(); _trashState = 'unauthorized'; _trashError = ''; _trashCache = { ts: 0, items: [], authorized: false }; if (cb) cb([]); return; }
     if (resp.ok && resp.j && resp.j.ok) {
       var items = resp.j.items || [];
       _trashCache = { ts: Date.now(), items: items, authorized: true };
-      _trashState = 'ok'; cb(items);
+      _trashState = 'ok'; _trashError = ''; if (cb) cb(items);
     } else {
       _trashState = 'error'; _trashCache.authorized = false; // 其他错误(网络/5xx): 不污染时间缓存
-      cb(_trashCache.authorized ? _trashCache.items : []);
+      _trashError = '服务端返回错误（HTTP ' + (resp.status || '?') + '）：' + ((resp.j && resp.j.error) || '未知错误');
+      if (cb) cb([]);
     }
   }).catch(function() {
     if (settled) return; settled = true; clearTimeout(timer);
-    _trashState = _trashCache.authorized ? 'ok' : 'error';
-    cb(_trashCache.authorized ? _trashCache.items : []);
+    _trashState = 'error';
+    _trashError = '网络错误：无法连接服务端（请检查网络 / 浏览器扩展是否拦截了该请求，或确认函数 URL 可达）';
+    if (cb) cb([]);
+  });
+}
+// 重试回收站: 立即给「加载中」反馈, 再重新拉取(清空旧错误)
+function retryTrash() {
+  _trashState = 'loading'; _trashError = '';
+  paintAdminFiles();
+  loadTrashItems(function(items) { ADMIN_FILES.deleted = items || []; paintAdminFiles(); });
+}
+
+// 重建回收站索引: 调 SCF 完整扫描 trash/meta 补全真实文件名/分类/大小(需先把云函数超时调到 60s, 否则可能 3s 掐断)
+function rebuildTrashIndex() {
+  if (!S.adminToken) { openTrashLogin(); return; }
+  _trashState = 'loading'; _trashError = ''; paintAdminFiles();
+  adminApi('rebuildTrashIndex', {}).then(function(resp) {
+    if (resp.status === 401) { onTokenExpired(); _trashState = 'unauthorized'; paintAdminFiles(); return; }
+    if (resp.ok && resp.j && resp.j.ok) {
+      var items = resp.j.items || [];
+      _trashCache = { ts: Date.now(), items: items, authorized: true };
+      _trashState = 'ok'; ADMIN_FILES.deleted = items; paintAdminFiles();
+      if (typeof toast === 'function') toast('回收站索引已重建，已补全文件名', 'success');
+    } else {
+      _trashState = 'error'; _trashError = (resp.j && resp.j.error) || '重建失败'; paintAdminFiles();
+    }
+  }).catch(function() {
+    _trashState = 'error'; _trashError = '重建失败：网络错误，请确认函数 URL 可达'; paintAdminFiles();
   });
 }
 
@@ -1744,8 +1776,10 @@ function paintAdminFiles() {
 
   var bar = '<div class="af-bar">' +
     '<div class="af-filters">' + tabHtml + '</div>' +
+    '<div class="af-bar-actions">' +
+    (filter === 'deleted' && _trashState === 'ok' ? '<button class="btn btn-sm btn-ghost" onclick="rebuildTrashIndex()" title="补全被回收文件的真实文件名/分类/大小（需先把云函数超时调到 60s）"><i class="fas fa-sync"></i> 重建索引</button>' : '') +
     (deleted.length ? '<button class="btn btn-sm btn-danger" onclick="purgeAllTrash()"><i class="fas fa-trash"></i> 清空回收站</button>' : '') +
-    '</div>';
+    '</div></div>';
 
   var rows = '';
   if (filter !== 'deleted') {
@@ -1772,7 +1806,15 @@ function paintAdminFiles() {
       if (_trashState === 'unauthorized') {
         rows += '<tr><td colspan="7" style="text-align:center;padding:28px"><div style="color:var(--muted);margin-bottom:10px">🔒 回收站需登录后台才能查看</div><button class="btn btn-sm btn-primary" onclick="openTrashLogin()">登录查看已删除文件</button></td></tr>';
       } else if (_trashState === 'error') {
-        rows += '<tr><td colspan="7" style="text-align:center;padding:28px"><div style="color:var(--muted);margin-bottom:10px">⚠️ 回收站加载失败</div><button class="btn btn-sm btn-primary" onclick="loadTrashItems(function(items){ADMIN_FILES.deleted=items||[];paintAdminFiles();})">重试</button></td></tr>';
+        rows += '<tr><td colspan="7" style="text-align:center;padding:28px">';
+        rows += '<div style="color:var(--danger);margin-bottom:8px">⚠️ 回收站加载失败</div>';
+        rows += '<div style="font-size:12px;color:var(--muted);max-width:460px;margin:0 auto 12px;line-height:1.5">' + esc(_trashError || '未知错误') + '</div>';
+        rows += '<div style="display:flex;gap:8px;justify-content:center">';
+        rows += '<button class="btn btn-sm btn-primary" onclick="retryTrash()">重试</button>';
+        rows += '<button class="btn btn-sm btn-ghost" onclick="rebuildTrashIndex()" title="完整扫描回收站补全文件名（需先把云函数超时调到 60s）"><i class="fas fa-sync"></i> 重建索引</button>';
+        rows += '<button class="btn btn-sm btn-ghost" onclick="openTrashLogin()">登录 / 重新登录</button>';
+        rows += '</div></td></tr>';
+      }
       } else {
         rows += '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">⟳ 回收站加载中…</td></tr>';
       }
