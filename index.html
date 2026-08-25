@@ -711,10 +711,10 @@ document.addEventListener('visibilitychange', function() { if (document.visibili
 (function loadManifest() {
   var url = rawManifestUrl() + '?t=' + Date.now(); // 实时缓存破坏, 永远拉最新
   fetch(url).then(function(r) { return r.json(); }).then(function(d) {
-    if (Array.isArray(d) && d.length) { FILES = d; renderSidebar(); renderMain(); return; }
-    fetchManifestViaSCF(function(m) { if (m) { FILES = m; renderSidebar(); renderMain(); } });
+    if (Array.isArray(d) && d.length) { FILES = d; renderSidebar(); renderMain(); pruneGhostUploads(); return; }
+    fetchManifestViaSCF(function(m) { if (m) { FILES = m; renderSidebar(); renderMain(); pruneGhostUploads(); } });
   }).catch(function() {
-    fetchManifestViaSCF(function(m) { if (m) { FILES = m; renderSidebar(); renderMain(); } });
+    fetchManifestViaSCF(function(m) { if (m) { FILES = m; renderSidebar(); renderMain(); pruneGhostUploads(); } });
   });
 })();
 
@@ -769,18 +769,58 @@ function fmtDate(ts) { var d=new Date(ts*1000); var p=function(n){return String(
 function fmtSize(b) { if(b<1048576) return Math.round(b/1024)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
 function toast(msg) { var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show')},2500); }
 
+// 文件名安全过滤：必须与后端 scf/index.js 的 safeNameOf 保持一致。
+// 后端上传时会把非法字符（中文破折号 ——、书名号、《》、&、空格外的标点等）替换为 _，
+// 因此 GitHub 实际文件名与本地原始名可能不同；前端统一按此规则归一，避免"同名两条 / 一条 404"。
+function safeNameOf(filename) {
+  return String(filename)
+    .replace(/[^\w.\-\u4e00-\u9fa5 ()]/g, '_')
+    .replace(/^\.+/, '')
+    .slice(0, 200);
+}
+
 function getAllFiles() {
+  var sf = safeNameOf;
   var uploaded = S.uploaded.map(function(f) {
     return {filename:f.name, title:f.title||f.name, size:f.size, mtime:f.mtime, category:f.category||'other', isUploaded:true, data:f.data};
   });
-  // 按文件名去重: 同一文件可能同时存在于云端 manifest 与本地兜底, 只显示一次
-  var seen = {}; var out = [];
-  FILES.concat(uploaded).forEach(function(f) {
+  // 云端优先：先放 manifest 条目，并标记其原始名 + 安全名（云端采用的安全化文件名）
+  var seen = {};       // 原始 filename
+  var seenSafe = {};   // safeNameOf(filename)
+  var out = [];
+  (FILES||[]).forEach(function(f) {
     if (!f || !f.filename) return;
     if (seen[f.filename]) return;
-    seen[f.filename] = true; out.push(f);
+    seen[f.filename] = true; seenSafe[sf(f.filename)] = true;
+    out.push(f);
+  });
+  // 本地兜底：原始名重复 或 安全名已被云端占用(说明云端有同名真实文件) → 视为重复, 跳过(避免脏数据 / 404)
+  uploaded.forEach(function(f) {
+    if (!f || !f.filename) return;
+    if (seen[f.filename]) return;
+    if (seenSafe[sf(f.filename)]) return;
+    seen[f.filename] = true; seenSafe[sf(f.filename)] = true;
+    out.push(f);
   });
   return out;
+}
+
+// 自愈：清理本地兜底 S.uploaded 中"被后端安全化改名"产生的脏数据（其安全名已在云端 manifest 中存在）。
+// 仅清理 原始名≠安全名 的条目（即确实被后端改过名的），正常合法文件名(原始名==安全名)的兜底保留, 不误删。
+function pruneGhostUploads() {
+  if (!S.uploaded || !S.uploaded.length) return;
+  var cloudSafe = {};
+  (FILES||[]).forEach(function(f){ if (f && f.filename) cloudSafe[safeNameOf(f.filename)] = true; });
+  var before = S.uploaded.length;
+  S.uploaded = S.uploaded.filter(function(u) {
+    if (!u || !u.name) return false;
+    var safe = safeNameOf(u.name);
+    if (cloudSafe[safe] && u.name !== safe) return false; // 云端已有同名真实文件且本名曾被改名 → 丢弃
+    return true;
+  });
+  if (S.uploaded.length !== before) {
+    try { localStorage.setItem('kb_uploaded', JSON.stringify(S.uploaded)); } catch (e) {}
+  }
 }
 
 function getFileCat(filename) {
@@ -1589,9 +1629,10 @@ function handleUpload(fileList) {
         done++;
         if (resp.ok) {
           ok++;
+          var upName = safeNameOf(file.name);
           uploadedEntries.push({
-            name: file.name,
-            title: file.name.replace(/\.[^.]+$/, ''),
+            name: upName,
+            title: upName.replace(/\.[^.]+$/, ''),
             size: file.size,
             mtime: Math.floor(Date.now() / 1000),
             category: cat
@@ -2101,10 +2142,10 @@ function adminApi(op, body) {
 // 重新拉取 manifest(优先 raw, 失败经 SCF 中继), 用于上传/删除/恢复后即时刷新列表
 function refreshManifest(cb) {
   fetch(rawManifestUrl() + '?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(d) {
-    if (Array.isArray(d) && d.length) { FILES = d; if (cb) cb(); return; }
-    fetchManifestViaSCF(function(m) { if (m) FILES = m; if (cb) cb(); });
+    if (Array.isArray(d) && d.length) { FILES = d; pruneGhostUploads(); if (cb) cb(); return; }
+    fetchManifestViaSCF(function(m) { if (m) FILES = m; pruneGhostUploads(); if (cb) cb(); });
   }).catch(function() {
-    fetchManifestViaSCF(function(m) { if (m) FILES = m; if (cb) cb(); });
+    fetchManifestViaSCF(function(m) { if (m) FILES = m; pruneGhostUploads(); if (cb) cb(); });
   });
 }
 
