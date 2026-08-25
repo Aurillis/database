@@ -1693,28 +1693,33 @@ function renderAdminFiles() {
 
 // 回收站列表：带 60s 缓存 + 5s 超时兜底，永不阻塞在线文件渲染
 // 关键: 401/失败绝不写缓存(否则会污染 60s, 导致重新登录后仍显示空), 仅成功(已授权)才缓存
+// _trashState: init|loading|ok|unauthorized|error —— 用于「已删除」tab 透明展示加载/登录状态, 不再静默显示 0
 var _trashCache = { ts: 0, items: [], authorized: false };
+var _trashState = 'init';
 function loadTrashItems(cb) {
   var now = Date.now();
-  if (_trashCache.ts && now - _trashCache.ts < 60000 && _trashCache.authorized) { cb(_trashCache.items); return; }
+  if (_trashCache.ts && now - _trashCache.ts < 60000 && _trashCache.authorized) { _trashState = 'ok'; cb(_trashCache.items); return; }
+  _trashState = 'loading';
   var settled = false;
   var timer = setTimeout(function() {
     if (settled) return; settled = true;
-    cb(_trashCache.authorized ? _trashCache.items : []); // 超时: 仅在有成功缓存时兜底, 否则不污染
+    _trashState = _trashCache.authorized ? 'ok' : 'error';
+    cb(_trashCache.authorized ? _trashCache.items : []);
   }, 5000);
   adminApi('listtrash', {}).then(function(resp) {
     if (settled) return; settled = true; clearTimeout(timer);
-    if (resp.status === 401) { onTokenExpired(); _trashCache = { ts: 0, items: [], authorized: false }; cb([]); return; }
+    if (resp.status === 401) { onTokenExpired(); _trashState = 'unauthorized'; _trashCache = { ts: 0, items: [], authorized: false }; cb([]); return; }
     if (resp.ok && resp.j && resp.j.ok) {
       var items = resp.j.items || [];
       _trashCache = { ts: Date.now(), items: items, authorized: true };
-      cb(items);
+      _trashState = 'ok'; cb(items);
     } else {
-      _trashCache.authorized = false; // 其他错误(网络/5xx): 不污染时间缓存, 用上次成功结果兜底
+      _trashState = 'error'; _trashCache.authorized = false; // 其他错误(网络/5xx): 不污染时间缓存
       cb(_trashCache.authorized ? _trashCache.items : []);
     }
   }).catch(function() {
     if (settled) return; settled = true; clearTimeout(timer);
+    _trashState = _trashCache.authorized ? 'ok' : 'error';
     cb(_trashCache.authorized ? _trashCache.items : []);
   });
 }
@@ -1730,7 +1735,7 @@ function paintAdminFiles() {
   var tabs = [
     { key: 'all', label: '全部', count: active.length + deleted.length },
     { key: 'online', label: '在线', count: active.length },
-    { key: 'deleted', label: '已删除', count: deleted.length }
+    { key: 'deleted', label: '已删除', count: _trashState === 'unauthorized' ? '🔒' : deleted.length }
   ];
   var tabHtml = tabs.map(function(t) {
     var on = filter === t.key;
@@ -1763,21 +1768,31 @@ function paintAdminFiles() {
     });
   }
   if (filter !== 'online') {
-    deleted.forEach(function(it) {
-      var dt = it.deletedAt ? new Date(it.deletedAt).toLocaleString('zh-CN') : '';
-      rows += '<tr class="af-del-row">';
-      rows += '<td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span style="text-decoration:line-through">'+esc(it.title || it.originalFilename)+'</span></td>';
-      rows += '<td><span class="af-badge deleted">已删除</span></td>';
-      rows += '<td>'+esc(catName(it.category || 'other'))+'</td>';
-      rows += '<td><span class="fmt-badge" style="background:'+fmtColor(it.originalFilename)+'1a;color:'+fmtColor(it.originalFilename)+'">'+fileFmt(it.originalFilename)+'</span></td>';
-      rows += '<td>'+fmtSize(it.size)+'</td>';
-      rows += '<td>'+dt+'</td>';
-      rows += '<td><div class="actions">';
-      rows += '<button class="act-btn" title="恢复" onclick="restoreFile(\''+esc(it.entryId)+'\')"><i class="fas fa-undo"></i></button>';
-      rows += '<button class="act-btn danger" title="彻底删除" onclick="purgeFile(\''+esc(it.entryId)+'\')"><i class="fas fa-times"></i></button>';
-      rows += '</div></td>';
-      rows += '</tr>';
-    });
+    if (filter === 'deleted' && _trashState !== 'ok') {
+      if (_trashState === 'unauthorized') {
+        rows += '<tr><td colspan="7" style="text-align:center;padding:28px"><div style="color:var(--muted);margin-bottom:10px">🔒 回收站需登录后台才能查看</div><button class="btn btn-sm btn-primary" onclick="openTrashLogin()">登录查看已删除文件</button></td></tr>';
+      } else if (_trashState === 'error') {
+        rows += '<tr><td colspan="7" style="text-align:center;padding:28px"><div style="color:var(--muted);margin-bottom:10px">⚠️ 回收站加载失败</div><button class="btn btn-sm btn-primary" onclick="loadTrashItems(function(items){ADMIN_FILES.deleted=items||[];paintAdminFiles();})">重试</button></td></tr>';
+      } else {
+        rows += '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">⟳ 回收站加载中…</td></tr>';
+      }
+    } else {
+      deleted.forEach(function(it) {
+        var dt = it.deletedAt ? new Date(it.deletedAt).toLocaleString('zh-CN') : '';
+        rows += '<tr class="af-del-row">';
+        rows += '<td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span style="text-decoration:line-through">'+esc(it.title || it.originalFilename)+'</span></td>';
+        rows += '<td><span class="af-badge deleted">已删除</span></td>';
+        rows += '<td>'+esc(catName(it.category || 'other'))+'</td>';
+        rows += '<td><span class="fmt-badge" style="background:'+fmtColor(it.originalFilename)+'1a;color:'+fmtColor(it.originalFilename)+'">'+fileFmt(it.originalFilename)+'</span></td>';
+        rows += '<td>'+fmtSize(it.size)+'</td>';
+        rows += '<td>'+dt+'</td>';
+        rows += '<td><div class="actions">';
+        rows += '<button class="act-btn" title="恢复" onclick="restoreFile(\''+esc(it.entryId)+'\')"><i class="fas fa-undo"></i></button>';
+        rows += '<button class="act-btn danger" title="彻底删除" onclick="purgeFile(\''+esc(it.entryId)+'\')"><i class="fas fa-times"></i></button>';
+        rows += '</div></td>';
+        rows += '</tr>';
+      });
+    }
   }
 
   var table = '<table class="admin-table"><thead><tr><th>文件名</th><th>状态</th><th>分类</th><th>格式</th><th>大小</th><th>日期</th><th>操作</th></tr></thead><tbody>' +
@@ -2148,6 +2163,11 @@ function onTokenExpired() {
   if (typeof toast === 'function') toast('后台登录已过期，请重新登录', 'error');
   var box = document.getElementById('adminLogin');
   if (box && !box.classList.contains('show')) box.classList.add('show');
+}
+// 「已删除」tab 内的一键登录: 弹出登录框并强制置顶(避免被后台面板遮挡)
+function openTrashLogin() {
+  var box = document.getElementById('adminLogin');
+  if (box) { box.classList.add('show'); box.style.zIndex = 99999; var i = document.getElementById('adminPwdInput'); if (i) i.focus(); }
 }
 function adminApi(op, body) {
   return fetch(UPLOAD_API, {
