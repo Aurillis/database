@@ -1692,23 +1692,30 @@ function renderAdminFiles() {
 }
 
 // 回收站列表：带 60s 缓存 + 5s 超时兜底，永不阻塞在线文件渲染
-var _trashCache = { ts: 0, items: [] };
+// 关键: 401/失败绝不写缓存(否则会污染 60s, 导致重新登录后仍显示空), 仅成功(已授权)才缓存
+var _trashCache = { ts: 0, items: [], authorized: false };
 function loadTrashItems(cb) {
   var now = Date.now();
-  if (_trashCache.ts && now - _trashCache.ts < 60000) { cb(_trashCache.items); return; }
+  if (_trashCache.ts && now - _trashCache.ts < 60000 && _trashCache.authorized) { cb(_trashCache.items); return; }
   var settled = false;
   var timer = setTimeout(function() {
     if (settled) return; settled = true;
-    cb(_trashCache.items.length ? _trashCache.items : []); // 超时先用缓存/空，不卡列表
+    cb(_trashCache.authorized ? _trashCache.items : []); // 超时: 仅在有成功缓存时兜底, 否则不污染
   }, 5000);
   adminApi('listtrash', {}).then(function(resp) {
     if (settled) return; settled = true; clearTimeout(timer);
-    var items = (resp.ok && resp.j && resp.j.ok) ? (resp.j.items || []) : [];
-    _trashCache = { ts: Date.now(), items: items };
-    cb(items);
+    if (resp.status === 401) { onTokenExpired(); _trashCache = { ts: 0, items: [], authorized: false }; cb([]); return; }
+    if (resp.ok && resp.j && resp.j.ok) {
+      var items = resp.j.items || [];
+      _trashCache = { ts: Date.now(), items: items, authorized: true };
+      cb(items);
+    } else {
+      _trashCache.authorized = false; // 其他错误(网络/5xx): 不污染时间缓存, 用上次成功结果兜底
+      cb(_trashCache.authorized ? _trashCache.items : []);
+    }
   }).catch(function() {
     if (settled) return; settled = true; clearTimeout(timer);
-    cb(_trashCache.items.length ? _trashCache.items : []);
+    cb(_trashCache.authorized ? _trashCache.items : []);
   });
 }
 
