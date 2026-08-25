@@ -1715,8 +1715,9 @@ function loadTrashItems(cb) {
 function paintAdminFiles() {
   var c = document.getElementById('adminContent');
   if (!c) return;
-  var active = ADMIN_FILES.active || [];
-  var deleted = ADMIN_FILES.deleted || [];
+  // 默认按「最新修改时间」倒序: 最新上传/更新的文件排在最上面
+  var active = (ADMIN_FILES.active || []).slice().sort(function(a,b){ return (b.mtime||0) - (a.mtime||0); });
+  var deleted = (ADMIN_FILES.deleted || []).slice().sort(function(a,b){ return (Date.parse(b.deletedAt)||0) - (Date.parse(a.deletedAt)||0); });
   var filter = adminFilesFilter;
 
   var tabs = [
