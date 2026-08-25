@@ -2132,12 +2132,27 @@ function deleteFile(filename) {
 }
 
 // 统一的后台 API 调用(携带管理员令牌)
+// 后台令牌 24h 过期: 过期时 adminApi 会收到 401, 统一提示重新登录(避免静默失败让用户误以为"没有已删除文件")
+var _tokenExpiredNotified = 0;
+function onTokenExpired() {
+  var now = Date.now();
+  if (now - _tokenExpiredNotified < 8000) return; // 防抖: 同一会话多次操作不刷屏
+  _tokenExpiredNotified = now;
+  if (typeof toast === 'function') toast('后台登录已过期，请重新登录', 'error');
+  var box = document.getElementById('adminLogin');
+  if (box && !box.classList.contains('show')) box.classList.add('show');
+}
 function adminApi(op, body) {
   return fetch(UPLOAD_API, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-admin-token': S.adminToken },
     body: JSON.stringify(Object.assign({ op: op }, body || {}))
-  }).then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); });
+  }).then(function(r) {
+    return r.json().then(function(j) {
+      if (r.status === 401) onTokenExpired(); // 令牌失效: 弹登录框 + 提示
+      return { ok: r.ok, status: r.status, j: j };
+    }).catch(function() { return { ok: r.ok, status: r.status, j: {} }; });
+  }).catch(function() { return { ok: false, status: 0, j: {} }; });
 }
 
 // 重新拉取 manifest(优先 raw, 失败经 SCF 中继), 用于上传/删除/恢复后即时刷新列表
