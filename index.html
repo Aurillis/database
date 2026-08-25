@@ -1312,6 +1312,7 @@ document.getElementById('adminLoginBtn').addEventListener('click', function() {
       S.adminToken = resp.j.token;
       S.isAdmin = true;
       loadMeta(); // 登录后刷新云端分类/标签(若其他设备改过)
+      loadTrashItems(function(){}); // 预热回收站缓存，进入文件管理时秒开
       try { localStorage.setItem('kb_admin_token', S.adminToken); } catch(e) {}
       document.getElementById('adminLogin').classList.remove('show');
       document.getElementById('adminPwdInput').value = '';
@@ -1639,16 +1640,34 @@ var adminFilesFilter = 'all'; // all | online | deleted
 
 function renderAdminFiles() {
   var c = document.getElementById('adminContent');
-  c.innerHTML = '<p style="color:var(--muted);font-size:13px;padding:8px 0">正在加载文件…</p>';
-  // 在线文件来自本地(manifest+兜底)；已删除来自回收站(listtrash)
+  // 在线文件来自本地(manifest+兜底)，立即渲染，不被 SCF 请求阻塞(否则要等 2~4s 才显示)
+  ADMIN_FILES.active = getAllFiles();
+  paintAdminFiles();
+  // 异步拉回收站(带缓存+超时兜底)，回来再补一次；绝不拖慢在线列表
+  loadTrashItems(function(items) {
+    ADMIN_FILES.deleted = items || [];
+    paintAdminFiles();
+  });
+}
+
+// 回收站列表：带 60s 缓存 + 5s 超时兜底，永不阻塞在线文件渲染
+var _trashCache = { ts: 0, items: [] };
+function loadTrashItems(cb) {
+  var now = Date.now();
+  if (_trashCache.ts && now - _trashCache.ts < 60000) { cb(_trashCache.items); return; }
+  var settled = false;
+  var timer = setTimeout(function() {
+    if (settled) return; settled = true;
+    cb(_trashCache.items.length ? _trashCache.items : []); // 超时先用缓存/空，不卡列表
+  }, 5000);
   adminApi('listtrash', {}).then(function(resp) {
-    ADMIN_FILES.active = getAllFiles();
-    ADMIN_FILES.deleted = (resp.ok && resp.j && resp.j.ok) ? (resp.j.items || []) : [];
-    paintAdminFiles();
+    if (settled) return; settled = true; clearTimeout(timer);
+    var items = (resp.ok && resp.j && resp.j.ok) ? (resp.j.items || []) : [];
+    _trashCache = { ts: Date.now(), items: items };
+    cb(items);
   }).catch(function() {
-    ADMIN_FILES.active = getAllFiles();
-    ADMIN_FILES.deleted = [];
-    paintAdminFiles();
+    if (settled) return; settled = true; clearTimeout(timer);
+    cb(_trashCache.items.length ? _trashCache.items : []);
   });
 }
 
