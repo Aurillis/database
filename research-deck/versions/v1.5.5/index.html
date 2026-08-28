@@ -93,8 +93,7 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   .loader h2{font-size:19px}
   .loader p{color:var(--muted);font-size:13.5px;margin-top:6px}
-  .prog{margin:14px auto 0;max-width:520px;text-align:left}
-  .prog-warn{font-size:12.5px;color:var(--navy-2);background:#FEF9EC;border:1px solid #F5E3B8;border-radius:9px;padding:9px 12px;margin:14px auto 0;text-align:left;line-height:1.5}
+  .prog{margin:30px auto 0;max-width:520px;text-align:left}
   .prow{display:flex;align-items:center;gap:12px;padding:9px 0;font-size:13.5px;color:var(--muted)}
   .prow .spin2{width:15px;height:15px;border-radius:50%;border:2px solid var(--teal-l);border-top-color:var(--teal);animation:spin .8s linear infinite}
   .prow .done{width:17px;height:17px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
@@ -140,11 +139,9 @@
   .err{background:#FDE8E8;color:#C0392B;padding:14px 18px;border-radius:11px;font-size:13.5px;margin-top:20px}
   .empty{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:40px;text-align:center;color:var(--muted);font-size:14px;margin-top:20px}
   .rcards{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .rcard{background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;transition:.15s;position:relative}
+  .rcard{background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;transition:.15s}
   .rcard:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:var(--shadow)}
-  .rcard .rt{font-size:16px;font-weight:700;padding-right:26px}
-  .rcard .del-btn{position:absolute;top:12px;right:12px;width:22px;height:22px;border:none;border-radius:50%;background:#FEE2E2;color:#C0392B;font-size:11px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.7;transition:.15s}
-  .rcard .del-btn:hover{opacity:1;background:#C0392B;color:#fff}
+  .rcard .rt{font-size:16px;font-weight:700}
   .rcard .rm{font-size:12px;color:var(--muted);margin-top:6px}
   .rcard .rtags{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
   .rcard .rtags span{font-size:11px;padding:3px 9px;border-radius:6px;background:#EEF4F4;color:var(--navy-2)}
@@ -299,7 +296,6 @@
           <div class="ring"></div>
           <h2>正在生成调研报告…</h2>
           <p id="loadTopic">主题：…</p>
-          <div id="progHint" style="max-width:560px;margin:0 auto 10px"></div>
           <div class="prog" id="progList"></div>
         </div>
       </section>
@@ -358,20 +354,16 @@ const DEFAULT_BACKEND = 'https://1461447139-ds1sdwfe7p.ap-guangzhou.tencentscf.c
 (function(){
   const p = new URLSearchParams(location.search).get('backend');
   if(p){ try{ localStorage.setItem('rd_backend', p); }catch(e){} }
-  // 同步码（部署时设了 RD_TOKEN 必填）：?token=xxx 自动存入 localStorage（v1.6.0：编码存储）
+  // 同步码（部署时设了 RD_TOKEN 必填）：?token=xxx 自动存入 localStorage
   const t = new URLSearchParams(location.search).get('token');
-  if(t){ try{ localStorage.setItem('rd_token', encTok(t)); }catch(e){} }
+  if(t){ try{ localStorage.setItem('rd_token', t); }catch(e){} }
   // 兜底：无 URL 参数且 localStorage 无值时，写入内置默认后端（保证直开页面也能连上）
   try{
     if(!localStorage.getItem('rd_backend')){ localStorage.setItem('rd_backend', DEFAULT_BACKEND); }
   }catch(e){}
 })();
-// —— token 安全存储（v1.6.0：base64 轻混淆，避免明文裸露；非加密，仅供防随手可见）——
-function encTok(s){ try{ return btoa(unescape(encodeURIComponent(s))); }catch(e){ return s; } }
-function decTok(s){ try{ return decodeURIComponent(escape(atob(s))); }catch(e){ return s||''; } }
-function getTok(){ try{ const v=localStorage.getItem('rd_token'); if(!v) return ''; const dec=decTok(v); return dec===v?v:dec; }catch(e){ return ''; } }
 const BACKEND_URL = (localStorage.getItem('rd_backend') || '').replace(/\/$/, '');
-let RD_TOKEN = getTok();
+let RD_TOKEN = localStorage.getItem('rd_token') || '';
 function api(path){ return BACKEND_URL ? (BACKEND_URL + path) : path; }
 // 带鉴权头的请求头（RD_TOKEN 为空时不影响本地/无鉴权部署）
 function apiHeaders(){ const h={'Content-Type':'application/json'}; if(RD_TOKEN) h['Authorization']='Bearer '+RD_TOKEN; return h; }
@@ -381,21 +373,13 @@ function saveToken(){
   const stat=document.getElementById('tokStat');
   if(!v){ stat.className='tokstat err'; stat.textContent='请输入令牌'; return; }
   RD_TOKEN=v;
-  try{ localStorage.setItem('rd_token', encTok(v)); }catch(e){}
+  try{ localStorage.setItem('rd_token', v); }catch(e){}
   stat.className='tokstat ok'; stat.textContent='✓ 已保存，可开始调研';
-  // 清除输入框内容，避免他人看到已存 token（v1.6.0 安全）
-  document.getElementById('tokenInput').value='';
-  document.getElementById('tokenInput').placeholder='已保存（输入新值可更换）';
-  // v1.6.0：401 后保存成功 → 自动重试上次操作
-  if(_pendingRetry){ const fn=_pendingRetry; _pendingRetry=null; setTimeout(fn,300); }
 }
-// 应用初始化：token 已存则不回填明文（v1.6.0 安全），仅显示状态
+// 应用初始化时回填已有 token 到输入框
 (function(){
   const box=document.getElementById('tokenInput');
-  if(box && RD_TOKEN){
-    box.placeholder='已保存（输入新值可更换）';
-    const s=document.getElementById('tokStat'); if(s){s.className='tokstat ok'; s.textContent='✓ 已保存，可开始调研';}
-  }
+  if(box && RD_TOKEN){ box.value=RD_TOKEN; const s=document.getElementById('tokStat'); if(s){s.className='tokstat ok'; s.textContent='✓ 已保存，可开始调研';} }
 })();
 const DIMS = [
   {id:'mkt', ic:'📊', t:'市场调研', d:'规模 / CR5-CR10 / 头部占比 / 地面真值量 / 价格带 / 月度趋势', tags:['SellerSprite','份额','趋势']},
@@ -491,39 +475,22 @@ function goGen(){
   document.getElementById('genBtn').disabled=true;
   show('s3');
   const order=[...selected];
-  const isLLM = srcMode==='llm';
   const list=document.getElementById('progList');
-  list.innerHTML=order.map(d=>`<div class="prow" id="pr-${d}"><span class="spin2"></span><span>${META[d].title} · ${isLLM?'AI 分析中…':'读取数据中…'}</span></div>`).join('');
-  // 顶部等待提示（v1.6.0：真实提示 LLM 耗时，避免用户以为卡死）
-  const head=document.getElementById('progHint');
-  if(head) head.innerHTML = isLLM
-    ? '<div class="prog-warn">🤖 正在调用 DeepSeek 实时生成，<b>通常需要 10-30 秒</b>（维度越多越久）。请勿关闭页面。</div>'
-    : '<div class="prog-warn">📁 正在读取模板数据…</div>';
-  // 逐条标记完成（视觉反馈，后端为整体返回；live 模式下计时器延后，避免假动画误导）
+  list.innerHTML=order.map(d=>`<div class="prow" id="pr-${d}"><span class="spin2"></span><span>${META[d].title} · 请求后端中…</span></div>`).join('');
+  // 逐条标记完成（视觉反馈，后端为整体返回）
   let i=0;
-  const stepMs = isLLM ? 800 : 260;
   const tick=()=>{ if(i<order.length){ const r=document.getElementById('pr-'+order[i]);
     r.classList.add('ok'); r.querySelector('.spin2').outerHTML='<span class="done">✓</span>';
-    r.querySelector('span:last-child').textContent=META[order[i]].title+' · '+(isLLM?'已提交':'完成'); i++; setTimeout(tick,stepMs);
+    r.querySelector('span:last-child').textContent=META[order[i]].title+' · 完成'; i++; setTimeout(tick,260);
   }};
-  setTimeout(tick, isLLM ? 1200 : 300);
-  // 超时提醒（v1.6.0）：LLM 模式超过 20s 未返回时提示仍在处理
-  let reminded=false;
-  if(isLLM){
-    setTimeout(()=>{ if(!reminded){ reminded=true; if(head) head.innerHTML='<div class="prog-warn">⏳ 后端仍在处理（DeepSeek 生成较慢属正常），请再等一会儿…</div>'; } }, 20000);
-  }
+  setTimeout(tick,300);
 
   // 注意：前端不再发送任何 llm.key，后端统一使用服务端环境变量中的 Key。
   fetch(api('/api/research'),{
     method:'POST', headers:apiHeaders(),
     body:JSON.stringify({topic, dims:order, source:srcMode, llm:{}})
   }).then(r=>{
-    if(r.status===401){
-      // v1.6.0：保存 token 后自动重试本次生成
-      _pendingRetry=()=>{ document.getElementById('genBtn').disabled=false; goGen(); };
-      showTokenNeeded();
-      throw new Error('未授权');
-    }
+    if(r.status===401){ showTokenNeeded(); throw new Error('未授权'); }
     return r.json();
   }).then(data=>{
     if(data.error){ showErr(data.error); return; }
@@ -536,21 +503,12 @@ function goGen(){
     document.getElementById('genBtn').disabled=false;
   });
 }
-// 后端返回 401 时引导访客输入 Token（v1.6.0：滚动+高亮+保存后自动重试）
-let _pendingRetry=null; // 401 后保存 token 要重试的操作
+// 后端返回 401 时引导访客输入 Token
 function showTokenNeeded(){
   const s=document.getElementById('s4');
   show('s4');
-  document.getElementById('reportBody').innerHTML=`<div class="err">🔒 需要访问令牌（Token）才能使用调研台。<br/>请在上方「访问令牌」输入框填入站长发给你的 Token，点击「保存」，将自动重试本次生成。<br/>如没有令牌，请向站长索取。</div>`;
-  // 滚动到 token 框并高亮
-  const box=document.getElementById('tokenInput');
-  if(box){
-    try{ box.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){}
-    box.focus();
-    box.style.boxShadow='0 0 0 3px rgba(201,48,43,.4)';
-    box.style.borderColor='#C0392B';
-    setTimeout(()=>{ box.style.boxShadow=''; box.style.borderColor=''; }, 2500);
-  }
+  document.getElementById('reportBody').innerHTML=`<div class="err">🔒 需要访问令牌（Token）才能使用调研台。<br/>请输入左侧「访问令牌」并点击保存，再重新生成报告。如没有令牌，请向站长索取。</div>`;
+  try{ document.getElementById('tokenInput').focus(); }catch(e){}
 }
 function showErr(msg){
   const s=document.getElementById('s4');
@@ -670,23 +628,18 @@ function renderTemplates(){
 }
 // —— 我的报告（本地 + 云端同步；云端可跨设备）——
 let _cloudReports=null; // {list, loaded}
-// v1.6.0：reportId 含毫秒时间戳，同一主题多次生成不再互相覆盖
-function reportId(data){
-  const t=data._ts||data.generatedAt||'';
-  return data.topic+'|'+t;
-}
+function reportId(data){ return data.topic+'|'+data.generatedAt; }
 function saveReport(data){
   try{
-    if(!data._ts){ data._ts=(data.generatedAt||'')+'-'+String(Date.now()).slice(-4); }
     const arr=JSON.parse(localStorage.getItem('rd_reports')||'[]');
-    const rec={id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, _ts:data._ts, mode:data.mode, dims:Object.keys(data.sections||{}), data, cloud:false};
-    const kept=[rec].concat(arr.filter(r=>r.id!==rec.id)).slice(0,50);
+    const rec={id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, mode:data.mode, dims:Object.keys(data.sections||{}), data, cloud:false};
+    const kept=[rec].concat(arr.filter(r=>r.id!==rec.id)).slice(0,30);
     localStorage.setItem('rd_reports', JSON.stringify(kept));
   }catch(e){}
   // 异步同步到云端（带 token 且配了后端时）
   if(BACKEND_URL && RD_TOKEN){
     fetch(api('/api/reports'),{method:'POST',headers:apiHeaders(),body:JSON.stringify({report:{
-      id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, _ts:data._ts, mode:data.mode,
+      id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, mode:data.mode,
       dims:Object.keys(data.sections||{}), data
     }})}).then(r=>{
       if(r.ok){ if(_cloudReports) _cloudReports.loaded=false; return r.json().then(j=>{_cloudReports={list:j.reports||_cloudReports.list,loaded:true}}); }
@@ -703,61 +656,20 @@ function loadCloudReports(cb){
 function renderReports(){
   const box=document.getElementById('reportList');
   let local=[]; try{local=JSON.parse(localStorage.getItem('rd_reports')||'[]');}catch(e){}
-  const show=cloud=>{
-    // v1.6.0：云端 + 本地合并去重（云端优先保留，本地未同步的也显示），不再"云端隐藏本地"
-    const cloudMap={};
-    (cloud||[]).forEach(r=>{ cloudMap[r.id]=r; });
-    const mergedArr=[];
-    (cloud||[]).forEach(r=>mergedArr.push(r));
-    local.forEach(r=>{ if(!cloudMap[r.id]) mergedArr.push({...r,cloud:false}); });
-    // 按时间倒序（取 generatedAt 或 _ts）
-    mergedArr.sort((a,b)=>String(b._ts||b.generatedAt||'').localeCompare(String(a._ts||a.generatedAt||'')));
-    const merged=mergedArr.slice(0,50);
+  const show=list=>{
+    const merged=(list.length?list:local).slice(0,40);
     if(!merged.length){ box.innerHTML='<div class="empty">还没有生成的报告。去「新建调研」生成第一份吧。<br/><span style="font-size:12px;color:var(--muted)">生成后自动保存，输入 Token 后还会同步到云端（换设备可见）。</span></div>'; return; }
-    const tool = (BACKEND_URL&&RD_TOKEN) ? '<button class="btn btn-sm btn-ghost" onclick="clearAllReports()" style="margin-bottom:12px"><i class="fas fa-trash"></i> 清空全部</button>' : '';
-    box.innerHTML=tool+'<div class="rcards">'+merged.map((r,i)=>`
+    box.innerHTML='<div class="rcards">'+merged.map((r,i)=>`
       <div class="rcard" onclick="openSaved(${i})">
-        <div class="rt">${r.cloud?'☁️ ':''}${String(r.topic||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-          <button class="del-btn" title="删除该报告" onclick="event.stopPropagation();delReport(${i})">✕</button>
-        </div>
-        <div class="rm">${String(r.generatedAt||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))} · ${r.mode==='live'?'LIVE·DeepSeek':'模板数据'} · ${(r.dims||[]).length} 维度${r.cloud?' · ☁️云端':''}</div>
+        <div class="rt">${r.cloud?'☁️ ':''}${String(r.topic||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}</div>
+        <div class="rm">${String(r.generatedAt||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))} · ${r.mode==='live'?'LIVE·DeepSeek':'模板数据'} · ${(r.dims||[]).length} 维度${r.cloud?' · 云端':''}</div>
         <div class="rtags">${(r.dims||[]).map(d=>`<span>${META[d]?META[d].title:d}</span>`).join('')}</div>
       </div>`).join('')+'</div>';
     window.__reportsList=merged;
   };
+  // 优先云端，云端空/失败回退本地
   if(_cloudReports && _cloudReports.loaded){ show(_cloudReports.list); }
   else { loadCloudReports(show); }
-}
-// —— 报告删除 / 清空（v1.6.0）——
-function delReport(i){
-  const arr=window.__reportsList||[];
-  const rec=arr[i];
-  if(!rec) return;
-  if(!confirm('确定删除报告「'+(rec.topic||'')+'」吗？'+(rec.cloud?'（云端+本地一起删除）':''))) return;
-  // 删本地
-  try{
-    let local=JSON.parse(localStorage.getItem('rd_reports')||'[]');
-    local=local.filter(r=>r.id!==rec.id);
-    localStorage.setItem('rd_reports', JSON.stringify(local));
-  }catch(e){}
-  // 删云端
-  if(rec.cloud && BACKEND_URL && RD_TOKEN){
-    fetch(api('/api/reports?id='+encodeURIComponent(rec.id)),{method:'DELETE',headers:apiHeaders()})
-      .then(r=>{ if(r.ok){ if(_cloudReports) _cloudReports.loaded=false; } })
-      .catch(()=>{});
-  }
-  renderReports();
-}
-function clearAllReports(){
-  if(!confirm('确定清空全部报告吗？（云端+本地全部删除，不可恢复）')) return;
-  try{ localStorage.setItem('rd_reports','[]'); }catch(e){}
-  if(BACKEND_URL && RD_TOKEN){
-    const arr=window.__reportsList||[];
-    Promise.all(arr.filter(r=>r.cloud).map(r=>
-      fetch(api('/api/reports?id='+encodeURIComponent(r.id)),{method:'DELETE',headers:apiHeaders()}).then(x=>x.ok).catch(()=>false)
-    )).then(()=>{ if(_cloudReports) _cloudReports.loaded=false; renderReports(); });
-  }
-  renderReports();
 }
 function openSaved(i){
   let arr=window.__reportsList||[];

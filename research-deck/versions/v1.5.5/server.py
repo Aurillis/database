@@ -624,44 +624,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
         else:
             self._send(404, {"error": "not found"})
 
-    def do_DELETE(self):
-        """删除云端报告：DELETE /api/reports?id=<reportId>  （需 token）"""
-        _path = self.path.split("?")[0]
-        if _path != "/api/reports":
-            self._send(404, {"error": "not found"})
-            return
-        rd_token = os.environ.get("RD_TOKEN")
-        if rd_token:
-            auth = self.headers.get("Authorization", "")
-            q_token = ""
-            from urllib.parse import parse_qs, urlsplit
-            qs = parse_qs(urlsplit(self.path).query)
-            q_token = qs.get("token", [""])[0]
-            if auth.replace("Bearer ", "") != rd_token and q_token != rd_token:
-                self._send(401, {"error": "未授权：缺少有效 token。请在请求头带 Authorization: Bearer <RD_TOKEN>，或部署时移除 RD_TOKEN 关闭鉴权。"})
-                return
-        if not os.environ.get("GITHUB_TOKEN"):
-            self._send(500, {"error": "后端未配置 GITHUB_TOKEN（环境变量）。请联系站长开启云端报告。"})
-            return
-        from urllib.parse import parse_qs, urlsplit
-        rid = parse_qs(urlsplit(self.path).query).get("id", [""])[0]
-        if not rid:
-            self._send(400, {"error": "缺少 id 参数"})
-            return
-        try:
-            content, sha = gh_get_report_file()
-            if content is None:
-                content = []
-            if not isinstance(content, list):
-                content = []
-            before = len(content)
-            content = [r for r in content if r.get("id") != rid]
-            gh_save_report_file(content, sha)
-        except Exception as e:
-            self._send(500, {"error": "删除云端报告失败: {}".format(e)})
-            return
-        self._send(200, {"ok": True, "deleted": before - len(content), "count": len(content)})
-
     def log_message(self, *args):
         pass  # 静默日志
 
@@ -805,8 +767,6 @@ def main_handler(event, context):
             fake.do_GET()
         elif method == "POST":
             fake.do_POST()
-        elif method == "DELETE":
-            fake.do_DELETE()
         elif method == "OPTIONS":
             fake.do_OPTIONS()
         else:
