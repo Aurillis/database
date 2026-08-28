@@ -173,6 +173,51 @@
   .tokstat{font-size:11.5px;margin-top:6px;color:var(--muted)}
   .tokstat.ok{color:#0B8A5E}
   .tokstat.err{color:#C0392B}
+
+  /* ===== 移动端适配（≤768px）===== */
+  @media (max-width:768px){
+    .app{flex-direction:column}
+    .side{
+      width:100%;height:auto;position:static;padding:12px 14px;
+      display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;
+    }
+    .side .logo{font-size:16px;margin-bottom:0}
+    .side .sub{display:none}
+    .side .foot{display:none}
+    .mode-pill{position:static;order:9;width:100%;margin-top:4px}
+    .tokenbox{margin:4px 0;padding:8px;flex:1 1 100%;order:10}
+    .tokenbox label{display:none}
+    .tokenbox input{margin-bottom:0;width:calc(100% - 70px);display:inline-block;vertical-align:top}
+    .tokenbox .btn-mini{width:62px;margin-left:6px;vertical-align:top}
+    .nav{flex-direction:row;flex-wrap:wrap;gap:2px}
+    .nav .item{padding:7px 10px;font-size:12.5px}
+    .nav .item .ic{display:none}
+    .top{height:50px;padding:0 16px}
+    .top .beta{display:none}
+    .content{padding:20px 16px 60px}
+    h1.t{font-size:20px}
+    .lead{font-size:13.5px}
+    .input-card{padding:18px;margin-top:22px}
+    /* 关键修复：搜索框纵向堆叠，按钮全宽不被压缩 */
+    .search{flex-direction:column}
+    .search input{width:100%;padding:13px 14px;font-size:15px}
+    .search .btn{width:100%;text-align:center;padding:14px;font-size:15px}
+    .grid{grid-template-columns:repeat(2,1fr);gap:10px}
+    .dim{padding:14px}
+    .srcseg{flex-direction:column}
+    .srcseg .seg{width:100%;text-align:left;padding:12px}
+    .actions{flex-wrap:wrap}
+    .actions .btn{flex:1 1 100%;text-align:center}
+    .tpl .pin{position:static;display:inline-block;margin-top:8px}
+    .trow{gap:10px}
+    .content table{display:block;overflow-x:auto;white-space:nowrap}
+    .report-body{padding:0 4px}
+  }
+  @media (max-width:420px){
+    .grid{grid-template-columns:1fr}
+    .chips{gap:6px}
+    .chip{padding:7px 10px;font-size:12px}
+  }
 </style>
 </head>
 <body>
