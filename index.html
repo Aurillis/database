@@ -70,6 +70,14 @@ input,select{font-family:inherit}
 .admin-entry:hover{background:var(--accent-light);color:var(--accent);border-color:var(--accent)}
 .admin-entry i{font-size:14px}
 .admin-entry-txt{font-size:13px}
+.rd-entry{
+  display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;
+  border:1px solid var(--accent);border-radius:var(--radius);
+  font-size:13px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--accent),#2a7d84);
+  cursor:pointer;transition:all .15s;text-decoration:none;
+}
+.rd-entry:hover{opacity:.9;transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.rd-entry i{font-size:14px}
 
 /* 移动端汉堡按钮(默认隐藏, 仅 @media 显示) */
 .menu-toggle{display:none;width:36px;height:36px;border-radius:var(--radius);align-items:center;justify-content:center;color:var(--muted);font-size:17px;flex-shrink:0}
@@ -404,6 +412,7 @@ input,select{font-family:inherit}
   <div class="header-right">
     <button class="icon-btn" id="favBtn" title="收藏夹"><i class="fas fa-star"></i></button>
     <button class="icon-btn" id="recentBtn" title="最近访问"><i class="fas fa-clock-rotate-left"></i></button>
+    <a class="rd-entry" id="rdEntry" href="research-deck/index.html?backend=https://1461447139-ds1sdwfe7p.ap-guangzhou.tencentscf.com" title="AI 调研台：输入主题，生成结构化研究报告"><i class="fas fa-magnifying-glass-chart"></i> <span class="admin-entry-txt">调研台</span></a>
     <button class="admin-entry" id="adminBtn"><i class="fas fa-gear"></i> <span class="admin-entry-txt">管理后台</span></button>
   </div>
 </div>
