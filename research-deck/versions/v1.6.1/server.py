@@ -39,37 +39,16 @@ LLM_BASE = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1").rstrip
 LLM_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
 MODE = "live" if LLM_KEY else "demo"
 
-# v1.7.0：简单限流（进程内滑动窗口）。防止 token 泄露后被高频滥用。
-# 每 key（token 或 IP）每 RATE_WINDOW 秒最多 RATE_LIMIT 次 /api/research。
-# 注：SCF 多实例下为近似值；更严格限速请用腾讯云控制台配额（QPS）。
-import time as _time
-_RATE_WINDOW = int(os.environ.get("RD_RATE_WINDOW", "60"))   # 秒
-_RATE_LIMIT = int(os.environ.get("RD_RATE_LIMIT", "10"))     # 窗口内次数
-_rate_hits = {}  # key -> [ts, ts, ...]
-
-def _check_rate(key):
-    if not key:
-        return True
-    now = _time.time()
-    hits = [t for t in _rate_hits.get(key, []) if now - t < _RATE_WINDOW]
-    if len(hits) >= _RATE_LIMIT:
-        _rate_hits[key] = hits
-        return False
-    hits.append(now)
-    _rate_hits[key] = hits
-    return True
-
 # ---------------------------------------------------------------------------
 # 维度元信息（与前端一致，单一事实源）
 # ---------------------------------------------------------------------------
 DIMS = {
-    "mkt":  {"title": "市场调研", "icon": "📊", "badge": "规模 / 集中度 / 机会矩阵"},
-    "usr":  {"title": "用户研究", "icon": "👥", "badge": "痛点 / 场景 / 信号强度"},
+    "mkt":  {"title": "市场调研", "icon": "📊", "badge": "SellerSprite 地面真值"},
+    "usr":  {"title": "用户研究", "icon": "👥", "badge": "Reddit / Facebook 社群"},
     "prod": {"title": "产品调研", "icon": "🔬", "badge": "型号拆解 / 参数盘点"},
-    "comp": {"title": "竞品分析", "icon": "⚔️", "badge": "定位 / 卡位矩阵 / 空位"},
+    "comp": {"title": "竞品分析", "icon": "⚔️", "badge": "定位 / 定价 / 功能"},
     "tech": {"title": "技术研究", "icon": "⚙️", "badge": "方案对标 / 工程能力"},
     "reg":  {"title": "合规审计", "icon": "🛡️", "badge": "监管路径 / 合规边界"},
-    "sc":   {"title": "供应链/成本", "icon": "📦", "badge": "成本结构 / 供应链 / 降本"},
     "amz_us": {"title": "亚马逊美国·机会评分看板", "icon": "🇺🇸",
                "badge": "看板结构 · 卖家精灵 MCP", "template": True},
     "amz_eu": {"title": "亚马逊欧洲·市场看板", "icon": "🇪🇺",
@@ -142,13 +121,12 @@ AMZ_EU_TEMPLATE = """【亚马逊欧洲站 EU5 · 市场看板】针对用户给
 
 # 各维度提示词（与「维度模板」一致，{topic} 占位）
 DIM_PROMPTS = {
-    "mkt": "你是市场调研分析师。针对「{topic}」，用真实数据（若有 SellerSprite/卖家精灵等导出数据优先标注来源）产出：①品类规模与增长 ②集中度 CR5/CR10、头部品牌份额 ③价格带分布 ④月度/年度趋势（标注数据缺口）⑤供需结构 ⑥市场机会矩阵（高需求×低竞争=优先机会；高需求×高竞争=红海谨慎；低需求=观望），并给出「进入时机」判断（早/中/晚/不宜）。每条数字标注来源；拿不到写「未获取」。",
-    "usr": "你是用户研究分析师。针对「{topic}」目标人群，在 Reddit、X、Facebook、Quora、亚马逊评论等检索真实讨论，产出：①核心痛点（高频，附提及频率估算）②使用场景 ③未被满足的需求 ④可拓展人群/场景。每条附社区名/帖子标题或 URL，标注信号强度（强/中/弱）与出现频率（高频/中频/低频）；如可统计，给出痛点提及占比表（痛点|提及次数估算|信号强度）。",
+    "mkt": "你是市场调研分析师。针对「{topic}」，用真实数据（若有 SellerSprite/卖家精灵等导出数据优先标注来源）产出：①品类规模与增长 ②集中度 CR5/CR10、头部品牌份额 ③价格带分布 ④月度/年度趋势（标注数据缺口）⑤供需结构。每条数字标注来源；拿不到写「未获取」。",
+    "usr": "你是用户研究分析师。针对「{topic}」目标人群，在 Reddit、X、Facebook、Quora 检索真实讨论，产出：①核心痛点（高频）②使用场景 ③未被满足的需求 ④可拓展人群/场景。每条附社区名/帖子标题或 URL，标注信号强度（强/中/弱）。",
     "prod": "你是产品拆解分析师。针对「{topic}」覆盖的主要型号/SKU，产出硬件/功能参数横向对比：形态结构、核心器件/组件、关键性能参数、材质、规格、软件/智能功能（按品类实际涉及的维度组织，勿预设固定组件）。基于真实型号参数；无法查证的标「待核验」。",
-    "comp": "你是竞品分析师。针对「{topic}」头部与典型玩家，产出：①定位 ②定价 ③功能矩阵 ④优势 ⑤明显弱点（引评论/评测）⑥「价格-功能卡位矩阵」（表：品牌|价格带|功能档位|卡位结论：性价比/高端/细分/空白），标注哪些价位-功能组合尚未被占领（即机会空位）。标注信息来源。",
+    "comp": "你是竞品分析师。针对「{topic}」头部与典型玩家，产出：定位、定价、功能矩阵、优势、明显弱点（引评论/评测）、给我们的「可乘之机」。标注信息来源。",
     "tech": "你是技术对标分析师。针对「{topic}」实际涉及的核心技术与工程方案（根据该品类真实情况自行判断：如动力/加热/传感/材料/软件/连接等，勿预设技术路线），产出：各技术路线的代表方案、适用场景、实现难度、对本品差异化的壁垒意义。基于公开资料；无法查证的标「待核验」。",
     "reg": "你是合规审计分析师。针对「{topic}」所属监管类目（按品类实际适用的法规体系判断：消费品 / 电器 / 医疗器械 / 食品接触 / 化妆品等，勿预设特定体系），检索数据库与文献，产出：监管路径判定、所需资质/备案、红线措辞、对我们的启示。强调「禁止无依据宣称功效」。",
-    "sc": "你是供应链与成本分析师。针对「{topic}」该类目，基于公开信息与行业常识（勿编造具体厂商报价），产出：①成本结构拆解（物料/制造/物流/平台费用占比，标注估算）②关键供应链环节（核心材料/元器件/代工厂/认证）③起订量/模具/开发门槛 ④成本优化空间与降本路径 ⑤采购与库存建议。每条标注「估算/公开信息/待核验」。",
     "amz_us": (
         "你是亚马逊美国站市场分析师。调研主题：{topic}\n\n"
         "【数据源铁律】凡涉及亚马逊类目容量、品牌份额、价格带、销量、销售额、评论、BSR、关键词 PPC，"
@@ -426,22 +404,10 @@ def build_report(topic, dims, source="template", llm=None):
     if source == "llm" and llm and llm.get("key"):
         # v1.5.2：并行调用各维度（多维度同时请求 DeepSeek），总耗时从 串行 n×20s 降到 ~20-40s，
         # 避免多维度在 SCF 超时（30s）内跑不完导致 Failed to fetch。
-        # v1.7.0：单维度失败自动重试 1 次（网络抖动/限流容错）。
         import concurrent.futures
-
-        def _call_once(k):
-            return call_llm_dim(topic, k, llm)
-
-        def _call_with_retry(k):
-            try:
-                return _call_once(k)
-            except Exception:
-                # 重试 1 次
-                return _call_once(k)
-
         sections_out = {}
         with concurrent.futures.ThreadPoolExecutor(max_workers=min(6, len(dims))) as ex:
-            fut = {ex.submit(_call_with_retry, k): k for k in dims}
+            fut = {ex.submit(call_llm_dim, topic, k, llm): k for k in dims}
             for f in concurrent.futures.as_completed(fut):
                 k = fut[f]
                 try:
@@ -488,7 +454,7 @@ def build_report(topic, dims, source="template", llm=None):
         elif k in data["sections"]:
             sections_out[k] = data["sections"][k]
     # 摘要拼接
-    base_dims = [k for k in dims if k in ("mkt", "usr", "prod", "comp", "tech", "reg", "sc")]
+    base_dims = [k for k in dims if k in ("mkt", "usr", "prod", "comp", "tech", "reg")]
     if amz_summaries and base_dims:
         summary = data["summary"] + " " + " ".join(amz_summaries)
     elif amz_summaries:
@@ -577,7 +543,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if _path == "/api/research":
             # —— 极简 token 鉴权（公网暴露前必须开启）——
             rd_token = os.environ.get("RD_TOKEN")
-            auth_key = None
             if rd_token:
                 auth = self.headers.get("Authorization", "")
                 q_token = ""
@@ -587,12 +552,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 if auth.replace("Bearer ", "") != rd_token and q_token != rd_token:
                     self._send(401, {"error": "未授权：缺少有效 token。请在请求头带 Authorization: Bearer <RD_TOKEN>，或部署时移除 RD_TOKEN 关闭鉴权。"})
                     return
-                auth_key = "tok:" + rd_token
-            # v1.7.0：限流（token 维度 + IP 兜底）
-            ip_key = "ip:" + (self.headers.get("X-Forwarded-For", "").split(",")[0].strip() or "unknown")
-            if not _check_rate(auth_key or ip_key):
-                self._send(429, {"error": "请求过于频繁，请稍后再试（限流保护）。"})
-                return
             try:
                 length = int(self.headers.get("Content-Length", 0))
                 raw = self.rfile.read(length)
@@ -646,24 +605,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
             if not report or not isinstance(report, dict) or not report.get("topic"):
                 self._send(400, {"error": "缺少 report 对象（需含 topic）"})
                 return
-            # v1.7.0：大体积报告自动精简（>80KB 只存摘要/维度/KPI，防仓库膨胀）
-            MAX_DATA = int(os.environ.get("RD_MAX_REPORT_KB", "80")) * 1024
-            data = report.get("data")
-            if isinstance(data, dict):
-                raw_size = len(json.dumps(data, ensure_ascii=False).encode("utf-8"))
-                if raw_size > MAX_DATA:
-                    trimmed = {
-                        "topic": data.get("topic", report.get("topic")),
-                        "mode": data.get("mode"),
-                        "generatedAt": data.get("generatedAt"),
-                        "summary": data.get("summary", ""),
-                        "kpis": data.get("kpis", [])[:8],
-                        "trimmed": True,
-                        "sections": {k: {"summary": v.get("summary", ""), "kpis": (v.get("kpis") or [])[:4]}
-                                     for k, v in (data.get("sections") or {}).items()},
-                    }
-                    report["data"] = trimmed
-                    report["trimmed"] = True
             try:
                 content, sha = gh_get_report_file()
                 if content is None:

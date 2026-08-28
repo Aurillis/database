@@ -283,7 +283,7 @@
             <button type="button" class="seg on" id="srcTpl" onclick="setSrc('template')">📁 模板数据（离线·卖家精灵快照）</button>
             <button type="button" class="seg" id="srcLlm" onclick="setSrc('llm')">🤖 大模型实时生成（DeepSeek）</button>
           </div>
-          <div class="srchint" id="srcHint">「模板数据」输出各维度结构骨架（离线可用、数据标待生成）；「大模型实时生成」由站长统一配置的 DeepSeek 在后端对当前主题实时产出真实数据（数字为 LLM 估算、需核验）。你的浏览器不会接触任何 API Key，也无需填写。</div>
+          <div class="srchint" id="srcHint">默认用你抓取的卖家精灵快照（真实数据、离线可用）。选「大模型」将由站长统一的 DeepSeek 密钥在后端实时生成（数字为 LLM 估算、需核验）。你的浏览器不会接触任何 API Key。</div>
         </div>
         <div class="grid" id="dimGrid"></div>
         <div class="actions">
@@ -343,7 +343,7 @@
       <!-- SCREEN 7: HISTORY -->
       <section class="screen" id="s7">
         <h1 class="t"><span class="emoji">◷</span>历史任务</h1>
-        <p class="lead">每次生成报告都会在此留下执行记录。已登录 Token 时记录<b>自动同步云端</b>，换设备也能看到；未登录时仅存本机。</p>
+        <p class="lead">每次点击「生成调研报告」都会在此留下一条执行记录（存于本机 localStorage），含主题、维度、数据源与状态。</p>
         <div class="timeline" id="histList"></div>
       </section>
 
@@ -398,24 +398,22 @@ function saveToken(){
   }
 })();
 const DIMS = [
-  {id:'mkt', ic:'📊', t:'市场调研', d:'规模 / 集中度 / 价格带 / 趋势 / 市场机会矩阵与进入时机', tags:['份额','趋势','机会']},
-  {id:'usr', ic:'👥', t:'用户研究', d:'痛点(带频率) / 场景 / 未满足需求，附信号强度', tags:['痛点','场景']},
+  {id:'mkt', ic:'📊', t:'市场调研', d:'规模 / CR5-CR10 / 头部占比 / 地面真值量 / 价格带 / 月度趋势', tags:['SellerSprite','份额','趋势']},
+  {id:'usr', ic:'👥', t:'用户研究', d:'社群痛点 / 使用场景 / 未满足需求，递进式收集', tags:['Reddit','Facebook']},
   {id:'prod',ic:'🔬', t:'产品调研', d:'型号拆解 / 参数盘点 / 硬件方案横向对比', tags:['型号','参数']},
-  {id:'comp',ic:'⚔️', t:'竞品分析', d:'定位 / 定价 / 价格-功能卡位矩阵 / 机会空位', tags:['卡位','空位']},
+  {id:'comp',ic:'⚔️', t:'竞品分析', d:'定位 / 定价 / 功能对比 / 进入策略', tags:['矩阵','定位']},
   {id:'tech',ic:'⚙️', t:'技术研究', d:'核心技术与工程方案 / 路线对比 / 实现难度与壁垒', tags:['技术','方案']},
   {id:'reg', ic:'🛡️', t:'合规审计', d:'监管路径判定 / 所需资质 / 红线措辞与合规边界', tags:['合规','监管']},
-  {id:'sc',  ic:'📦', t:'供应链/成本', d:'成本结构拆解 / 供应链环节 / 起订与开发门槛 / 降本路径', tags:['成本','供应链']},
   {id:'amz_us', ic:'🇺🇸', t:'亚马逊美国·机会评分看板', d:'【看板结构·实时生成】卖家精灵 MCP：KPI/核心指标/产品类型结构/品牌Top10与路线/关键词市场(趋势·PPC·价格带·机会矩阵)/场景痛点/功能热度/十维机会评分/启发·清单·风险建议——任意主题套用此结构', tags:['看板结构','SellerSprite','US','机会评分'], fixed:true},
   {id:'amz_eu', ic:'🇪🇺', t:'亚马逊欧洲·市场看板', d:'【看板结构·实时生成】卖家精灵 MCP：EU5 五国拆分/产品类型/价格带/关键词PPC/MDR合规——任意主题套用此结构', tags:['看板结构','SellerSprite','EU5','MDR'], fixed:true},
 ];
 const META = {
-  mkt:{title:'市场调研',icon:'📊',badge:'规模 / 集中度 / 机会矩阵'},
-  usr:{title:'用户研究',icon:'👥',badge:'痛点 / 场景 / 信号强度'},
+  mkt:{title:'市场调研',icon:'📊',badge:'SellerSprite 地面真值'},
+  usr:{title:'用户研究',icon:'👥',badge:'Reddit / Facebook 社群'},
   prod:{title:'产品调研',icon:'🔬',badge:'型号拆解 / 参数盘点'},
-  comp:{title:'竞品分析',icon:'⚔️',badge:'定位 / 卡位矩阵 / 空位'},
+  comp:{title:'竞品分析',icon:'⚔️',badge:'定位 / 定价 / 功能'},
   tech:{title:'技术研究',icon:'⚙️',badge:'方案对标 / 工程能力'},
   reg:{title:'合规审计',icon:'🛡️',badge:'监管路径 / 合规边界'},
-  sc:{title:'供应链/成本',icon:'📦',badge:'成本结构 / 供应链 / 降本'},
   amz_us:{title:'亚马逊美国·机会评分看板',icon:'🇺🇸',badge:'看板结构 · 卖家精灵 MCP'},
   amz_eu:{title:'亚马逊欧洲·市场看板',icon:'🇪🇺',badge:'看板结构 · 卖家精灵 MCP'},
 };
@@ -595,7 +593,7 @@ function renderReport(data){
     idx++;
   }
   if(data.mode==='template'){
-    html+=`<div class="foot-note">⚠️ 模板数据模式：仅输出各维度的<b>结构骨架</b>（数据标注「待实时生成」），用于预览报告框架。切换到「大模型实时生成」数据源后，由站长统一配置的 DeepSeek 在后端按此结构对主题实时产出真实数据（无需填写任何 Key）。</div>`;
+    html+=`<div class="foot-note">⚠️ 模板数据模式：亚马逊美/欧维度为卖家精灵 MCP 抓取快照（真实数据）；其余维度为结构示意。选「大模型实时生成」并填 DeepSeek Key 可让各维度由 AI 实时产出（数字为 LLM 估算、需核验）。</div>`;
   }
   if(data.mode==='live'){
     html+=`<div class="callout amber"><b>⚠️ 大模型实时生成（LLM 估算）：</b>本报告的量化数字由 DeepSeek 基于训练知识生成，<b>非卖家精灵实测</b>，未经一手数据核验，禁止直接用于投资决策。亚马逊销量/份额等精确数字请以卖家精灵 MCP 实测为准。</div>`;
@@ -642,10 +640,7 @@ function downloadReport(){
     .foot-note{font-size:11.5px;color:#9AAFB8;margin-top:18px;padding-top:14px;border-top:1px dashed #E3EDEF;}
   `;
   const reportHtml = document.querySelector('.report') ? document.querySelector('.report').outerHTML : document.getElementById('reportBody').innerHTML;
-  const disc = lastReport.mode==='live'
-    ? '<div class="callout amber" style="max-width:980px;margin:14px auto 0"><b>⚠️ 免责声明：</b>本报告量化数字由大模型（DeepSeek）基于训练知识生成，非卖家精灵实测，未经一手数据核验，禁止直接用于投资/选品决策。亚马逊销量/份额等请以卖家精灵 MCP 实测为准。</div>'
-    : '<div class="foot-note" style="max-width:980px;margin:14px auto 0">本报告为模板模式结构骨架，数据标注「待实时生成」，仅供框架预览。</div>';
-  const full = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><title>调研台_报告_${lastReport.topic}</title><style>${styles}</style></head><body>${reportHtml}${disc}</body></html>`;
+  const full = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><title>调研台_报告_${lastReport.topic}</title><style>${styles}</style></head><body>${reportHtml}</body></html>`;
   const blob=new Blob([full],{type:'text/html'});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
@@ -660,41 +655,18 @@ const DIM_STRUCT = {
   comp:'定位 / 定价 / 功能矩阵 / 优势 / 弱点(引评论) / 可乘之机。',
   tech:'按品类实际涉及的核心技术与工程方案（勿预设路线）+ 代表方案 + 实现难度 + 壁垒意义。',
   reg:'按品类实际适用的监管体系（消费品/电器/医疗器械等）+ 资质/备案 + 红线措辞 + 启示。强调禁止无依据宣称功效。',
-  sc:'成本结构拆解(物料/制造/物流/平台费用占比) + 关键供应链环节(材料/元器件/代工/认证) + 起订/模具/开发门槛 + 降本路径 + 采购库存建议。标注估算/待核验。',
   amz_us:'【看板结构·任意主题】机会评分看板方法论：KPI(机会/风险/候选→核心/月销/月销售额/加权价/Top类型/Top品牌) → 表1核心指标 → 表2产品类型销售额结构(类型/ASIN/销量/销售额/均价/评分) → 表3品牌销售额Top10 → 表4头部品牌产品路线 → 表5关键词市场需求(搜索/购买/购买率/竞价/供需/垄断点击率) → 表6关键词趋势与PPC → 表7价格带销售额(五档) → 表8目标场景/核心痛点 → 表9功能/属性热度 → 表10十维机会评分 → callouts(关键词解读/机会矩阵/产品定义启发/验证清单/机会点·风险·建议)。数据源：卖家精灵 MCP；大模型模式下对任意主题实时生成。',
   amz_eu:'【看板结构·任意主题】EU5 市场看板方法论：KPI(机会/风险/五国月销/总额) → 核心指标 → 五国概览 → 产品类型 → 价格带 → 市场CAGR/PPC/MDR合规/结论。数据源：卖家精灵 MCP；大模型模式下对任意主题实时生成。',
 };
 function renderTemplates(){
   const g=document.getElementById('tplList');
-  g.innerHTML=DIMS.map((d,i)=>`
+  g.innerHTML=DIMS.map(d=>`
     <div class="tpl ${d.fixed?'fixed':''}">
-      ${d.fixed?'<div class="pin">📌 看板结构</div>':''}
+      ${d.fixed?'<div class="pin">📌 固定模板</div>':''}
       <div class="th"><div class="ic"><span>${d.ic}</span></div><div class="tt">${d.t}</div></div>
       <div class="ds">${d.d}</div>
       <div class="struct">${DIM_STRUCT[d.id]}</div>
-      <div class="tpl-example" style="margin-top:10px">
-        <button class="btn-mini" onclick="previewTemplate(${i})">👁 查看示例结构</button>
-      </div>
     </div>`).join('');
-}
-// 示例结构预览：用「示例主题」生成模板骨架，让用户直观看到该维度的输出结构（不消耗 LLM 额度）
-let _tplDemo=null;
-function previewTemplate(i){
-  const d=DIMS[i];
-  if(!d) return;
-  // 模板模式生成示例（离线骨架，秒回）
-  if(!BACKEND_URL || !RD_TOKEN){ alert('需要已登录 Token 才能预览示例结构。'); return; }
-  const topic='示例主题（如：'+sampleTopicOf(d.id)+'）';
-  fetch(api('/api/research'),{method:'POST',headers:apiHeaders(),body:JSON.stringify({topic, dims:[d.id], source:'template', llm:{}})})
-    .then(r=>r.json())
-    .then(data=>{
-      const s=data.sections&&data.sections[d.id];
-      if(!s){ alert('示例生成失败'); return; }
-      lastReport=data; renderReport(data); show('s4');
-    }).catch(()=>alert('示例生成失败，请检查网络/Token。'));
-}
-function sampleTopicOf(id){
-  return {'mkt':'智能筋膜枪','usr':'便携式电动吸奶器','prod':'宠物智能饮水机','comp':'拖把','tech':'蒸汽拖把','reg':'智能筋膜枪','sc':'宠物智能饮水机','amz_us':'宠物智能饮水机','amz_eu':'便携式电动吸奶器'}[id]||'示例产品';
 }
 // —— 我的报告（本地 + 云端同步；云端可跨设备）——
 let _cloudReports=null; // {list, loaded}
@@ -791,11 +763,7 @@ function openSaved(i){
   let arr=window.__reportsList||[];
   let local=[]; try{local=JSON.parse(localStorage.getItem('rd_reports')||'[]');}catch(e){}
   const rec=arr[i]||local[i];
-  if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4');
-    if(rec.data.trimmed || rec.trimmed){
-      document.getElementById('reportBody').insertAdjacentHTML('afterbegin','<div class="callout amber">⚠️ 该报告为<b>云端精简版</b>（仅存摘要与关键指标，表格细节已压缩以节省云端空间）。完整版请重新生成。</div>');
-    }
-  }
+  if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4'); }
 }
 // 手动保存当前已显示的报告（解决「旧脚本生成的报告未被自动记录」的情况）
 function saveCurrent(){
@@ -818,49 +786,31 @@ function logHistory(topic,dims,source,status,mode){
     localStorage.setItem('rd_history', JSON.stringify(arr.slice(0,50)));
   }catch(e){}
 }
-// 打开历史任务对应的报告（云端报告直接打开；本地历史按 topic+time 匹配本地报告）
-function openHistoryReport(i, list){
-  const item=list[i];
-  if(!item) return;
-  if(item.reportData){ lastReport=item.reportData; renderReport(item.reportData); show('s4'); return; }
-  if(item.id && window.__reportsList){ // 云端报告：从报告列表找完整数据
-    const rec=window.__reportsList.find(r=>r.id===item.id);
-    if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4'); return; }
-  }
-  // 本地历史：按 topic 匹配本地报告（取最新一份）
-  try{
-    const local=JSON.parse(localStorage.getItem('rd_reports')||'[]');
-    const rec=local.find(r=>r.topic===item.topic);
-    if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4'); return; }
-  }catch(e){}
-  alert('该历史任务没有可打开的报告数据（可能已被删除或未保存）。');
-}
 function renderHistory(){
   const box=document.getElementById('histList');
   let arr=[]; try{arr=JSON.parse(localStorage.getItem('rd_history')||'[]');}catch(e){}
   const show=list=>{
-    window.__histList=list;
     if(!list.length){ box.innerHTML='<div class="empty">暂无历史任务。生成报告后这里会出现执行记录。</div>'; return; }
-    box.innerHTML=list.map((h,i)=>`
-      <div class="trow" style="cursor:pointer" onclick="openHistoryReport(${i}, window.__histList)">
+    box.innerHTML=list.map(h=>`
+      <div class="trow">
         <div class="tk"></div>
         <div class="tb">
           <div class="tt">${String(h.topic||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}</div>
-          <div class="tm">${h.time||''} · ${(h.dims||[]).length} 维度 · 数据源：${h.source==='llm'?'大模型 DeepSeek':'模板数据'} · ${h.mode==='live'?'LIVE':'模板'} · 点击打开</div>
+          <div class="tm">${h.time||''} · ${(h.dims||[]).length} 维度 · 数据源：${h.source==='llm'?'大模型 DeepSeek':'模板数据'} · ${h.mode==='live'?'LIVE':'模板'}</div>
         </div>
         <div class="ts ${h.status==='ok'?'ok':'run'}">${h.status==='ok'?'完成':'运行中'}</div>
       </div>`).join('');
   };
   if(BACKEND_URL && RD_TOKEN){
-    // 云端报告即历史任务（跨设备可见，带完整数据可打开）
+    // 云端报告即历史任务（跨设备可见）
     if(_cloudReports && _cloudReports.loaded){
-      const c=(_cloudReports.list||[]).map(x=>({topic:x.topic, time:x.generatedAt, dims:x.dims, source:x.mode==='live'?'llm':'template', status:'ok', mode:x.mode, id:x.id, reportData:x.data}));
+      const c=(_cloudReports.list||[]).map(x=>({topic:x.topic, time:x.generatedAt, dims:x.dims, source:x.mode==='live'?'llm':'template', status:'ok', mode:x.mode}));
       show(c.length?c:arr);
     } else {
       fetch(api('/api/reports'),{headers:apiHeaders()}).then(r=>{
         if(r.status===401){ show(arr); return; }
         return r.json().then(j=>{
-          const c=(j.reports||[]).map(x=>({topic:x.topic, time:x.generatedAt, dims:x.dims, source:x.mode==='live'?'llm':'template', status:'ok', mode:x.mode, id:x.id, reportData:x.data}));
+          const c=(j.reports||[]).map(x=>({topic:x.topic, time:x.generatedAt, dims:x.dims, source:x.mode==='live'?'llm':'template', status:'ok', mode:x.mode}));
           if(c.length){ _cloudReports={list:j.reports||[], loaded:true}; show(c); } else show(arr);
         });
       }).catch(()=>show(arr));
