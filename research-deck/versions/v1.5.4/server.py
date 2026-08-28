@@ -27,13 +27,6 @@ import sys
 BASE = os.path.dirname(os.path.abspath(__file__))
 PORT = int(os.environ.get("PORT", "8765"))
 
-# 北京时间（UTC+8）：所有报告/任务时间统一用北京时间，不随服务器时区漂移
-BEIJING_TZ = datetime.timezone(datetime.timedelta(hours=8))
-
-def now_beijing():
-    """返回北京时间的字符串（YYYY-MM-DD HH:MM）。"""
-    return datetime.datetime.now(BEIJING_TZ).strftime("%Y-%m-%d %H:%M")
-
 LLM_KEY = os.environ.get("OPENAI_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
 LLM_BASE = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1").rstrip("/")
 LLM_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
@@ -435,7 +428,7 @@ def build_report(topic, dims, source="template", llm=None):
         return {
             "topic": topic,
             "mode": "live",
-            "generatedAt": now_beijing(),
+            "generatedAt": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
             "summary": summary,
             "kpis": top_kpis,
             "sections": sections_out,
@@ -464,7 +457,7 @@ def build_report(topic, dims, source="template", llm=None):
     return {
         "topic": topic,
         "mode": "template",
-        "generatedAt": now_beijing(),
+        "generatedAt": datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
         "summary": summary,
         "kpis": data.get("kpis", []) if base_dims else [],
         "sections": sections_out,

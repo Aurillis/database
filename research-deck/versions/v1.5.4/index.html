@@ -686,15 +686,10 @@ function saveCurrent(){
   alert('已保存到「我的报告」和「历史任务」'+(BACKEND_URL&&RD_TOKEN?'，并已同步云端（换设备可见）':'。'));
 }
 // —— 历史任务（本地 + 云端报告同步，跨设备可见）——
-// 北京时间格式化（强制 Asia/Shanghai，不随设备时区漂移）
-function beijingNow(){
-  try{ return new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date()).replace(/\//g,'-'); }
-  catch(e){ return new Date().toLocaleString('zh-CN'); }
-}
 function logHistory(topic,dims,source,status,mode){
   try{
     const arr=JSON.parse(localStorage.getItem('rd_history')||'[]');
-    arr.unshift({topic, time:beijingNow(), dims, source, status, mode});
+    arr.unshift({topic, time:new Date().toLocaleString('zh-CN'), dims, source, status, mode});
     localStorage.setItem('rd_history', JSON.stringify(arr.slice(0,50)));
   }catch(e){}
 }
