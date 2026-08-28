@@ -543,29 +543,23 @@ def build_report(topic, dims, source="template", llm=None):
 
     # —— 实时生成（大模型）模式 ——
     if source == "llm" and llm and llm.get("key"):
-        # v1.5.2：并行调用各维度（多维度同时请求 DeepSeek），总耗时从 串行 n×20s 降到 ~20-40s，
-        # 避免多维度在 SCF 超时（30s）内跑不完导致 Failed to fetch。
-        import concurrent.futures
         sections_out = {}
-        with concurrent.futures.ThreadPoolExecutor(max_workers=min(6, len(dims))) as ex:
-            fut = {ex.submit(call_llm_dim, topic, k, llm): k for k in dims}
-            for f in concurrent.futures.as_completed(fut):
-                k = fut[f]
-                try:
-                    res = f.result()
-                    # 规整字段
-                    res.setdefault("note", "")
-                    res.setdefault("kpis", [])
-                    res.setdefault("tables", [])
-                    res.setdefault("callouts", [])
-                    res.setdefault("summary", "")
-                    sections_out[k] = res
-                except Exception as e:
-                    sections_out[k] = {
-                        "note": "该维度生成失败：{}".format(e),
-                        "kpis": [], "tables": [], "callouts": ["⚠️ 调用模型出错，请检查 API Key / Base URL / 网络。"],
-                        "summary": "生成失败",
-                    }
+        for k in dims:
+            try:
+                res = call_llm_dim(topic, k, llm)
+                # 规整字段
+                res.setdefault("note", "")
+                res.setdefault("kpis", [])
+                res.setdefault("tables", [])
+                res.setdefault("callouts", [])
+                res.setdefault("summary", "")
+                sections_out[k] = res
+            except Exception as e:
+                sections_out[k] = {
+                    "note": "该维度生成失败：{}".format(e),
+                    "kpis": [], "tables": [], "callouts": ["⚠️ 调用模型出错，请检查 API Key / Base URL / 网络。"],
+                    "summary": "生成失败",
+                }
         # 顶部摘要：拼接各维度 summary；顶部 KPI 聚合各维度 kpis（amz 维度有真实 KPI）
         summary_parts = ["{}：{}".format(DIMS[k]['title'], sections_out[k].get('summary','')) for k in sections_out]
         summary = "「" + str(topic) + "」自动调研（大模型实时生成）。" + "；".join(summary_parts)
