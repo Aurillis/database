@@ -244,7 +244,7 @@
   <div class="main">
     <div class="top">
       <div class="crumb">新建调研 / <b id="crumbNow">输入主题</b></div>
-      <div class="beta">A2 · LOCAL</div>
+      <div class="beta" id="betaBadge" style="background:#FEF3E2;color:#B45309">后端连接中…</div>
     </div>
     <div class="content">
 
@@ -349,13 +349,18 @@
 
 <script>
 // —— 后端地址配置（部署到腾讯云 SCF 后，前端在 GitHub Pages 需指向上面的网关）——
-// 优先级：URL 参数 ?backend=https://xxx  > localStorage.rd_backend > 同源（默认空=当前域名）
+// 优先级：URL 参数 ?backend=https://xxx  > localStorage.rd_backend > 内置默认 SCF 地址
+const DEFAULT_BACKEND = 'https://1461447139-ds1sdwfe7p.ap-guangzhou.tencentscf.com';
 (function(){
   const p = new URLSearchParams(location.search).get('backend');
   if(p){ try{ localStorage.setItem('rd_backend', p); }catch(e){} }
   // 同步码（部署时设了 RD_TOKEN 必填）：?token=xxx 自动存入 localStorage
   const t = new URLSearchParams(location.search).get('token');
   if(t){ try{ localStorage.setItem('rd_token', t); }catch(e){} }
+  // 兜底：无 URL 参数且 localStorage 无值时，写入内置默认后端（保证直开页面也能连上）
+  try{
+    if(!localStorage.getItem('rd_backend')){ localStorage.setItem('rd_backend', DEFAULT_BACKEND); }
+  }catch(e){}
 })();
 const BACKEND_URL = (localStorage.getItem('rd_backend') || '').replace(/\/$/, '');
 let RD_TOKEN = localStorage.getItem('rd_token') || '';
@@ -720,16 +725,25 @@ function renderHistory(){
   } else show(arr);
 }
 
+// 后端连接状态徽章
+function setBackendBadge(ok, msg){
+  const b=document.getElementById('betaBadge');
+  if(!b) return;
+  if(ok){ b.style.background='#E7F7EF'; b.style.color='#0B8A5E'; }
+  else { b.style.background='#FEF3E2'; b.style.color='#B45309'; }
+  b.textContent=msg;
+}
 // 启动时拉取状态 + 配置
 fetch(api('/api/status'),{headers:apiHeaders()}).then(r=>{
-  if(r.status===401){ /* 未登录：留待用户输入 token 后再用 */ return null; }
+  if(r.status===401){ setBackendBadge(false,'后端已连接 · 未授权(需Token)'); return null; }
+  setBackendBadge(true,'后端已连接 · LIVE');
   return r.json();
 }).then(s=>{
   if(!s) return;
   window.__backendMode = s.backendMode || 'demo';
   loadCfg();
   updateModePill();
-}).catch(()=>{});
+}).catch(()=>{ setBackendBadge(false,'后端未连接 · 检查地址'); });
 renderDims();
 </script>
 </body>
