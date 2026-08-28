@@ -621,28 +621,56 @@ function renderTemplates(){
       <div class="struct">${DIM_STRUCT[d.id]}</div>
     </div>`).join('');
 }
-// —— 我的报告（localStorage 只读保存）——
+// —— 我的报告（本地 + 云端同步；云端可跨设备）——
+let _cloudReports=null; // {list, loaded}
+function reportId(data){ return data.topic+'|'+data.generatedAt; }
 function saveReport(data){
   try{
     const arr=JSON.parse(localStorage.getItem('rd_reports')||'[]');
-    arr.unshift({topic:data.topic, generatedAt:data.generatedAt, mode:data.mode, dims:Object.keys(data.sections), data});
-    localStorage.setItem('rd_reports', JSON.stringify(arr.slice(0,30)));
+    const rec={id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, mode:data.mode, dims:Object.keys(data.sections||{}), data, cloud:false};
+    const kept=[rec].concat(arr.filter(r=>r.id!==rec.id)).slice(0,30);
+    localStorage.setItem('rd_reports', JSON.stringify(kept));
   }catch(e){}
+  // 异步同步到云端（带 token 且配了后端时）
+  if(BACKEND_URL && RD_TOKEN){
+    fetch(api('/api/reports'),{method:'POST',headers:apiHeaders(),body:JSON.stringify({report:{
+      id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, mode:data.mode,
+      dims:Object.keys(data.sections||{}), data
+    }})}).then(r=>{
+      if(r.ok){ if(_cloudReports) _cloudReports.loaded=false; return r.json().then(j=>{_cloudReports={list:j.reports||_cloudReports.list,loaded:true}}); }
+    }).catch(()=>{});
+  }
+}
+function loadCloudReports(cb){
+  if(!BACKEND_URL || !RD_TOKEN){ cb&&cb([]); return; }
+  fetch(api('/api/reports'),{headers:apiHeaders()}).then(r=>{
+    if(r.status===401){ cb&&cb([]); return; }
+    return r.json().then(j=>{ const list=(j.reports||[]).map(x=>({...x,cloud:true})); _cloudReports={list,loaded:true}; cb&&cb(list); });
+  }).catch(()=>{ cb&&cb([]); });
 }
 function renderReports(){
   const box=document.getElementById('reportList');
-  let arr=[]; try{arr=JSON.parse(localStorage.getItem('rd_reports')||'[]');}catch(e){}
-  if(!arr.length){ box.innerHTML='<div class="empty">还没有生成的报告。去「新建调研」生成第一份吧。</div>'; return; }
-  box.innerHTML='<div class="rcards">'+arr.map((r,i)=>`
-    <div class="rcard" onclick="openSaved(${i})">
-      <div class="rt">${r.topic}</div>
-      <div class="rm">${r.generatedAt} · ${r.mode==='live'?'LIVE·DeepSeek':'模板数据'} · ${r.dims.length} 维度</div>
-      <div class="rtags">${r.dims.map(d=>`<span>${META[d]?META[d].title:d}</span>`).join('')}</div>
-    </div>`).join('')+'</div>';
+  let local=[]; try{local=JSON.parse(localStorage.getItem('rd_reports')||'[]');}catch(e){}
+  const show=list=>{
+    const merged=(list.length?list:local).slice(0,40);
+    if(!merged.length){ box.innerHTML='<div class="empty">还没有生成的报告。去「新建调研」生成第一份吧。<br/><span style="font-size:12px;color:var(--muted)">生成后自动保存，输入 Token 后还会同步到云端（换设备可见）。</span></div>'; return; }
+    box.innerHTML='<div class="rcards">'+merged.map((r,i)=>`
+      <div class="rcard" onclick="openSaved(${i})">
+        <div class="rt">${r.cloud?'☁️ ':''}${String(r.topic||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}</div>
+        <div class="rm">${String(r.generatedAt||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))} · ${r.mode==='live'?'LIVE·DeepSeek':'模板数据'} · ${(r.dims||[]).length} 维度${r.cloud?' · 云端':''}</div>
+        <div class="rtags">${(r.dims||[]).map(d=>`<span>${META[d]?META[d].title:d}</span>`).join('')}</div>
+      </div>`).join('')+'</div>';
+    window.__reportsList=merged;
+  };
+  // 优先云端，云端空/失败回退本地
+  if(_cloudReports && _cloudReports.loaded){ show(_cloudReports.list); }
+  else { loadCloudReports(show); }
 }
 function openSaved(i){
-  let arr=[]; try{arr=JSON.parse(localStorage.getItem('rd_reports')||'[]');}catch(e){}
-  if(arr[i]&&arr[i].data){ lastReport=arr[i].data; renderReport(arr[i].data); show('s4'); }
+  let arr=window.__reportsList||[];
+  let local=[]; try{local=JSON.parse(localStorage.getItem('rd_reports')||'[]');}catch(e){}
+  const rec=arr[i]||local[i];
+  if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4'); }
 }
 // 手动保存当前已显示的报告（解决「旧脚本生成的报告未被自动记录」的情况）
 function saveCurrent(){
@@ -650,9 +678,9 @@ function saveCurrent(){
   saveReport(lastReport);
   logHistory(lastReport.topic, Object.keys(lastReport.sections),
              lastReport.mode==='live'?'llm':'template', 'ok', lastReport.mode);
-  alert('已保存到「我的报告」和「历史任务」。');
+  alert('已保存到「我的报告」和「历史任务」'+(BACKEND_URL&&RD_TOKEN?'，并已同步云端（换设备可见）':'。'));
 }
-// —— 历史任务 ——
+// —— 历史任务（本地 + 云端报告同步，跨设备可见）——
 function logHistory(topic,dims,source,status,mode){
   try{
     const arr=JSON.parse(localStorage.getItem('rd_history')||'[]');
@@ -663,16 +691,33 @@ function logHistory(topic,dims,source,status,mode){
 function renderHistory(){
   const box=document.getElementById('histList');
   let arr=[]; try{arr=JSON.parse(localStorage.getItem('rd_history')||'[]');}catch(e){}
-  if(!arr.length){ box.innerHTML='<div class="empty">暂无历史任务。生成报告后这里会出现执行记录。</div>'; return; }
-  box.innerHTML=arr.map(h=>`
-    <div class="trow">
-      <div class="tk"></div>
-      <div class="tb">
-        <div class="tt">${h.topic}</div>
-        <div class="tm">${h.time} · ${h.dims.length} 维度 · 数据源：${h.source==='llm'?'大模型 DeepSeek':'模板数据'} · ${h.mode==='live'?'LIVE':'模板'}</div>
-      </div>
-      <div class="ts ${h.status==='ok'?'ok':'run'}">${h.status==='ok'?'完成':'运行中'}</div>
-    </div>`).join('');
+  const show=list=>{
+    if(!list.length){ box.innerHTML='<div class="empty">暂无历史任务。生成报告后这里会出现执行记录。</div>'; return; }
+    box.innerHTML=list.map(h=>`
+      <div class="trow">
+        <div class="tk"></div>
+        <div class="tb">
+          <div class="tt">${String(h.topic||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}</div>
+          <div class="tm">${h.time||''} · ${(h.dims||[]).length} 维度 · 数据源：${h.source==='llm'?'大模型 DeepSeek':'模板数据'} · ${h.mode==='live'?'LIVE':'模板'}</div>
+        </div>
+        <div class="ts ${h.status==='ok'?'ok':'run'}">${h.status==='ok'?'完成':'运行中'}</div>
+      </div>`).join('');
+  };
+  if(BACKEND_URL && RD_TOKEN){
+    // 云端报告即历史任务（跨设备可见）
+    if(_cloudReports && _cloudReports.loaded){
+      const c=(_cloudReports.list||[]).map(x=>({topic:x.topic, time:x.generatedAt, dims:x.dims, source:x.mode==='live'?'llm':'template', status:'ok', mode:x.mode}));
+      show(c.length?c:arr);
+    } else {
+      fetch(api('/api/reports'),{headers:apiHeaders()}).then(r=>{
+        if(r.status===401){ show(arr); return; }
+        return r.json().then(j=>{
+          const c=(j.reports||[]).map(x=>({topic:x.topic, time:x.generatedAt, dims:x.dims, source:x.mode==='live'?'llm':'template', status:'ok', mode:x.mode}));
+          if(c.length){ _cloudReports={list:j.reports||[], loaded:true}; show(c); } else show(arr);
+        });
+      }).catch(()=>show(arr));
+    }
+  } else show(arr);
 }
 
 // 启动时拉取状态 + 配置
