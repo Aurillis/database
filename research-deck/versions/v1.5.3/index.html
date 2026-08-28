@@ -255,16 +255,16 @@
         <div class="input-card">
           <div class="field">
             <label>调研主题 / 产品市场</label>
-            <div class="hint">支持「品类 + 平台 + 区域」组合，例如：亚马逊美国站 宠物智能饮水机</div>
+            <div class="hint">支持「品类 + 平台 + 区域」组合，例如：亚马逊美国站 哺乳按摩器</div>
             <div class="search">
-              <input id="topicInput" type="text" placeholder="例如：亚马逊美国站 宠物智能饮水机 / 便携式电动吸奶器 欧美市场" />
+              <input id="topicInput" type="text" placeholder="例如：亚马逊美国站 哺乳按摩器 / 盆底肌康复仪 欧美市场" />
               <button class="btn btn-primary" onclick="goDims()">下一步 →</button>
             </div>
             <div class="chips">
-              <span class="chip" onclick="setTopic('亚马逊美国站 宠物智能饮水机')">🐾 亚马逊美国站 宠物智能饮水机</span>
-              <span class="chip" onclick="setTopic('便携式电动吸奶器 欧美市场')">🍼 便携式电动吸奶器 欧美市场</span>
+              <span class="chip" onclick="setTopic('亚马逊美国站 哺乳按摩器')">🍼 亚马逊美国站 哺乳按摩器</span>
+              <span class="chip" onclick="setTopic('盆底肌康复仪 欧美市场')">🩺 盆底肌康复仪 欧美市场</span>
               <span class="chip" onclick="setTopic('痛经缓解产品 中国市场')">🌸 痛经缓解产品 中国市场</span>
-              <span class="chip" onclick="setTopic('智能筋膜枪 亚马逊美国')">💆 智能筋膜枪 亚马逊美国</span>
+              <span class="chip" onclick="setTopic('宠物智能饮水机 亚马逊')">🐾 宠物智能饮水机 亚马逊</span>
             </div>
           </div>
         </div>
@@ -463,8 +463,8 @@ function toggle(id){ if(selected.has(id))selected.delete(id); else selected.add(
 function goDims(){
   const v=document.getElementById('topicInput').value.trim();
   if(!v){ document.getElementById('topicInput').focus(); return; }
-  // 主题含「亚马逊」时自动勾选亚马逊看板维度（方便快速生成）
-  if(/亚马逊|amazon/i.test(v)){ selected.add('amz_us'); selected.add('amz_eu'); }
+  // 盆底肌主题自动勾选亚马逊专属维度
+  if(v.includes('盆底肌')){ selected.add('amz_us'); selected.add('amz_eu'); }
   document.getElementById('loadTopic').textContent='主题：'+v;
   show('s2'); renderDims();
 }
