@@ -9,8 +9,8 @@
 
 cd "$(dirname "$0")"
 
-# 固定产品名黑名单（新增违规产品名请追加到这里）
-BLACKLIST='盆底肌|哺乳按摩|Kegel|Momcozy|lactation|Intimate Rose|Perifit|LaVie|Frida|K-fit|iSTIM|QoQiu'
+# 固定产品名/技术名黑名单（新增违规产品名请追加到这里）
+BLACKLIST='盆底肌|哺乳按摩|Kegel|Momcozy|lactation|Intimate Rose|Perifit|LaVie|Frida|K-fit|iSTIM|QoQiu|EMG|EMS/TENS|Peltier|510k|NMPA'
 
 echo "=== 无死数据红线检查 ==="
 echo "检查文件: server.py index.html"
