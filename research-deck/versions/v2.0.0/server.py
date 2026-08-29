@@ -228,40 +228,19 @@ NO_MCP_CAVEAT = (
 )
 
 def _extract_json(content):
-    """从 LLM 返回中稳健解析 JSON：兼容纯 JSON / ```json 代码块 / 前后缀噪声 / 对象或数组。
-
-    v2.0.1：三级兜底——先整体解析；失败再截取 {...} 对象；再失败截取 [...] 数组
-    （研究计划是 JSON 数组，旧版只认对象导致解析失败走 fallback 只剩 1 个研究点）。
-    """
+    """从 LLM 返回中稳健解析 JSON：兼容纯 JSON / ```json 代码块 / 前后缀噪声。"""
     if not isinstance(content, str):
         content = str(content)
     s = content.strip()
-    # 去掉 markdown 代码块围栏
     if s.startswith("```"):
         s = s.split("\n", 1)[1] if "\n" in s else s[3:]
         if s.endswith("```"):
             s = s[:-3]
         s = s.strip()
-    # 1) 整体解析
-    try:
-        return json.loads(s)
-    except Exception:
-        pass
-    # 2) 截取对象 {...}
     start, end = s.find("{"), s.rfind("}")
     if start != -1 and end != -1 and end > start:
-        try:
-            return json.loads(s[start:end + 1])
-        except Exception:
-            pass
-    # 3) 截取数组 [...]
-    start, end = s.find("["), s.rfind("]")
-    if start != -1 and end != -1 and end > start:
-        try:
-            return json.loads(s[start:end + 1])
-        except Exception:
-            pass
-    raise ValueError("无法从 LLM 输出中解析 JSON: " + s[:80])
+        s = s[start:end + 1]
+    return json.loads(s)
 
 
 def call_llm_dim(topic, dim_key, llm):
@@ -635,7 +614,7 @@ def _build_comprehensive(topic, llm):
     try:
         digest = "\n".join("【{}】{}".format(tid, _sum(tid)) for tid in types if _sum(tid))
         decision_prompt = (
-            "你是产品立项评审专家。基于以下针对「{}」的5类调研摘要，输出产品立项决策JSON：\n"
+            "你是产品立项评审专家。基于以下针对「{topic}」的5类调研摘要，输出产品立项决策JSON：\n"
             "{{\"market\":\"市场是否成立？结论+关键依据(2-3句)\",\"user\":\"用户核心需求是什么？(3-5条，用顿号分隔)\","
             "\"opp\":\"竞争机会在哪？(空位/差异化机会，2-3句)\",\"tech\":\"技术是否可行？结论+关键风险点(2-3句)\","
             "\"define\":\"产品应该怎么定义？一句话定位+3条关键建议\"}}\n"

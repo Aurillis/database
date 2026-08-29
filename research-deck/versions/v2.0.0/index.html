@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="调研台 ResearchDeck：AI 驱动的亚马逊市场调研工具，9 大调研维度（市场/用户/产品/竞品/技术/合规/供应链/亚马逊美欧看板），DeepSeek 实时生成结构化研究报告。" />
+<meta name="theme-color" content="#0F2A43" />
+<title>调研台 ResearchDeck · AI 市场调研</title>
+<style>
+  :root{
+    --teal:#0FB5A6; --teal-d:#0C9A8E; --teal-l:#D9F5F1;
+    --navy:#0F2A43; --navy-2:#1C3D5A;
+    --bg:#F4F8F9; --panel:#FFFFFF; --line:#E3EDEF;
+    --txt:#15303F; --muted:#5E7686;
+    --amber:#F59E0B; --red:#EF4444; --green:#10B981; --blue:#3B82F6;
+    --shadow:0 1px 3px rgba(15,42,67,.08),0 8px 24px rgba(15,42,67,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  /* v1.9.0：门禁 */
+  #gate{position:fixed;inset:0;background:linear-gradient(160deg,#0F2A43,#1C4A5E);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px}
+  #gate.hide{display:none}
+  .gate-box{background:#fff;border-radius:18px;padding:38px 34px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+  .gate-logo{font-size:24px;font-weight:800;color:#0F2A43;display:flex;align-items:center;justify-content:center;gap:10px}
+  .gate-logo .dot{width:12px;height:12px;border-radius:50%;background:#0FB5A6;box-shadow:0 0 0 4px rgba(15,181,166,.2)}
+  .gate-sub{font-size:12.5px;color:#5E7686;margin:6px 0 26px}
+  .gate-input{display:flex;gap:8px}
+  .gate-input input{flex:1;padding:12px 14px;border:1.5px solid #D5E0E2;border-radius:10px;font-size:14px;outline:none;font-family:inherit}
+  .gate-input input:focus{border-color:#0FB5A6;box-shadow:0 0 0 3px rgba(15,181,166,.15)}
+  .gate-input button{padding:12px 20px;border:none;border-radius:10px;background:#0FB5A6;color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:.15s;white-space:nowrap}
+  .gate-input button:hover{background:#0C9A8E}
+  .gate-input button:disabled{opacity:.6;cursor:not-allowed}
+  .gate-err{font-size:12.5px;color:#C0392B;margin-top:12px;min-height:18px}
+  .gate-hint{font-size:11.5px;color:#9AAFB8;margin-top:14px;line-height:1.6}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .gate-box.shake{animation:shake .3s ease}
+  #toastBox{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+  .toast{background:#0F2A43;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;box-shadow:0 6px 20px rgba(15,42,67,.25);animation:toastIn .25s ease;max-width:90vw;text-align:center}
+  .toast.err{background:#C0392B}
+  .toast.ok{background:#0B8A5E}
+  .toast.out{opacity:0;transform:translateY(-6px);transition:.3s}
+  @keyframes toastIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+  html,body{height:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .app{display:flex;min-height:100vh}
+  .side{width:230px;background:var(--navy);color:#CFE6E2;padding:22px 18px;flex-shrink:0;position:sticky;top:0;height:100vh}
+  .side .logo{font-size:19px;font-weight:700;color:#fff;display:flex;align-items:center;gap:9px;margin-bottom:4px}
+  .side .logo .dot{width:11px;height:11px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(15,181,166,.25)}
+  .side .sub{font-size:11.5px;color:#7FA0A0;margin-bottom:26px}
+  .nav{display:flex;flex-direction:column;gap:3px}
+  .nav .item{font-size:13.5px;padding:9px 12px;border-radius:9px;color:#A9C4C2;cursor:pointer;display:flex;align-items:center;gap:9px;transition:.15s;user-select:none}
+  .nav .item:hover{background:rgba(15,181,166,.10);color:#fff}
+  .nav .item.active{background:rgba(15,181,166,.18);color:#fff;font-weight:600}
+  .nav .item .ic{width:18px;text-align:center}
+  .side .foot{position:absolute;bottom:18px;left:18px;right:18px;font-size:11px;color:#6E8E8E}
+  .mode-pill{position:absolute;bottom:54px;left:18px;right:18px;font-size:11px;padding:6px 10px;border-radius:8px;font-weight:600;text-align:center}
+  .mode-pill.demo{background:#FEF3E2;color:#B45309}
+  .mode-pill.live{background:#E7F7EF;color:#0B8A5E}
+  .main{flex:1;overflow-x:hidden}
+  .top{height:60px;border-bottom:1px solid var(--line);background:var(--panel);display:flex;align-items:center;padding:0 26px;gap:14px}
+  .top .crumb{font-size:13px;color:var(--muted)}
+  .top .crumb b{color:var(--txt)}
+  .top .beta{margin-left:auto;font-size:11px;background:var(--teal-l);color:var(--teal-d);padding:4px 10px;border-radius:20px;font-weight:600}
+  .content{padding:30px 36px 60px;max-width:1080px}
+  .screen{display:none;animation:fade .35s ease}
+  .screen.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  h1.t{font-size:25px;font-weight:700;letter-spacing:-.3px}
+  .lead{color:var(--muted);margin-top:8px;font-size:14.5px;max-width:700px}
+  .emoji{font-size:16px;margin-right:6px}
+  .input-card{margin-top:34px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--shadow)}
+  .field label{font-size:13px;font-weight:600;color:var(--navy-2)}
+  .field .hint{font-size:12px;color:var(--muted);margin:4px 0 10px}
+  .search{display:flex;gap:10px}
+  .search input{flex:1;padding:14px 16px;border:1.5px solid var(--line);border-radius:11px;font-size:15px;outline:none;transition:.15s;background:#FBFDFD}
+  .search input:focus{border-color:var(--teal);box-shadow:0 0 0 4px var(--teal-l)}
+  .btn{cursor:pointer;border:none;border-radius:11px;font-weight:600;font-size:14px;padding:13px 22px;transition:.15s;font-family:inherit}
+  .btn-primary{background:var(--teal);color:#fff}
+  .btn-primary:hover{background:var(--teal-d)}
+  .btn-primary:disabled{background:#9FD8D2;cursor:not-allowed}
+  .btn-ghost{background:#EEF4F4;color:var(--navy-2)}
+  .btn-ghost:hover{background:#E1EDEF}
+  .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+  .chip{font-size:12.5px;padding:8px 14px;border:1px solid var(--line);border-radius:20px;background:#fff;cursor:pointer;color:var(--navy-2);transition:.15s}
+  .chip:hover{border-color:var(--teal);color:var(--teal-d);background:var(--teal-l)}
+  .grid{margin-top:26px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .dim{background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;transition:.15s;position:relative}
+  .dim:hover{border-color:var(--teal);transform:translateY(-2px)}
+  .dim.sel{border-color:var(--teal);background:linear-gradient(180deg,#fff,var(--teal-l))}
+  .dim .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .dim .ic{width:34px;height:34px;border-radius:9px;background:var(--teal-l);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .dim.sel .ic{background:var(--teal)}
+  .dim.sel .ic span{filter:brightness(0) invert(1)}
+  .dim .tt{font-size:14.5px;font-weight:700}
+  .dim .ds{font-size:12px;color:var(--muted);line-height:1.5}
+  .dim .chk{position:absolute;top:14px;right:14px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+  .dim .pin{position:absolute;top:15px;right:44px;font-size:10.5px;padding:3px 8px;border-radius:6px;background:#EEF2FF;color:#4338CA;font-weight:700;letter-spacing:.2px}
+  .dim.sel .chk{background:var(--teal);border-color:var(--teal)}
+  .dim .tag{display:inline-block;font-size:10.5px;padding:2px 7px;border-radius:5px;background:#EEF4F4;color:var(--navy-2);margin-top:10px;margin-right:5px}
+  .actions{margin-top:28px;display:flex;gap:12px;align-items:center}
+  .count{font-size:13px;color:var(--muted)}
+  .count b{color:var(--teal-d)}
+  .srcbox{margin-top:24px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  /* v2.0：3 种调研形式 + 5 类研究类型 */
+  .form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+  .form-opt{border:1.5px solid var(--line);border-radius:13px;padding:16px 14px;cursor:pointer;transition:.15s;background:#fff}
+  .form-opt:hover{border-color:var(--teal);transform:translateY(-2px)}
+  .form-opt.on{border-color:var(--teal);background:linear-gradient(180deg,#fff,var(--teal-l));box-shadow:var(--shadow)}
+  .form-opt .fo-ic{font-size:22px}
+  .form-opt .fo-t{font-size:14.5px;font-weight:700;margin-top:8px}
+  .form-opt .fo-d{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.55}
+  .rtype-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
+  .rtype{border:1.5px solid var(--line);border-radius:13px;padding:16px;cursor:pointer;transition:.15s;background:#fff;position:relative}
+  .rtype:hover{border-color:var(--teal);transform:translateY(-2px)}
+  .rtype.sel{border-color:var(--teal);background:linear-gradient(180deg,#fff,var(--teal-l))}
+  .rtype .r-ic{font-size:20px}
+  .rtype .r-t{font-size:15px;font-weight:700;margin-top:7px}
+  .rtype .r-q{font-size:12px;color:var(--teal-d);margin-top:2px}
+  .rtype .r-m{font-size:11px;color:var(--muted);margin-top:7px;line-height:1.5}
+  .rtype .r-chk{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
+  .rtype.sel .r-chk{background:var(--teal);border-color:var(--teal)}
+  @media (max-width:640px){ .form-grid{grid-template-columns:1fr} .rtype-grid{grid-template-columns:1fr} }
+  /* v2.0：决策面板 + 研究计划 */
+  .decision-grid{display:grid;grid-template-columns:1fr;gap:10px}
+  .d-item{background:#FBFDFD;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .d-lbl{font-size:12px;font-weight:700;color:var(--teal-d);margin-bottom:4px}
+  .d-val{font-size:13.5px;line-height:1.6;color:var(--txt)}
+  .plan-list{display:flex;flex-direction:column;gap:8px}
+  .plan-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;background:#FBFDFD;border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+  .plan-item .pi{width:20px;height:20px;border-radius:50%;background:#4338CA;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .plan-item b{flex-shrink:0}
+  .plan-item .pf{color:var(--muted)}
+  .srcbox .srclbl{font-size:13px;font-weight:700;color:var(--navy-2);margin-bottom:10px}
+  .srcseg{display:flex;gap:10px;flex-wrap:wrap}
+  .seg{cursor:pointer;border:1.5px solid var(--line);background:#fff;color:var(--navy-2);font-size:13.5px;font-weight:600;padding:11px 16px;border-radius:11px;transition:.15s;font-family:inherit}
+  .seg.on{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d)}
+  .srchint{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
+  .llmset{margin-top:14px;border-top:1px dashed var(--line);padding-top:14px;display:none}
+  .llmset.on{display:block}
+  .llmset .field{margin-bottom:10px}
+  .llmset label{font-size:12.5px;font-weight:600;color:var(--navy-2);display:block;margin-bottom:5px}
+  .llmset input{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:13.5px;outline:none;font-family:inherit}
+  .llmset input:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-l)}
+  .row2{display:flex;gap:12px}
+  .row2 .field{flex:1;margin-bottom:10px}
+  .loader{margin-top:60px;text-align:center}
+  .ring{width:64px;height:64px;border-radius:50%;border:5px solid var(--teal-l);border-top-color:var(--teal);animation:spin 1s linear infinite;margin:0 auto 26px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loader h2{font-size:19px}
+  .loader p{color:var(--muted);font-size:13.5px;margin-top:6px}
+  .prog{margin:14px auto 0;max-width:520px;text-align:left}
+  .prog-warn{font-size:12.5px;color:var(--navy-2);background:#FEF9EC;border:1px solid #F5E3B8;border-radius:9px;padding:9px 12px;margin:14px auto 0;text-align:left;line-height:1.5}
+  .prow{display:flex;align-items:center;gap:12px;padding:9px 0;font-size:13.5px;color:var(--muted)}
+  .prow .spin2{width:15px;height:15px;border-radius:50%;border:2px solid var(--teal-l);border-top-color:var(--teal);animation:spin .8s linear infinite}
+  .prow .done{width:17px;height:17px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+  .prow .failx{width:17px;height:17px;border-radius:50%;background:#C0392B;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px}
+  .prow.fail{color:#C0392B}
+  .prow.ok{color:var(--txt)}
+  .rtools{display:flex;gap:10px;margin-bottom:18px;align-items:center;flex-wrap:wrap}
+  .rtools .meta{font-size:12.5px;color:var(--muted)}
+  .rtools .spacer{flex:1}
+  .report{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+  .rhead{padding:22px 26px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#FBFEFE,#fff)}
+  .rhead .kicker{font-size:11.5px;color:var(--teal-d);font-weight:700;letter-spacing:.5px}
+  .rhead h2{font-size:22px;margin-top:4px;letter-spacing:-.3px}
+  .rhead .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+  .rhead .tg{font-size:11.5px;padding:4px 11px;border-radius:20px;background:var(--teal-l);color:var(--teal-d);font-weight:600}
+  .rhead .tg.g{background:#E7F7EF;color:#0B8A5E}
+  .rbody{padding:8px 26px 26px}
+  .sec{padding:22px 0;border-bottom:1px solid var(--line)}
+  .sec:last-child{border-bottom:none}
+  .sec .sh{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+  .sec .sh .n{width:26px;height:26px;border-radius:8px;background:var(--navy);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .sec .sh h3{font-size:16.5px}
+  .sec .sh .badge{margin-left:auto;font-size:11px;padding:3px 9px;border-radius:6px;background:#EEF4F4;color:var(--navy-2)}
+  .sec p.note{font-size:13px;color:var(--muted);margin-bottom:12px}
+  table.t{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 4px}
+  table.t th{background:#F1F6F7;text-align:left;padding:9px 11px;font-weight:600;color:var(--navy-2);border:1px solid var(--line);font-size:12.5px}
+  table.t td{padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  table.t tr:nth-child(even) td{background:#FBFDFD}
+  .pill{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11.5px;font-weight:600}
+  .pill.t{background:#E7F7EF;color:#0B8A5E}
+  .pill.w{background:#FEF3E2;color:#B45309}
+  .pill.r{background:#FDE8E8;color:#C0392B}
+  .pill.b{background:#E6F0FE;color:#1D4ED8}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:4px 0 12px}
+  .kpi{background:#FBFDFD;border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+  .kpi .v{font-size:21px;font-weight:700;color:var(--navy)}
+  .kpi .l{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .callout{border-left:3px solid var(--teal);background:var(--teal-l);padding:12px 16px;border-radius:0 9px 9px 0;font-size:13px;margin:10px 0}
+  .callout.amber{border-color:var(--amber);background:#FEF6E7}
+  .toc{position:sticky;top:0;background:var(--panel);padding:10px 0;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:6px;z-index:5}
+  .toc a{font-size:12px;color:var(--muted);padding:5px 11px;border-radius:16px;cursor:pointer;text-decoration:none;transition:.15s}
+  .toc a:hover{background:var(--teal-l);color:var(--teal-d)}
+  .toc a.toc-active{background:var(--teal);color:#fff;font-weight:600}
+  .toc a{font-size:12px;padding:5px 11px;border-radius:7px;background:#EEF4F4;color:var(--navy-2);cursor:pointer}
+  .toc a:hover{background:var(--teal-l);color:var(--teal-d)}
+  .foot-note{font-size:11.5px;color:#9AAFB8;margin-top:18px;padding-top:14px;border-top:1px dashed var(--line)}
+  .hidden{display:none!important}
+  .err{background:#FDE8E8;color:#C0392B;padding:14px 18px;border-radius:11px;font-size:13.5px;margin-top:20px}
+  .empty{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:40px;text-align:center;color:var(--muted);font-size:14px;margin-top:20px}
+  .rcards{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .rcard{background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;transition:.15s;position:relative}
+  .rcard:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:var(--shadow)}
+  .rcard .rt{font-size:16px;font-weight:700;padding-right:26px}
+  .rcard .del-btn{position:absolute;top:12px;right:12px;width:22px;height:22px;border:none;border-radius:50%;background:#FEE2E2;color:#C0392B;font-size:11px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.7;transition:.15s}
+  .rcard .del-btn:hover{opacity:1;background:#C0392B;color:#fff}
+  .rcard .rm{font-size:12px;color:var(--muted);margin-top:6px}
+  .rcard .rtags{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+  .rcard .rtags span{font-size:11px;padding:3px 9px;border-radius:6px;background:#EEF4F4;color:var(--navy-2)}
+  .tpls{margin-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .tpl{background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:18px;position:relative}
+  .tpl.fixed{border-color:#C7D2FE;background:linear-gradient(180deg,#fff,#EEF2FF)}
+  .tpl .th{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .tpl .dim-toggle{margin-left:auto;display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:11px;color:var(--muted);user-select:none}
+  .tpl .dim-toggle input{display:none}
+  .tpl .tk-slider{width:32px;height:18px;background:#D5E0E2;border-radius:10px;position:relative;transition:.2s;flex-shrink:0}
+  .tpl .tk-slider::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .tpl .dim-toggle input:checked + .tk-slider{background:var(--teal)}
+  .tpl .dim-toggle input:checked + .tk-slider::after{left:16px}
+  .tpl.dim-off{opacity:.55}
+  .tpl.dim-off .dim-toggle .tk-slider{background:#C9D4D6}
+  .tpl .th .ic{width:34px;height:34px;border-radius:9px;background:var(--teal-l);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .tpl.fixed .th .ic{background:#C7D2FE}
+  .tpl .tt{font-size:15px;font-weight:700}
+  .tpl .ds{font-size:12.5px;color:var(--muted);line-height:1.6}
+  .tpl .pin{position:absolute;top:16px;right:16px;font-size:10.5px;padding:3px 8px;border-radius:6px;background:#EEF2FF;color:#4338CA;font-weight:700}
+  .tpl .struct{margin-top:12px;font-size:12px;background:#FBFDFD;border:1px solid var(--line);border-radius:9px;padding:10px 12px;color:var(--navy-2);line-height:1.7}
+  .timeline{margin-top:22px;display:flex;flex-direction:column}
+  .trow{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .trow .tk{width:9px;height:9px;border-radius:50%;background:var(--teal);margin-top:6px;flex-shrink:0}
+  .trow .tb{flex:1}
+  .trow .tt{font-size:14px;font-weight:600}
+  .trow .tm{font-size:12px;color:var(--muted);margin-top:3px}
+  .trow .ts{font-size:11px;padding:2px 8px;border-radius:5px;font-weight:600;align-self:flex-start}
+  .trow .ts.ok{background:#E7F7EF;color:#0B8A5E}
+  .trow .ts.run{background:#FEF3E2;color:#B45309}
+  .tokenbox{margin:10px 0 4px;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+  .tokenbox label{display:block;font-size:11.5px;font-weight:700;color:var(--navy-2);margin-bottom:5px}
+  .tokenbox input{width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-size:13px;outline:none;font-family:inherit;margin-bottom:7px}
+  .tokenbox input:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-l)}
+  .btn-mini{padding:6px 12px;font-size:12.5px;border:none;border-radius:8px;background:var(--teal);color:#fff;cursor:pointer;font-weight:600}
+  .btn-mini:hover{filter:brightness(1.05)}
+  .tokstat{font-size:11.5px;margin-top:6px;color:var(--muted)}
+  .tokstat.ok{color:#0B8A5E}
+  .tokstat.err{color:#C0392B}
+
+  /* ===== 移动端适配（≤768px）===== */
+  @media (max-width:768px){
+    .app{flex-direction:column}
+    .side{
+      width:100%;height:auto;position:static;padding:12px 14px;
+      display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;
+    }
+    .side .logo{font-size:16px;margin-bottom:0}
+    .side .sub{display:none}
+    .side .foot{display:none}
+    .mode-pill{position:static;order:9;width:100%;margin-top:4px}
+    .tokenbox{margin:4px 0;padding:8px;flex:1 1 100%;order:10}
+    .tokenbox label{display:none}
+    .tokenbox input{margin-bottom:0;width:calc(100% - 70px);display:inline-block;vertical-align:top}
+    .tokenbox .btn-mini{width:62px;margin-left:6px;vertical-align:top}
+    .nav{flex-direction:row;flex-wrap:wrap;gap:2px}
+    .nav .item{padding:7px 10px;font-size:12.5px}
+    .nav .item .ic{display:none}
+    .top{height:50px;padding:0 16px}
+    .top .beta{display:none}
+    .content{padding:20px 16px 60px}
+    h1.t{font-size:20px}
+    .lead{font-size:13.5px}
+    .input-card{padding:18px;margin-top:22px}
+    /* 关键修复：搜索框纵向堆叠，按钮全宽不被压缩 */
+    .search{flex-direction:column}
+    .search input{width:100%;padding:13px 14px;font-size:15px}
+    .search .btn{width:100%;text-align:center;padding:14px;font-size:15px}
+    .grid{grid-template-columns:repeat(2,1fr);gap:10px}
+    .dim{padding:14px}
+    .srcseg{flex-direction:column}
+    .srcseg .seg{width:100%;text-align:left;padding:12px}
+    .actions{flex-wrap:wrap}
+    .actions .btn{flex:1 1 100%;text-align:center}
+    .tpl .pin{position:static;display:inline-block;margin-top:8px}
+    .trow{gap:10px}
+    .content table{display:block;overflow-x:auto;white-space:nowrap}
+    .rbody{padding:8px 14px 24px}
+    .kpis{grid-template-columns:repeat(2,1fr);gap:10px}
+  }
+  @media (max-width:420px){
+    .grid{grid-template-columns:1fr}
+    .chips{gap:6px}
+    .chip{padding:7px 10px;font-size:12px}
+  }
+</style>
+</head>
+<body>
+<!-- v1.9.0：门禁遮罩（输入正确 token 后才能看到调研台内容） -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-logo"><span class="dot"></span>调研台</div>
+    <div class="gate-sub">ResearchDeck · 需要访问令牌</div>
+    <div class="gate-input">
+      <input id="gateToken" type="password" placeholder="请输入访问令牌（向站长索取）" autocomplete="off" aria-label="访问令牌" />
+      <button id="gateBtn" onclick="gateLogin()">进入</button>
+    </div>
+    <div class="gate-err" id="gateErr"></div>
+    <div class="gate-hint">令牌验证通过后即可使用调研台；浏览器会记住本次登录。</div>
+  </div>
+</div>
+<div class="app">
+  <aside class="side">
+    <div class="logo"><span class="dot"></span>调研台</div>
+    <div class="sub">ResearchDeck · 在线版</div>
+    <div class="tokenbox" id="tokenBox">
+      <label>访问令牌（Token）</label>
+      <input id="tokenInput" type="password" placeholder="向站长索取 RD_TOKEN" autocomplete="off" />
+      <button class="btn btn-mini" onclick="saveToken()">保存</button>
+      <div class="tokstat" id="tokStat"></div>
+    </div>
+    <div class="nav">
+      <div class="item active" data-view="s1" onclick="show('s1')"><span class="ic">①</span>新建调研</div>
+      <div class="item" data-view="s5" onclick="show('s5')"><span class="ic">▤</span>我的报告</div>
+      <div class="item" data-view="s6" onclick="show('s6')"><span class="ic">⚙</span>维度模板</div>
+      <div class="item" data-view="s7" onclick="show('s7')"><span class="ic">◷</span>历史任务</div>
+    </div>
+    <div class="mode-pill demo" id="modePill">DEMO 模式</div>
+    <div class="foot">后端 /api/research · Python<br/>© 2026 Aurillis Lab</div>
+  </aside>
+
+  <div class="main">
+    <div class="top">
+      <div class="crumb">新建调研 / <b id="crumbNow">输入主题</b></div>
+      <div class="beta" id="betaBadge" style="background:#FEF3E2;color:#B45309">后端连接中…</div>
+    </div>
+    <div class="content">
+
+      <!-- SCREEN 1: INPUT -->
+      <section class="screen on" id="s1">
+        <h1 class="t"><span class="emoji">🔍</span>创建新调研</h1>
+        <p class="lead">选择调研方式，输入研究对象，即可开始。</p>
+        <div class="input-card">
+          <!-- v2.0：3 种调研形式 -->
+          <div class="field">
+            <label>调研方式</label>
+            <div class="form-grid" id="formGrid">
+              <div class="form-opt on" data-form="standard" onclick="setForm('standard')">
+                <div class="fo-ic">📋</div>
+                <div class="fo-t">标准调研</div>
+                <div class="fo-d">按固定模板研究（市场/电商/竞品/用户/技术），适合已验证的常规课题</div>
+              </div>
+              <div class="form-opt" data-form="topic" onclick="setForm('topic')">
+                <div class="fo-ic">🎯</div>
+                <div class="fo-t">专题调研</div>
+                <div class="fo-d">回答一个具体问题，系统自动生成研究计划并执行</div>
+              </div>
+              <div class="form-opt" data-form="comprehensive" onclick="setForm('comprehensive')">
+                <div class="fo-ic">🚀</div>
+                <div class="fo-t">综合立项研究</div>
+                <div class="fo-d">串联市场+电商+竞品+用户+技术，输出「是否立项」决策面板</div>
+              </div>
+            </div>
+          </div>
+          <div class="field" id="topicField">
+            <label id="topicLabel">研究对象 / 品类</label>
+            <div class="search">
+              <input id="topicInput" type="text" placeholder="例如：宠物智能饮水机 / 智能筋膜枪 / 便携式电热毯" aria-label="调研主题输入框" autocomplete="off" />
+              <button class="btn btn-primary" onclick="goNext()">下一步 →</button>
+            </div>
+            <div class="chips">
+              <span class="chip" onclick="setTopic('宠物智能饮水机')">🐾 宠物智能饮水机</span>
+              <span class="chip" onclick="setTopic('智能筋膜枪')">💆 智能筋膜枪</span>
+              <span class="chip" onclick="setTopic('宠物智能饮水机')">🐾 宠物智能饮水机</span>
+              <span class="chip" onclick="setTopic('智能筋膜枪')">💆 智能筋膜枪</span>
+            </div>
+          </div>
+          <!-- 专题问题输入 -->
+          <div class="field" id="questionField" style="display:none">
+            <label>要研究的具体问题</label>
+            <div class="search">
+              <input id="questionInput" type="text" placeholder="例如：宠物智能饮水机的静音标准应该做到多少？" aria-label="专题问题输入框" autocomplete="off" />
+              <button class="btn btn-primary" onclick="goNext()">开始调研 →</button>
+            </div>
+            <div class="chips">
+              <span class="chip" onclick="setQuestion('宠物智能饮水机的水质检测怎么做？')">💧 水质检测怎么做？</span>
+              <span class="chip" onclick="setQuestion('为什么用户退货率偏高？')">🔍 退货率为什么偏高？</span>
+              <span class="chip" onclick="setQuestion('主流产品的最优参数区间是什么？')">⚡ 最优参数区间？</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: 研究类型 / 维度 -->
+      <section class="screen" id="s2">
+        <h1 class="t"><span class="emoji">🧩</span><span id="s2Title">选择研究类型</span></h1>
+        <p class="lead" id="s2Lead">选择本次标准调研的研究范围。</p>
+        <div class="srcbox">
+          <div class="srclbl">🛠 数据源（每个维度怎么出数据）</div>
+          <div class="srcseg">
+            <button type="button" class="seg on" id="srcTpl" onclick="setSrc('template')">📁 模板数据（离线·结构骨架）</button>
+            <button type="button" class="seg" id="srcLlm" onclick="setSrc('llm')">🤖 大模型实时生成（DeepSeek）</button>
+          </div>
+          <div class="srchint" id="srcHint">「模板数据」输出结构骨架（离线可用、数据标待生成）；「大模型实时生成」由站长统一配置的 DeepSeek 对当前主题实时产出真实数据（数字为 LLM 估算、需核验）。</div>
+        </div>
+        <!-- 标准模式：5 类研究类型 -->
+        <div id="rtypeBox">
+          <div class="rtype-grid" id="rtypeGrid"></div>
+        </div>
+        <!-- 高级模式：9 维度勾选（折叠） -->
+        <div id="advBox" style="display:none">
+          <div class="grid" id="dimGrid"></div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-ghost" onclick="show('s1')">← 返回</button>
+          <button class="btn btn-primary" id="genBtn" onclick="goGen()">生成调研报告 →</button>
+          <button class="btn btn-ghost" id="advToggle" onclick="toggleAdvanced()">高级：自由选维度 ▾</button>
+          <span class="count" id="selCountWrap" style="display:none">已选 <b id="selCount">0</b> / <span id="totalCount">9</span> 个维度</span>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: LOADING -->
+      <section class="screen" id="s3">
+        <div class="loader">
+          <div class="ring"></div>
+          <h2>正在生成调研报告…</h2>
+          <p id="loadTopic">主题：…</p>
+          <div id="progHint" style="max-width:560px;margin:0 auto 10px"></div>
+          <div class="prog" id="progList"></div>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: REPORT -->
+      <section class="screen" id="s4">
+        <div class="rtools">
+          <div class="meta" id="rMeta"></div>
+          <div class="spacer"></div>
+          <button class="btn btn-ghost" onclick="downloadReport()">⤓ 下载 HTML</button>
+          <button class="btn btn-ghost" onclick="saveCurrent()">💾 保存到我的报告</button>
+          <button class="btn btn-primary" onclick="show('s1')">+ 新建调研</button>
+        </div>
+        <div class="report">
+          <div class="rhead">
+            <div class="kicker">RESEARCHDECK · 自动调研报告</div>
+            <h2 id="rTitle"></h2>
+            <div class="tags" id="rTags"></div>
+          </div>
+          <div class="rbody">
+            <div class="toc" id="toc"></div>
+            <div id="reportBody"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: MY REPORTS -->
+      <section class="screen" id="s5">
+        <h1 class="t"><span class="emoji">▤</span>我的报告</h1>
+        <p class="lead">这里保存着你在本机生成的调研报告（存于浏览器 localStorage，不上传）。点击任意卡片可重新打开查看。</p>
+        <div id="reportList"></div>
+      </section>
+
+      <!-- SCREEN 6: DIMENSION TEMPLATES -->
+      <section class="screen" id="s6">
+        <h1 class="t"><span class="emoji">⚙</span>维度模板</h1>
+        <p class="lead">调研台内置 9 个标准化维度（来自你的真实调研方法论）。📌 标记为「看板结构」的亚马逊美/欧维度结构锁定，不随主题漂移。可在下方<b>启用/停用</b>维度（停用后不出现在「新建调研」勾选列表）。</p>
+        <div class="tpls" id="tplList"></div>
+      </section>
+
+      <!-- SCREEN 7: HISTORY -->
+      <section class="screen" id="s7">
+        <h1 class="t"><span class="emoji">◷</span>历史任务</h1>
+        <p class="lead">每次生成报告都会在此留下执行记录。已登录 Token 时记录<b>自动同步云端</b>，换设备也能看到；未登录时仅存本机。</p>
+        <div class="timeline" id="histList"></div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// —— 门禁（v1.9.0：输入正确 token 才能看到调研台内容）——
+function gateShow(){ document.getElementById('gate').classList.remove('hide'); }
+function gateHide(){ document.getElementById('gate').classList.add('hide'); }
+function gateVerify(tok){
+  // 用带 token 的 status 请求验证令牌有效性（后端返回 authValid）
+  return fetchTimeout(api('/api/status'),{headers:{'Authorization':'Bearer '+tok}},15000)
+    .then(r=>{ if(!r.ok) throw 0; return r.json(); })
+    .then(j=>!!j.authValid)
+    .catch(()=>false);
+}
+function gateLogin(){
+  const inp=document.getElementById('gateToken');
+  const v=inp.value.trim();
+  const err=document.getElementById('gateErr');
+  const btn=document.getElementById('gateBtn');
+  if(!v){ err.textContent='请输入访问令牌'; inp.focus(); return; }
+  err.textContent=''; btn.disabled=true; btn.textContent='验证中…';
+  gateVerify(v).then(ok=>{
+    btn.disabled=false; btn.textContent='进入';
+    if(ok){
+      RD_TOKEN=v;
+      try{ localStorage.setItem('rd_token', encTok(v)); }catch(e){}
+      inp.value='';
+      gateHide();
+      // 更新侧边栏状态 + 刷新数据
+      const sb=document.getElementById('tokStat'); if(sb){ sb.className='tokstat ok'; sb.textContent='✓ 已登录'; }
+      const tb=document.getElementById('tokenInput'); if(tb) tb.placeholder='已保存（输入新值可更换）';
+      setBackendBadge(true,'后端已连接 · LIVE');
+      if(_cloudReports) _cloudReports.loaded=false;
+      toast('欢迎使用调研台','ok');
+      bootStatus();
+    } else {
+      err.textContent='令牌无效，请重新输入';
+      const box=document.querySelector('.gate-box'); if(box) box.classList.add('shake');
+      setTimeout(()=>box&&box.classList.remove('shake'),350);
+      inp.select();
+    }
+  });
+}
+document.getElementById('gateBtn');
+// 回车提交
+(function(){
+  const inp=document.getElementById('gateToken');
+  if(inp) inp.addEventListener('keydown',e=>{ if(e.key==='Enter') gateLogin(); });
+})();
+// —— 轻量 toast（v1.8.0：替代 alert，移动端友好）——
+function toast(msg, type){
+  let box=document.getElementById('toastBox');
+  if(!box){ box=document.createElement('div'); box.id='toastBox'; document.body.appendChild(box); }
+  const el=document.createElement('div');
+  el.className='toast '+(type||'info');
+  el.textContent=msg;
+  box.appendChild(el);
+  setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(), 300); }, 2600);
+}
+
+// —— 后端地址配置（部署到腾讯云 SCF 后，前端在 GitHub Pages 需指向上面的网关）——
+// 优先级：URL 参数 ?backend=https://xxx  > localStorage.rd_backend > 内置默认 SCF 地址
+const DEFAULT_BACKEND = 'https://1461447139-ds1sdwfe7p.ap-guangzhou.tencentscf.com';
+(function(){
+  const p = new URLSearchParams(location.search).get('backend');
+  if(p){ try{ localStorage.setItem('rd_backend', p); }catch(e){} }
+  // 同步码（部署时设了 RD_TOKEN 必填）：?token=xxx 自动存入 localStorage（v1.6.0：编码存储）
+  const t = new URLSearchParams(location.search).get('token');
+  if(t){ try{ localStorage.setItem('rd_token', encTok(t)); }catch(e){} }
+  // 兜底：无 URL 参数且 localStorage 无值时，写入内置默认后端（保证直开页面也能连上）
+  try{
+    if(!localStorage.getItem('rd_backend')){ localStorage.setItem('rd_backend', DEFAULT_BACKEND); }
+  }catch(e){}
+})();
+// —— token 安全存储（v1.6.0：base64 轻混淆，避免明文裸露；非加密，仅供防随手可见）——
+function encTok(s){ try{ return btoa(unescape(encodeURIComponent(s))); }catch(e){ return s; } }
+function decTok(s){ try{ return decodeURIComponent(escape(atob(s))); }catch(e){ return s||''; } }
+function getTok(){ try{ const v=localStorage.getItem('rd_token'); if(!v) return ''; const dec=decTok(v); return dec===v?v:dec; }catch(e){ return ''; } }
+const BACKEND_URL = (localStorage.getItem('rd_backend') || '').replace(/\/$/, '');
+let RD_TOKEN = getTok();
+function api(path){ return BACKEND_URL ? (BACKEND_URL + path) : path; }
+// 带鉴权头的请求头（RD_TOKEN 为空时不影响本地/无鉴权部署）
+function apiHeaders(){ const h={'Content-Type':'application/json'}; if(RD_TOKEN) h['Authorization']='Bearer '+RD_TOKEN; return h; }
+// 保存访客输入的 Token（Token 限定模式下必需）
+function saveToken(){
+  const v=document.getElementById('tokenInput').value.trim();
+  const stat=document.getElementById('tokStat');
+  if(!v){ stat.className='tokstat err'; stat.textContent='请输入令牌'; return; }
+  RD_TOKEN=v;
+  try{ localStorage.setItem('rd_token', encTok(v)); }catch(e){}
+  stat.className='tokstat ok'; stat.textContent='✓ 已保存，可开始调研';
+  // 清除输入框内容，避免他人看到已存 token（v1.6.0 安全）
+  document.getElementById('tokenInput').value='';
+  document.getElementById('tokenInput').placeholder='已保存（输入新值可更换）';
+  // v1.6.0：401 后保存成功 → 自动重试上次操作
+  if(_pendingRetry){ const fn=_pendingRetry; _pendingRetry=null; setTimeout(fn,300); }
+}
+// 应用初始化：token 已存则不回填明文（v1.6.0 安全），仅显示状态
+(function(){
+  const box=document.getElementById('tokenInput');
+  if(box && RD_TOKEN){
+    box.placeholder='已保存（输入新值可更换）';
+    const s=document.getElementById('tokStat'); if(s){s.className='tokstat ok'; s.textContent='✓ 已保存，可开始调研';}
+  }
+})();
+// —— 带超时的 fetch（v1.8.0：防无限等待）——
+function fetchTimeout(url, opts={}, timeoutMs=60000){
+  const ctrl=new AbortController();
+  const timer=setTimeout(()=>ctrl.abort(), timeoutMs);
+  return fetch(url, Object.assign({}, opts, {signal:ctrl.signal}))
+    .finally(()=>clearTimeout(timer));
+}
+const DIMS = [
+  {id:'mkt', ic:'📊', t:'市场调研', d:'规模 / 集中度 / 价格带 / 趋势 / 市场机会矩阵与进入时机', tags:['份额','趋势','机会']},
+  {id:'usr', ic:'👥', t:'用户研究', d:'痛点(带频率) / 场景 / 未满足需求，附信号强度', tags:['痛点','场景']},
+  {id:'prod',ic:'🔬', t:'产品调研', d:'型号拆解 / 参数盘点 / 硬件方案横向对比', tags:['型号','参数']},
+  {id:'comp',ic:'⚔️', t:'竞品分析', d:'定位 / 定价 / 价格-功能卡位矩阵 / 机会空位', tags:['卡位','空位']},
+  {id:'tech',ic:'⚙️', t:'技术研究', d:'核心技术与工程方案 / 路线对比 / 实现难度与壁垒', tags:['技术','方案']},
+  {id:'reg', ic:'🛡️', t:'合规审计', d:'监管路径判定 / 所需资质 / 红线措辞与合规边界', tags:['合规','监管']},
+  {id:'sc',  ic:'📦', t:'供应链/成本', d:'成本结构拆解 / 供应链环节 / 起订与开发门槛 / 降本路径', tags:['成本','供应链']},
+  {id:'amz_us', ic:'🇺🇸', t:'亚马逊美国·机会评分看板', d:'【看板结构·实时生成】卖家精灵 MCP：KPI/核心指标/产品类型结构/品牌Top10与路线/关键词市场(趋势·PPC·价格带·机会矩阵)/场景痛点/功能热度/十维机会评分/启发·清单·风险建议——任意主题套用此结构', tags:['看板结构','SellerSprite','US','机会评分'], fixed:true},
+  {id:'amz_eu', ic:'🇪🇺', t:'亚马逊欧洲·市场看板', d:'【看板结构·实时生成】卖家精灵 MCP：EU5 五国拆分/产品类型/价格带/关键词PPC/MDR合规——任意主题套用此结构', tags:['看板结构','SellerSprite','EU5','MDR'], fixed:true},
+];
+const META = {
+  mkt:{title:'市场调研',icon:'📊',badge:'规模 / 集中度 / 机会矩阵'},
+  usr:{title:'用户研究',icon:'👥',badge:'痛点 / 场景 / 信号强度'},
+  prod:{title:'产品调研',icon:'🔬',badge:'型号拆解 / 参数盘点'},
+  comp:{title:'竞品分析',icon:'⚔️',badge:'定位 / 卡位矩阵 / 空位'},
+  tech:{title:'技术研究',icon:'⚙️',badge:'方案对标 / 工程能力'},
+  reg:{title:'合规审计',icon:'🛡️',badge:'监管路径 / 合规边界'},
+  sc:{title:'供应链/成本',icon:'📦',badge:'成本结构 / 供应链 / 降本'},
+  amz_us:{title:'亚马逊美国·机会评分看板',icon:'🇺🇸',badge:'看板结构 · 卖家精灵 MCP'},
+  amz_eu:{title:'亚马逊欧洲·市场看板',icon:'🇪🇺',badge:'看板结构 · 卖家精灵 MCP'},
+};
+let selected = new Set(['mkt','usr','prod','comp','tech','reg']);
+let lastReport = null;
+let srcMode = 'template';
+
+function setSrc(m){
+  srcMode = m;
+  document.getElementById('srcTpl').classList.toggle('on', m==='template');
+  document.getElementById('srcLlm').classList.toggle('on', m==='llm');
+  updateModePill();
+}
+function updateModePill(){
+  const pill=document.getElementById('modePill');
+  const backendLive = window.__backendMode === 'live';
+  if(srcMode==='llm'){
+    pill.className='mode-pill live';
+    pill.textContent = backendLive ? 'LIVE · 后端 DeepSeek 实时生成' : 'LIVE · 后端未配 Key（请联系站长）';
+  } else {
+    pill.className='mode-pill demo';
+    pill.textContent='模板数据 · 离线（卖家精灵快照）';
+  }
+}
+function loadCfg(){
+  try{
+    const c=JSON.parse(localStorage.getItem('rd_cfg')||'{}');
+    if(c.src) setSrc(c.src);
+  }catch(e){}
+}
+function saveCfg(){
+  try{ localStorage.setItem('rd_cfg', JSON.stringify({ src:srcMode })); }catch(e){}
+}
+
+function setTopic(v){ document.getElementById('topicInput').value = v; }
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  // 生成流程(s2/s3/s4)属于「新建调研」，让该导航项保持高亮
+  const navView = (id==='s2'||id==='s3'||id==='s4') ? 's1' : id;
+  document.querySelectorAll('.nav .item').forEach(it=>it.classList.toggle('active', it.dataset.view===navView));
+  const crumbs={s1:'输入主题',s2:'选择维度',s3:'生成中',s4:'报告',s5:'我的报告',s6:'维度模板',s7:'历史任务'};
+  document.getElementById('crumbNow').textContent=crumbs[id]||'';
+  if(id==='s5') renderReports();
+  if(id==='s6') renderTemplates();
+  if(id==='s7') renderHistory();
+  window.scrollTo(0,0);
+}
+function renderDims(){
+  const g=document.getElementById('dimGrid');
+  const visible=DIMS.filter(d=>dimEnabled(d.id)); // v1.8.0：过滤停用维度
+  g.innerHTML=visible.map(d=>`
+    <div class="dim ${selected.has(d.id)?'sel':''}" onclick="toggle('${d.id}')">
+      <div class="chk">${selected.has(d.id)?'✓':''}</div>
+      ${d.fixed?'<div class="pin">📌 看板结构</div>':''}
+      <div class="top"><div class="ic"><span>${d.ic}</span></div><div class="tt">${d.t}</div></div>
+      <div class="ds">${d.d}</div>
+      <div>${d.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    </div>`).join('');
+  document.getElementById('selCount').textContent=selected.size;
+  const tc=document.getElementById('totalCount'); if(tc) tc.textContent=visible.length;
+}
+function toggle(id){ if(selected.has(id))selected.delete(id); else selected.add(id); renderDims(); }
+// —— v2.0 调研流程状态 ——
+let curForm = 'standard';   // standard / topic / comprehensive
+let curRType = 'market';    // 5 类研究类型 id
+let advMode = false;        // 高级模式（9 维度自由勾选）
+// 3 种调研形式选择
+function setForm(f){
+  curForm = f;
+  document.querySelectorAll('.form-opt').forEach(o=>o.classList.toggle('on', o.dataset.form===f));
+  document.getElementById('questionField').style.display = (f==='topic') ? '' : 'none';
+  document.getElementById('topicField').style.display = (f==='topic') ? 'none' : '';
+  const tl=document.getElementById('topicLabel');
+  if(tl) tl.textContent = (f==='comprehensive') ? '研究对象 / 立项品类' : '研究对象 / 品类';
+}
+function setTopic(v){ document.getElementById('topicInput').value=v; }
+function setQuestion(v){ document.getElementById('questionInput').value=v; }
+// 下一步：专题直接生成，标准/综合进入 s2
+function goNext(){
+  if(curForm==='topic'){
+    const q=document.getElementById('questionInput').value.trim();
+    if(!q){ document.getElementById('questionInput').focus(); return; }
+    document.getElementById('loadTopic').textContent='问题：'+q;
+    document.getElementById('progHint').innerHTML='<div class="prog-warn">🎯 专题调研：正在生成研究计划并执行…</div>';
+    const list=document.getElementById('progList');
+    list.innerHTML='<div class="prow"><span class="spin2"></span><span>研究计划生成中…</span></div>';
+    goGen(q);
+    return;
+  }
+  const v=document.getElementById('topicInput').value.trim();
+  if(!v){ document.getElementById('topicInput').focus(); return; }
+  document.getElementById('loadTopic').textContent='主题：'+v;
+  if(curForm==='comprehensive'){
+    document.getElementById('progHint').innerHTML='<div class="prog-warn">🚀 综合立项研究：串联市场+电商+竞品+用户+技术 5 类调研，通常需要 30-60 秒…</div>';
+    const list=document.getElementById('progList');
+    list.innerHTML='<div class="prow"><span class="spin2"></span><span>启动综合立项研究…</span></div>';
+    goGen();
+    return;
+  }
+  // 标准：进入 s2 选研究类型
+  show('s2'); renderRTypes(); renderDims();
+}
+// 5 类研究类型渲染
+function renderRTypes(){
+  const g=document.getElementById('rtypeGrid');
+  const types=window.__researchTypes||{};
+  const ids=Object.keys(types);
+  if(!ids.length) return;
+  g.innerHTML=ids.map(id=>{
+    const t=types[id];
+    const sel = (curRType===id && !advMode) ? ' sel' : '';
+    return `<div class="rtype${sel}" onclick="selectRType('${id}')">
+      <div class="r-chk">${sel?'✓':''}</div>
+      <div class="r-ic">${t.icon||'📋'}</div>
+      <div class="r-t">${t.title||id}</div>
+      <div class="r-q">${t.desc||''}</div>
+      <div class="r-m">${t.modules||''}</div>
+    </div>`;
+  }).join('');
+}
+function selectRType(id){ curRType=id; advMode=false; document.getElementById('advBox').style.display='none'; document.getElementById('rtypeBox').style.display=''; document.getElementById('selCountWrap').style.display='none'; renderRTypes(); }
+// 高级模式切换
+function toggleAdvanced(){
+  advMode=!advMode;
+  document.getElementById('advBox').style.display = advMode?'':'none';
+  document.getElementById('rtypeBox').style.display = advMode?'none':'';
+  document.getElementById('selCountWrap').style.display = advMode?'':'none';
+  document.getElementById('advToggle').textContent = advMode ? '收起高级模式 ▴' : '高级：自由选维度 ▾';
+  renderDims();
+}
+function goGen(question){
+  const topic=document.getElementById('topicInput').value.trim();
+  const isLLM = srcMode==='llm';
+  if(!isLLM){ toast('请选择「大模型实时生成」数据源','err'); return; }
+  // 组装请求参数
+  let mode='standard', dims=[], q=question||'';
+  if(curForm==='topic'){
+    mode='topic';
+    if(!q) q=document.getElementById('questionInput').value.trim();
+    if(!q){ toast('请输入要研究的问题','err'); return; }
+  } else if(curForm==='comprehensive'){
+    mode='comprehensive';
+  } else {
+    if(advMode){
+      mode='advanced';
+      dims=[...selected];
+      if(!dims.length){ toast('请至少选择一个维度','err'); return; }
+    } else {
+      mode=curRType; // market/ecom/comp/user/tech
+      const rt=window.__researchTypes&&window.__researchTypes[curRType];
+      dims=(rt&&rt.dims)||[];
+    }
+  }
+  document.getElementById('genBtn').disabled=true;
+  show('s3');
+  const order=dims;
+  const list=document.getElementById('progList');
+  // 进度条（专题/综合用占位提示，标准按维度）
+  if(mode==='topic'){
+    // 已在 goNext 设置
+  } else if(mode==='comprehensive'){
+    list.innerHTML='<div class="prow"><span class="spin2"></span><span>市场机会研究…</span></div><div class="prow"><span class="spin2"></span><span>电商市场研究…</span></div><div class="prow"><span class="spin2"></span><span>竞品研究…</span></div><div class="prow"><span class="spin2"></span><span>用户研究…</span></div><div class="prow"><span class="spin2"></span><span>技术研究…</span></div><div class="prow"><span class="spin2"></span><span>汇总决策面板…</span></div>';
+  } else {
+    list.innerHTML=order.map(d=>`<div class="prow" id="pr-${d}"><span class="spin2"></span><span>${META[d].title} · AI 分析中…</span></div>`).join('');
+  }
+  const head=document.getElementById('progHint');
+  if(head && mode!=='topic' && mode!=='comprehensive') head.innerHTML='<div class="prog-warn">🤖 正在调用 DeepSeek 实时生成，<b>通常需要 10-30 秒</b>（维度越多越久）。请勿关闭页面。</div>';
+  // 超时提醒
+  let reminded=false;
+  if(isLLM){ setTimeout(()=>{ if(!reminded){ reminded=true; if(head) head.innerHTML='<div class="prog-warn">⏳ 后端仍在处理（DeepSeek 生成较慢属正常），请再等一会儿…</div>'; } }, 20000); }
+  const markAll=(ok)=>{
+    order.forEach(d=>{ const r=document.getElementById('pr-'+d); if(!r) return;
+      r.classList.add(ok?'ok':'fail');
+      r.querySelector('.spin2').outerHTML=ok?'<span class="done">✓</span>':'<span class="failx">✕</span>';
+      r.querySelector('span:last-child').textContent=META[d].title+' · '+(ok?'完成':'失败');
+    });
+  };
+  // 发起请求（LLM 模式 240s 超时：综合立项可能更久）
+  fetchTimeout(api('/api/research'),{
+    method:'POST', headers:apiHeaders(),
+    body:JSON.stringify({topic, dims, source:srcMode, mode, question:q, llm:{}})
+  }, mode==='comprehensive'?240000:(mode==='topic'?180000:180000)).then(r=>{
+    if(r.status===401){
+      _pendingRetry=()=>{ document.getElementById('genBtn').disabled=false; goGen(q); };
+      showTokenNeeded();
+      throw new Error('未授权');
+    }
+    return r.json();
+  }).then(data=>{
+    if(data.error){ markAll(false); showErr(data.error); return; }
+    markAll(true);
+    lastReport=data;
+    saveReport(data);
+    logHistory(topic, order, srcMode, 'ok', data.mode||'live');
+    renderReport(data);
+    show('s4');
+  }).catch(e=>{
+    markAll(false);
+    if(e.message!=='未授权'){
+      const isTimeout = e && (e.name==='AbortError' || /abort/i.test(String(e.message)));
+      showErr(isTimeout ? '请求超时（后端处理过久）。请减少维度数量或稍后重试。' : '请求后端失败：'+e);
+    }
+  }).finally(()=>{
+    document.getElementById('genBtn').disabled=false;
+  });
+}
+// 后端返回 401 时引导访客输入 Token（v1.6.0：滚动+高亮+保存后自动重试）
+let _pendingRetry=null; // 401 后保存 token 要重试的操作
+function showTokenNeeded(){
+  const s=document.getElementById('s4');
+  show('s4');
+  document.getElementById('reportBody').innerHTML=`<div class="err">🔒 需要访问令牌（Token）才能使用调研台。<br/>请在上方「访问令牌」输入框填入站长发给你的 Token，点击「保存」，将自动重试本次生成。<br/>如没有令牌，请向站长索取。</div>`;
+  // 滚动到 token 框并高亮
+  const box=document.getElementById('tokenInput');
+  if(box){
+    try{ box.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){}
+    box.focus();
+    box.style.boxShadow='0 0 0 3px rgba(201,48,43,.4)';
+    box.style.borderColor='#C0392B';
+    setTimeout(()=>{ box.style.boxShadow=''; box.style.borderColor=''; }, 2500);
+  }
+}
+function showErr(msg){
+  const s=document.getElementById('s4');
+  show('s4');
+  document.getElementById('reportBody').innerHTML=`<div class="err">生成失败：${msg}<br/>请确认后端 server.py 已启动（python3 server.py）。</div>`;
+}
+// —— 安全渲染（v1.8.0：防 XSS）——
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+// 转义后白名单恢复：仅 (t)/(w)/(r)/(b) 状态标记与 <b></b>（其余标签一律保持转义）
+function escKeep(s){
+  let r=esc(s);
+  r=r.replace(/\(t\)/g,'<span class="pill t">高</span>')
+     .replace(/\(w\)/g,'<span class="pill w">中</span>')
+     .replace(/\(r\)/g,'<span class="pill r">风险</span>')
+     .replace(/\(b\)/g,'<span class="pill b">信息</span>');
+  r=r.replace(/&lt;b&gt;/g,'<b>').replace(/&lt;\/b&gt;/g,'</b>');
+  return r;
+}
+function renderReport(data){
+  const modeMap={'live':'LIVE 实时·DeepSeek','template':'模板数据·离线','comprehensive':'综合立项·决策','topic':'专题调研'};
+  document.getElementById('rTitle').textContent=data.topic+' · 调研报告';
+  const modeLabel = modeMap[data.mode] || '调研报告';
+  const dimCount = Object.keys(data.sections||{}).length;
+  document.getElementById('rMeta').textContent=`报告生成于 ${data.generatedAt} · ${data.mode==='comprehensive'?'5 类研究':(data.mode==='topic'?(data.plan?data.plan.length:0)+' 个研究点':dimCount+' 个维度')} · ${modeLabel}`;
+  document.getElementById('rTags').innerHTML=Object.keys(data.sections||{}).map(k=>`<span class="tg">${META[k]?META[k].title:(k.startsWith('t_')?'研究点':(k.startsWith('rt_')?'研究类型':k))}</span>`).join('');
+
+  // —— v2.0 综合立项：决策面板（顶部 5 段式）——
+  let html='';
+  if(data.mode==='comprehensive' && data.decision && !data.decision.error){
+    const d=data.decision;
+    html+=`<div class="sec" id="sec-decision" style="border:1.5px solid var(--teal);border-radius:14px;padding:20px;margin-bottom:18px">
+      <div class="sh" style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span class="n" style="width:26px;height:26px;border-radius:8px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px">✔</span><h3 style="font-size:17px">立项决策面板</h3><span class="badge" style="margin-left:auto;font-size:11px;padding:3px 9px;border-radius:6px;background:var(--teal-l);color:var(--teal-d);font-weight:600">综合 5 类研究</span></div>
+      <div class="decision-grid">
+        <div class="d-item"><div class="d-lbl">🏛 市场是否成立？</div><div class="d-val">${escKeep(d.market||'—')}</div></div>
+        <div class="d-item"><div class="d-lbl">👥 用户核心需求</div><div class="d-val">${escKeep(d.user||'—')}</div></div>
+        <div class="d-item"><div class="d-lbl">⚔️ 竞争机会在哪？</div><div class="d-val">${escKeep(d.opp||'—')}</div></div>
+        <div class="d-item"><div class="d-lbl">⚙️ 技术是否可行？</div><div class="d-val">${escKeep(d.tech||'—')}</div></div>
+        <div class="d-item"><div class="d-lbl">📦 产品怎么定义？</div><div class="d-val">${escKeep(d.define||'—')}</div></div>
+      </div>
+    </div>`;
+  }
+  // —— v2.0 专题调研：研究计划展示 ——
+  if(data.mode==='topic' && data.plan && data.plan.length){
+    html+=`<div class="sec" style="padding:16px 18px;border:1px solid var(--line);border-radius:14px;margin-bottom:18px">
+      <div class="sh" style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span class="n" style="width:26px;height:26px;border-radius:8px;background:#4338CA;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px">🎯</span><h3 style="font-size:16px">研究计划</h3></div>
+      <div class="plan-list">${data.plan.map((p,i)=>`<div class="plan-item"><span class="pi">${i+1}</span><b>${esc(p.title||'')}</b><span class="pf">${esc(p.focus||'')}</span></div>`).join('')}</div>
+    </div>`;
+  }
+
+  // 摘要
+  html+=`<div class="sec" id="sec-sum"><div class="sh"><span class="n">★</span><h3>执行摘要</h3><span class="badge">${data.mode==='live'?'AI 生成':'自动生成'}</span></div>`;
+  html+=`<div class="callout">${escKeep(data.summary)}</div>`;
+  if(data.kpis&&data.kpis.length){
+    html+='<div class="kpis">'+data.kpis.map(k=>`<div class="kpi"><div class="v">${esc(k.v)}</div><div class="l">${esc(k.l)}</div></div>`).join('')+'</div>';
+  }
+  html+='</div>';
+
+  // 各维度
+  let toc=`<a onclick="scrollTo('sec-sum')">★ 摘要</a>`;
+  let idx=1;
+  for(const k of Object.keys(data.sections)){
+    const m=META[k], s=data.sections[k];
+    const secTitle = m ? m.title : (k.startsWith('t_') ? '研究点：'+k.slice(2) : (k.startsWith('rt_') ? '研究类型：'+(window.__researchTypes&&window.__researchTypes[k.slice(3)]?window.__researchTypes[k.slice(3)].title:k.slice(3)) : k));
+    const secBadge = m ? m.badge : (k.startsWith('t_') ? '专题' : '类型');
+    toc+=`<a onclick="scrollTo('sec-${k}')">${idx}. ${esc(secTitle)}</a>`;
+    html+=`<div class="sec" id="sec-${k}"><div class="sh"><span class="n">${idx}</span><h3>${esc(secTitle)}</h3><span class="badge">${esc(secBadge)}</span></div>`;
+    if(s.note) html+=`<p class="note">${escKeep(s.note)}</p>`;
+    if(s.kpis&&s.kpis.length){
+      html+='<div class="kpis">'+s.kpis.map(kp=>`<div class="kpi"><div class="v">${esc(kp.v)}</div><div class="l">${esc(kp.l)}</div></div>`).join('')+'</div>';
+    }
+    if(s.tables) s.tables.forEach(tb=>{
+      if(!tb.head||!tb.rows) return;
+      html+='<table class="t"><tr>'+tb.head.map(h=>`<th>${esc(h)}</th>`).join('')+'</tr>';
+      tb.rows.forEach(row=>{ html+='<tr>'+row.map(c=>`<td>${escKeep(c)}</td>`).join('')+'</tr>'; });
+      html+='</table>';
+    });
+    if(s.callouts) s.callouts.forEach(c=>{ html+=`<div class="callout">${escKeep(c)}</div>`; });
+    html+='</div>';
+    idx++;
+  }
+  if(data.mode==='template'){
+    html+=`<div class="foot-note">⚠️ 模板数据模式：仅输出各维度的<b>结构骨架</b>（数据标注「待实时生成」），用于预览报告框架。切换到「大模型实时生成」数据源后，由站长统一配置的 DeepSeek 在后端按此结构对主题实时产出真实数据（无需填写任何 Key）。</div>`;
+  }
+  if(data.mode==='live'){
+    html+=`<div class="callout amber"><b>⚠️ 大模型实时生成（LLM 估算）：</b>本报告的量化数字由 DeepSeek 基于训练知识生成，<b>非卖家精灵实测</b>，未经一手数据核验，禁止直接用于投资决策。亚马逊销量/份额等精确数字请以卖家精灵 MCP 实测为准。</div>`;
+  }
+  document.getElementById('toc').innerHTML=toc;
+  document.getElementById('reportBody').innerHTML=html;
+  initTocHighlight();
+}
+function scrollTo(id){ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
+// v1.8.0：报告目录吸顶高亮——滚动时高亮当前章节
+function initTocHighlight(){
+  const toc=document.getElementById('toc');
+  const secs=document.querySelectorAll('#reportBody .sec');
+  if(!toc||!secs.length) return;
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(en=>{
+      if(!en.isIntersecting) return;
+      links.forEach(a=>a.classList.toggle('toc-active', (a.getAttribute('href')||'').replace('#','')===en.target.id));
+    });
+  },{rootMargin:'-90px 0px -60% 0px'});
+  secs.forEach(s=>obs.observe(s));
+  links.forEach(a=>{
+    const m=(a.getAttribute('onclick')||'').match(/'sec-?[a-z]*'|'sec-sum'/);
+    if(m){ a.setAttribute('href','#'+m[0].replace(/'/g,'')); a.removeAttribute('onclick'); }
+  });
+}
+function downloadReport(){
+  if(!lastReport) return;
+  // 只导出报告容器，内联关键 CSS，生成独立可打开的 HTML（不依赖服务端、不带 UI 外壳）
+  const styles = `
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#fff;color:#15303F;line-height:1.55;padding:32px;}
+    .report{border:1px solid #E3EDEF;border-radius:16px;overflow:hidden;max-width:980px;margin:0 auto;}
+    .rhead{padding:22px 26px;border-bottom:1px solid #E3EDEF;background:linear-gradient(180deg,#FBFEFE,#fff);}
+    .rhead .kicker{font-size:11.5px;color:#0C9A8E;font-weight:700;letter-spacing:.5px;}
+    .rhead h2{font-size:22px;margin-top:4px;}
+    .rhead .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;}
+    .rhead .tg{font-size:11.5px;padding:4px 11px;border-radius:20px;background:#D9F5F1;color:#0C9A8E;font-weight:600;}
+    .rhead .tg.g{background:#E7F7EF;color:#0B8A5E;}
+    .rbody{padding:8px 26px 26px;}
+    .sec{padding:22px 0;border-bottom:1px solid #E3EDEF;}
+    .sec:last-child{border-bottom:none;}
+    .sec .sh{display:flex;align-items:center;gap:11px;margin-bottom:14px;}
+    .sec .sh .n{width:26px;height:26px;border-radius:8px;background:#0F2A43;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .sec .sh h3{font-size:16.5px;margin:0;}
+    .sec .sh .badge{margin-left:auto;font-size:11px;padding:3px 9px;border-radius:6px;background:#EEF4F4;color:#1C3D5A;}
+    .sec p.note{font-size:13px;color:#5E7686;margin-bottom:12px;}
+    table.t{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 4px;}
+    table.t th{background:#F1F6F7;text-align:left;padding:9px 11px;font-weight:600;color:#1C3D5A;border:1px solid #E3EDEF;font-size:12.5px;}
+    table.t td{padding:9px 11px;border:1px solid #E3EDEF;vertical-align:top;}
+    table.t tr:nth-child(even) td{background:#FBFDFD;}
+    .pill{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11.5px;font-weight:600;}
+    .pill.t{background:#E7F7EF;color:#0B8A5E;}
+    .pill.w{background:#FEF3E2;color:#B45309;}
+    .pill.r{background:#FDE8E8;color:#C0392B;}
+    .pill.b{background:#E6F0FE;color:#1D4ED8;}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:4px 0 12px;}
+    .kpi{background:#FBFDFD;border:1px solid #E3EDEF;border-radius:11px;padding:13px 14px;}
+    .kpi .v{font-size:21px;font-weight:700;color:#0F2A43;}
+    .kpi .l{font-size:11.5px;color:#5E7686;margin-top:2px;}
+    .callout{border-left:3px solid #0FB5A6;background:#D9F5F1;padding:12px 16px;border-radius:0 9px 9px 0;font-size:13px;margin:10px 0;}
+    .callout.amber{border-color:#F59E0B;background:#FEF6E7;}
+    .foot-note{font-size:11.5px;color:#9AAFB8;margin-top:18px;padding-top:14px;border-top:1px dashed #E3EDEF;}
+  `;
+  const reportHtml = document.querySelector('.report') ? document.querySelector('.report').outerHTML : document.getElementById('reportBody').innerHTML;
+  const disc = lastReport.mode==='live'
+    ? '<div class="callout amber" style="max-width:980px;margin:14px auto 0"><b>⚠️ 免责声明：</b>本报告量化数字由大模型（DeepSeek）基于训练知识生成，非卖家精灵实测，未经一手数据核验，禁止直接用于投资/选品决策。亚马逊销量/份额等请以卖家精灵 MCP 实测为准。</div>'
+    : '<div class="foot-note" style="max-width:980px;margin:14px auto 0">本报告为模板模式结构骨架，数据标注「待实时生成」，仅供框架预览。</div>';
+  const full = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"/><title>调研台_报告_${lastReport.topic}</title><style>${styles}</style></head><body>${reportHtml}${disc}</body></html>`;
+  const blob=new Blob([full],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='调研台_报告_'+lastReport.topic.replace(/\s+/g,'_')+'.html';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000); // v1.8.0：释放 Blob URL 防内存泄漏
+}
+// —— 维度模板结构说明（维度模板页只读展示用）——
+const DIM_STRUCT = {
+  mkt:'①品类规模与增长 ②CR5/CR10 集中度与头部份额 ③价格带分布 ④月度趋势(标注缺口) ⑤供需结构。每条数字标注来源。',
+  usr:'①核心痛点(高频) ②使用场景 ③未被满足需求 ④可拓展人群/场景。附社区名/URL，标信号强度。',
+  prod:'形态结构 / 核心器件/组件 / 关键性能参数 / 材质 / 规格 / 软件功能，按品类实际维度组织，按真实型号横向对比。',
+  comp:'定位 / 定价 / 功能矩阵 / 优势 / 弱点(引评论) / 可乘之机。',
+  tech:'按品类实际涉及的核心技术与工程方案（勿预设路线）+ 代表方案 + 实现难度 + 壁垒意义。',
+  reg:'按品类实际适用的监管体系（消费品/电器/医疗器械等）+ 资质/备案 + 红线措辞 + 启示。强调禁止无依据宣称功效。',
+  sc:'成本结构拆解(物料/制造/物流/平台费用占比) + 关键供应链环节(材料/元器件/代工/认证) + 起订/模具/开发门槛 + 降本路径 + 采购库存建议。标注估算/待核验。',
+  amz_us:'【看板结构·任意主题】机会评分看板方法论：KPI(机会/风险/候选→核心/月销/月销售额/加权价/Top类型/Top品牌) → 表1核心指标 → 表2产品类型销售额结构(类型/ASIN/销量/销售额/均价/评分) → 表3品牌销售额Top10 → 表4头部品牌产品路线 → 表5关键词市场需求(搜索/购买/购买率/竞价/供需/垄断点击率) → 表6关键词趋势与PPC → 表7价格带销售额(五档) → 表8目标场景/核心痛点 → 表9功能/属性热度 → 表10十维机会评分 → callouts(关键词解读/机会矩阵/产品定义启发/验证清单/机会点·风险·建议)。数据源：卖家精灵 MCP；大模型模式下对任意主题实时生成。',
+  amz_eu:'【看板结构·任意主题】EU5 市场看板方法论：KPI(机会/风险/五国月销/总额) → 核心指标 → 五国概览 → 产品类型 → 价格带 → 市场CAGR/PPC/MDR合规/结论。数据源：卖家精灵 MCP；大模型模式下对任意主题实时生成。',
+};
+// v1.8.0：维度启用/停用（localStorage 持久化；停用后不出现在新建调研网格）
+function dimEnabled(id){
+  try{ const off=JSON.parse(localStorage.getItem('rd_dims_off')||'[]'); return !off.includes(id); }catch(e){ return true; }
+}
+function toggleDimEnabled(id){
+  try{
+    let off=JSON.parse(localStorage.getItem('rd_dims_off')||'[]');
+    off = off.includes(id) ? off.filter(x=>x!==id) : off.concat(id);
+    localStorage.setItem('rd_dims_off', JSON.stringify(off));
+    // 若停用当前已勾选的维度，从选中集移除
+    if(off.includes(id) && selected.has(id)) selected.delete(id);
+    renderTemplates(); if(document.querySelector('#dimGrid')) renderDims();
+  }catch(e){}
+}
+function renderTemplates(){
+  const g=document.getElementById('tplList');
+  g.innerHTML=DIMS.map((d,i)=>`
+    <div class="tpl ${d.fixed?'fixed':''} ${dimEnabled(d.id)?'':'dim-off'}">
+      ${d.fixed?'<div class="pin">📌 看板结构</div>':''}
+      <div class="th"><div class="ic"><span>${d.ic}</span></div><div class="tt">${d.t}</div>
+        <label class="dim-toggle" title="启用/停用该维度">
+          <input type="checkbox" ${dimEnabled(d.id)?'checked':''} onchange="toggleDimEnabled('${d.id}')"/>
+          <span class="tk-slider"></span>
+        </label>
+      </div>
+      <div class="ds">${d.d}</div>
+      <div class="struct">${DIM_STRUCT[d.id]}</div>
+      <div class="tpl-example" style="margin-top:10px">
+        <button class="btn-mini" onclick="previewTemplate(${i})">👁 查看示例结构</button>
+      </div>
+    </div>`).join('');
+}
+// 示例结构预览：用「示例主题」生成模板骨架，让用户直观看到该维度的输出结构（不消耗 LLM 额度）
+let _tplDemo=null;
+function previewTemplate(i){
+  const d=DIMS[i];
+  if(!d) return;
+  // v1.8.0：纯本地渲染示例结构骨架（与注释一致，不依赖后端、不消耗额度、无需 Token）
+  const topic='示例主题（如：'+sampleTopicOf(d.id)+'）';
+  // 按 DIM_STRUCT 构造一个可视化骨架（真实后端模板模式的输出与此同构）
+  const structLines=(DIM_STRUCT[d.id]||'').split(/[①②③④⑤⑥⑦⑧⑨⑩]/).filter(x=>x.trim());
+  const rows=structLines.slice(0,6).map(s=>['结构模块', s.trim().slice(0,40)]);
+  const skeleton={
+    topic,
+    mode:'template',
+    generatedAt:'示例（离线预览）',
+    summary:'「'+topic+'」'+d.t+'：以下是该维度的<b>输出结构预览</b>（模板模式生成的骨架与此一致，数据标「待实时生成」）。切换到「大模型实时生成」后，DeepSeek 会按此结构对主题产出真实数据。',
+    kpis:[{v:'—',l:'KPI 占位'},{v:'—',l:'KPI 占位'},{v:'—',l:'KPI 占位'},{v:'—',l:'KPI 占位'}],
+    sections:{ [d.id]:{
+      note:'结构预览（离线生成，未调用后端）',
+      kpis:[{v:'—',l:'KPI 占位'},{v:'—',l:'KPI 占位'}],
+      tables:[{head:['结构模块','说明'], rows}],
+      callouts:['📌 数据源铁律：涉及真实数据（销量/份额/价格/关键词）时一律由卖家精灵 MCP 或 DeepSeek 实时生成并标注来源；本预览不包含任何真实数据。'],
+      summary:'该维度输出结构如上；选择大模型实时生成后填充真实内容。'
+    }}
+  };
+  lastReport=skeleton; renderReport(skeleton); show('s4');
+}
+function sampleTopicOf(id){
+  return {'mkt':'智能筋膜枪','usr':'便携式电动吸奶器','prod':'宠物智能饮水机','comp':'拖把','tech':'蒸汽拖把','reg':'智能筋膜枪','sc':'宠物智能饮水机','amz_us':'宠物智能饮水机','amz_eu':'便携式电动吸奶器'}[id]||'示例产品';
+}
+// —— 我的报告（本地 + 云端同步；云端可跨设备）——
+let _cloudReports=null; // {list, loaded}
+// v1.6.0：reportId 含毫秒时间戳，同一主题多次生成不再互相覆盖
+function reportId(data){
+  const t=data._ts||data.generatedAt||'';
+  return data.topic+'|'+t;
+}
+function saveReport(data){
+  try{
+    if(!data._ts){ data._ts=(data.generatedAt||'')+'-'+String(Date.now()).slice(-4); }
+    const arr=JSON.parse(localStorage.getItem('rd_reports')||'[]');
+    const rec={id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, _ts:data._ts, mode:data.mode, dims:Object.keys(data.sections||{}), data, cloud:false};
+    const kept=[rec].concat(arr.filter(r=>r.id!==rec.id)).slice(0,50);
+    localStorage.setItem('rd_reports', JSON.stringify(kept));
+  }catch(e){}
+  // 异步同步到云端（带 token 且配了后端时）
+  if(BACKEND_URL && RD_TOKEN){
+    fetch(api('/api/reports'),{method:'POST',headers:apiHeaders(),body:JSON.stringify({report:{
+      id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, _ts:data._ts, mode:data.mode,
+      dims:Object.keys(data.sections||{}), data
+    }})}).then(r=>{
+      if(r.ok){ if(_cloudReports) _cloudReports.loaded=false; return r.json().then(j=>{_cloudReports={list:j.reports||_cloudReports.list,loaded:true}}); }
+    }).catch(()=>{});
+  }
+}
+function loadCloudReports(cb){
+  if(!BACKEND_URL || !RD_TOKEN){ cb&&cb([]); return; }
+  fetch(api('/api/reports'),{headers:apiHeaders()}).then(r=>{
+    if(r.status===401){ cb&&cb([]); return; }
+    return r.json().then(j=>{ const list=(j.reports||[]).map(x=>({...x,cloud:true})); _cloudReports={list,loaded:true}; cb&&cb(list); });
+  }).catch(()=>{ cb&&cb([]); });
+}
+function renderReports(){
+  const box=document.getElementById('reportList');
+  let local=[]; try{local=JSON.parse(localStorage.getItem('rd_reports')||'[]');}catch(e){}
+  const show=cloud=>{
+    // v1.6.0：云端 + 本地合并去重（云端优先保留，本地未同步的也显示），不再"云端隐藏本地"
+    const cloudMap={};
+    (cloud||[]).forEach(r=>{ cloudMap[r.id]=r; });
+    const mergedArr=[];
+    (cloud||[]).forEach(r=>mergedArr.push(r));
+    local.forEach(r=>{ if(!cloudMap[r.id]) mergedArr.push({...r,cloud:false}); });
+    // 按时间倒序（取 generatedAt 或 _ts）
+    mergedArr.sort((a,b)=>String(b._ts||b.generatedAt||'').localeCompare(String(a._ts||a.generatedAt||'')));
+    const merged=mergedArr.slice(0,50);
+    if(!merged.length){ box.innerHTML='<div class="empty">还没有生成的报告。去「新建调研」生成第一份吧。<br/><span style="font-size:12px;color:var(--muted)">生成后自动保存，输入 Token 后还会同步到云端（换设备可见）。</span></div>'; return; }
+    const tool = (BACKEND_URL&&RD_TOKEN) ? '<button class="btn btn-ghost" onclick="clearAllReports()" style="margin-bottom:12px;font-size:12.5px;padding:8px 14px">🗑 清空全部</button>' : '';
+    box.innerHTML=tool+'<div class="rcards">'+merged.map((r,i)=>`
+      <div class="rcard" onclick="openSaved(${i})">
+        <div class="rt">${r.cloud?'☁️ ':''}${String(r.topic||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+          <button class="del-btn" title="删除该报告" onclick="event.stopPropagation();delReport(${i})">✕</button>
+        </div>
+        <div class="rm">${String(r.generatedAt||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))} · ${r.mode==='live'?'LIVE·DeepSeek':'模板数据'} · ${(r.dims||[]).length} 维度${r.cloud?' · ☁️云端':''}</div>
+        <div class="rtags">${(r.dims||[]).map(d=>`<span>${META[d]?META[d].title:d}</span>`).join('')}</div>
+      </div>`).join('')+'</div>';
+    window.__reportsList=merged;
+  };
+  if(_cloudReports && _cloudReports.loaded){ show(_cloudReports.list); }
+  else { loadCloudReports(show); }
+}
+// —— 报告删除 / 清空（v1.6.0）——
+function delReport(i){
+  const arr=window.__reportsList||[];
+  const rec=arr[i];
+  if(!rec) return;
+  if(!confirm('确定删除报告「'+(rec.topic||'')+'」吗？'+(rec.cloud?'（云端+本地一起删除）':''))) return;
+  // 删本地
+  try{
+    let local=JSON.parse(localStorage.getItem('rd_reports')||'[]');
+    local=local.filter(r=>r.id!==rec.id);
+    localStorage.setItem('rd_reports', JSON.stringify(local));
+  }catch(e){}
+  // 删云端
+  if(rec.cloud && BACKEND_URL && RD_TOKEN){
+    fetch(api('/api/reports?id='+encodeURIComponent(rec.id)),{method:'DELETE',headers:apiHeaders()})
+      .then(r=>{ if(r.ok){ if(_cloudReports) _cloudReports.loaded=false; } })
+      .catch(()=>{});
+  }
+  renderReports();
+}
+function clearAllReports(){
+  if(!confirm('确定清空全部报告吗？（云端+本地全部删除，不可恢复）')) return;
+  try{ localStorage.setItem('rd_reports','[]'); }catch(e){}
+  if(BACKEND_URL && RD_TOKEN){
+    const arr=window.__reportsList||[];
+    Promise.all(arr.filter(r=>r.cloud).map(r=>
+      fetch(api('/api/reports?id='+encodeURIComponent(r.id)),{method:'DELETE',headers:apiHeaders()}).then(x=>x.ok).catch(()=>false)
+    )).then(()=>{ if(_cloudReports) _cloudReports.loaded=false; renderReports(); });
+  }
+  renderReports();
+}
+function openSaved(i){
+  let arr=window.__reportsList||[];
+  let local=[]; try{local=JSON.parse(localStorage.getItem('rd_reports')||'[]');}catch(e){}
+  const rec=arr[i]||local[i];
+  if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4');
+    if(rec.data.trimmed || rec.trimmed){
+      document.getElementById('reportBody').insertAdjacentHTML('afterbegin','<div class="callout amber">⚠️ 该报告为<b>云端精简版</b>（仅存摘要与关键指标，表格细节已压缩以节省云端空间）。完整版请重新生成。</div>');
+    }
+  }
+}
+// 手动保存当前已显示的报告（解决「旧脚本生成的报告未被自动记录」的情况）
+function saveCurrent(){
+  if(!lastReport){ toast('当前没有可保存的报告','err'); return; }
+  saveReport(lastReport);
+  logHistory(lastReport.topic, Object.keys(lastReport.sections),
+             lastReport.mode==='live'?'llm':'template', 'ok', lastReport.mode);
+  toast('已保存到「我的报告」和「历史任务」'+(BACKEND_URL&&RD_TOKEN?'，已同步云端':'。'),'ok');
+}
+// —— 历史任务（本地 + 云端报告同步，跨设备可见）——
+// 北京时间格式化（强制 Asia/Shanghai，不随设备时区漂移）
+function beijingNow(){
+  try{ return new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date()).replace(/\//g,'-'); }
+  catch(e){ return new Date().toLocaleString('zh-CN'); }
+}
+function logHistory(topic,dims,source,status,mode){
+  try{
+    const arr=JSON.parse(localStorage.getItem('rd_history')||'[]');
+    arr.unshift({topic, time:beijingNow(), dims, source, status, mode});
+    localStorage.setItem('rd_history', JSON.stringify(arr.slice(0,50)));
+  }catch(e){}
+}
+// 打开历史任务对应的报告（云端报告直接打开；本地历史按 topic+time 匹配本地报告）
+function openHistoryReport(i, list){
+  const item=list[i];
+  if(!item) return;
+  if(item.reportData){ lastReport=item.reportData; renderReport(item.reportData); show('s4'); return; }
+  if(item.id && window.__reportsList){ // 云端报告：从报告列表找完整数据
+    const rec=window.__reportsList.find(r=>r.id===item.id);
+    if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4'); return; }
+  }
+  // 本地历史：按 topic 匹配本地报告（取最新一份）
+  try{
+    const local=JSON.parse(localStorage.getItem('rd_reports')||'[]');
+    const rec=local.find(r=>r.topic===item.topic);
+    if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4'); return; }
+  }catch(e){}
+  toast('该历史任务没有可打开的报告数据','err');
+}
+// v1.8.0：历史任务单条删除（删对应报告 + 历史记录）
+function delHistoryReport(i, list){
+  const item=list[i];
+  if(!item) return;
+  if(!confirm('确定删除该历史任务及其报告吗？')) return;
+  // 删本地报告（按 topic 匹配）
+  try{
+    let local=JSON.parse(localStorage.getItem('rd_reports')||'[]');
+    local=local.filter(r=>r.topic!==item.topic);
+    localStorage.setItem('rd_reports', JSON.stringify(local));
+  }catch(e){}
+  // 删云端报告（按 id）
+  if(item.id && BACKEND_URL && RD_TOKEN){
+    fetch(api('/api/reports?id='+encodeURIComponent(item.id)),{method:'DELETE',headers:apiHeaders()})
+      .then(r=>{ if(r.ok){ if(_cloudReports) _cloudReports.loaded=false; renderHistory(); } }).catch(()=>{});
+  }
+  // 删本地历史记录
+  try{
+    const arr=JSON.parse(localStorage.getItem('rd_history')||'[]');
+    localStorage.setItem('rd_history', JSON.stringify(arr.filter(h=>h.topic!==item.topic||h.time!==item.time)));
+  }catch(e){}
+  renderHistory();
+  toast('已删除','ok');
+}
+function renderHistory(){
+  const box=document.getElementById('histList');
+  let arr=[]; try{arr=JSON.parse(localStorage.getItem('rd_history')||'[]');}catch(e){}
+  const show=list=>{
+    window.__histList=list;
+    if(!list.length){ box.innerHTML='<div class="empty">暂无历史任务。生成报告后这里会出现执行记录。</div>'; return; }
+    box.innerHTML=list.map((h,i)=>`
+      <div class="trow" style="cursor:pointer;position:relative" onclick="openHistoryReport(${i}, window.__histList)">
+        <div class="tk"></div>
+        <div class="tb">
+          <div class="tt">${String(h.topic||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}</div>
+          <div class="tm">${h.time||''} · ${(h.dims||[]).length} 维度 · 数据源：${h.source==='llm'?'大模型 DeepSeek':'模板数据'} · ${h.mode==='live'?'LIVE':'模板'} · 点击打开</div>
+        </div>
+        <div class="ts ${h.status==='ok'?'ok':'run'}">${h.status==='ok'?'完成':'运行中'}</div>
+        <button class="del-btn" title="删除该历史记录及报告" style="top:50%;transform:translateY(-50%)" onclick="event.stopPropagation();delHistoryReport(${i}, window.__histList)">✕</button>
+      </div>`).join('');
+  };
+  if(BACKEND_URL && RD_TOKEN){
+    // 云端报告即历史任务（跨设备可见，带完整数据可打开）
+    if(_cloudReports && _cloudReports.loaded){
+      const c=(_cloudReports.list||[]).map(x=>({topic:x.topic, time:x.generatedAt, dims:x.dims, source:x.mode==='live'?'llm':'template', status:'ok', mode:x.mode, id:x.id, reportData:x.data}));
+      show(c.length?c:arr);
+    } else {
+      fetch(api('/api/reports'),{headers:apiHeaders()}).then(r=>{
+        if(r.status===401){ show(arr); return; }
+        return r.json().then(j=>{
+          const c=(j.reports||[]).map(x=>({topic:x.topic, time:x.generatedAt, dims:x.dims, source:x.mode==='live'?'llm':'template', status:'ok', mode:x.mode, id:x.id, reportData:x.data}));
+          if(c.length){ _cloudReports={list:j.reports||[], loaded:true}; show(c); } else show(arr);
+        });
+      }).catch(()=>show(arr));
+    }
+  } else show(arr);
+}
+
+// 后端连接状态徽章
+function setBackendBadge(ok, msg){
+  const b=document.getElementById('betaBadge');
+  if(!b) return;
+  if(ok){ b.style.background='#E7F7EF'; b.style.color='#0B8A5E'; }
+  else { b.style.background='#FEF3E2'; b.style.color='#B45309'; }
+  b.textContent=msg;
+}
+// 启动时拉取状态 + 配置（v1.9.0：先过门禁验证）
+function bootStatus(){
+  fetch(api('/api/status'),{headers:apiHeaders()}).then(r=>{
+    if(r.status===401){ setBackendBadge(false,'后端已连接 · 未授权(需Token)'); return null; }
+    setBackendBadge(true,'后端已连接 · LIVE');
+    return r.json();
+  }).then(s=>{
+    if(!s) return;
+    window.__backendMode = s.backendMode || 'demo';
+    window.__researchTypes = s.researchTypes || {};  // v2.0：5 类研究类型
+    loadCfg();
+    updateModePill();
+  }).catch(()=>{ setBackendBadge(false,'后端未连接 · 检查地址'); });
+}
+function bootGate(){
+  // 有已存 token → 验证；无 → 直接显示门禁
+  if(RD_TOKEN){
+    gateVerify(RD_TOKEN).then(ok=>{
+      if(ok){ gateHide(); bootStatus(); renderDims(); }
+      else { localStorage.removeItem('rd_token'); RD_TOKEN=''; gateShow(); renderDims(); }
+    });
+  } else {
+    gateShow(); renderDims();
+  }
+}
+bootGate();
+</script>
+</body>
+</html>
