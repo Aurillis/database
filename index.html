@@ -554,7 +554,7 @@ function fetchMeta() {
       if (done) return;
       fetchMetaViaSCF(function(m) { if (done) return; done = true; resolve(m ? { data: m } : null); });
     };
-    fetch(metaUrl() + '?t=' + Date.now()).then(function(r) {
+    fetchRawTimeout(metaUrl() + '?t=' + Date.now(), 6000).then(function(r) {
       if (r.status === 404) { if (done) return; done = true; resolve({ missing: true }); return; }
       if (!r.ok) { tryScf(); return; }
       return r.json();
@@ -717,9 +717,17 @@ document.addEventListener('visibilitychange', function() { if (document.visibili
 // Load the dynamic manifest (rewritten by the upload function after each upload).
 // 优先直读 raw(无构建延迟); 若 raw 被墙/超时(国内常见), 自动经腾讯云 SCF 中继读取(国内稳定),
 // 二者皆失败才退回嵌入数据 —— 杜绝"上传成功却看不到"因读取失败退回陈旧内置列表。
+// v1.9.1：raw 请求带 6s 超时，避免国内访问 raw 被墙时浏览器长时间挂起导致首页加载慢
+function fetchRawTimeout(url, ms) {
+  var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, ms || 6000) : null;
+  var opt = ctrl ? { signal: ctrl.signal } : undefined;
+  return fetch(url, opt).then(function(r){ if (timer) clearTimeout(timer); return r; })
+    .catch(function(e){ if (timer) clearTimeout(timer); throw e; });
+}
 (function loadManifest() {
   var url = rawManifestUrl() + '?t=' + Date.now(); // 实时缓存破坏, 永远拉最新
-  fetch(url).then(function(r) { return r.json(); }).then(function(d) {
+  fetchRawTimeout(url, 6000).then(function(r) { return r.json(); }).then(function(d) {
     if (Array.isArray(d) && d.length) { FILES = d; renderSidebar(); renderMain(); pruneGhostUploads(); return; }
     fetchManifestViaSCF(function(m) { if (m) { FILES = m; renderSidebar(); renderMain(); pruneGhostUploads(); } });
   }).catch(function() {
@@ -2234,7 +2242,7 @@ function adminApi(op, body) {
 
 // 重新拉取 manifest(优先 raw, 失败经 SCF 中继), 用于上传/删除/恢复后即时刷新列表
 function refreshManifest(cb) {
-  fetch(rawManifestUrl() + '?t=' + Date.now()).then(function(r) { return r.json(); }).then(function(d) {
+  fetchRawTimeout(rawManifestUrl() + '?t=' + Date.now(), 6000).then(function(r) { return r.json(); }).then(function(d) {
     if (Array.isArray(d) && d.length) { FILES = d; pruneGhostUploads(); if (cb) cb(); return; }
     fetchManifestViaSCF(function(m) { if (m) FILES = m; pruneGhostUploads(); if (cb) cb(); });
   }).catch(function() {
