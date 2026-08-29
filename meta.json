@@ -1,44 +1,6 @@
 {
-  "customCats": [
-    {
-      "id": "other-misc",
-      "name": "其他",
-      "icon": "fas fa-folder",
-      "parentId": null
-    },
-    {
-      "id": "c-30i2eq7x",
-      "name": "测试",
-      "icon": "fas fa-folder",
-      "parentId": null,
-      "updatedAt": 1787193865802
-    },
-    {
-      "id": "market",
-      "name": "吸奶器",
-      "icon": "fas fa-folder",
-      "parentId": null,
-      "updatedAt": 1787302607516
-    },
-    {
-      "id": "c-kfzz91r5",
-      "name": "公司和团队",
-      "icon": "fas fa-folder",
-      "parentId": null,
-      "updatedAt": 1787629699583
-    }
-  ],
-  "fileCats": {
-    "Aurillis盆底肌_17周上市行动看板.html": "other-misc",
-    "Aurillis_南京研发团队接触计划(1).html": "other-misc",
-    "盆底肌修复市场调研 -2020703.pptx": "product-pelvic-market",
-    "武汉名校理工科毕业生就业可视化看板-workbuddy.html": "other-misc",
-    "pelvic-health-company-dashboard.html": "c-kfzz91r5",
-    "index.html": "c-kfzz91r5",
-    "Aurillis-Company-Profile-2026.html": "c-kfzz91r5"
-  },
-  "fileTags": {
-    "Bloom_乳房健康问题地图_产品机会矩阵看板.html": []
-  },
+  "customCats": [],
+  "fileCats": {},
+  "fileTags": {},
   "allTags": []
 }
