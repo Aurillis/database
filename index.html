@@ -546,24 +546,27 @@ function loadMeta(cb) {
     renderSidebar(); renderMain();
   }).catch(function() { if (cb) cb(); });
 }
-// raw + SCF 中继读取 meta.json; 解析为 {data} / {missing} / null
+// raw + SCF 中继读取 meta.json（v1.9.2：并行竞速，谁先返回用谁）；解析为 {data} / {missing} / null
 function fetchMeta() {
   return new Promise(function(resolve) {
     var done = false;
-    var tryScf = function() {
-      if (done) return;
-      fetchMetaViaSCF(function(m) { if (done) return; done = true; resolve(m ? { data: m } : null); });
-    };
-    fetchRawTimeout(metaUrl() + '?t=' + Date.now(), 6000).then(function(r) {
-      if (r.status === 404) { if (done) return; done = true; resolve({ missing: true }); return; }
-      if (!r.ok) { tryScf(); return; }
+    var finish = function(v) { if (done) return; done = true; resolve(v); };
+    var scfPending = true;
+    // 通道1: raw（带 5s 超时；404 不立即判定，等待 SCF 结果更可靠）
+    fetchRawTimeout(metaUrl() + '?t=' + Date.now(), 5000).then(function(r) {
+      if (r.status === 404) { if (!scfPending) finish({ missing: true }); return; }
+      if (!r.ok) { return; }
       return r.json();
     }).then(function(d) {
-      if (d === undefined) return; // 已被 404 分支处理
-      if (done) return;
-      done = true;
-      resolve(d ? { data: d } : null);
-    }).catch(function() { tryScf(); });
+      if (d === undefined) return;
+      finish(d ? { data: d } : null);
+    }).catch(function() { });
+    // 通道2: SCF 中继（并行，国内快）
+    fetchMetaViaSCF(function(m) {
+      scfPending = false;
+      if (m) finish({ data: m });
+      else if (!done) finish(null);
+    });
   });
 }
 // 处理云端 meta 数据(合并逻辑集中在此, loadMeta 调用)
@@ -717,7 +720,7 @@ document.addEventListener('visibilitychange', function() { if (document.visibili
 // Load the dynamic manifest (rewritten by the upload function after each upload).
 // 优先直读 raw(无构建延迟); 若 raw 被墙/超时(国内常见), 自动经腾讯云 SCF 中继读取(国内稳定),
 // 二者皆失败才退回嵌入数据 —— 杜绝"上传成功却看不到"因读取失败退回陈旧内置列表。
-// v1.9.1：raw 请求带 6s 超时，避免国内访问 raw 被墙时浏览器长时间挂起导致首页加载慢
+// v1.9.2：raw 与 SCF **并行竞速**——谁先返回用谁（SCF 国内秒回，避免等 raw 超时拖慢加载）
 function fetchRawTimeout(url, ms) {
   var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
   var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, ms || 6000) : null;
@@ -725,14 +728,25 @@ function fetchRawTimeout(url, ms) {
   return fetch(url, opt).then(function(r){ if (timer) clearTimeout(timer); return r; })
     .catch(function(e){ if (timer) clearTimeout(timer); throw e; });
 }
+// 并行竞速拉 manifest：raw 与 SCF 同时请求，谁先成功用谁
+function loadManifestRace() {
+  var done = false;
+  function finish(d) {
+    if (done || !d) return;
+    done = true;
+    FILES = d;
+    renderSidebar(); renderMain(); pruneGhostUploads();
+  }
+  // 通道1: raw（带 5s 超时，不阻塞）
+  fetchRawTimeout(rawManifestUrl() + '?t=' + Date.now(), 5000)
+    .then(function(r){ return r.json(); })
+    .then(function(d){ if (Array.isArray(d) && d.length) finish(d); })
+    .catch(function(){});
+  // 通道2: SCF 中继（国内快，通常 1s 内）
+  fetchManifestViaSCF(function(m){ if (m && m.length) finish(m); });
+}
 (function loadManifest() {
-  var url = rawManifestUrl() + '?t=' + Date.now(); // 实时缓存破坏, 永远拉最新
-  fetchRawTimeout(url, 6000).then(function(r) { return r.json(); }).then(function(d) {
-    if (Array.isArray(d) && d.length) { FILES = d; renderSidebar(); renderMain(); pruneGhostUploads(); return; }
-    fetchManifestViaSCF(function(m) { if (m) { FILES = m; renderSidebar(); renderMain(); pruneGhostUploads(); } });
-  }).catch(function() {
-    fetchManifestViaSCF(function(m) { if (m) { FILES = m; renderSidebar(); renderMain(); pruneGhostUploads(); } });
-  });
+  loadManifestRace();
 })();
 
 var S = {
