@@ -100,35 +100,6 @@
   .count{font-size:13px;color:var(--muted)}
   .count b{color:var(--teal-d)}
   .srcbox{margin-top:24px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
-  /* v2.0：3 种调研形式 + 5 类研究类型 */
-  .form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
-  .form-opt{border:1.5px solid var(--line);border-radius:13px;padding:16px 14px;cursor:pointer;transition:.15s;background:#fff}
-  .form-opt:hover{border-color:var(--teal);transform:translateY(-2px)}
-  .form-opt.on{border-color:var(--teal);background:linear-gradient(180deg,#fff,var(--teal-l));box-shadow:var(--shadow)}
-  .form-opt .fo-ic{font-size:22px}
-  .form-opt .fo-t{font-size:14.5px;font-weight:700;margin-top:8px}
-  .form-opt .fo-d{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.55}
-  .rtype-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
-  .rtype{border:1.5px solid var(--line);border-radius:13px;padding:16px;cursor:pointer;transition:.15s;background:#fff;position:relative}
-  .rtype:hover{border-color:var(--teal);transform:translateY(-2px)}
-  .rtype.sel{border-color:var(--teal);background:linear-gradient(180deg,#fff,var(--teal-l))}
-  .rtype .r-ic{font-size:20px}
-  .rtype .r-t{font-size:15px;font-weight:700;margin-top:7px}
-  .rtype .r-q{font-size:12px;color:var(--teal-d);margin-top:2px}
-  .rtype .r-m{font-size:11px;color:var(--muted);margin-top:7px;line-height:1.5}
-  .rtype .r-chk{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
-  .rtype.sel .r-chk{background:var(--teal);border-color:var(--teal)}
-  @media (max-width:640px){ .form-grid{grid-template-columns:1fr} .rtype-grid{grid-template-columns:1fr} }
-  /* v2.0：决策面板 + 研究计划 */
-  .decision-grid{display:grid;grid-template-columns:1fr;gap:10px}
-  .d-item{background:#FBFDFD;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
-  .d-lbl{font-size:12px;font-weight:700;color:var(--teal-d);margin-bottom:4px}
-  .d-val{font-size:13.5px;line-height:1.6;color:var(--txt)}
-  .plan-list{display:flex;flex-direction:column;gap:8px}
-  .plan-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;background:#FBFDFD;border:1px solid var(--line);border-radius:9px;padding:10px 12px}
-  .plan-item .pi{width:20px;height:20px;border-radius:50%;background:#4338CA;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-  .plan-item b{flex-shrink:0}
-  .plan-item .pf{color:var(--muted)}
   .srcbox .srclbl{font-size:13px;font-weight:700;color:var(--navy-2);margin-bottom:10px}
   .srcseg{display:flex;gap:10px;flex-wrap:wrap}
   .seg{cursor:pointer;border:1.5px solid var(--line);background:#fff;color:var(--navy-2);font-size:13.5px;font-weight:600;padding:11px 16px;border-radius:11px;transition:.15s;font-family:inherit}
@@ -334,84 +305,43 @@
 
       <!-- SCREEN 1: INPUT -->
       <section class="screen on" id="s1">
-        <h1 class="t"><span class="emoji">🔍</span>创建新调研</h1>
-        <p class="lead">选择调研方式，输入研究对象，即可开始。</p>
+        <h1 class="t"><span class="emoji">🔍</span>你要调研什么？</h1>
+        <p class="lead">输入产品/市场/品类，平台按勾选维度并行调度研究（后端 /api/research），套用标准化模板产出结构化报告。这是 A2 本地版：前端把请求发给本地后端，后端跑研究并回传结果。</p>
         <div class="input-card">
-          <!-- v2.0：3 种调研形式 -->
           <div class="field">
-            <label>调研方式</label>
-            <div class="form-grid" id="formGrid">
-              <div class="form-opt on" data-form="standard" onclick="setForm('standard')">
-                <div class="fo-ic">📋</div>
-                <div class="fo-t">标准调研</div>
-                <div class="fo-d">按固定模板研究（市场/电商/竞品/用户/技术），适合已验证的常规课题</div>
-              </div>
-              <div class="form-opt" data-form="topic" onclick="setForm('topic')">
-                <div class="fo-ic">🎯</div>
-                <div class="fo-t">专题调研</div>
-                <div class="fo-d">回答一个具体问题，系统自动生成研究计划并执行</div>
-              </div>
-              <div class="form-opt" data-form="comprehensive" onclick="setForm('comprehensive')">
-                <div class="fo-ic">🚀</div>
-                <div class="fo-t">综合立项研究</div>
-                <div class="fo-d">串联市场+电商+竞品+用户+技术，输出「是否立项」决策面板</div>
-              </div>
-            </div>
-          </div>
-          <div class="field" id="topicField">
-            <label id="topicLabel">研究对象 / 品类</label>
+            <label>调研主题 / 产品市场</label>
+            <div class="hint">支持「品类 + 平台 + 区域」组合，例如：亚马逊美国站 宠物智能饮水机</div>
             <div class="search">
-              <input id="topicInput" type="text" placeholder="例如：宠物智能饮水机 / 智能筋膜枪 / 便携式电热毯" aria-label="调研主题输入框" autocomplete="off" />
-              <button class="btn btn-primary" onclick="goNext()">下一步 →</button>
+              <input id="topicInput" type="text" placeholder="例如：亚马逊美国站 宠物智能饮水机 / 便携式电动吸奶器 欧美市场" aria-label="调研主题输入框" autocomplete="off" />
+              <button class="btn btn-primary" onclick="goDims()">下一步 →</button>
             </div>
             <div class="chips">
-              <span class="chip" onclick="setTopic('宠物智能饮水机')">🐾 宠物智能饮水机</span>
-              <span class="chip" onclick="setTopic('智能筋膜枪')">💆 智能筋膜枪</span>
-              <span class="chip" onclick="setTopic('宠物智能饮水机')">🐾 宠物智能饮水机</span>
-              <span class="chip" onclick="setTopic('智能筋膜枪')">💆 智能筋膜枪</span>
-            </div>
-          </div>
-          <!-- 专题问题输入 -->
-          <div class="field" id="questionField" style="display:none">
-            <label>要研究的具体问题</label>
-            <div class="search">
-              <input id="questionInput" type="text" placeholder="例如：宠物智能饮水机的静音标准应该做到多少？" aria-label="专题问题输入框" autocomplete="off" />
-              <button class="btn btn-primary" onclick="goNext()">开始调研 →</button>
-            </div>
-            <div class="chips">
-              <span class="chip" onclick="setQuestion('宠物智能饮水机的水质检测怎么做？')">💧 水质检测怎么做？</span>
-              <span class="chip" onclick="setQuestion('为什么用户退货率偏高？')">🔍 退货率为什么偏高？</span>
-              <span class="chip" onclick="setQuestion('主流产品的最优参数区间是什么？')">⚡ 最优参数区间？</span>
+              <span class="chip" onclick="setTopic('亚马逊美国站 宠物智能饮水机')">🐾 亚马逊美国站 宠物智能饮水机</span>
+              <span class="chip" onclick="setTopic('便携式电动吸奶器 欧美市场')">🍼 便携式电动吸奶器 欧美市场</span>
+              <span class="chip" onclick="setTopic('痛经缓解产品 中国市场')">🌸 痛经缓解产品 中国市场</span>
+              <span class="chip" onclick="setTopic('智能筋膜枪 亚马逊美国')">💆 智能筋膜枪 亚马逊美国</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SCREEN 2: 研究类型 / 维度 -->
+      <!-- SCREEN 2: DIMENSIONS -->
       <section class="screen" id="s2">
-        <h1 class="t"><span class="emoji">🧩</span><span id="s2Title">选择研究类型</span></h1>
-        <p class="lead" id="s2Lead">选择本次标准调研的研究范围。</p>
+        <h1 class="t"><span class="emoji">🧩</span>选择调研维度</h1>
+        <p class="lead">内置 9 个标准化报告模块（来自你的真实调研方法论，含 2 个亚马逊·卖家精灵 MCP 看板维度，在网格底部）。勾选后，后端将按这些维度生成报告。可在「维度模板」中增删。</p>
         <div class="srcbox">
           <div class="srclbl">🛠 数据源（每个维度怎么出数据）</div>
           <div class="srcseg">
-            <button type="button" class="seg on" id="srcTpl" onclick="setSrc('template')">📁 模板数据（离线·结构骨架）</button>
+            <button type="button" class="seg on" id="srcTpl" onclick="setSrc('template')">📁 模板数据（离线·卖家精灵快照）</button>
             <button type="button" class="seg" id="srcLlm" onclick="setSrc('llm')">🤖 大模型实时生成（DeepSeek）</button>
           </div>
-          <div class="srchint" id="srcHint">「模板数据」输出结构骨架（离线可用、数据标待生成）；「大模型实时生成」由站长统一配置的 DeepSeek 对当前主题实时产出真实数据（数字为 LLM 估算、需核验）。</div>
+          <div class="srchint" id="srcHint">「模板数据」输出各维度结构骨架（离线可用、数据标待生成）；「大模型实时生成」由站长统一配置的 DeepSeek 在后端对当前主题实时产出真实数据（数字为 LLM 估算、需核验）。你的浏览器不会接触任何 API Key，也无需填写。</div>
         </div>
-        <!-- 标准模式：5 类研究类型 -->
-        <div id="rtypeBox">
-          <div class="rtype-grid" id="rtypeGrid"></div>
-        </div>
-        <!-- 高级模式：9 维度勾选（折叠） -->
-        <div id="advBox" style="display:none">
-          <div class="grid" id="dimGrid"></div>
-        </div>
+        <div class="grid" id="dimGrid"></div>
         <div class="actions">
           <button class="btn btn-ghost" onclick="show('s1')">← 返回</button>
           <button class="btn btn-primary" id="genBtn" onclick="goGen()">生成调研报告 →</button>
-          <button class="btn btn-ghost" id="advToggle" onclick="toggleAdvanced()">高级：自由选维度 ▾</button>
-          <span class="count" id="selCountWrap" style="display:none">已选 <b id="selCount">0</b> / <span id="totalCount">9</span> 个维度</span>
+          <span class="count">已选 <b id="selCount">6</b> / <span id="totalCount">8</span> 个维度</span>
         </div>
       </section>
 
@@ -664,114 +594,35 @@ function renderDims(){
   const tc=document.getElementById('totalCount'); if(tc) tc.textContent=visible.length;
 }
 function toggle(id){ if(selected.has(id))selected.delete(id); else selected.add(id); renderDims(); }
-// —— v2.0 调研流程状态 ——
-let curForm = 'standard';   // standard / topic / comprehensive
-let curRType = 'market';    // 5 类研究类型 id
-let advMode = false;        // 高级模式（9 维度自由勾选）
-// 3 种调研形式选择
-function setForm(f){
-  curForm = f;
-  document.querySelectorAll('.form-opt').forEach(o=>o.classList.toggle('on', o.dataset.form===f));
-  document.getElementById('questionField').style.display = (f==='topic') ? '' : 'none';
-  document.getElementById('topicField').style.display = (f==='topic') ? 'none' : '';
-  const tl=document.getElementById('topicLabel');
-  if(tl) tl.textContent = (f==='comprehensive') ? '研究对象 / 立项品类' : '研究对象 / 品类';
-}
-function setTopic(v){ document.getElementById('topicInput').value=v; }
-function setQuestion(v){ document.getElementById('questionInput').value=v; }
-// 下一步：专题直接生成，标准/综合进入 s2
-function goNext(){
-  if(curForm==='topic'){
-    const q=document.getElementById('questionInput').value.trim();
-    if(!q){ document.getElementById('questionInput').focus(); return; }
-    document.getElementById('loadTopic').textContent='问题：'+q;
-    document.getElementById('progHint').innerHTML='<div class="prog-warn">🎯 专题调研：正在生成研究计划并执行…</div>';
-    const list=document.getElementById('progList');
-    list.innerHTML='<div class="prow"><span class="spin2"></span><span>研究计划生成中…</span></div>';
-    goGen(q);
-    return;
-  }
+function goDims(){
   const v=document.getElementById('topicInput').value.trim();
   if(!v){ document.getElementById('topicInput').focus(); return; }
+  // 主题含「亚马逊」时自动勾选亚马逊看板维度（方便快速生成）
+  if(/亚马逊|amazon/i.test(v)){ selected.add('amz_us'); selected.add('amz_eu'); }
   document.getElementById('loadTopic').textContent='主题：'+v;
-  if(curForm==='comprehensive'){
-    document.getElementById('progHint').innerHTML='<div class="prog-warn">🚀 综合立项研究：串联市场+电商+竞品+用户+技术 5 类调研，通常需要 30-60 秒…</div>';
-    const list=document.getElementById('progList');
-    list.innerHTML='<div class="prow"><span class="spin2"></span><span>启动综合立项研究…</span></div>';
-    goGen();
-    return;
-  }
-  // 标准：进入 s2 选研究类型
-  show('s2'); renderRTypes(); renderDims();
+  show('s2'); renderDims();
 }
-// 5 类研究类型渲染
-function renderRTypes(){
-  const g=document.getElementById('rtypeGrid');
-  const types=window.__researchTypes||{};
-  const ids=Object.keys(types);
-  if(!ids.length) return;
-  g.innerHTML=ids.map(id=>{
-    const t=types[id];
-    const sel = (curRType===id && !advMode) ? ' sel' : '';
-    return `<div class="rtype${sel}" onclick="selectRType('${id}')">
-      <div class="r-chk">${sel?'✓':''}</div>
-      <div class="r-ic">${t.icon||'📋'}</div>
-      <div class="r-t">${t.title||id}</div>
-      <div class="r-q">${t.desc||''}</div>
-      <div class="r-m">${t.modules||''}</div>
-    </div>`;
-  }).join('');
-}
-function selectRType(id){ curRType=id; advMode=false; document.getElementById('advBox').style.display='none'; document.getElementById('rtypeBox').style.display=''; document.getElementById('selCountWrap').style.display='none'; renderRTypes(); }
-// 高级模式切换
-function toggleAdvanced(){
-  advMode=!advMode;
-  document.getElementById('advBox').style.display = advMode?'':'none';
-  document.getElementById('rtypeBox').style.display = advMode?'none':'';
-  document.getElementById('selCountWrap').style.display = advMode?'':'none';
-  document.getElementById('advToggle').textContent = advMode ? '收起高级模式 ▴' : '高级：自由选维度 ▾';
-  renderDims();
-}
-function goGen(question){
+function goGen(){
+  if(selected.size===0){ toast('请至少选择一个维度','err'); return; }
   const topic=document.getElementById('topicInput').value.trim();
-  const isLLM = srcMode==='llm';
-  if(!isLLM){ toast('请选择「大模型实时生成」数据源','err'); return; }
-  // 组装请求参数
-  let mode='standard', dims=[], q=question||'';
-  if(curForm==='topic'){
-    mode='topic';
-    if(!q) q=document.getElementById('questionInput').value.trim();
-    if(!q){ toast('请输入要研究的问题','err'); return; }
-  } else if(curForm==='comprehensive'){
-    mode='comprehensive';
-  } else {
-    if(advMode){
-      mode='advanced';
-      dims=[...selected];
-      if(!dims.length){ toast('请至少选择一个维度','err'); return; }
-    } else {
-      mode=curRType; // market/ecom/comp/user/tech
-      const rt=window.__researchTypes&&window.__researchTypes[curRType];
-      dims=(rt&&rt.dims)||[];
-    }
-  }
+  saveCfg();
   document.getElementById('genBtn').disabled=true;
   show('s3');
-  const order=dims;
+  const order=[...selected];
+  const isLLM = srcMode==='llm';
   const list=document.getElementById('progList');
-  // 进度条（专题/综合用占位提示，标准按维度）
-  if(mode==='topic'){
-    // 已在 goNext 设置
-  } else if(mode==='comprehensive'){
-    list.innerHTML='<div class="prow"><span class="spin2"></span><span>市场机会研究…</span></div><div class="prow"><span class="spin2"></span><span>电商市场研究…</span></div><div class="prow"><span class="spin2"></span><span>竞品研究…</span></div><div class="prow"><span class="spin2"></span><span>用户研究…</span></div><div class="prow"><span class="spin2"></span><span>技术研究…</span></div><div class="prow"><span class="spin2"></span><span>汇总决策面板…</span></div>';
-  } else {
-    list.innerHTML=order.map(d=>`<div class="prow" id="pr-${d}"><span class="spin2"></span><span>${META[d].title} · AI 分析中…</span></div>`).join('');
-  }
+  list.innerHTML=order.map(d=>`<div class="prow" id="pr-${d}"><span class="spin2"></span><span>${META[d].title} · ${isLLM?'AI 分析中…':'读取数据中…'}</span></div>`).join('');
+  // 顶部等待提示（v1.6.0：真实提示 LLM 耗时，避免用户以为卡死）
   const head=document.getElementById('progHint');
-  if(head && mode!=='topic' && mode!=='comprehensive') head.innerHTML='<div class="prog-warn">🤖 正在调用 DeepSeek 实时生成，<b>通常需要 10-30 秒</b>（维度越多越久）。请勿关闭页面。</div>';
-  // 超时提醒
+  if(head) head.innerHTML = isLLM
+    ? '<div class="prog-warn">🤖 正在调用 DeepSeek 实时生成，<b>通常需要 10-30 秒</b>（维度越多越久）。请勿关闭页面。</div>'
+    : '<div class="prog-warn">📁 正在读取模板数据…</div>';
+  // v1.8.0：进度真实化——不再提前标记「完成」，全部保持「处理中」，成功/失败统一收尾
+  // 超时提醒（v1.6.0）：LLM 模式超过 20s 未返回时提示仍在处理
   let reminded=false;
-  if(isLLM){ setTimeout(()=>{ if(!reminded){ reminded=true; if(head) head.innerHTML='<div class="prog-warn">⏳ 后端仍在处理（DeepSeek 生成较慢属正常），请再等一会儿…</div>'; } }, 20000); }
+  if(isLLM){
+    setTimeout(()=>{ if(!reminded){ reminded=true; if(head) head.innerHTML='<div class="prog-warn">⏳ 后端仍在处理（DeepSeek 生成较慢属正常），请再等一会儿…</div>'; } }, 20000);
+  }
   const markAll=(ok)=>{
     order.forEach(d=>{ const r=document.getElementById('pr-'+d); if(!r) return;
       r.classList.add(ok?'ok':'fail');
@@ -779,27 +630,29 @@ function goGen(question){
       r.querySelector('span:last-child').textContent=META[d].title+' · '+(ok?'完成':'失败');
     });
   };
-  // 发起请求（LLM 模式 240s 超时：综合立项可能更久）
+  // 注意：前端不再发送任何 llm.key，后端统一使用服务端环境变量中的 Key。
+  // v1.8.0：fetch 加超时（LLM 180s / 模板 60s），超时明确提示而非无限等待
   fetchTimeout(api('/api/research'),{
     method:'POST', headers:apiHeaders(),
-    body:JSON.stringify({topic, dims, source:srcMode, mode, question:q, llm:{}})
-  }, mode==='comprehensive'?240000:(mode==='topic'?180000:180000)).then(r=>{
+    body:JSON.stringify({topic, dims:order, source:srcMode, llm:{}})
+  }, isLLM ? 180000 : 60000).then(r=>{
     if(r.status===401){
-      _pendingRetry=()=>{ document.getElementById('genBtn').disabled=false; goGen(q); };
+      // v1.6.0：保存 token 后自动重试本次生成
+      _pendingRetry=()=>{ document.getElementById('genBtn').disabled=false; goGen(); };
       showTokenNeeded();
       throw new Error('未授权');
     }
     return r.json();
   }).then(data=>{
     if(data.error){ markAll(false); showErr(data.error); return; }
-    markAll(true);
+    markAll(true); // v1.8.0：后端真正成功后统一标记完成
     lastReport=data;
     saveReport(data);
-    logHistory(topic, order, srcMode, 'ok', data.mode||'live');
+    logHistory(topic, order, srcMode, 'ok', data.mode);
     renderReport(data);
     show('s4');
   }).catch(e=>{
-    markAll(false);
+    markAll(false); // v1.8.0：失败显式标✕
     if(e.message!=='未授权'){
       const isTimeout = e && (e.name==='AbortError' || /abort/i.test(String(e.message)));
       showErr(isTimeout ? '请求超时（后端处理过久）。请减少维度数量或稍后重试。' : '请求后端失败：'+e);
@@ -844,38 +697,13 @@ function escKeep(s){
   return r;
 }
 function renderReport(data){
-  const modeMap={'live':'LIVE 实时·DeepSeek','template':'模板数据·离线','comprehensive':'综合立项·决策','topic':'专题调研'};
   document.getElementById('rTitle').textContent=data.topic+' · 调研报告';
-  const modeLabel = modeMap[data.mode] || '调研报告';
-  const dimCount = Object.keys(data.sections||{}).length;
-  document.getElementById('rMeta').textContent=`报告生成于 ${data.generatedAt} · ${data.mode==='comprehensive'?'5 类研究':(data.mode==='topic'?(data.plan?data.plan.length:0)+' 个研究点':dimCount+' 个维度')} · ${modeLabel}`;
-  document.getElementById('rTags').innerHTML=Object.keys(data.sections||{}).map(k=>`<span class="tg">${META[k]?META[k].title:(k.startsWith('t_')?'研究点':(k.startsWith('rt_')?'研究类型':k))}</span>`).join('');
-
-  // —— v2.0 综合立项：决策面板（顶部 5 段式）——
-  let html='';
-  if(data.mode==='comprehensive' && data.decision && !data.decision.error){
-    const d=data.decision;
-    html+=`<div class="sec" id="sec-decision" style="border:1.5px solid var(--teal);border-radius:14px;padding:20px;margin-bottom:18px">
-      <div class="sh" style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span class="n" style="width:26px;height:26px;border-radius:8px;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px">✔</span><h3 style="font-size:17px">立项决策面板</h3><span class="badge" style="margin-left:auto;font-size:11px;padding:3px 9px;border-radius:6px;background:var(--teal-l);color:var(--teal-d);font-weight:600">综合 5 类研究</span></div>
-      <div class="decision-grid">
-        <div class="d-item"><div class="d-lbl">🏛 市场是否成立？</div><div class="d-val">${escKeep(d.market||'—')}</div></div>
-        <div class="d-item"><div class="d-lbl">👥 用户核心需求</div><div class="d-val">${escKeep(d.user||'—')}</div></div>
-        <div class="d-item"><div class="d-lbl">⚔️ 竞争机会在哪？</div><div class="d-val">${escKeep(d.opp||'—')}</div></div>
-        <div class="d-item"><div class="d-lbl">⚙️ 技术是否可行？</div><div class="d-val">${escKeep(d.tech||'—')}</div></div>
-        <div class="d-item"><div class="d-lbl">📦 产品怎么定义？</div><div class="d-val">${escKeep(d.define||'—')}</div></div>
-      </div>
-    </div>`;
-  }
-  // —— v2.0 专题调研：研究计划展示 ——
-  if(data.mode==='topic' && data.plan && data.plan.length){
-    html+=`<div class="sec" style="padding:16px 18px;border:1px solid var(--line);border-radius:14px;margin-bottom:18px">
-      <div class="sh" style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span class="n" style="width:26px;height:26px;border-radius:8px;background:#4338CA;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px">🎯</span><h3 style="font-size:16px">研究计划</h3></div>
-      <div class="plan-list">${data.plan.map((p,i)=>`<div class="plan-item"><span class="pi">${i+1}</span><b>${esc(p.title||'')}</b><span class="pf">${esc(p.focus||'')}</span></div>`).join('')}</div>
-    </div>`;
-  }
+  const modeLabel = data.mode==='live' ? 'LIVE 实时·DeepSeek' : '模板数据·离线快照';
+  document.getElementById('rMeta').textContent=`报告生成于 ${data.generatedAt} · ${Object.keys(data.sections).length} 个维度 · ${modeLabel}`;
+  document.getElementById('rTags').innerHTML=Object.keys(data.sections).map(k=>`<span class="tg">${META[k].title}</span>`).join('');
 
   // 摘要
-  html+=`<div class="sec" id="sec-sum"><div class="sh"><span class="n">★</span><h3>执行摘要</h3><span class="badge">${data.mode==='live'?'AI 生成':'自动生成'}</span></div>`;
+  let html=`<div class="sec" id="sec-sum"><div class="sh"><span class="n">★</span><h3>执行摘要</h3><span class="badge">${data.mode==='live'?'AI 生成':'自动生成'}</span></div>`;
   html+=`<div class="callout">${escKeep(data.summary)}</div>`;
   if(data.kpis&&data.kpis.length){
     html+='<div class="kpis">'+data.kpis.map(k=>`<div class="kpi"><div class="v">${esc(k.v)}</div><div class="l">${esc(k.l)}</div></div>`).join('')+'</div>';
@@ -887,10 +715,8 @@ function renderReport(data){
   let idx=1;
   for(const k of Object.keys(data.sections)){
     const m=META[k], s=data.sections[k];
-    const secTitle = m ? m.title : (k.startsWith('t_') ? '研究点：'+k.slice(2) : (k.startsWith('rt_') ? '研究类型：'+(window.__researchTypes&&window.__researchTypes[k.slice(3)]?window.__researchTypes[k.slice(3)].title:k.slice(3)) : k));
-    const secBadge = m ? m.badge : (k.startsWith('t_') ? '专题' : '类型');
-    toc+=`<a onclick="scrollTo('sec-${k}')">${idx}. ${esc(secTitle)}</a>`;
-    html+=`<div class="sec" id="sec-${k}"><div class="sh"><span class="n">${idx}</span><h3>${esc(secTitle)}</h3><span class="badge">${esc(secBadge)}</span></div>`;
+    toc+=`<a onclick="scrollTo('sec-${k}')">${idx}. ${esc(m.title)}</a>`;
+    html+=`<div class="sec" id="sec-${k}"><div class="sh"><span class="n">${idx}</span><h3>${esc(m.title)}</h3><span class="badge">${esc(m.badge)}</span></div>`;
     if(s.note) html+=`<p class="note">${escKeep(s.note)}</p>`;
     if(s.kpis&&s.kpis.length){
       html+='<div class="kpis">'+s.kpis.map(kp=>`<div class="kpi"><div class="v">${esc(kp.v)}</div><div class="l">${esc(kp.l)}</div></div>`).join('')+'</div>';
@@ -1273,7 +1099,6 @@ function bootStatus(){
   }).then(s=>{
     if(!s) return;
     window.__backendMode = s.backendMode || 'demo';
-    window.__researchTypes = s.researchTypes || {};  // v2.0：5 类研究类型
     loadCfg();
     updateModePill();
   }).catch(()=>{ setBackendBadge(false,'后端未连接 · 检查地址'); });

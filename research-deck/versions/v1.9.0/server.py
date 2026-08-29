@@ -77,54 +77,6 @@ DIMS = {
 }
 
 # ---------------------------------------------------------------------------
-# 5 类调研类型（v2.0：产品经理视角的调研工作台）
-# 每类调研 = 固定研究骨架（模块清单） + 维度映射（复用现有 9 维度）
-# 三种形式：standard（标准）/ topic（专题）/ comprehensive（综合立项）
-# ---------------------------------------------------------------------------
-RESEARCH_TYPES = {
-    "market": {
-        "title": "市场机会研究",
-        "icon": "📊",
-        "desc": "这个赛道值不值得做？",
-        "dims": ["mkt", "reg"],
-        "modules": "市场定义 → 市场规模 → 增长趋势 → 区域结构 → 用户规模 → 增长驱动 → 抑制因素 → 政策/社会/技术趋势 → 竞争格局 → 市场成熟度 → 机会方向 → 进入判断",
-        "prompt": "你是市场机会研究分析师。针对「{topic}」，产出完整市场机会研究报告：①市场定义与边界 ②市场规模与增长(CAGR) ③区域结构 ④用户规模与画像 ⑤增长驱动因素 ⑥抑制/风险因素 ⑦政策/社会/技术趋势 ⑧竞争格局与集中度 ⑨市场成熟度判断 ⑩机会方向 ⑪进入时机判断(早/中/晚/不宜)。每条数字标注来源；拿不到写「未获取」。",
-    },
-    "ecom": {
-        "title": "电商市场研究",
-        "icon": "🛒",
-        "desc": "Amazon 等渠道有没有生意机会？",
-        "dims": ["amz_us", "amz_eu"],
-        "modules": "市场容量 → 销售趋势 → 品牌结构 → 卖家结构 → 价格带 → 新品表现 → Top ASIN → 产品细分 → 关键词 → 流量结构 → 评论 → 用户痛点 → 竞争强度 → 机会评分 → 产品建议",
-        "prompt": "你是电商市场研究分析师。针对「{topic}」在亚马逊渠道的市场机会，产出：①市场容量与销售趋势 ②品牌结构(CR5/CR10) ③卖家结构(自营vs第三方) ④价格带分布 ⑤新品表现 ⑥Top ASIN ⑦产品细分 ⑧核心关键词与流量 ⑨评论洞察与用户痛点 ⑩竞争强度 ⑪机会评分(0-100) ⑫产品进入建议。数据优先来自卖家精灵 MCP；拿不到写「未获取」。",
-    },
-    "comp": {
-        "title": "竞品研究",
-        "icon": "⚔️",
-        "desc": "市面上的产品怎么做？哪里还有空位？",
-        "dims": ["comp", "prod"],
-        "modules": "竞品池 → 品牌定位 → 产品线 → 价格 → 用户 → 场景 → 功能 → 参数 → 结构 → 材质 → 操作交互 → 软件/App → 技术方案 → 合规 → 评论表现 → 优势 → 缺点 → 产品空白",
-        "prompt": "你是竞品研究分析师。针对「{topic}」的竞品格局，产出：①竞品池与分类 ②品牌定位与产品线 ③价格-功能卡位矩阵 ④用户与场景 ⑤功能/参数/结构/材质横向对比 ⑥操作交互与软件App ⑦技术方案 ⑧合规情况 ⑨评论表现(评分/口碑) ⑩各自优势与缺点 ⑪产品空白与差异化机会。基于真实产品信息；无法查证的标「待核验」。",
-    },
-    "user": {
-        "title": "用户研究",
-        "icon": "👥",
-        "desc": "谁在用？为什么买？哪里不满意？",
-        "dims": ["usr"],
-        "modules": "用户分群 → 触发问题 → 使用场景 → 当前解决方案 → 购买动机 → 决策因素 → 使用流程 → 满意点 → 痛点 → 差评 → 放弃/退货原因 → 替代方案 → 未满足需求 → 用户原话 → 需求优先级",
-        "prompt": "你是用户研究分析师。针对「{topic}」的目标用户，在 Reddit、X、Facebook、Quora、亚马逊评论等检索真实讨论，产出：①用户分群 ②触发问题(什么情境下需要) ③使用场景 ④当前解决方案 ⑤购买动机 ⑥决策因素 ⑦使用流程 ⑧满意点 ⑨痛点(带提及频率) ⑩差评与退货原因 ⑪替代方案 ⑫未满足需求 ⑬用户原话(附来源) ⑭需求优先级。标注信号强度(强/中/弱)。",
-    },
-    "tech": {
-        "title": "技术研究",
-        "icon": "⚙️",
-        "desc": "这个产品怎么实现？哪条技术路线最好？",
-        "dims": ["tech", "sc"],
-        "modules": "需求 → 技术原理 → 技术路线 → 方案对比 → 核心器件 → 系统架构 → 参数 → 性能边界 → 成熟度 → 成本 → 供应链 → 专利 → 法规标准 → 安全风险 → 技术难点 → 推荐方案",
-        "prompt": "你是技术研究分析师。针对「{topic}」的实现技术，产出：①技术需求拆解 ②技术原理 ③技术路线对比(按品类实际路线，勿预设) ④方案优劣对比 ⑤核心器件/组件 ⑥系统架构 ⑦关键参数 ⑧性能边界 ⑨技术成熟度 ⑩成本结构 ⑪供应链 ⑫专利情况 ⑬法规标准 ⑭安全风险 ⑮技术难点 ⑯推荐方案。基于公开资料；无法查证的标「待核验」。",
-    },
-}
-
-# ---------------------------------------------------------------------------
 # 看板结构模板（Amazon US / EU 市场看板方法论）
 # 这两条维度的输出结构被固定，不随主题漂移。见 AMZ_US_TEMPLATE / AMZ_EU_TEMPLATE
 # ---------------------------------------------------------------------------
@@ -464,29 +416,11 @@ def demo_amz_eu(topic=""):
 # ---------------------------------------------------------------------------
 # 报告组装
 # ---------------------------------------------------------------------------
-def build_report(topic, dims, source="template", llm=None, mode="standard", question=""):
+def build_report(topic, dims, source="template", llm=None):
     topic = (topic or "").strip() or "未命名调研主题"
     dims = [d for d in dims if d in DIMS]
     if not dims:
         dims = list(DIMS.keys())
-
-    # —— v2.0 综合立项研究：串联 5 类调研 + 决策面板 ——
-    if mode == "comprehensive" and source == "llm" and llm and llm.get("key"):
-        return _build_comprehensive(topic, llm)
-
-    # —— v2.0 专题调研：按问题生成研究计划并执行 ——
-    if mode == "topic" and source == "llm" and llm and llm.get("key"):
-        return _build_topic(topic, question or topic, llm)
-
-    # —— 标准调研：按研究类型解析维度，走原有维度逻辑 ——
-    rtype = None
-    if mode != "advanced":
-        # mode 传研究类型 id（如 market/ecom/comp/user/tech），映射到维度
-        if mode in RESEARCH_TYPES:
-            rtype = RESEARCH_TYPES[mode]
-            dims = rtype["dims"]
-        elif mode == "standard":
-            pass  # 使用传入 dims
 
     # —— 实时生成（大模型）模式 ——
     if source == "llm" and llm and llm.get("key"):
@@ -572,189 +506,6 @@ def build_report(topic, dims, source="template", llm=None, mode="standard", ques
 
 
 # ---------------------------------------------------------------------------
-# v2.0 综合立项研究：并联 5 类调研 + 决策面板
-# ---------------------------------------------------------------------------
-def _build_comprehensive(topic, llm):
-    import concurrent.futures
-    types = ["market", "ecom", "comp", "user", "tech"]
-    results = {}
-
-    def _run(tid):
-        rt = RESEARCH_TYPES[tid]
-        # 复用 call_llm_dim（带品类提示词），返回维度结果
-        dim_results = {}
-        for k in rt["dims"]:
-            try:
-                dim_results[k] = call_llm_dim(topic, k, llm)
-            except Exception as e:
-                dim_results[k] = {"note": "生成失败：{}".format(e), "kpis": [], "tables": [], "callouts": [], "summary": "生成失败"}
-        return rt, dim_results
-
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as ex:
-        futs = {ex.submit(_run, tid): tid for tid in types}
-        for f in concurrent.futures.as_completed(futs):
-            tid = futs[f]
-            try:
-                rt, dim_results = f.result()
-                results[tid] = {"meta": {k: rt[k] for k in ("title", "icon", "desc")}, "dims": dim_results}
-            except Exception as e:
-                results[tid] = {"meta": {"title": tid, "icon": "❓", "desc": ""}, "dims": {}, "error": str(e)}
-
-    # 汇总各维度 summary 供决策
-    def _sum(tid):
-        parts = []
-        for k, v in results.get(tid, {}).get("dims", {}).items():
-            s = (v.get("summary") or "").strip()
-            if s and s != "生成失败":
-                parts.append(s)
-        return "；".join(parts[:3])
-
-    # 决策面板：基于 5 类调研结果由 LLM 汇总成 5 段式结论
-    decision = {}
-    try:
-        digest = "\n".join("【{}】{}".format(tid, _sum(tid)) for tid in types if _sum(tid))
-        decision_prompt = (
-            "你是产品立项评审专家。基于以下针对「{topic}」的5类调研摘要，输出产品立项决策JSON：\n"
-            "{{\"market\":\"市场是否成立？结论+关键依据(2-3句)\",\"user\":\"用户核心需求是什么？(3-5条，用顿号分隔)\","
-            "\"opp\":\"竞争机会在哪？(空位/差异化机会，2-3句)\",\"tech\":\"技术是否可行？结论+关键风险点(2-3句)\","
-            "\"define\":\"产品应该怎么定义？一句话定位+3条关键建议\"}}\n"
-            "只输出JSON对象，不要解释。\n\n调研摘要：\n{}".format(topic, digest)
-        )
-        payload = {
-            "model": llm["model"],
-            "messages": [
-                {"role": "system", "content": "你是产品立项评审专家，输出严格 JSON。"},
-                {"role": "user", "content": decision_prompt},
-            ],
-            "temperature": 0.3,
-        }
-        req = urllib.request.Request(
-            llm["base"].rstrip("/") + "/chat/completions",
-            data=json.dumps(payload).encode("utf-8"),
-            headers={"Authorization": "Bearer " + llm["key"], "Content-Type": "application/json"},
-        )
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            content = json.loads(resp.read().decode("utf-8"))["choices"][0]["message"]["content"]
-        decision = _extract_json(content) or {}
-    except Exception as e:
-        decision = {"error": str(e)}
-
-    # sections 组装（与旧报告结构兼容：把 5 类研究作为 sections，键名带前缀）
-    sections_out = {}
-    for tid in types:
-        rt = results.get(tid, {})
-        for k, v in rt.get("dims", {}).items():
-            sections_out[k] = v
-        # 补充研究类型说明
-        if rt.get("meta"):
-            sections_out.setdefault("rt_" + tid, {
-                "note": "【{}】{} {}".format(rt["meta"]["title"], rt["meta"]["desc"], RESEARCH_TYPES[tid]["modules"]),
-                "kpis": [], "tables": [], "callouts": [], "summary": _sum(tid),
-            })
-    summary = "「{}」综合立项研究：市场是否成立见决策面板。".format(topic)
-    return {
-        "topic": topic,
-        "mode": "comprehensive",
-        "generatedAt": now_beijing(),
-        "summary": summary,
-        "decision": decision,
-        "researchTypes": [{"id": tid, "title": RESEARCH_TYPES[tid]["title"]} for tid in types],
-        "kpis": [],
-        "sections": sections_out,
-    }
-
-
-# ---------------------------------------------------------------------------
-# v2.0 专题调研：按问题生成研究计划 → 并行执行
-# ---------------------------------------------------------------------------
-def _build_topic(topic, question, llm):
-    import concurrent.futures
-    # 1. LLM 生成研究计划（3-5 个研究点）
-    plan = []
-    try:
-        plan_prompt = (
-            "针对问题「{q}」，制定一个聚焦的研究计划，输出 JSON 数组，3-5 个研究点，每项含 title(10字内) 和 focus(具体要查什么，30字内)：\n"
-            "[{{\"title\":\"...\",\"focus\":\"...\"}}]\n只输出 JSON 数组。".format(q=question)
-        )
-        payload = {
-            "model": llm["model"],
-            "messages": [
-                {"role": "system", "content": "你是研究规划专家，输出严格 JSON 数组。"},
-                {"role": "user", "content": plan_prompt},
-            ],
-            "temperature": 0.3,
-        }
-        req = urllib.request.Request(
-            llm["base"].rstrip("/") + "/chat/completions",
-            data=json.dumps(payload).encode("utf-8"),
-            headers={"Authorization": "Bearer " + llm["key"], "Content-Type": "application/json"},
-        )
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            content = json.loads(resp.read().decode("utf-8"))["choices"][0]["message"]["content"]
-        plan = _extract_json(content) or []
-        if not isinstance(plan, list) or not plan:
-            plan = [{"title": "核心问题", "focus": question}]
-    except Exception:
-        plan = [{"title": "核心问题", "focus": question}]
-
-    # 2. 并行执行每个研究点
-    def _run(p):
-        pid = p.get("title", "研究点")
-        focus = p.get("focus", question)
-        prompt = "你是专题研究员。针对问题「{}」，研究子项「{}：{}」，产出结构化发现：\n".format(question, pid, focus) + (
-            "{{\"note\":\"研究方法(一句)\",\"kpis\":[{{\"v\":\"值\",\"l\":\"含义\"}}],"
-            "\"tables\":[{{\"head\":[\"发现\",\"详情\",\"来源/依据\"],\"rows\":[[\"...\",\"...\",\"...\"]]}}],"
-            "\"callouts\":[\"关键结论或风险(一句)\"],\"summary\":\"本子项一句话结论\"}}\n"
-            "只输出 JSON 对象，数据诚实，拿不到写「未获取」。"
-        )
-        sysmsg = "你是「调研台 ResearchDeck」专题研究员。数据诚实：能用真实数据源就标注来源，拿不到的明确写「未获取」。"
-        payload = {
-            "model": llm["model"],
-            "messages": [{"role": "system", "content": sysmsg}, {"role": "user", "content": prompt}],
-            "temperature": 0.3,
-        }
-        req = urllib.request.Request(
-            llm["base"].rstrip("/") + "/chat/completions",
-            data=json.dumps(payload).encode("utf-8"),
-            headers={"Authorization": "Bearer " + llm["key"], "Content-Type": "application/json"},
-        )
-        with urllib.request.urlopen(req, timeout=90) as resp:
-            content = json.loads(resp.read().decode("utf-8"))["choices"][0]["message"]["content"]
-        try:
-            res = _extract_json(content)
-        except Exception:
-            res = {}
-        res.setdefault("note", "")
-        res.setdefault("kpis", [])
-        res.setdefault("tables", [])
-        res.setdefault("callouts", [])
-        res.setdefault("summary", "")
-        return pid, res
-
-    sections_out = {}
-    with concurrent.futures.ThreadPoolExecutor(max_workers=min(5, len(plan))) as ex:
-        futs = {ex.submit(_run, p): p for p in plan}
-        for f in concurrent.futures.as_completed(futs):
-            try:
-                pid, res = f.result()
-                sections_out["t_" + pid] = res
-            except Exception as e:
-                sections_out["t_" + str(futs[f].get("title", "点"))] = {"note": "失败：{}".format(e), "kpis": [], "tables": [], "callouts": [], "summary": "生成失败"}
-
-    summary = "「{}」专题调研：{}".format(topic, question)
-    return {
-        "topic": topic,
-        "mode": "topic",
-        "generatedAt": now_beijing(),
-        "summary": summary,
-        "plan": plan,
-        "question": question,
-        "kpis": [],
-        "sections": sections_out,
-    }
-
-
-# ---------------------------------------------------------------------------
 # HTTP 处理器
 # ---------------------------------------------------------------------------
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -815,7 +566,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 "sources": ["template", "llm"],
                 "dims": list(DIMS.keys()),
                 "dimsMeta": DIMS,
-                "researchTypes": {k: {"title": v["title"], "icon": v["icon"], "desc": v["desc"], "modules": v["modules"], "dims": v["dims"]} for k, v in RESEARCH_TYPES.items()},
                 "cloudReports": bool(os.environ.get("GITHUB_TOKEN")),
                 # v1.9.0：门禁验证——请求带有效 token 时为 true（供前端登录墙判断）
                 "authValid": self._token_valid(),
@@ -874,8 +624,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
             if not isinstance(dims, list):
                 dims = []
             source = payload.get("source", "template")
-            mode = payload.get("mode", "standard")   # v2.0: standard/topic/comprehensive/advanced/研究类型id
-            question = payload.get("question", "")   # v2.0: 专题调研问题
             # 安全约定：Key 只能来自服务端环境变量，绝不接受前端传入的 llm.key，
             # 防止访客用自己的 Key 绕过额度管控或冒用他人 Key。前端已移除填 Key 入口。
             key = LLM_KEY
@@ -889,7 +637,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             if source == "llm" and not key:
                 self._send(400, {"error": "后端未配置 LLM Key（OPENAI_API_KEY/ANTHROPIC_API_KEY 环境变量）。请联系站长。"})
                 return
-            result = build_report(topic, dims, source=source, llm=llm, mode=mode, question=question)
+            result = build_report(topic, dims, source=source, llm=llm)
             self._send(200, result)
         elif _path == "/api/reports":
             # 保存报告到云端（需 token + GITHUB_TOKEN）
