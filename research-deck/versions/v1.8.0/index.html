@@ -16,23 +16,6 @@
     --shadow:0 1px 3px rgba(15,42,67,.08),0 8px 24px rgba(15,42,67,.06);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  /* v1.9.0：门禁 */
-  #gate{position:fixed;inset:0;background:linear-gradient(160deg,#0F2A43,#1C4A5E);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px}
-  #gate.hide{display:none}
-  .gate-box{background:#fff;border-radius:18px;padding:38px 34px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.35)}
-  .gate-logo{font-size:24px;font-weight:800;color:#0F2A43;display:flex;align-items:center;justify-content:center;gap:10px}
-  .gate-logo .dot{width:12px;height:12px;border-radius:50%;background:#0FB5A6;box-shadow:0 0 0 4px rgba(15,181,166,.2)}
-  .gate-sub{font-size:12.5px;color:#5E7686;margin:6px 0 26px}
-  .gate-input{display:flex;gap:8px}
-  .gate-input input{flex:1;padding:12px 14px;border:1.5px solid #D5E0E2;border-radius:10px;font-size:14px;outline:none;font-family:inherit}
-  .gate-input input:focus{border-color:#0FB5A6;box-shadow:0 0 0 3px rgba(15,181,166,.15)}
-  .gate-input button{padding:12px 20px;border:none;border-radius:10px;background:#0FB5A6;color:#fff;font-weight:700;font-size:14px;cursor:pointer;transition:.15s;white-space:nowrap}
-  .gate-input button:hover{background:#0C9A8E}
-  .gate-input button:disabled{opacity:.6;cursor:not-allowed}
-  .gate-err{font-size:12.5px;color:#C0392B;margin-top:12px;min-height:18px}
-  .gate-hint{font-size:11.5px;color:#9AAFB8;margin-top:14px;line-height:1.6}
-  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-  .gate-box.shake{animation:shake .3s ease}
   #toastBox{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
   .toast{background:#0F2A43;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;box-shadow:0 6px 20px rgba(15,42,67,.25);animation:toastIn .25s ease;max-width:90vw;text-align:center}
   .toast.err{background:#C0392B}
@@ -263,19 +246,6 @@
 </style>
 </head>
 <body>
-<!-- v1.9.0：门禁遮罩（输入正确 token 后才能看到调研台内容） -->
-<div id="gate">
-  <div class="gate-box">
-    <div class="gate-logo"><span class="dot"></span>调研台</div>
-    <div class="gate-sub">ResearchDeck · 需要访问令牌</div>
-    <div class="gate-input">
-      <input id="gateToken" type="password" placeholder="请输入访问令牌（向站长索取）" autocomplete="off" aria-label="访问令牌" />
-      <button id="gateBtn" onclick="gateLogin()">进入</button>
-    </div>
-    <div class="gate-err" id="gateErr"></div>
-    <div class="gate-hint">令牌验证通过后即可使用调研台；浏览器会记住本次登录。</div>
-  </div>
-</div>
 <div class="app">
   <aside class="side">
     <div class="logo"><span class="dot"></span>调研台</div>
@@ -404,51 +374,6 @@
 </div>
 
 <script>
-// —— 门禁（v1.9.0：输入正确 token 才能看到调研台内容）——
-function gateShow(){ document.getElementById('gate').classList.remove('hide'); }
-function gateHide(){ document.getElementById('gate').classList.add('hide'); }
-function gateVerify(tok){
-  // 用带 token 的 status 请求验证令牌有效性（后端返回 authValid）
-  return fetchTimeout(api('/api/status'),{headers:{'Authorization':'Bearer '+tok}},15000)
-    .then(r=>{ if(!r.ok) throw 0; return r.json(); })
-    .then(j=>!!j.authValid)
-    .catch(()=>false);
-}
-function gateLogin(){
-  const inp=document.getElementById('gateToken');
-  const v=inp.value.trim();
-  const err=document.getElementById('gateErr');
-  const btn=document.getElementById('gateBtn');
-  if(!v){ err.textContent='请输入访问令牌'; inp.focus(); return; }
-  err.textContent=''; btn.disabled=true; btn.textContent='验证中…';
-  gateVerify(v).then(ok=>{
-    btn.disabled=false; btn.textContent='进入';
-    if(ok){
-      RD_TOKEN=v;
-      try{ localStorage.setItem('rd_token', encTok(v)); }catch(e){}
-      inp.value='';
-      gateHide();
-      // 更新侧边栏状态 + 刷新数据
-      const sb=document.getElementById('tokStat'); if(sb){ sb.className='tokstat ok'; sb.textContent='✓ 已登录'; }
-      const tb=document.getElementById('tokenInput'); if(tb) tb.placeholder='已保存（输入新值可更换）';
-      setBackendBadge(true,'后端已连接 · LIVE');
-      if(_cloudReports) _cloudReports.loaded=false;
-      toast('欢迎使用调研台','ok');
-      bootStatus();
-    } else {
-      err.textContent='令牌无效，请重新输入';
-      const box=document.querySelector('.gate-box'); if(box) box.classList.add('shake');
-      setTimeout(()=>box&&box.classList.remove('shake'),350);
-      inp.select();
-    }
-  });
-}
-document.getElementById('gateBtn');
-// 回车提交
-(function(){
-  const inp=document.getElementById('gateToken');
-  if(inp) inp.addEventListener('keydown',e=>{ if(e.key==='Enter') gateLogin(); });
-})();
 // —— 轻量 toast（v1.8.0：替代 alert，移动端友好）——
 function toast(msg, type){
   let box=document.getElementById('toastBox');
@@ -1090,31 +1015,18 @@ function setBackendBadge(ok, msg){
   else { b.style.background='#FEF3E2'; b.style.color='#B45309'; }
   b.textContent=msg;
 }
-// 启动时拉取状态 + 配置（v1.9.0：先过门禁验证）
-function bootStatus(){
-  fetch(api('/api/status'),{headers:apiHeaders()}).then(r=>{
-    if(r.status===401){ setBackendBadge(false,'后端已连接 · 未授权(需Token)'); return null; }
-    setBackendBadge(true,'后端已连接 · LIVE');
-    return r.json();
-  }).then(s=>{
-    if(!s) return;
-    window.__backendMode = s.backendMode || 'demo';
-    loadCfg();
-    updateModePill();
-  }).catch(()=>{ setBackendBadge(false,'后端未连接 · 检查地址'); });
-}
-function bootGate(){
-  // 有已存 token → 验证；无 → 直接显示门禁
-  if(RD_TOKEN){
-    gateVerify(RD_TOKEN).then(ok=>{
-      if(ok){ gateHide(); bootStatus(); renderDims(); }
-      else { localStorage.removeItem('rd_token'); RD_TOKEN=''; gateShow(); renderDims(); }
-    });
-  } else {
-    gateShow(); renderDims();
-  }
-}
-bootGate();
+// 启动时拉取状态 + 配置
+fetch(api('/api/status'),{headers:apiHeaders()}).then(r=>{
+  if(r.status===401){ setBackendBadge(false,'后端已连接 · 未授权(需Token)'); return null; }
+  setBackendBadge(true,'后端已连接 · LIVE');
+  return r.json();
+}).then(s=>{
+  if(!s) return;
+  window.__backendMode = s.backendMode || 'demo';
+  loadCfg();
+  updateModePill();
+}).catch(()=>{ setBackendBadge(false,'后端未连接 · 检查地址'); });
+renderDims();
 </script>
 </body>
 </html>

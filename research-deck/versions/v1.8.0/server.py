@@ -529,23 +529,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
         # 预检请求（CORS）
         self._send(204, "", cors=True)
 
-    def _token_valid(self):
-        """校验请求携带的 token 是否有效（Authorization Bearer 或 ?token=）。"""
-        rd_token = os.environ.get("RD_TOKEN")
-        if not rd_token:
-            return True  # 未启用鉴权时视为有效
-        try:
-            auth = self.headers.get("Authorization", "")
-            q_token = ""
-            if "?" in self.path:
-                from urllib.parse import parse_qs
-                q_token = parse_qs(self.path.split("?", 1)[1]).get("token", [""])[0]
-            if auth.replace("Bearer ", "") == rd_token or q_token == rd_token:
-                return True
-        except Exception:
-            pass
-        return False
-
     def do_GET(self):
         _path = self.path.split("?")[0]
         if _path in ("/", "/index.html"):
@@ -567,8 +550,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 "dims": list(DIMS.keys()),
                 "dimsMeta": DIMS,
                 "cloudReports": bool(os.environ.get("GITHUB_TOKEN")),
-                # v1.9.0：门禁验证——请求带有效 token 时为 true（供前端登录墙判断）
-                "authValid": self._token_valid(),
             })
         elif _path == "/api/reports":
             # 云端报告列表（需 token；未配 GITHUB_TOKEN 时返回空列表，前端回退本地）
