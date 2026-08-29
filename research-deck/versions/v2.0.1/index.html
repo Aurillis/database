@@ -203,7 +203,6 @@
   .rcard:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:var(--shadow)}
   .rcard .rt{font-size:16px;font-weight:700;padding-right:26px}
   .rcard .del-btn{position:absolute;top:12px;right:12px;width:22px;height:22px;border:none;border-radius:50%;background:#FEE2E2;color:#C0392B;font-size:11px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.7;transition:.15s}
-  .rcard .sync-btn{margin-left:8px;border:1px solid #F59E0B;background:#FEF3C7;color:#B45309;font-size:11px;padding:1px 8px;border-radius:8px;cursor:pointer;vertical-align:1px}
   .rcard .del-btn:hover{opacity:1;background:#C0392B;color:#fff}
   .rcard .rm{font-size:12px;color:var(--muted);margin-top:6px}
   .rcard .rtags{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
@@ -1081,54 +1080,9 @@ function saveReport(data){
       id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, _ts:data._ts, mode:data.mode,
       dims:Object.keys(data.sections||{}), data
     }})}).then(r=>{
-      if(r.ok){
-        if(_cloudReports) _cloudReports.loaded=false;
-        markCloudSync(reportId(data), true);
-        return r.json().then(j=>{_cloudReports={list:j.reports||_cloudReports.list,loaded:true};});
-      }
-      // 非 2xx：标记未同步 + 提示
-      markCloudSync(reportId(data), false);
-      if(r.status===401){ toast('云端同步失败：令牌无效','err'); }
-      else { toast('云端同步失败（'+r.status+'），可在「我的报告」重试','err'); }
-      throw new Error('sync fail '+r.status);
-    }).catch(e=>{
-      // 网络/异常：标记未同步（不重复 toast 401 场景）
-      if(!(e&&e.message==='sync fail 401')){ markCloudSync(reportId(data), false); toast('云端同步失败，可在「我的报告」重试','err'); }
-    });
+      if(r.ok){ if(_cloudReports) _cloudReports.loaded=false; return r.json().then(j=>{_cloudReports={list:j.reports||_cloudReports.list,loaded:true}}); }
+    }).catch(()=>{});
   }
-}
-// v2.0.2：标记本地报告的云端同步状态（fail=未同步成功，可重试）
-function markCloudSync(id, ok){
-  try{
-    const arr=JSON.parse(localStorage.getItem('rd_reports')||'[]');
-    let changed=false;
-    const kept=arr.map(r=>{ if(r.id===id){ const c=ok?false:'fail'; if(r.cloud!==c){ r.cloud=c; changed=true; } } return r; });
-    if(changed){ localStorage.setItem('rd_reports', JSON.stringify(kept)); }
-  }catch(e){}
-}
-// v2.0.2：手动重试同步一份报告到云端
-function retryCloudSync(id){
-  let arr=[]; try{ arr=JSON.parse(localStorage.getItem('rd_reports')||'[]'); }catch(e){}
-  const rec=arr.find(r=>r.id===id);
-  if(!rec||!rec.data){ toast('未找到该报告数据','err'); return; }
-  if(!(BACKEND_URL && RD_TOKEN)){ toast('需先输入访问令牌才能同步云端','err'); return; }
-  toast('正在同步到云端…','info');
-  const data=rec.data;
-  fetch(api('/api/reports'),{method:'POST',headers:apiHeaders(),body:JSON.stringify({report:{
-    id:id, topic:rec.topic, generatedAt:rec.generatedAt, _ts:rec._ts, mode:rec.mode,
-    dims:rec.dims, data
-  }})}).then(r=>{
-    if(r.ok){
-      markCloudSync(id, true);
-      toast('已同步到云端 ✓','ok');
-      if(_cloudReports) _cloudReports.loaded=false;
-      renderReports();
-      return r.json().then(j=>{_cloudReports={list:j.reports||_cloudReports.list,loaded:true};});
-    }
-    markCloudSync(id, false);
-    toast(r.status===401?'同步失败：令牌无效':'同步失败（'+r.status+'）','err');
-    throw new Error('sync fail');
-  }).catch(()=>{});
 }
 function loadCloudReports(cb){
   if(!BACKEND_URL || !RD_TOKEN){ cb&&cb([]); return; }
@@ -1152,18 +1106,14 @@ function renderReports(){
     const merged=mergedArr.slice(0,50);
     if(!merged.length){ box.innerHTML='<div class="empty">还没有生成的报告。去「新建调研」生成第一份吧。<br/><span style="font-size:12px;color:var(--muted)">生成后自动保存，输入 Token 后还会同步到云端（换设备可见）。</span></div>'; return; }
     const tool = (BACKEND_URL&&RD_TOKEN) ? '<button class="btn btn-ghost" onclick="clearAllReports()" style="margin-bottom:12px;font-size:12.5px;padding:8px 14px">🗑 清空全部</button>' : '';
-    box.innerHTML=tool+'<div class="rcards">'+merged.map((r,i)=>{
-      const syncBadge = r.cloud==='fail'
-        ? `<button class="sync-btn" title="同步到云端" onclick="event.stopPropagation();retryCloudSync('${String(r.id||'').replace(/'/g,"\\'")}')">⚠️ 未同步云端 · 点此重试</button>`
-        : (r.cloud ? ' · ☁️云端' : '');
-      return `
+    box.innerHTML=tool+'<div class="rcards">'+merged.map((r,i)=>`
       <div class="rcard" onclick="openSaved(${i})">
         <div class="rt">${r.cloud?'☁️ ':''}${String(r.topic||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
           <button class="del-btn" title="删除该报告" onclick="event.stopPropagation();delReport(${i})">✕</button>
         </div>
-        <div class="rm">${String(r.generatedAt||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))} · ${r.mode==='live'?'LIVE·DeepSeek':'模板数据'} · ${(r.dims||[]).length} 维度${syncBadge}</div>
+        <div class="rm">${String(r.generatedAt||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))} · ${r.mode==='live'?'LIVE·DeepSeek':'模板数据'} · ${(r.dims||[]).length} 维度${r.cloud?' · ☁️云端':''}</div>
         <div class="rtags">${(r.dims||[]).map(d=>`<span>${META[d]?META[d].title:d}</span>`).join('')}</div>
-      </div>`}).join('')+'</div>';
+      </div>`).join('')+'</div>';
     window.__reportsList=merged;
   };
   if(_cloudReports && _cloudReports.loaded){ show(_cloudReports.list); }
