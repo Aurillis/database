@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>欧律生首款盆底电刺激产品 · 建议FDA合规路径</title>
+<style>
+  /* ============ 设计令牌 ============ */
+  :root{
+    --navy:#163a5f;
+    --navy-deep:#0e2740;
+    --navy-soft:#eef3f8;
+    --teal:#2e7d78;
+    --teal-soft:#e5f1f0;
+    --orange:#a9682e;
+    --orange-bg:#fbf1e3;
+    --orange-border:#e9c9a2;
+    --red:#b23a2e;
+    --red-bg:#fbeae7;
+    --red-border:#ecc2bb;
+    --bg:#f5f7fa;
+    --card:#ffffff;
+    --ink:#1d2b38;
+    --muted:#5c6d7c;
+    --line:#dde5ec;
+    --gray:#6b7785;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono","Consolas",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Segoe UI",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.7;font-size:17px;
+    -webkit-font-smoothing:antialiased;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  /* ============ 顶部导航 ============ */
+  .topnav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);}
+  .topnav .inner{
+    max-width:1180px;margin:0 auto;padding:0 32px;height:58px;
+    display:flex;align-items:center;gap:20px;
+  }
+  .topnav .brand{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--navy);white-space:nowrap;}
+  .topnav .brand span{color:var(--teal);}
+  .topnav nav{display:flex;gap:4px;flex:1;overflow-x:auto;scrollbar-width:none;}
+  .topnav nav::-webkit-scrollbar{display:none;}
+  .topnav nav a{font-size:14.5px;color:var(--muted);padding:6px 11px;border-radius:6px;white-space:nowrap;}
+  .topnav nav a:hover{background:var(--navy-soft);color:var(--navy);}
+  .printbtn{
+    border:1px solid var(--navy);color:var(--navy);background:#fff;font-size:14px;font-weight:600;
+    padding:7px 14px;border-radius:6px;cursor:pointer;white-space:nowrap;font-family:inherit;
+  }
+  .printbtn:hover{background:var(--navy);color:#fff;}
+
+  /* ============ 头部 ============ */
+  .site-header{background:#fff;border-bottom:1px solid var(--line);padding:44px 0 38px;}
+  .eyebrow{font-size:13.5px;font-weight:700;letter-spacing:.14em;color:var(--teal);margin-bottom:18px;}
+  .eyebrow::before{content:"";display:inline-block;width:26px;height:3px;background:var(--teal);vertical-align:middle;margin-right:12px;border-radius:2px;}
+  h1{font-size:42px;line-height:1.25;font-weight:800;color:var(--navy-deep);letter-spacing:.01em;}
+  h1 .hl{color:var(--orange);}
+  .en-subtitle{margin-top:12px;font-size:19px;color:var(--muted);font-weight:500;}
+  .tagline-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px;}
+  .tagline-chip{
+    background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 16px;font-size:15px;font-weight:700;color:var(--navy);
+  }
+  .tagline-chip b{color:var(--teal);font-weight:800;}
+  .head-note{
+    margin-top:22px;border-left:5px solid var(--orange-border);background:var(--orange-bg);border-radius:8px;
+    padding:15px 20px;font-size:16.5px;color:#7a4a1c;font-weight:600;
+  }
+
+  /* ============ 通用章节 ============ */
+  section.block{padding:52px 0 8px;scroll-margin-top:70px;}
+  .sec-head{margin-bottom:26px;}
+  .sec-index{font-size:14px;font-weight:700;letter-spacing:.12em;color:var(--teal);margin-bottom:6px;}
+  .sec-head h2{font-size:29px;font-weight:800;color:var(--navy-deep);line-height:1.3;}
+  .sec-head .sec-desc{margin-top:8px;font-size:16px;color:var(--muted);max-width:900px;}
+  ul.list{list-style:none;}
+  ul.list li{position:relative;padding-left:20px;margin-bottom:9px;font-size:16px;color:var(--ink);}
+  ul.list li::before{content:"";position:absolute;left:2px;top:11px;width:7px;height:7px;border-radius:2px;background:var(--teal);}
+  ul.list li:last-child{margin-bottom:0;}
+  ul.list li b{color:var(--navy);}
+
+  /* ============ 一句话建议 ============ */
+  .strategy-card{
+    background:var(--navy-deep);border-radius:12px;padding:32px 36px;color:#eaf1f8;
+  }
+  .strategy-card .s-label{font-size:13px;font-weight:700;letter-spacing:.14em;color:#7fd0c9;margin-bottom:14px;}
+  .strategy-card p{font-size:19px;line-height:1.85;color:#eaf1f8;}
+  .strategy-card p b{color:#7fd0c9;font-weight:700;}
+  .kw-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:22px;}
+  .kw-card{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+    display:flex;gap:12px;align-items:flex-start;
+  }
+  .kw-card .no{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--teal);padding-top:2px;flex:0 0 auto;}
+  .kw-card p{font-size:15px;font-weight:700;color:var(--navy);line-height:1.5;}
+
+  /* ============ 建议合规路径图 ============ */
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:22px;}
+  .legend-item{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);}
+  .legend-item .sw{width:14px;height:14px;border-radius:4px;}
+  .sw.navy{background:var(--navy);}
+  .sw.teal{background:var(--teal);}
+  .sw.orange{background:var(--orange);}
+  .sw.gray{background:var(--gray);}
+  .flow{display:flex;flex-direction:column;align-items:stretch;}
+  .f-card{border-radius:10px;border:1px solid var(--line);background:var(--card);overflow:hidden;}
+  .f-card .f-bar{height:6px;}
+  .f-card.navy .f-bar{background:var(--navy);}
+  .f-card.teal .f-bar{background:var(--teal);}
+  .f-card.orange .f-bar{background:var(--orange);}
+  .f-card.gray .f-bar{background:var(--gray);}
+  .f-body{padding:20px 24px 22px;}
+  .f-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px;}
+  .f-step{font-family:var(--mono);font-size:12.5px;font-weight:700;letter-spacing:.06em;color:var(--muted);}
+  .f-title{font-size:18px;font-weight:800;color:var(--navy-deep);}
+  .f-role{margin-bottom:12px;}
+  .f-role .role{
+    display:inline-block;font-size:14px;font-weight:700;color:#fff;border-radius:6px;padding:4px 12px;
+  }
+  .f-card.navy .f-role .role{background:var(--navy);}
+  .f-card.teal .f-role .role{background:var(--teal);}
+  .f-card.orange .f-role .role{background:var(--orange);}
+  .f-card.gray .f-role .role{background:var(--gray);}
+  .f-body ul.list li{font-size:15.5px;margin-bottom:7px;}
+  .f-arrow{display:flex;justify-content:center;padding:8px 0;}
+  .f-arrow svg{width:26px;height:26px;stroke:var(--line);}
+  .f-note{font-size:14px;color:var(--muted);margin-top:8px;}
+
+  /* ============ 主体角色矩阵 ============ */
+  .table-scroll{overflow-x:auto;}
+  table.matrix{width:100%;border-collapse:collapse;background:#fff;font-size:15.5px;min-width:820px;}
+  table.matrix thead th{background:var(--navy);color:#fff;text-align:left;padding:13px 16px;font-weight:700;white-space:nowrap;}
+  table.matrix tbody td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top;}
+  table.matrix tbody tr:nth-child(even){background:#f8fafc;}
+  table.matrix td.subject{font-weight:700;color:var(--navy-deep);white-space:nowrap;}
+  table.matrix td .pill{display:inline-block;font-size:13px;font-weight:700;padding:3px 11px;border-radius:20px;white-space:nowrap;}
+  .pill.keep{background:var(--teal-soft);color:var(--teal);border:1px solid #bfddd9;}
+  .pill.pending{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border);}
+  .pill.na{background:#eef1f4;color:var(--muted);border:1px solid var(--line);}
+  .matrix-note{
+    margin-top:18px;border-left:4px solid var(--teal);background:var(--teal-soft);border-radius:8px;
+    padding:14px 20px;font-size:16px;color:#1f4f4b;font-weight:600;
+  }
+
+  /* ============ 变更减法 ============ */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .doc-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:24px 26px;}
+  .doc-card h3{font-size:19px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  .doc-card h3 .mark{width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .doc-card h3 .mark svg{width:15px;height:15px;}
+  .doc-card.keep h3{color:var(--teal);}
+  .doc-card.keep h3 .mark{background:var(--teal-soft);}
+  .doc-card.keep h3 .mark svg{stroke:var(--teal);}
+  .doc-card.adjust h3{color:var(--orange);}
+  .doc-card.adjust h3 .mark{background:var(--orange-bg);}
+  .doc-card.adjust h3 .mark svg{stroke:var(--orange);}
+  .doc-card.keep ul.list li::before{background:var(--teal);}
+  .doc-card.adjust ul.list li::before{background:var(--orange);}
+  .red-note{
+    margin-top:18px;border:1px solid var(--red-border);background:var(--red-bg);border-radius:8px;
+    padding:15px 20px;font-size:16px;color:#7c2b23;font-weight:600;
+  }
+  .red-note b{color:var(--red);}
+
+  /* ============ 注册/列名/UDI ============ */
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .reg-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:24px 26px;border-top:4px solid var(--navy);}
+  .reg-card h3{font-size:19px;font-weight:800;color:var(--navy);margin-bottom:14px;}
+  .reg-card ul.list li{font-size:15.5px;margin-bottom:8px;}
+  .reg-card ul.list li b{color:var(--navy);}
+  .tradeoff{
+    margin-top:18px;border:1px dashed var(--teal);background:var(--teal-soft);border-radius:8px;
+    padding:15px 20px;font-size:16px;color:#1f4f4b;font-weight:600;
+  }
+  .tradeoff b{color:var(--teal);}
+
+  /* ============ 首票进口 ACE 表 ============ */
+  table.ace{width:100%;border-collapse:collapse;background:#fff;font-size:15.5px;}
+  table.ace thead th{background:var(--navy);color:#fff;text-align:left;padding:12px 16px;font-weight:700;}
+  table.ace tbody td{padding:12px 16px;border-bottom:1px solid var(--line);}
+  table.ace tbody tr:nth-child(even){background:#f8fafc;}
+  table.ace td.field{font-weight:700;color:var(--navy-deep);white-space:nowrap;}
+  table.ace td .mono{font-family:var(--mono);font-size:.92em;color:var(--teal);}
+
+  /* ============ 推荐理由 ============ */
+  .grid2x2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .adv-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px 24px;border-top:4px solid var(--teal);}
+  .adv-card .a-no{font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--teal);letter-spacing:.06em;}
+  .adv-card h3{font-size:18.5px;font-weight:800;color:var(--navy-deep);margin:4px 0 10px;}
+  .adv-card p{font-size:15.5px;color:var(--ink);}
+  .cost-card{
+    margin-top:18px;border:1px solid var(--orange-border);background:var(--orange-bg);border-radius:10px;padding:20px 24px;
+  }
+  .cost-card h4{font-size:16.5px;font-weight:800;color:var(--orange);margin-bottom:12px;display:flex;align-items:center;gap:9px;}
+  .cost-card ul.list li{font-size:15.5px;}
+  .cost-card ul.list li::before{background:var(--orange);}
+
+  /* ============ 五项确认（重点区域） ============ */
+  .q-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .q-card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;}
+  .q-head{padding:18px 24px 14px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:12px;}
+  .q-num{font-family:var(--mono);font-size:15px;font-weight:700;color:#fff;background:var(--orange);padding:3px 10px;border-radius:6px;letter-spacing:.04em;flex:0 0 auto;}
+  .q-head h3{font-size:19px;font-weight:800;color:var(--navy-deep);}
+  .q-body{padding:18px 24px 20px;display:flex;flex-direction:column;gap:13px;flex:1;}
+  .q-label{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--orange);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .q-label::before{content:"";width:18px;height:2px;background:var(--orange);border-radius:1px;}
+  .q-body ul.list li{font-size:15.5px;margin-bottom:7px;}
+  .q-body .sub-q{font-size:15.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:12px;margin-top:2px;}
+  .q-body .sub-q b{color:var(--navy);}
+  .span2{grid-column:1 / -1;}
+  .flow-mini{
+    background:var(--navy-soft);border-radius:8px;padding:12px 16px;font-size:14.5px;color:var(--navy);
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  .flow-mini .arr{color:var(--muted);font-weight:700;}
+
+  /* ============ 结论清单 ============ */
+  .concl-card{background:var(--card);border:1px solid var(--navy);border-top:5px solid var(--navy);border-radius:12px;padding:32px 36px;}
+  .concl-card h3{font-size:21px;font-weight:800;color:var(--navy-deep);margin-bottom:6px;}
+  .concl-card .sub{font-size:15.5px;color:var(--muted);margin-bottom:22px;}
+  .concl-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 34px;}
+  .concl-item{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line);}
+  .concl-item .no{font-family:var(--mono);font-size:13.5px;font-weight:700;color:#fff;background:var(--navy);min-width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;margin-top:2px;}
+  .concl-item p{font-size:16px;color:var(--ink);}
+  .concl-strong{
+    margin-top:24px;background:var(--navy-deep);border-radius:10px;padding:22px 26px;color:#eaf1f8;font-size:18px;font-weight:700;line-height:1.8;
+  }
+  .concl-strong b{color:#7fd0c9;}
+
+  /* ============ 风险边界 ============ */
+  .risk-box{border:1px solid var(--red-border);background:var(--red-bg);border-radius:12px;padding:26px 30px;}
+  .risk-box h3{font-size:19px;font-weight:800;color:var(--red);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+  .risk-box h3 .mark{width:26px;height:26px;border-radius:7px;background:#fff;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;border:1px solid var(--red-border);}
+  .risk-box h3 .mark svg{width:15px;height:15px;stroke:var(--red);}
+  .risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 30px;}
+  .risk-item{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;color:#7c2b23;line-height:1.6;}
+  .risk-item .x{flex:0 0 auto;font-weight:800;color:var(--red);padding-top:1px;}
+  .risk-item b{color:var(--red);}
+
+  footer{padding:34px 0 46px;color:var(--muted);font-size:13.5px;border-top:1px solid var(--line);margin-top:46px;background:#fff;}
+  footer .inner{max-width:1180px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center;}
+  footer .printbtn{margin-left:auto;}
+  footer .foot-note{width:100%;margin-top:14px;border-top:1px dashed var(--line);padding-top:14px;}
+
+  /* ============ 响应式 ============ */
+  @media (max-width:1024px){
+    .grid3,.grid2,.grid2x2,.q-grid,.concl-grid,.risk-grid{grid-template-columns:1fr;}
+    .kw-row{grid-template-columns:1fr 1fr;}
+    .span2{grid-column:auto;}
+    h1{font-size:34px;}
+  }
+  @media (max-width:640px){
+    body{font-size:15.5px;}
+    .wrap,.topnav .inner,footer .inner{padding-left:18px;padding-right:18px;}
+    .site-header{padding:30px 0 26px;}
+    h1{font-size:27px;}
+    .en-subtitle{font-size:16px;}
+    .kw-row{grid-template-columns:1fr;}
+    .strategy-card,.concl-card,.risk-box{padding:24px 20px;}
+    .strategy-card p{font-size:17px;}
+    ul.list li{font-size:15px;}
+    footer .printbtn{margin-left:0;}
+  }
+
+  /* ============ 打印 ============ */
+  @page{size:A4;margin:13mm;}
+  @media print{
+    .topnav{display:none;}
+    body{background:#fff;font-size:13.5px;}
+    section.block{padding:20px 0 0;scroll-margin-top:0;}
+    .card,.q-card,.doc-card,.reg-card,.adv-card,.concl-card,.risk-box{break-inside:avoid;}
+    .f-card{page-break-inside:avoid;}
+    .grid3,.grid2,.grid2x2,.q-grid,.concl-grid,.risk-grid,.kw-row{grid-template-columns:1fr 1fr;}
+    table.ace,table.matrix{min-width:0;}
+    .printbtn{display:none;}
+    footer .printbtn{display:none;}
+    a[href]{color:inherit;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 顶部导航 ===== -->
+<div class="topnav">
+  <div class="inner">
+    <div class="brand">欧律生 <span>Aurillis</span></div>
+    <nav>
+      <a href="#sec1">一句话建议</a>
+      <a href="#sec2">建议路径图</a>
+      <a href="#sec3">主体角色矩阵</a>
+      <a href="#sec4">变更减法</a>
+      <a href="#sec5">注册·列名·UDI</a>
+      <a href="#sec6">首票进口</a>
+      <a href="#sec7">推荐理由</a>
+      <a href="#sec8">五项确认</a>
+      <a href="#sec9">结论与风险</a>
+    </nav>
+    <button class="printbtn" type="button" onclick="window.print()">打印 / 存为 PDF</button>
+  </div>
+</div>
+
+<!-- ===== 头部 ===== -->
+<header class="site-header">
+  <div class="wrap">
+    <div class="eyebrow">医疗器械 FDA 合规 · 建议方案简报</div>
+    <h1>欧律生首款盆底电刺激产品<br>建议FDA合规路径</h1>
+    <div class="en-subtitle">Proposed FDA Compliance Pathway for Aurillis Pelvic Floor Stimulator</div>
+    <div class="tagline-row">
+      <div class="tagline-chip">创业公司<b>最小可行方案</b></div>
+      <div class="tagline-chip">复用现有<b>510(k)</b></div>
+      <div class="tagline-chip">减少<b>新增注册主体</b></div>
+      <div class="tagline-chip">优先保障<b>首票进口稳定性</b></div>
+    </div>
+    <div class="head-note">以下为欧律生基于成本、效率和责任边界提出的<b>建议方案</b>，最终可行性及具体角色安排需由 FDA 辅导机构确认。</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===== 第一部分：一句话建议 ===== -->
+  <section class="block" id="sec1">
+    <div class="sec-head">
+      <div class="sec-index">PART 01 · 一句话建议</div>
+      <h2>核心策略</h2>
+    </div>
+    <div class="strategy-card">
+      <div class="s-label">PROPOSED STRATEGY</div>
+      <p><b>依士文</b>继续承担 Manufacturer、K241899、产品变更评估、Device Listing 基础及 UDI 责任；<b>香港欧律生</b>承担 Aurillis 品牌及必要的 Foreign Private Label Distributor / Foreign Exporter 角色；<b>深圳欧律生</b>只负责研发协调、采购及中国出口，不进入 FDA 监管角色；美国端由一家专业服务商<b>尽量同时承担</b>Importer of Record 和 Device Initial Importer。</p>
+    </div>
+    <div class="kw-row">
+      <div class="kw-card"><span class="no">01</span><p>不重新申请 510(k)</p></div>
+      <div class="kw-card"><span class="no">02</span><p>只增加一个必要的欧律生 FDA 主体</p></div>
+      <div class="kw-card"><span class="no">03</span><p>第一代产品减少技术变更</p></div>
+      <div class="kw-card"><span class="no">04</span><p>美国进口责任专业外包</p></div>
+    </div>
+  </section>
+
+  <!-- ===== 第二部分：建议合规路径图 ===== -->
+  <section class="block" id="sec2">
+    <div class="sec-head">
+      <div class="sec-index">PART 02 · 建议合规路径图</div>
+      <h2>建议合规路径</h2>
+      <p class="sec-desc">从产品制造到最终交付的四方主体与角色分工（建议方案）。</p>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><span class="sw navy"></span>深蓝：FDA 制造与产品责任</div>
+      <div class="legend-item"><span class="sw teal"></span>青绿：欧律生商业及品牌角色</div>
+      <div class="legend-item"><span class="sw orange"></span>橙：待辅导机构确认</div>
+      <div class="legend-item"><span class="sw gray"></span>灰：物流与交付角色</div>
+    </div>
+
+    <div class="flow">
+
+      <div class="f-card navy">
+        <div class="f-bar"></div>
+        <div class="f-body">
+          <div class="f-top"><span class="f-step">STEP 01</span><span class="f-title">产品与制造</span></div>
+          <div class="f-role"><span class="role">依士文</span></div>
+          <ul class="list">
+            <li><b>Manufacturer（制造商）</b></li>
+            <li>K241899 责任主体</li>
+            <li>产品设计控制</li>
+            <li>测试验证与量产放行</li>
+            <li>No New 510(k) Assessment</li>
+          </ul>
+        </div>
+      </div>
+      <div class="f-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+      <div class="f-card teal">
+        <div class="f-bar"></div>
+        <div class="f-body">
+          <div class="f-top"><span class="f-step">STEP 02</span><span class="f-title">中国交易与出口</span></div>
+          <div class="f-role"><span class="role">深圳欧律生</span></div>
+          <ul class="list">
+            <li>研发协调</li>
+            <li>向依士文采购</li>
+            <li>向香港欧律生销售</li>
+            <li>中国出口及收汇</li>
+            <li>原则上不承担 FDA 角色</li>
+          </ul>
+        </div>
+      </div>
+      <div class="f-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+      <div class="f-card teal">
+        <div class="f-bar"></div>
+        <div class="f-body">
+          <div class="f-top"><span class="f-step">STEP 03</span><span class="f-title">品牌与美国销售</span></div>
+          <div class="f-role"><span class="role">香港欧律生</span></div>
+          <ul class="list">
+            <li>Aurillis 品牌主体</li>
+            <li>美国市场销售主体</li>
+            <li>Foreign Private Label Distributor（境外自有品牌经销商）</li>
+            <li>根据实际出口安排承担 Foreign Exporter（境外出口商）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="f-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+      <div class="f-card orange">
+        <div class="f-bar"></div>
+        <div class="f-body">
+          <div class="f-top"><span class="f-step">STEP 04</span><span class="f-title">美国进口</span></div>
+          <div class="f-role"><span class="role">专业进口服务商</span></div>
+          <ul class="list">
+            <li>Importer of Record，IOR（进口申报主体）</li>
+            <li>Device Initial Importer，DII（医疗器械初始进口商）</li>
+            <li>Customs Broker（美国报关行）</li>
+            <li>完成 CBP 及 FDA ACE 申报</li>
+          </ul>
+          <div class="f-note">服务商是否可集中承担上述角色，需辅导机构确认。</div>
+        </div>
+      </div>
+      <div class="f-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+
+      <div class="f-card gray">
+        <div class="f-bar"></div>
+        <div class="f-body">
+          <div class="f-top"><span class="f-step">STEP 05</span><span class="f-title">最终交付</span></div>
+          <div class="f-role"><span class="role">美国 3PL 或 Amazon FBA</span></div>
+          <ul class="list">
+            <li>仅作为收货及配送环节</li>
+            <li>不默认承担 FDA Initial Importer 责任</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 第三部分：主体角色建议矩阵 ===== -->
+  <section class="block" id="sec3">
+    <div class="sec-head">
+      <div class="sec-index">PART 03 · 主体角色建议矩阵</div>
+      <h2>主体角色建议矩阵</h2>
+      <p class="sec-desc">各主体建议承担与不承担的角色，以及是否新增 FDA 注册（建议方案）。</p>
+    </div>
+
+    <div class="table-scroll">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>主体</th>
+            <th>建议承担的角色</th>
+            <th>原则上不承担的角色</th>
+            <th>是否新增 FDA 注册</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="subject">依士文</td>
+            <td>Manufacturer、K241899 责任主体、产品变更评估、Device Listing 基础、UDI Labeler</td>
+            <td>不承担 Aurillis 美国销售责任</td>
+            <td><span class="pill keep">使用并核验现有注册</span></td>
+          </tr>
+          <tr>
+            <td class="subject">深圳欧律生</td>
+            <td>研发协调、采购、中国出口、对港销售</td>
+            <td>不作为 Specification Developer、FDA Foreign Exporter 或 UDI Labeler</td>
+            <td><span class="pill keep">建议不新增</span></td>
+          </tr>
+          <tr>
+            <td class="subject">香港欧律生</td>
+            <td>Aurillis 品牌及美国销售、Foreign Private Label Distributor、必要时承担 Foreign Exporter</td>
+            <td>不承担制造商和 510(k) 责任</td>
+            <td><span class="pill pending">预计新增一个，待确认</span></td>
+          </tr>
+          <tr>
+            <td class="subject">美国进口服务商</td>
+            <td>IOR、Device Initial Importer、进口合规与投诉转交</td>
+            <td>不承担 Manufacturer 或 510(k) 责任</td>
+            <td><span class="pill keep">由服务商保持有效注册</span></td>
+          </tr>
+          <tr>
+            <td class="subject">美国报关行</td>
+            <td>ACE 申报、CBP 及 FDA 进口申报</td>
+            <td>不承担产品合规责任</td>
+            <td><span class="pill keep">通常无需作为产品主体注册</span></td>
+          </tr>
+          <tr>
+            <td class="subject">Amazon FBA</td>
+            <td>收货、仓储及配送</td>
+            <td>不作为 IOR、Initial Importer 或 U.S. Agent</td>
+            <td><span class="pill na">不适用</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="matrix-note">本方案的目标是欧律生体系内原则上只新增香港公司一个必要的 FDA 注册主体，避免深圳、香港两家公司重复注册和重复承担合规责任。</div>
+  </section>
+
+  <!-- ===== 第四部分：第一代产品的减法原则 ===== -->
+  <section class="block" id="sec4">
+    <div class="sec-head">
+      <div class="sec-index">PART 04 · 第一代产品的减法原则</div>
+      <h2>为了复用 K241899，第一代产品建议主动控制变更范围</h2>
+    </div>
+
+    <div class="grid2">
+      <div class="doc-card keep">
+        <h3><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>建议保持不变</h3>
+        <ul class="list">
+          <li>Indications for Use（适应症 / 预期用途）</li>
+          <li>OTC 或 Prescription / Rx 销售属性</li>
+          <li>电流</li>
+          <li>电压</li>
+          <li>波形</li>
+          <li>频率</li>
+          <li>脉宽</li>
+          <li>核心电刺激程序</li>
+          <li>关键安全功能</li>
+          <li>探头主要接触材料</li>
+          <li>探头关键电极结构</li>
+          <li>原有警告、禁忌症及核心医疗宣称</li>
+        </ul>
+      </div>
+
+      <div class="doc-card adjust">
+        <h3><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>可以在评估和验证后调整</h3>
+        <ul class="list">
+          <li>主机外观</li>
+          <li>产品颜色</li>
+          <li>显示屏</li>
+          <li>显示内容和 UI</li>
+          <li>按键形式及布局</li>
+          <li>线材外观</li>
+          <li>非关键连接结构</li>
+          <li>探头舒适性优化</li>
+          <li>非治疗性的训练记录记忆功能</li>
+          <li>Aurillis 品牌、型号、包装及视觉设计</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="red-note">最终量产版本必须由依士文完成设计变更、风险分析及必要验证，并出具<b>签字版 No New 510(k) Assessment</b> 后，才能确认 K241899 继续适用。</div>
+  </section>
+
+  <!-- ===== 第五部分：注册、列名和UDI建议 ===== -->
+  <section class="block" id="sec5">
+    <div class="sec-head">
+      <div class="sec-index">PART 05 · 注册、列名和 UDI 建议</div>
+      <h2>注册、列名和 UDI 建议</h2>
+    </div>
+
+    <div class="grid3">
+      <div class="reg-card">
+        <h3>1. 510(k)</h3>
+        <ul class="list">
+          <li>K241899 继续由<b>依士文持有</b></li>
+          <li>第一代不进行 510(k) 转让</li>
+          <li>第一代不由欧律生重新申请 510(k)</li>
+          <li>依士文负责判断最终产品是否仍被 K241899 覆盖</li>
+          <li>依士文提供 K241899 及相关 FDA 资料使用授权</li>
+        </ul>
+      </div>
+
+      <div class="reg-card">
+        <h3>2. Device Listing</h3>
+        <ul class="list">
+          <li>依士文保持制造商基础 Listing</li>
+          <li>在现有合规基础上增加 Aurillis 品牌和产品型号</li>
+          <li>香港欧律生按照最终确认的 Foreign Private Label Distributor 或 Foreign Exporter 角色完成相应关联</li>
+          <li>Device Listing 必须能够对应 Manufacturer、Aurillis 型号和 K241899</li>
+        </ul>
+      </div>
+
+      <div class="reg-card">
+        <h3>3. UDI / GUDID</h3>
+        <ul class="list">
+          <li>第一代由<b>依士文</b>作为 UDI Labeler</li>
+          <li>依士文负责 UDI 生成、标签应用及 GUDID 维护</li>
+          <li>Aurillis 产品型号建立独立 UDI-DI</li>
+          <li>合同中明确欧律生对 Aurillis 品牌及型号数据的查询和使用权</li>
+          <li>第二代产品再评估是否由欧律生建立独立 UDI 和 GUDID 体系</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tradeoff">方案取舍：第一代由依士文承担 UDI 责任，可以降低成本和缩短上市周期，但会增加对供应商的依赖，因此<b>必须通过合同明确资料授权和退出机制</b>。</div>
+  </section>
+
+  <!-- ===== 第六部分：首票进口建议结构 ===== -->
+  <section class="block" id="sec6">
+    <div class="sec-head">
+      <div class="sec-index">PART 06 · 首票进口建议结构</div>
+      <h2>首票进口建议结构（ACE 申报对应表）</h2>
+      <p class="sec-desc">建议的进口申报字段与主体对应关系（待辅导机构与报关行确认）。</p>
+    </div>
+
+    <div class="table-scroll">
+      <table class="ace">
+        <thead>
+          <tr><th>进口字段</th><th>建议对应主体</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="field">Manufacturer</td><td>依士文</td></tr>
+          <tr><td class="field">DEV（境外制造商注册号）</td><td>依士文</td></tr>
+          <tr><td class="field">Foreign Exporter</td><td>香港欧律生或依士文，待确认</td></tr>
+          <tr><td class="field">DFE（境外出口商注册号）</td><td>与最终 Foreign Exporter 及 ACE 申报结构一致</td></tr>
+          <tr><td class="field">Device Listing / LST</td><td>关联 Aurillis 品牌、型号及依士文制造地址</td></tr>
+          <tr><td class="field">Premarket Number / PM#</td><td><span class="mono">K241899</span></td></tr>
+          <tr><td class="field">UDI-DI</td><td>依士文为 Aurillis 型号生成的 UDI-DI</td></tr>
+          <tr><td class="field">Importer of Record</td><td>美国专业进口服务商</td></tr>
+          <tr><td class="field">Device Initial Importer</td><td>美国专业医疗器械进口服务商</td></tr>
+          <tr><td class="field">Customs Broker</td><td>美国报关行</td></tr>
+          <tr><td class="field">Delivered-to Party</td><td>美国 3PL 或 Amazon FBA</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="keys" style="margin-top:20px;">
+      <ul class="list">
+        <li>中国海关境内发货人不必然等于 FDA <b>Foreign Exporter</b></li>
+        <li>提单 Shipper、商业发票 Seller 和 FDA DFE <b>不能凭经验随意填写</b></li>
+        <li>首票发货前应由 FDA 辅导机构和美国报关行<b>共同预审 ACE 草单</b></li>
+        <li>Amazon FBA 只作为最终收货方，<b>不自动成为 IOR 或 Initial Importer</b></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 第七部分：为什么推荐这条路径 ===== -->
+  <section class="block" id="sec7">
+    <div class="sec-head">
+      <div class="sec-index">PART 07 · 为什么推荐这条路径</div>
+      <h2>为什么推荐这条路径</h2>
+    </div>
+
+    <div class="grid2x2">
+      <div class="adv-card">
+        <div class="a-no">ADVANTAGE 01</div>
+        <h3>上市速度快</h3>
+        <p>复用依士文现有 K241899、制造体系、测试基础及 Device Listing 能力。</p>
+      </div>
+      <div class="adv-card">
+        <div class="a-no">ADVANTAGE 02</div>
+        <h3>新增主体少</h3>
+        <p>欧律生体系内争取只由香港公司承担必要的 FDA 注册，深圳公司不重复注册。</p>
+      </div>
+      <div class="adv-card">
+        <div class="a-no">ADVANTAGE 03</div>
+        <h3>初期责任可控</h3>
+        <p>依士文承担制造商、设计控制、变更评估及质量体系责任；欧律生第一代不直接承担独立制造商责任。</p>
+      </div>
+      <div class="adv-card">
+        <div class="a-no">ADVANTAGE 04</div>
+        <h3>符合创业公司阶段</h3>
+        <p>第一代优先验证产品和市场；第二代出现 APP、肌电反馈、治疗程序或重大技术升级时，再建立欧律生更独立的 FDA 路径。</p>
+      </div>
+    </div>
+
+    <div class="cost-card">
+      <h4>同时需要接受的代价</h4>
+      <ul class="list">
+        <li>第一代对依士文依赖较高</li>
+        <li>Device Listing 和 UDI 维护需要依士文配合</li>
+        <li>更换供应商时可能需要重新评估</li>
+        <li>必须通过合同保障 FDA 资料使用权和合作退出机制</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 第八部分：需要辅导机构确认的五项核心事项 ===== -->
+  <section class="block" id="sec8">
+    <div class="sec-head">
+      <div class="sec-index">PART 08 · 需要辅导机构确认的五项核心事项</div>
+      <h2>需要辅导机构确认的五项核心事项</h2>
+      <p class="sec-desc">本页重点区域。以下均为建议方案中的待确认要点，需辅导机构判断能否跑通。</p>
+    </div>
+
+    <div class="q-grid">
+
+      <div class="q-card">
+        <div class="q-head"><span class="q-num">01</span><h3>香港公司的 FDA 角色</h3></div>
+        <div class="q-body">
+          <div class="q-label">需辅导机构确认</div>
+          <ul class="list">
+            <li>香港欧律生按照这一交易结构，应登记为 Foreign Private Label Distributor、Foreign Exporter，还是两个角色同时登记？</li>
+            <li>是否只需要香港公司新增一个 FDA 注册，深圳公司无需注册？</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head"><span class="q-num">02</span><h3>深圳公司能否不承担 FDA 角色</h3></div>
+        <div class="q-body">
+          <div class="q-label">需辅导机构确认</div>
+          <ul class="list">
+            <li>深圳欧律生仅负责研发协调、采购、中国出口和对港销售时，能否避免被认定为 Specification Developer、Foreign Exporter、Relabeler 或 UDI Labeler？</li>
+          </ul>
+          <div class="sub-q"><b>补充：</b>研发合作协议和产品合同应如何表述，才能与实际责任保持一致？</div>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head"><span class="q-num">03</span><h3>依士文能否承担 Listing 和 UDI</h3></div>
+        <div class="q-body">
+          <div class="q-label">需辅导机构确认</div>
+          <ul class="list">
+            <li>在 K241899 基础上增加 Aurillis 品牌和型号</li>
+            <li>完成或配合完成 Aurillis 产品 Device Listing</li>
+            <li>继续作为 UDI Labeler</li>
+            <li>为 Aurillis 型号生成独立 UDI-DI</li>
+            <li>对最终产品签署 No New 510(k) Assessment</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head"><span class="q-num">04</span><h3>直发美国能否跑通</h3></div>
+        <div class="q-body">
+          <div class="flow-mini">依士文生产 <span class="arr">→</span> 深圳欧律生采购并销售给香港欧律生 <span class="arr">→</span> 香港欧律生负责美国销售 <span class="arr">→</span> 货物由依士文佛山直接发往美国</div>
+          <div class="q-label">需辅导机构确认</div>
+          <ul class="list">
+            <li>提单 Shipper 应由谁承担</li>
+            <li>FDA Foreign Exporter 和 DFE 应对应谁</li>
+            <li>香港作为 DFE、依士文作为 DEV 是否可以申报</li>
+            <li>中国出口单证、国际运输单证和美国 ACE 数据如何闭环</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="q-card span2">
+        <div class="q-head"><span class="q-num">05</span><h3>美国端能否集中外包</h3></div>
+        <div class="q-body">
+          <div class="q-label">需辅导机构确认</div>
+          <ul class="list">
+            <li>是否可以由同一家专业服务商同时承担：Importer of Record、Device Initial Importer、必要的美国进口合规服务、投诉接收及转交、MDR 相关进口商责任？</li>
+          </ul>
+          <div class="sub-q"><b>补充：</b>U.S. Agent 和 Customs Broker 是否可以由同一服务体系解决？</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 第九部分：辅导机构需要给出的结论 ===== -->
+  <section class="block" id="sec9">
+    <div class="sec-head">
+      <div class="sec-index">PART 09 · 辅导机构需要给出的结论</div>
+      <h2>辅导机构需要给出的结论</h2>
+    </div>
+
+    <div class="concl-card">
+      <h3>希望辅导机构根据上述建议方案，初步判断：</h3>
+      <div class="sub">以下为本次沟通希望获得的初步结论方向。</div>
+      <div class="concl-grid">
+        <div class="concl-item"><span class="no">1</span><p>整体路径是否可以跑通</p></div>
+        <div class="concl-item"><span class="no">2</span><p>哪一环节存在明显法规障碍</p></div>
+        <div class="concl-item"><span class="no">3</span><p>深圳公司能否不注册 FDA</p></div>
+        <div class="concl-item"><span class="no">4</span><p>香港公司需要登记哪些 FDA 角色</p></div>
+        <div class="concl-item"><span class="no">5</span><p>依士文能否继续负责 Listing 和 UDI</p></div>
+        <div class="concl-item"><span class="no">6</span><p>哪些产品修改可能影响 K241899</p></div>
+        <div class="concl-item"><span class="no">7</span><p>首票进口的 DFE、IOR 和 Initial Importer 如何安排</p></div>
+        <div class="concl-item"><span class="no">8</span><p>下一步需要依士文提供哪些核心资料</p></div>
+        <div class="concl-item"><span class="no">9</span><p>哪些判断需要出具书面意见</p></div>
+        <div class="concl-item"><span class="no">10</span><p>辅导机构可以承接哪些具体服务</p></div>
+      </div>
+      <div class="concl-strong">我们希望以<b>最少必要主体</b>、<b>最少重复注册</b>和<b>最低初期合规复杂度</b>完成第一代产品上市，但所有角色必须真实、单证必须一致、责任必须能够书面闭环。</div>
+    </div>
+  </section>
+
+  <!-- ===== 风险边界 ===== -->
+  <section class="block" id="risk">
+    <div class="sec-head">
+      <div class="sec-index">RISK · 风险边界</div>
+      <h2>风险边界</h2>
+    </div>
+
+    <div class="risk-box">
+      <h3><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></span>建议方案的风险边界</h3>
+      <div class="risk-grid">
+        <div class="risk-item"><span class="x">×</span><p>未取得 No New 510(k) Assessment 前，不默认 K241899 覆盖 Aurillis 产品</p></div>
+        <div class="risk-item"><span class="x">×</span><p>未确认香港角色前，不立即缴纳 FDA 企业注册费</p></div>
+        <div class="risk-item"><span class="x">×</span><p>不让深圳和香港公司在没有必要的情况下同时注册</p></div>
+        <div class="risk-item"><span class="x">×</span><p>不让未注册主体成为 FDA DFE</p></div>
+        <div class="risk-item"><span class="x">×</span><p>不把 Amazon FBA 作为 Initial Importer</p></div>
+        <div class="risk-item"><span class="x">×</span><p>不允许货代自行决定 FDA Shipper 或 DFE</p></div>
+        <div class="risk-item"><span class="x">×</span><p>不在第一代产品中轻易修改核心电刺激参数和医疗宣称</p></div>
+        <div class="risk-item"><span class="x">×</span><p>不在缺少 FDA 资料授权的情况下完全依赖依士文现有合规基础</p></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="inner">
+    <span>欧律生 Aurillis · 建议 FDA 合规路径简报</span>
+    <button class="printbtn" type="button" onclick="window.print()">打印 / 存为 PDF</button>
+    <div class="foot-note">本页面为欧律生提出的第一代产品建议合规路径，用于与 FDA 辅导机构讨论，不构成最终 FDA 法律或法规意见。页面中所有角色与合规路径均为建议、拟定或待确认事项，不代表已经形成最终 FDA 结论。</div>
+  </div>
+</footer>
+
+</body>
+</html>
