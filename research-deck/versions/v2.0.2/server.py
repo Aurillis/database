@@ -838,7 +838,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 "dimsMeta": DIMS,
                 "researchTypes": {k: {"title": v["title"], "icon": v["icon"], "desc": v["desc"], "modules": v["modules"], "dims": v["dims"]} for k, v in RESEARCH_TYPES.items()},
                 "cloudReports": bool(os.environ.get("GITHUB_TOKEN")),
-                "cloudProducts": bool(os.environ.get("GITHUB_TOKEN")),
                 # v1.9.0：门禁验证——请求带有效 token 时为 true（供前端登录墙判断）
                 "authValid": self._token_valid(),
             })
@@ -859,30 +858,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             except Exception as e:
                 self._send(500, {"error": "读取云端报告失败: {}".format(e)})
                 return
-            # v2.1.0：支持 ?product_id=xxx 过滤（产品主页按产品拉报告）
-            from urllib.parse import parse_qs, urlsplit
-            pid = parse_qs(urlsplit(self.path).query).get("product_id", [""])[0]
-            if pid:
-                content = [r for r in (content or []) if r.get("product_id") == pid]
             self._send(200, {"reports": content if content else []})
-        elif _path == "/api/products":
-            # 产品研究库列表（需 token；未配 GITHUB_TOKEN 时返回空列表，前端回退本地）
-            rd_token = os.environ.get("RD_TOKEN")
-            if rd_token:
-                auth = self.headers.get("Authorization", "")
-                q_token = ""
-                if "?" in self.path:
-                    from urllib.parse import parse_qs
-                    q_token = parse_qs(self.path.split("?", 1)[1]).get("token", [""])[0]
-                if auth.replace("Bearer ", "") != rd_token and q_token != rd_token:
-                    self._send(401, {"error": "未授权：缺少有效 token。请在请求头带 Authorization: Bearer <RD_TOKEN>，或部署时移除 RD_TOKEN 关闭鉴权。"})
-                    return
-            try:
-                content, _sha = gh_get_json(PRODUCTS_PATH)
-            except Exception as e:
-                self._send(500, {"error": "读取云端产品失败: {}".format(e)})
-                return
-            self._send(200, {"products": content if content else []})
         else:
             self._send(404, {"error": "not found"})
 
@@ -996,45 +972,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send(500, {"error": "保存云端报告失败: {}".format(e)})
                 return
             self._send(200, {"ok": True, "id": rid, "count": len(content)})
-        elif _path == "/api/products":
-            # 保存/更新产品（v2.1.0：按 product_id upsert）
-            rd_token = os.environ.get("RD_TOKEN")
-            if rd_token:
-                auth = self.headers.get("Authorization", "")
-                q_token = ""
-                if "?" in self.path:
-                    from urllib.parse import parse_qs
-                    q_token = parse_qs(self.path.split("?", 1)[1]).get("token", [""])[0]
-                if auth.replace("Bearer ", "") != rd_token and q_token != rd_token:
-                    self._send(401, {"error": "未授权：缺少有效 token。"})
-                    return
-            if not os.environ.get("GITHUB_TOKEN"):
-                self._send(500, {"error": "后端未配置 GITHUB_TOKEN（环境变量）。请联系站长开启云端产品库。"})
-                return
-            try:
-                length = int(self.headers.get("Content-Length", 0) or 0)
-                body = self.rfile.read(length) if length else b"{}"
-                payload = json.loads(body.decode("utf-8"))
-            except Exception as e:
-                self._send(400, {"error": "bad request: {}".format(e)})
-                return
-            product = payload.get("product")
-            if not product or not isinstance(product, dict) or not product.get("product_id") or not product.get("name"):
-                self._send(400, {"error": "缺少 product 对象（需含 product_id 与 name）"})
-                return
-            try:
-                content, sha = gh_get_json(PRODUCTS_PATH)
-                if content is None or not isinstance(content, list):
-                    content = []
-                pid = product.get("product_id")
-                content = [p for p in content if p.get("product_id") != pid]
-                content.insert(0, product)
-                content = content[:200]
-                gh_save_json(PRODUCTS_PATH, content, sha)
-            except Exception as e:
-                self._send(500, {"error": "保存云端产品失败: {}".format(e)})
-                return
-            self._send(200, {"ok": True, "id": product.get("product_id"), "count": len(content)})
         else:
             self._send(404, {"error": "not found"})
 
@@ -1086,7 +1023,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
 # 需要环境变量 GITHUB_TOKEN（fine-grained PAT，仓库 Contents 读写）。
 # ---------------------------------------------------------------------------
 REPORTS_PATH = os.environ.get("RD_REPORTS_PATH", "research-deck/saved/reports.json")
-PRODUCTS_PATH = os.environ.get("RD_PRODUCTS_PATH", "research-deck/saved/products.json")
 GITHUB_API = "https://api.github.com"
 GITHUB_REPO = os.environ.get("GITHUB_REPO", "Aurillis/database")
 
@@ -1100,12 +1036,12 @@ def _gh_headers():
     }
 
 
-def gh_get_json(gh_path):
-    """通用：读取远端 JSON 文件，返回 (content_json, sha)；不存在返回 (None, None)。"""
+def gh_get_report_file():
+    """读取远端 reports.json，返回 (content_json, sha)；不存在返回 (None, None)。"""
     tok = os.environ.get("GITHUB_TOKEN", "")
     if not tok:
         return None, None
-    url = "{}/repos/{}/contents/{}".format(GITHUB_API, GITHUB_REPO, gh_path)
+    url = "{}/repos/{}/contents/{}".format(GITHUB_API, GITHUB_REPO, REPORTS_PATH)
     req = urllib.request.Request(url, headers=_gh_headers())
     try:
         with urllib.request.urlopen(req, timeout=15) as r:
@@ -1119,32 +1055,22 @@ def gh_get_json(gh_path):
         raise
 
 
-def gh_save_json(gh_path, content, sha):
-    """通用：把整个 JSON 写回远端（带 sha 条件更新）。返回 True/抛异常。"""
+def gh_save_report_file(content, sha):
+    """把整个 reports.json 写回远端（带 sha 条件更新）。返回 True/抛异常。"""
     tok = os.environ.get("GITHUB_TOKEN", "")
     import base64
     body = {
-        "message": "researchdeck: update saved data",
+        "message": "researchdeck: update saved reports",
         "content": base64.b64encode(json.dumps(content, ensure_ascii=False).encode("utf-8")).decode("ascii"),
     }
     if sha:
         body["sha"] = sha
-    url = "{}/repos/{}/contents/{}".format(GITHUB_API, GITHUB_REPO, gh_path)
+    url = "{}/repos/{}/contents/{}".format(GITHUB_API, GITHUB_REPO, REPORTS_PATH)
     req = urllib.request.Request(url, data=json.dumps(body).encode("utf-8"),
                                  headers=_gh_headers(), method="PUT")
     with urllib.request.urlopen(req, timeout=20) as r:
         r.read()
     return True
-
-
-def gh_get_report_file():
-    """读取远端 reports.json，返回 (content_json, sha)；不存在返回 (None, None)。"""
-    return gh_get_json(REPORTS_PATH)
-
-
-def gh_save_report_file(content, sha):
-    """把整个 reports.json 写回远端（带 sha 条件更新）。返回 True/抛异常。"""
-    return gh_save_json(REPORTS_PATH, content, sha)
 
 
 # ---------------------------------------------------------------------------

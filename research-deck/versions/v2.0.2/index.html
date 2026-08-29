@@ -290,54 +290,6 @@
     .chips{gap:6px}
     .chip{padding:7px 10px;font-size:12px}
   }
-
-  /* —— v2.1.0 产品研究库 —— */
-  .plib-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;flex-wrap:wrap}
-  .plib-top h1{font-size:22px}
-  .plib-top .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
-  .btn-primary{border:none;background:var(--teal);color:#fff;height:38px;padding:0 18px;border-radius:10px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s}
-  .btn-primary:hover{filter:brightness(1.08)}
-  .pcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:16px}
-  .pcard{background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;transition:.15s;position:relative}
-  .pcard:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:var(--shadow)}
-  .pcard .pn{font-size:16px;font-weight:700}
-  .pcard .pe{font-size:12px;color:var(--muted);margin-top:2px}
-  .pcard .pm{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.7}
-  .pcard .pm b{color:var(--ink)}
-  .pcard .enter{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:12.5px;font-weight:600;color:var(--teal)}
-  .pempty{background:var(--panel);border:1.5px dashed var(--line);border-radius:14px;padding:38px 24px;text-align:center;color:var(--muted);font-size:13.5px;margin-top:16px}
-  .pform{background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:22px;margin-top:16px;max-width:640px}
-  .pform .fg{margin-bottom:14px}
-  .pform label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
-  .pform label .opt{color:var(--muted);font-weight:400;font-size:11.5px}
-  .pform input,.pform textarea,.pform select{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:13.5px;background:#fff;font-family:inherit}
-  .pform textarea{min-height:64px;resize:vertical}
-  .pform .fr{display:flex;gap:10px;margin-top:6px}
-  .pform .phint{font-size:11.5px;color:var(--muted);margin-top:4px}
-  /* 产品主页 */
-  .ph-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:8px}
-  .ph-title{font-size:22px;font-weight:800}
-  .ph-title-en{font-size:13px;color:var(--muted);margin-top:2px}
-  .ph-meta{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.8}
-  .ph-edit{font-size:12px;color:var(--teal);cursor:pointer;margin-left:8px}
-  .stats{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
-  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px;min-width:88px;text-align:center}
-  .stat .sv{font-size:20px;font-weight:800;color:var(--teal)}
-  .stat .sl{font-size:11.5px;color:var(--muted);margin-top:2px}
-  .cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
-  .cat-tab{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 13px;border-radius:20px;font-size:12.5px;cursor:pointer;transition:.15s}
-  .cat-tab.active{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:600}
-  .rrow{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.15s}
-  .rrow:hover{border-color:var(--teal)}
-  .rrow .rt2{flex:1;min-width:0}
-  .rrow .rt2 .t{font-size:14.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .rrow .rt2 .m{font-size:11.5px;color:var(--muted);margin-top:3px}
-  .rrow .st{padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap}
-  .rrow .st.ok{background:#D1FAE5;color:#065F46}
-  .rrow .st.run{background:#FEF3C7;color:#B45309}
-  .banner-research{background:linear-gradient(90deg,rgba(15,181,166,.14),rgba(15,181,166,.05));border:1px solid rgba(15,181,166,.35);border-radius:11px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .banner-research .tagp{font-weight:700;color:var(--teal)}
-  .banner-research .cancel{margin-left:auto;font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -366,9 +318,7 @@
     </div>
     <div class="nav">
       <div class="item active" data-view="s1" onclick="show('s1')"><span class="ic">①</span>新建调研</div>
-      <div class="item" data-view="s8" onclick="show('s8')"><span class="ic">📦</span>产品研究</div>
-      <div class="item" data-view="s5" onclick="show('s5')"><span class="ic">▤</span>全部报告</div>
-      <div class="item" data-view="s9" onclick="show('s9')"><span class="ic">📂</span>独立研究</div>
+      <div class="item" data-view="s5" onclick="show('s5')"><span class="ic">▤</span>我的报告</div>
       <div class="item" data-view="s6" onclick="show('s6')"><span class="ic">⚙</span>维度模板</div>
       <div class="item" data-view="s7" onclick="show('s7')"><span class="ic">◷</span>历史任务</div>
     </div>
@@ -409,8 +359,6 @@
               </div>
             </div>
           </div>
-          <!-- v2.1.0：产品绑定横幅（从「继续研究这个产品」进入时显示） -->
-          <div class="banner-research" id="researchBanner" style="display:none"></div>
           <div class="field" id="topicField">
             <label id="topicLabel">研究对象 / 品类</label>
             <div class="search">
@@ -435,22 +383,6 @@
               <span class="chip" onclick="setQuestion('宠物智能饮水机的水质检测怎么做？')">💧 水质检测怎么做？</span>
               <span class="chip" onclick="setQuestion('为什么用户退货率偏高？')">🔍 退货率为什么偏高？</span>
               <span class="chip" onclick="setQuestion('主流产品的最优参数区间是什么？')">⚡ 最优参数区间？</span>
-            </div>
-            <div class="pform" style="margin-top:12px;padding:14px">
-              <div class="fg" style="margin-bottom:0">
-                <label>研究分类 <span class="opt">选填，决定报告归档到产品的哪个分类</span></label>
-                <select id="topicCatSel">
-                  <option value="other">其他</option>
-                  <option value="market">市场</option>
-                  <option value="ecom">电商/Amazon</option>
-                  <option value="comp">竞品</option>
-                  <option value="user">用户</option>
-                  <option value="tech">技术</option>
-                  <option value="reg">法规</option>
-                  <option value="patent">专利</option>
-                  <option value="sc">供应链</option>
-                </select>
-              </div>
             </div>
           </div>
         </div>
@@ -519,8 +451,8 @@
 
       <!-- SCREEN 5: MY REPORTS -->
       <section class="screen" id="s5">
-        <h1 class="t"><span class="emoji">▤</span>全部报告</h1>
-        <p class="lead">所有研究报告（含已归档到产品的）。已登录 Token 时自动同步云端，换设备可见。按产品查看请在「产品研究」中进入对应产品。</p>
+        <h1 class="t"><span class="emoji">▤</span>我的报告</h1>
+        <p class="lead">这里保存着你在本机生成的调研报告（存于浏览器 localStorage，不上传）。点击任意卡片可重新打开查看。</p>
         <div id="reportList"></div>
       </section>
 
@@ -536,18 +468,6 @@
         <h1 class="t"><span class="emoji">◷</span>历史任务</h1>
         <p class="lead">每次生成报告都会在此留下执行记录。已登录 Token 时记录<b>自动同步云端</b>，换设备也能看到；未登录时仅存本机。</p>
         <div class="timeline" id="histList"></div>
-      </section>
-
-      <!-- SCREEN 8: 产品研究库（v2.1.0：产品列表视图 / 产品主页视图 动态渲染） -->
-      <section class="screen" id="s8">
-        <div id="productLib"></div>
-      </section>
-
-      <!-- SCREEN 9: 独立研究（v2.1.0：product_id 为空的报告） -->
-      <section class="screen" id="s9">
-        <h1 class="t"><span class="emoji">📂</span>独立研究</h1>
-        <p class="lead">未归属到任何产品的研究报告（独立创建、product_id 为空）。历史报告也会显示在这里。</p>
-        <div id="standaloneList"></div>
       </section>
 
     </div>
@@ -723,13 +643,11 @@ function show(id){
   // 生成流程(s2/s3/s4)属于「新建调研」，让该导航项保持高亮
   const navView = (id==='s2'||id==='s3'||id==='s4') ? 's1' : id;
   document.querySelectorAll('.nav .item').forEach(it=>it.classList.toggle('active', it.dataset.view===navView));
-  const crumbs={s1:'创建调研',s2:'选择维度',s3:'生成中',s4:'报告',s5:'全部报告',s6:'维度模板',s7:'历史任务',s8:'产品研究',s9:'独立研究'};
+  const crumbs={s1:'输入主题',s2:'选择维度',s3:'生成中',s4:'报告',s5:'我的报告',s6:'维度模板',s7:'历史任务'};
   document.getElementById('crumbNow').textContent=crumbs[id]||'';
   if(id==='s5') renderReports();
   if(id==='s6') renderTemplates();
   if(id==='s7') renderHistory();
-  if(id==='s8') renderProductLib();
-  if(id==='s9') renderStandalone();
   window.scrollTo(0,0);
 }
 function renderDims(){
@@ -838,17 +756,6 @@ function goGen(question){
       dims=(rt&&rt.dims)||[];
     }
   }
-  // v2.1.0：研究归属（从「继续研究这个产品」进入时绑定 product_id）
-  const researchId='r_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-  let rtype='other';
-  if(mode==='topic'){ rtype=document.getElementById('topicCatSel')?document.getElementById('topicCatSel').value:'other'; }
-  else if(mode==='comprehensive'){ rtype='other'; }
-  else if(mode==='advanced'){ rtype='other'; }
-  else { rtype=mode; } // market/ecom/comp/user/tech
-  _researchCtx=_researchCtx||{};
-  _researchCtx.research_id=researchId;
-  _researchCtx.research_type=rtype;
-  _researchCtx.research_mode=mode;
   document.getElementById('genBtn').disabled=true;
   show('s3');
   const order=dims;
@@ -876,9 +783,7 @@ function goGen(question){
   // 发起请求（LLM 模式 240s 超时：综合立项可能更久）
   fetchTimeout(api('/api/research'),{
     method:'POST', headers:apiHeaders(),
-    body:JSON.stringify({topic, dims, source:srcMode, mode, question:q, llm:{},
-      product_id:_researchCtx.product_id||null, research_id:researchId, research_type:rtype,
-      research_mode:mode, created_at:nowStr()})
+    body:JSON.stringify({topic, dims, source:srcMode, mode, question:q, llm:{}})
   }, mode==='comprehensive'?240000:(mode==='topic'?180000:180000)).then(r=>{
     if(r.status===401){
       _pendingRetry=()=>{ document.getElementById('genBtn').disabled=false; goGen(q); };
@@ -889,25 +794,11 @@ function goGen(question){
   }).then(data=>{
     if(data.error){ markAll(false); showErr(data.error); return; }
     markAll(true);
-    // v2.1.0：把归属信息附加到报告数据（saveReport 会持久化）
-    if(_researchCtx){
-      data.product_id=_researchCtx.product_id||null;
-      data.research_id=_researchCtx.research_id||researchId;
-      data.research_type=_researchCtx.research_type||rtype;
-      data.research_mode=_researchCtx.research_mode||mode;
-      data._created_at=_researchCtx.created_at||nowStr();
-    }
-    data._status='completed'; data._completed_at=nowStr();
     lastReport=data;
     saveReport(data);
     logHistory(topic, order, srcMode, 'ok', data.mode||'live');
     renderReport(data);
-    // v2.1.0：从产品进入的研究 → 自动回到该产品主页（对应分类）
-    if(data.product_id){
-      _curProduct=_products.find(p=>p.product_id===data.product_id)||null;
-      if(_curProduct){ _productView='home'; _prodCat=mapResearchType(data.research_type)||'all'; }
-    }
-    show(data.product_id?'s8':'s4');
+    show('s4');
   }).catch(e=>{
     markAll(false);
     if(e.message!=='未授权'){
@@ -1172,279 +1063,6 @@ function sampleTopicOf(id){
 // —— 我的报告（本地 + 云端同步；云端可跨设备）——
 let _cloudReports=null; // {list, loaded}
 // v1.6.0：reportId 含毫秒时间戳，同一主题多次生成不再互相覆盖
-// ============================================================
-// v2.1.0 产品研究库：以产品为中心管理研究
-// ============================================================
-let _products=[];            // 产品库（本地+云端合并）
-let _curProduct=null;        // 当前打开的产品
-let _productView='list';     // s8 视图: list / form / home
-let _prodCat='all';          // 产品主页分类 Tab
-let _researchCtx=null;       // 继续研究的上下文 {product_id, product_name, research_id, research_type, research_mode}
-
-// 研究分类（可扩展，新增类型加这里即可）
-const RESEARCH_CATS=[
-  {id:'all',label:'全部'},
-  {id:'market',label:'市场'},
-  {id:'ecom',label:'电商/Amazon'},
-  {id:'comp',label:'竞品'},
-  {id:'user',label:'用户'},
-  {id:'tech',label:'技术'},
-  {id:'reg',label:'法规'},
-  {id:'patent',label:'专利'},
-  {id:'sc',label:'供应链'},
-  {id:'other',label:'其他'},
-];
-function catLabel(id){ const c=RESEARCH_CATS.find(c=>c.id===id); return c?c.label:(id||'其他'); }
-function mapResearchType(t){
-  if(['market','ecom','comp','user','tech','reg','patent','sc','other'].includes(t)) return t;
-  if(t==='comprehensive') return 'other';
-  return 'other';
-}
-function nowStr(){
-  try{ return new Date().toLocaleString('zh-CN',{timeZone:'Asia/Shanghai',hour12:false,month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(/\//g,'-'); }
-  catch(e){ return new Date().toLocaleString('zh-CN'); }
-}
-function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-// —— 全部报告（本地 + 云端缓存合并）——
-function allReports(){
-  let local=[]; try{ local=JSON.parse(localStorage.getItem('rd_reports')||'[]'); }catch(e){}
-  const cloud=_cloudReports&&_cloudReports.list? _cloudReports.list:[];
-  const map={}; local.forEach(r=>{map[r.id]=r;}); cloud.forEach(r=>{ if(!map[r.id]) map[r.id]=r; });
-  return Object.values(map);
-}
-function reportsOf(pid){ return allReports().filter(r=>r.product_id===pid); }
-function lastReportOf(pid){
-  const rs=reportsOf(pid);
-  rs.sort((a,b)=>String(b._ts||b.generatedAt||'').localeCompare(String(a._ts||a.generatedAt||'')));
-  return rs[0]||null;
-}
-
-// —— 产品库加载（本地 + 云端合并）——
-function loadProducts(cb){
-  let local=[]; try{ local=JSON.parse(localStorage.getItem('rd_products')||'[]'); }catch(e){}
-  _products=local;
-  if(BACKEND_URL && RD_TOKEN){
-    fetch(api('/api/products'),{headers:apiHeaders()}).then(r=>{
-      if(r.status===401){ cb&&cb(); return; }
-      return r.json().then(j=>{
-        const cloud=(j.products||[]);
-        const map={}; cloud.forEach(p=>{map[p.product_id]=p;});
-        local.forEach(p=>{ if(!map[p.product_id]) map[p.product_id]=p; });
-        _products=Object.values(map);
-        try{ localStorage.setItem('rd_products', JSON.stringify(_products)); }catch(e){}
-        cb&&cb();
-      });
-    }).catch(()=>{ cb&&cb(); });
-  } else { cb&&cb(); }
-}
-function persistProducts(){
-  try{ localStorage.setItem('rd_products', JSON.stringify(_products)); }catch(e){}
-  if(BACKEND_URL && RD_TOKEN){
-    _products.forEach(p=>{
-      fetch(api('/api/products'),{method:'POST',headers:apiHeaders(),body:JSON.stringify({product:p})}).catch(()=>{});
-    });
-  }
-}
-
-// —— s8 渲染（list / form / home 三视图）——
-function renderProductLib(){
-  const box=document.getElementById('productLib');
-  if(!box) return;
-  if(_productView==='form'){ renderNewProductForm(box); return; }
-  if(_productView==='home' && _curProduct){ renderProductHome(box); return; }
-  let html=`
-    <div class="plib-top">
-      <div>
-        <h1>📦 产品研究库</h1>
-        <div class="sub">以产品为中心组织所有研究 · 共 ${_products.length} 个产品 · 每次研究自动归档到所属产品</div>
-      </div>
-      <button class="btn-primary" onclick="newProductForm()">＋ 创建产品研究</button>
-    </div>`;
-  if(!_products.length){
-    html+='<div class="pempty">还没有产品。点右上角「＋ 创建产品研究」，为你的第一个产品建立研究空间。<br/><br/>以后这个产品下的所有研究（市场 / 电商 / 竞品 / 用户 / 技术 / 法规 / 专利 / 供应链…）都会自动归档到这里。</div>';
-  } else {
-    html+='<div class="pcards">'+_products.map(p=>{
-      const cnt=reportsOf(p.product_id).length;
-      const last=lastReportOf(p.product_id);
-      return `<div class="pcard" onclick="openProduct('${esc(p.product_id)}')">
-        <div class="pn">${esc(p.name)}</div>
-        <div class="pe">${esc(p.name_en||'')}</div>
-        <div class="pm"><b>${cnt}</b> 份研究${last?'<br/>最近：'+esc(String(last.topic||'').slice(0,26)):''}<br/>最近更新：${esc(last?last.generatedAt:(p.updated_at||p.created_at||'—'))}</div>
-        <div class="enter">进入产品 →</div>
-      </div>`;
-    }).join('')+'</div>';
-  }
-  box.innerHTML=html;
-}
-function newProductForm(){ _productView='form'; renderProductLib(); }
-function backToProductLib(){ _productView='list'; _curProduct=null; _prodCat='all'; renderProductLib(); }
-function renderNewProductForm(box){
-  box.innerHTML=`
-    <div class="plib-top">
-      <div><h1>＋ 创建产品研究</h1><div class="sub">为产品建立独立研究空间，所有研究自动归档到该产品</div></div>
-      <button class="btn-ghost" onclick="backToProductLib()">← 返回产品库</button>
-    </div>
-    <div class="pform">
-      <div class="fg"><label>产品名称 *</label><input id="npName" placeholder="例如：智能宠物喂食器" autocomplete="off"/></div>
-      <div class="fg"><label>英文名称 <span class="opt">选填</span></label><input id="npNameEn" placeholder="例如：Smart Pet Feeder" autocomplete="off"/></div>
-      <div class="fg"><label>产品类别 <span class="opt">选填</span></label><input id="npCategory" placeholder="例如：健康器械 / 智能硬件" autocomplete="off"/></div>
-      <div class="fg"><label>目标市场 <span class="opt">选填，逗号分隔</span></label><input id="npMarket" placeholder="例如：美国, 欧洲" autocomplete="off"/></div>
-      <div class="fg"><label>目标渠道 <span class="opt">选填，逗号分隔</span></label><input id="npChannel" placeholder="例如：Amazon US, 独立站" autocomplete="off"/></div>
-      <div class="fg"><label>研究目的 <span class="opt">选填</span></label><input id="npGoal" placeholder="例如：评估新品立项可行性" autocomplete="off"/></div>
-      <div class="fg"><label>产品说明 / 备注 <span class="opt">选填</span></label><textarea id="npDesc" placeholder="产品简介、背景、关注点…"></textarea></div>
-      <div class="fr">
-        <button class="btn-ghost" onclick="backToProductLib()">取消</button>
-        <button class="btn-primary" onclick="submitNewProduct()">创建产品 →</button>
-      </div>
-    </div>`;
-}
-function submitNewProduct(){
-  const name=document.getElementById('npName').value.trim();
-  if(!name){ toast('请填写产品名称','err'); return; }
-  const ts=String(Date.now());
-  const pid='p_'+ts.slice(-10)+Math.random().toString(36).slice(2,6);
-  const product={
-    product_id:pid, name,
-    name_en:document.getElementById('npNameEn').value.trim(),
-    category:document.getElementById('npCategory').value.trim(),
-    target_market:document.getElementById('npMarket').value.split(/[,，]/).map(s=>s.trim()).filter(Boolean),
-    target_channel:document.getElementById('npChannel').value.split(/[,，]/).map(s=>s.trim()).filter(Boolean),
-    research_goal:document.getElementById('npGoal').value.trim(),
-    description:document.getElementById('npDesc').value.trim(),
-    created_at:nowStr(), updated_at:nowStr(),
-  };
-  _products.unshift(product);
-  persistProducts();
-  toast('产品已创建 ✓','ok');
-  openProduct(pid);
-}
-
-// —— 产品主页 ——
-function openProduct(pid){
-  _curProduct=_products.find(p=>p.product_id===pid)||null;
-  if(!_curProduct){ toast('未找到产品','err'); backToProductLib(); return; }
-  _productView='home'; _prodCat='all';
-  if(BACKEND_URL&&RD_TOKEN&&_cloudReports&&!_cloudReports.loaded){ loadCloudReports(()=>{ renderProductLib(); }); }
-  renderProductLib();
-}
-function renderProductHome(box){
-  const p=_curProduct; if(!p){ backToProductLib(); return; }
-  const rs=reportsOf(p.product_id);
-  const stats={}; rs.forEach(r=>{ const c=mapResearchType(r.research_type); stats[c]=(stats[c]||0)+1; });
-  const catHtml=RESEARCH_CATS.map(c=>`<button class="cat-tab ${_prodCat===c.id?'active':''}" onclick="setProdCat('${c.id}')">${c.label}${c.id==='all'?(' ('+rs.length+')'):(' ('+(stats[c.id]||0)+')')}</button>`).join('');
-  const list=rs.filter(r=>_prodCat==='all'||mapResearchType(r.research_type)===_prodCat)
-    .sort((a,b)=>String(b._ts||b.generatedAt||'').localeCompare(String(a._ts||a.generatedAt||'')));
-  box.innerHTML=`
-    <div class="plib-top">
-      <div>
-        <button class="btn-ghost" onclick="backToProductLib()" style="font-size:12px;margin-bottom:6px">← 产品研究库</button>
-        <div class="ph-title">${esc(p.name)} <span class="ph-edit" onclick="editProductBasic()">✎ 编辑信息</span></div>
-        <div class="ph-title-en">${esc(p.name_en||'')}</div>
-        <div class="ph-meta">
-          ${p.category?('类别：'+esc(p.category)+'<br/>'):''}
-          ${p.target_market&&p.target_market.length?('目标市场：'+esc(p.target_market.join('、'))+'<br/>'):''}
-          ${p.target_channel&&p.target_channel.length?('目标渠道：'+esc(p.target_channel.join('、'))+'<br/>'):''}
-          ${p.research_goal?('研究目的：'+esc(p.research_goal)+'<br/>'):''}
-          ${p.description?('备注：'+esc(p.description)+'<br/>'):''}
-          创建：${esc(p.created_at||'—')} · 产品ID：<code style="font-size:11px">${esc(p.product_id)}</code>
-        </div>
-      </div>
-      <button class="btn-primary" style="height:46px;padding:0 24px;font-size:14.5px" onclick="startResearchForProduct()">＋ 继续研究这个产品</button>
-    </div>
-    <div class="stats">
-      <div class="stat"><div class="sv">${rs.length}</div><div class="sl">全部研究</div></div>
-      ${RESEARCH_CATS.filter(c=>c.id!=='all').map(c=>{ if(!stats[c.id]) return ''; return `<div class="stat"><div class="sv">${stats[c.id]}</div><div class="sl">${c.label}</div></div>`; }).join('')}
-    </div>
-    <div class="cat-tabs">${catHtml}</div>
-    ${list.length?'<div>'+list.map((r,i)=>prodReportRowHtml(r,i)).join('')+'</div>':'<div class="pempty">该分类下还没有研究。点右上角「＋ 继续研究这个产品」开始第一份研究。</div>'}
-  `;
-  window.__prodReports=list;
-}
-function setProdCat(c){ _prodCat=c; renderProductLib(); }
-function prodReportRowHtml(r,i){
-  const rt=catLabel(mapResearchType(r.research_type));
-  const fm=r.research_mode==='topic'?'专题':(r.research_mode==='comprehensive'?'综合立项':'标准');
-  return `<div class="rrow" onclick="openProdReport(${i})">
-    <div class="rt2">
-      <div class="t">${esc(r.topic||'')}</div>
-      <div class="m">${rt} · ${fm} · ${esc(r.generatedAt||'')}${r.trimmed?' · 云端精简版':''}${r.cloud?' · ☁️':''}</div>
-    </div>
-    <div class="st ok">完成</div>
-  </div>`;
-}
-function openProdReport(i){
-  const arr=window.__prodReports||[];
-  const rec=arr[i];
-  if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4'); }
-  else toast('该报告数据不可用','err');
-}
-function editProductBasic(){
-  const p=_curProduct; if(!p) return;
-  const name=prompt('产品名称',p.name); if(name===null) return;
-  const nameEn=prompt('英文名称',p.name_en||''); if(nameEn===null) return;
-  const category=prompt('产品类别',p.category||''); if(category===null) return;
-  const market=prompt('目标市场（逗号分隔）',(p.target_market||[]).join(',')); if(market===null) return;
-  const channel=prompt('目标渠道（逗号分隔）',(p.target_channel||[]).join(',')); if(channel===null) return;
-  const goal=prompt('研究目的',p.research_goal||''); if(goal===null) return;
-  const desc=prompt('备注',p.description||''); if(desc===null) return;
-  p.name=name.trim()||p.name; p.name_en=nameEn.trim(); p.category=category.trim();
-  p.target_market=market.split(/[,，]/).map(s=>s.trim()).filter(Boolean);
-  p.target_channel=channel.split(/[,，]/).map(s=>s.trim()).filter(Boolean);
-  p.research_goal=goal.trim(); p.description=desc.trim();
-  p.updated_at=nowStr();
-  persistProducts();
-  toast('产品信息已更新 ✓','ok');
-  renderProductLib();
-}
-
-// —— 【＋继续研究这个产品】：绑定 product_id，进入现有 3 种调研形式 ——
-function startResearchForProduct(){
-  const p=_curProduct; if(!p){ toast('请先进入产品','err'); return; }
-  _researchCtx={ product_id:p.product_id, product_name:p.name };
-  show('s1');
-  const banner=document.getElementById('researchBanner');
-  if(banner){ banner.style.display='flex'; banner.innerHTML=`<span>正在研究：<span class="tagp">${esc(p.name)}</span> —— 完成后将自动归档到该产品</span><span class="cancel" onclick="cancelResearchCtx()">取消绑定</span>`; }
-  toast('将归档到产品「'+p.name+'」','info');
-}
-function cancelResearchCtx(){
-  _researchCtx=null;
-  const b=document.getElementById('researchBanner'); if(b) b.style.display='none';
-  toast('已取消产品绑定','info');
-}
-
-// —— s9 独立研究（product_id 为空）——
-function renderStandalone(){
-  const box=document.getElementById('standaloneList');
-  const rs=allReports().filter(r=>!r.product_id);
-  rs.sort((a,b)=>String(b._ts||b.generatedAt||'').localeCompare(String(a._ts||a.generatedAt||'')));
-  if(!rs.length){ box.innerHTML='<div class="pempty">暂无独立研究。从「新建调研」创建且未归属产品的研究会显示在这里（历史报告也会在此）。</div>'; return; }
-  box.innerHTML='<div class="rcards">'+rs.map((r,i)=>`
-    <div class="rcard" onclick="openStandalone(${i})">
-      <div class="rt">${esc(r.topic||'')}
-        <button class="del-btn" title="删除" onclick="event.stopPropagation();delStandalone(${i})">✕</button>
-      </div>
-      <div class="rm">${esc(r.generatedAt||'')} · ${catLabel(mapResearchType(r.research_type))} · ${r.mode==='live'?'LIVE·DeepSeek':'模板数据'}${r.cloud?' · ☁️':''}</div>
-      <div class="rtags">${(r.dims||[]).map(d=>`<span>${META[d]?META[d].title:d}</span>`).join('')}</div>
-    </div>`).join('')+'</div>';
-  window.__standaloneList=rs;
-}
-function openStandalone(i){
-  const arr=window.__standaloneList||[];
-  const rec=arr[i];
-  if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4'); }
-  else toast('该报告数据不可用','err');
-}
-function delStandalone(i){
-  const arr=window.__standaloneList||[]; const rec=arr[i]; if(!rec) return;
-  if(!confirm('删除这份独立研究？')) return;
-  let local=[]; try{ local=JSON.parse(localStorage.getItem('rd_reports')||'[]'); }catch(e){}
-  localStorage.setItem('rd_reports', JSON.stringify(local.filter(r=>r.id!==rec.id)));
-  if(BACKEND_URL&&RD_TOKEN&&rec.id){ fetch(api('/api/reports?id='+encodeURIComponent(rec.id)),{method:'DELETE',headers:apiHeaders()}).then(r=>{ if(r.ok&&_cloudReports) _cloudReports.loaded=false; }).catch(()=>{}); }
-  toast('已删除','ok');
-  renderStandalone();
-}
-
 function reportId(data){
   const t=data._ts||data.generatedAt||'';
   return data.topic+'|'+t;
@@ -1453,13 +1071,7 @@ function saveReport(data){
   try{
     if(!data._ts){ data._ts=(data.generatedAt||'')+'-'+String(Date.now()).slice(-4); }
     const arr=JSON.parse(localStorage.getItem('rd_reports')||'[]');
-    // v2.1.0：报告记录携带 Research 归属元数据（product_id/research_id/类型/模式/状态/时间）
-    const rec={id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, _ts:data._ts, mode:data.mode,
-      dims:Object.keys(data.sections||{}), data,
-      product_id:data.product_id||null, research_id:data.research_id||null,
-      research_type:data.research_type||'other', research_mode:data.research_mode||data.mode||'standard',
-      status:data._status||'completed', created_at:data._created_at||null, completed_at:data._completed_at||null,
-      cloud:false};
+    const rec={id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, _ts:data._ts, mode:data.mode, dims:Object.keys(data.sections||{}), data, cloud:false};
     const kept=[rec].concat(arr.filter(r=>r.id!==rec.id)).slice(0,50);
     localStorage.setItem('rd_reports', JSON.stringify(kept));
   }catch(e){}
@@ -1467,10 +1079,7 @@ function saveReport(data){
   if(BACKEND_URL && RD_TOKEN){
     fetch(api('/api/reports'),{method:'POST',headers:apiHeaders(),body:JSON.stringify({report:{
       id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, _ts:data._ts, mode:data.mode,
-      dims:Object.keys(data.sections||{}), data,
-      product_id:data.product_id||null, research_id:data.research_id||null,
-      research_type:data.research_type||'other', research_mode:data.research_mode||data.mode||'standard',
-      status:data._status||'completed', created_at:data._created_at||null, completed_at:data._completed_at||null
+      dims:Object.keys(data.sections||{}), data
     }})}).then(r=>{
       if(r.ok){
         if(_cloudReports) _cloudReports.loaded=false;
@@ -1718,7 +1327,6 @@ function bootStatus(){
     loadCfg();
     updateModePill();
   }).catch(()=>{ setBackendBadge(false,'后端未连接 · 检查地址'); });
-  loadProducts(); // v2.1.0：启动加载产品研究库（本地+云端）
 }
 function bootGate(){
   // 有已存 token → 验证；无 → 直接显示门禁
