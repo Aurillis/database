@@ -490,6 +490,14 @@
           </div>
           <!-- v2.1.0：产品绑定横幅（从「继续研究这个产品」进入时显示） -->
           <div class="banner-research" id="researchBanner" style="display:none"></div>
+          <!-- v2.2.1：数据源切换（s1 同步提供，专题/综合立项不再被 s2 卡住；s2 保留同样组件） -->
+          <div class="srcbox" style="margin-bottom:18px">
+            <div class="srclbl">🛠 数据源（怎么出数据）</div>
+            <div class="srcseg">
+              <button type="button" class="seg on" id="srcTplS1" onclick="setSrc('template')">📁 模板数据（离线·结构骨架）</button>
+              <button type="button" class="seg" id="srcLlmS1" onclick="setSrc('llm')">🤖 大模型实时生成（DeepSeek）</button>
+            </div>
+          </div>
           <div class="field" id="topicField">
             <label id="topicLabel">研究对象 / 品类</label>
             <div class="search">
@@ -771,8 +779,12 @@ let srcMode = 'template';
 
 function setSrc(m){
   srcMode = m;
-  document.getElementById('srcTpl').classList.toggle('on', m==='template');
-  document.getElementById('srcLlm').classList.toggle('on', m==='llm');
+  // v2.2.1：s1 与 s2 两处数据源按钮同步高亮（s1 新增，保证专题/综合立项可直接选）
+  [['srcTpl','srcLlm'],['srcTplS1','srcLlmS1']].forEach(([a,b])=>{
+    const ea=document.getElementById(a), eb=document.getElementById(b);
+    if(ea) ea.classList.toggle('on', m==='template');
+    if(eb) eb.classList.toggle('on', m==='llm');
+  });
   updateModePill();
 }
 function updateModePill(){
@@ -899,8 +911,8 @@ function goGen(question){
   const topic=document.getElementById('topicInput').value.trim();
   const isLLM = srcMode==='llm';
   if(!isLLM){
-    // v2.2.1：未选「大模型实时生成」时，高亮数据源按钮并滚动到可见位置，避免用户找不到切换入口
-    const b=document.getElementById('srcLlm');
+    // v2.2.1：未选「大模型实时生成」时，高亮数据源按钮并滚动到可见位置（s1/s2 各自有按钮）
+    const b=document.getElementById('srcLlmS1') || document.getElementById('srcLlm');
     if(b){
       b.style.boxShadow='0 0 0 3px rgba(239,68,68,.45)';
       b.style.transition='box-shadow .2s';
