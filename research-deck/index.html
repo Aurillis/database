@@ -982,7 +982,7 @@ function goGen(question){
     body:JSON.stringify({topic, dims, source:srcMode, mode, question:q, llm:{},
       product_id:_researchCtx.product_id||null, research_id:researchId, research_type:rtype,
       research_mode:mode, created_at:nowStr()})
-  }, mode==='comprehensive'?240000:(mode==='topic'?180000:180000)).then(r=>{
+  }, mode==='comprehensive'?330000:(mode==='topic'?240000:240000)).then(r=>{
     if(r.status===401){
       _pendingRetry=()=>{ document.getElementById('genBtn').disabled=false; goGen(q); };
       showTokenNeeded();
