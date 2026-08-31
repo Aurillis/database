@@ -1585,19 +1585,21 @@ function saveOverview(pid,ov,cb){
     .catch(()=>cb&&cb(false));
 }
 // 新 Research 完成后自动调用：AI 生成「综合总览更新建议」（只进 pending_updates，不直接改总览）
+// v2.2.1：失败静默（建议是增值功能，不打扰主流程；仅成功时 toast 提示）
 function suggestOverview(pid,researchIds){
   if(!(BACKEND_URL&&RD_TOKEN)) return;
   const body={product_id:pid};
   if(researchIds&&researchIds.length) body.research_ids=researchIds;
-  fetch(api('/api/overview/suggest'),{method:'POST',headers:apiHeaders(),body:JSON.stringify(body)})
-    .then(r=>r.json()).then(j=>{
-      if(j.ok&&j.added>0){
+  fetchTimeout(api('/api/overview/suggest'),{method:'POST',headers:apiHeaders(),body:JSON.stringify(body)}, 150000)
+    .then(r=>r.json().catch(()=>null))
+    .then(j=>{
+      if(j&&j.ok&&j.added>0){
         const ov=_overviews[pid]||{product_id:pid,findings:{},opportunities:[],risks:[],research_gaps:[],pending_updates:[]};
         ov.pending_updates=j.pending||[];
         _overviews[pid]=ov;
         toast('AI 已生成 '+j.added+' 条综合总览更新建议','info');
         if(_curProduct&&_curProduct.product_id===pid&&_productView==='home'){ renderProductLib(); }
-      }else if(j.error){ toast('总览建议生成失败：'+j.error,'err'); }
+      }
     }).catch(()=>{});
 }
 // 用户确认/忽略一条更新建议
@@ -1830,14 +1832,15 @@ function saveReport(data){
     localStorage.setItem('rd_reports', JSON.stringify(kept));
   }catch(e){}
   // 异步同步到云端（带 token 且配了后端时）
+  // v2.2.1：修复双红框——非 2xx 只提示一次（不再 throw 进 catch 重复弹）；解析失败静默（云端已保存成功）
   if(BACKEND_URL && RD_TOKEN){
-    fetch(api('/api/reports'),{method:'POST',headers:apiHeaders(),body:JSON.stringify({report:{
+    fetchTimeout(api('/api/reports'),{method:'POST',headers:apiHeaders(),body:JSON.stringify({report:{
       id:reportId(data), topic:data.topic, generatedAt:data.generatedAt, _ts:data._ts, mode:data.mode,
       dims:Object.keys(data.sections||{}), data,
       product_id:data.product_id||null, research_id:data.research_id||null,
       research_type:data.research_type||'other', research_mode:data.research_mode||data.mode||'standard',
       status:data._status||'completed', created_at:data._created_at||null, completed_at:data._completed_at||null
-    }})}).then(r=>{
+    }})}, 60000).then(r=>{
       if(r.ok){
         if(_cloudReports) _cloudReports.loaded=false;
         markCloudSync(reportId(data), true);
@@ -1846,16 +1849,18 @@ function saveReport(data){
           const rids=data.research_id?[data.research_id]:[];
           suggestOverview(data.product_id,rids);
         }
-        return r.json().then(j=>{_cloudReports={list:j.reports||_cloudReports.list,loaded:true};});
+        // 解析失败静默：此时云端已保存成功，只是列表刷新失败，不打扰用户
+        return r.json().then(j=>{_cloudReports={list:(j&&j.reports)||(_cloudReports&&_cloudReports.list)||[],loaded:true};}).catch(()=>{});
       }
-      // 非 2xx：标记未同步 + 提示
+      // 非 2xx：只提示一次（401 / 其他），不再抛错进 catch 重复弹
       markCloudSync(reportId(data), false);
       if(r.status===401){ toast('云端同步失败：令牌无效','err'); }
       else { toast('云端同步失败（'+r.status+'），可在「我的报告」重试','err'); }
-      throw new Error('sync fail '+r.status);
-    }).catch(e=>{
-      // 网络/异常：标记未同步（不重复 toast 401 场景）
-      if(!(e&&e.message==='sync fail 401')){ markCloudSync(reportId(data), false); toast('云端同步失败，可在「我的报告」重试','err'); }
+      return null;
+    }).catch(()=>{
+      // 网络/超时等异常：唯一再提示的路径（非 2xx 已在上面提示过，不会走到这里）
+      markCloudSync(reportId(data), false);
+      toast('云端同步失败（网络），可在「我的报告」重试','err');
     });
   }
 }
