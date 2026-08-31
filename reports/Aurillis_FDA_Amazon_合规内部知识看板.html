@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>欧律生 FDA与Amazon合规内部知识看板 · Aurillis FDA &amp; Amazon Compliance Knowledge Hub</title>
+<style>
+  :root{
+    --primary:#1e3a5f;        /* 深蓝 主色 */
+    --primary-soft:#2c5282;
+    --secondary:#3a8a8a;      /* 低饱和青绿 辅色 */
+    --secondary-soft:#d9ecec;
+    --bg:#ffffff;
+    --bg-gray:#f4f6f8;
+    --bg-gray2:#eef1f4;
+    --text:#1f2933;
+    --text-soft:#52606d;
+    --border:#dde3e8;
+    --confirmed:#1f8a4c;      /* 已确认 绿 */
+    --confirmed-bg:#e8f5ec;
+    --proposed:#2563a8;       /* 当前拟议 蓝 */
+    --proposed-bg:#e7f0fa;
+    --pending:#d97706;        /* 待确认 橙 */
+    --pending-bg:#fdf0dd;
+    --risk:#c0392b;           /* 风险/禁止 红 */
+    --risk-bg:#fbe9e7;
+    --shadow:0 1px 3px rgba(30,58,95,.08),0 1px 2px rgba(30,58,95,.06);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;font-family:"Segoe UI","PingFang SC","Microsoft YaHei",-apple-system,Helvetica,Arial,sans-serif;
+    color:var(--text);background:var(--bg-gray);line-height:1.65;font-size:14.5px;overflow-x:hidden;
+  }
+  /* 顶部标题区 */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;height:64px;z-index:50;
+    background:var(--primary);color:#fff;display:flex;align-items:center;
+    padding:0 20px;gap:16px;box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+  .topbar .t-title{font-size:16px;font-weight:700;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1 1 auto;min-width:0;}
+  .topbar .t-sub{font-size:11.5px;opacity:.8;font-weight:400;}
+  .badge-train{
+    background:var(--secondary);color:#fff;font-size:11px;padding:3px 9px;border-radius:20px;
+    font-weight:600;white-space:nowrap;flex-shrink:0;
+  }
+  .topbar .spacer{flex:1;}
+  .search-wrap{position:relative;flex:0 1 230px;min-width:80px;}
+  .search-wrap input{
+    width:100%;max-width:40vw;padding:7px 30px 7px 12px;border-radius:20px;border:none;
+    font-size:13px;outline:none;background:#fff;color:var(--text);
+  }
+  .search-wrap .search-ico{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--text-soft);font-size:13px;pointer-events:none;}
+  .search-count{position:absolute;right:34px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--pending);font-weight:700;}
+  .top-actions{display:flex;gap:8px;flex-shrink:1;}
+  .btn-top{
+    background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.25);
+    padding:6px 11px;border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap;
+  }
+  .btn-top:hover{background:rgba(255,255,255,.25);}
+  .hamburger{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;}
+
+  /* 布局 */
+  .layout{display:flex;padding-top:64px;}
+  .sidebar{
+    position:fixed;top:64px;left:0;bottom:0;width:212px;background:#fff;border-right:1px solid var(--border);
+    overflow-y:auto;padding:14px 10px;z-index:40;
+  }
+  .sidebar nav a{
+    display:block;padding:8px 12px;margin:2px 0;border-radius:6px;color:var(--text-soft);
+    text-decoration:none;font-size:13px;border-left:3px solid transparent;transition:.15s;cursor:pointer;
+  }
+  .sidebar nav a:hover{background:var(--bg-gray);color:var(--primary);}
+  .sidebar nav a.active{background:var(--proposed-bg);color:var(--proposed);border-left-color:var(--proposed);font-weight:600;}
+  .sidebar .nav-hint{font-size:10.5px;color:#9aa5b1;padding:8px 12px 4px;}
+
+  .content{margin-left:212px;flex:1;padding:26px 34px 80px;max-width:1180px;}
+  section{scroll-margin-top:78px;margin-bottom:34px;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;}
+  section > .sec-head{padding:16px 22px;background:linear-gradient(90deg,#f7f9fb,#fff);border-bottom:1px solid var(--border);}
+  section > .sec-head h2{margin:0;font-size:18px;color:var(--primary);display:flex;align-items:center;gap:9px;}
+  section > .sec-head h2 .num{
+    background:var(--primary);color:#fff;width:26px;height:26px;border-radius:6px;display:inline-flex;
+    align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;
+  }
+  section > .sec-head .en{font-size:11.5px;color:#9aa5b1;font-weight:400;margin-top:3px;margin-left:35px;}
+  .sec-body{padding:20px 22px;}
+
+  /* 状态徽章 */
+  .st{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:20px;vertical-align:middle;white-space:nowrap;}
+  .st-confirmed{background:var(--confirmed-bg);color:var(--confirmed);}
+  .st-proposed{background:var(--proposed-bg);color:var(--proposed);}
+  .st-pending{background:var(--pending-bg);color:var(--pending);}
+  .st-risk{background:var(--risk-bg);color:var(--risk);}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;padding:10px 22px;background:var(--bg-gray2);font-size:12px;color:var(--text-soft);border-bottom:1px solid var(--border);}
+  .legend .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+  .dot-confirmed{background:var(--confirmed);}
+  .dot-proposed{background:var(--proposed);}
+  .dot-pending{background:var(--pending);}
+  .dot-risk{background:var(--risk);}
+
+  /* 卡片 */
+  .card{background:#fff;border:1px solid var(--border);border-radius:9px;padding:16px 18px;box-shadow:var(--shadow);}
+  .card h4{margin:0 0 10px;font-size:14.5px;color:var(--primary);}
+  .card ul{margin:6px 0 0;padding-left:18px;}
+  .card ul li{margin:4px 0;}
+  .grid{display:grid;gap:16px;}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g4{grid-template-columns:repeat(4,1fr);}
+
+  /* 重点提示色块 */
+  .callout{border-radius:8px;padding:13px 16px;margin:14px 0;font-size:13.5px;border-left:4px solid;}
+  .callout-info{background:var(--proposed-bg);border-color:var(--proposed);color:#1c4d80;}
+  .callout-warn{background:var(--pending-bg);border-color:var(--pending);color:#92500e;}
+  .callout-danger{background:var(--risk-bg);border-color:var(--risk);color:#8c261b;}
+  .callout-ok{background:var(--confirmed-bg);border-color:var(--confirmed);color:#14622f;}
+  .callout b{font-weight:700;}
+
+  /* 表格 */
+  .tbl-wrap{overflow-x:auto;margin:12px 0;border:1px solid var(--border);border-radius:8px;}
+  table{border-collapse:collapse;width:100%;font-size:13px;min-width:600px;}
+  thead th{position:sticky;top:0;background:var(--primary);color:#fff;padding:10px 12px;text-align:left;font-weight:600;white-space:nowrap;}
+  tbody td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;}
+  tbody tr:nth-child(even){background:var(--bg-gray);}
+  tbody tr:hover{background:var(--secondary-soft);}
+  .role-tag{font-weight:700;color:var(--primary);}
+
+  /* 流程链 */
+  .chain{display:flex;align-items:stretch;gap:0;flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;width:100%;min-width:0;box-sizing:border-box;}
+  .chain .node{background:#fff;border:1.5px solid var(--secondary);border-radius:8px;padding:8px 8px;min-width:84px;flex:1 1 84px;text-align:center;font-weight:600;color:var(--primary);font-size:12.5px;word-break:break-word;line-height:1.45;}
+  .chain .arrow{display:flex;align-items:center;justify-content:center;color:var(--secondary);font-size:18px;font-weight:700;padding:0 5px;flex-shrink:0;line-height:1;}
+
+  /* 折叠 */
+  details{border:1px solid var(--border);border-radius:8px;margin:10px 0;background:#fff;overflow:hidden;}
+  details summary{cursor:pointer;padding:12px 16px;background:var(--bg-gray2);font-weight:600;color:var(--primary);list-style:none;display:flex;align-items:center;gap:8px;font-size:14px;}
+  details summary::-webkit-details-marker{display:none;}
+  details summary::before{content:"▸";color:var(--secondary);font-size:13px;transition:transform .2s;display:inline-block;}
+  details[open] summary::before{transform:rotate(90deg);}
+  details .det-body{padding:14px 18px;font-size:13.5px;}
+  details .det-body ul{margin:6px 0;padding-left:20px;}
+  details .det-body li{margin:5px 0;}
+
+  /* 检查清单 */
+  .check-list{list-style:none;padding-left:0;margin:8px 0;}
+  .check-list li{padding:5px 0 5px 26px;position:relative;font-size:13.5px;border-bottom:1px dashed var(--border);}
+  .check-list li::before{content:"☐";position:absolute;left:4px;top:5px;color:var(--secondary);font-size:15px;font-weight:700;}
+
+  /* 三列避坑表 */
+  .pitfall td .pf-r{color:var(--confirmed);}
+  .pitfall td .pf-w{color:var(--risk);}
+
+  /* K信息卡 */
+  .kcard{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .kcard .cell{background:#fff;padding:12px 14px;}
+  .kcard .cell .k{font-size:11px;color:#9aa5b1;text-transform:uppercase;letter-spacing:.5px;}
+  .kcard .cell .v{font-size:14px;font-weight:700;color:var(--primary);margin-top:3px;}
+
+  /* 变更框架 */
+  .change-box{border-radius:8px;padding:14px 16px;border:1px solid;}
+  .change-green{border-color:var(--confirmed);background:var(--confirmed-bg);}
+  .change-yellow{border-color:var(--pending);background:var(--pending-bg);}
+  .change-red{border-color:var(--risk);background:var(--risk-bg);}
+  .change-box h4{margin:0 0 8px;font-size:14.5px;}
+  .change-green h4{color:var(--confirmed);}
+  .change-yellow h4{color:var(--pending);}
+  .change-red h4{color:var(--risk);}
+  .change-box ul{margin:0;padding-left:18px;font-size:13px;}
+  .change-box li{margin:3px 0;}
+
+  /* 路径步骤 */
+  .steps{counter-reset:step;list-style:none;padding-left:0;margin:12px 0;}
+  .steps li{counter-increment:step;position:relative;padding:10px 14px 10px 46px;margin:8px 0;background:var(--bg-gray);border-radius:8px;border-left:3px solid var(--secondary);font-size:13.5px;}
+  .steps li::before{content:counter(step);position:absolute;left:12px;top:50%;transform:translateY(-50%);background:var(--secondary);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;}
+
+  /* 首票门槛 */
+  .ready-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin:12px 0;}
+  .ready-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:7px;border:1px solid var(--border);background:#fff;font-size:13px;}
+  .ready-item .mark{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;}
+  .ready-item.ok .mark{background:var(--confirmed);}
+  .ready-item.no .mark{background:var(--pending);}
+  .ready-item.ok{border-color:var(--confirmed);}
+  .ready-item.no{border-color:var(--pending);background:var(--pending-bg);}
+
+  /* 待确认 */
+  .pending-card{background:var(--pending-bg);border:1px solid var(--pending);border-radius:9px;padding:14px 18px;margin:12px 0;}
+  .pending-card h4{margin:0 0 8px;color:var(--pending);font-size:14px;display:flex;align-items:center;gap:7px;}
+  .pending-card ol{margin:0;padding-left:20px;}
+  .pending-card li{margin:6px 0;font-size:13px;}
+
+  /* 名词库 */
+  .glossary{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;}
+  .gl-item{border:1px solid var(--border);border-radius:7px;padding:9px 12px;background:#fff;}
+  .gl-item .term{font-weight:700;color:var(--primary);font-size:13.5px;}
+  .gl-item .cn{color:var(--text-soft);font-size:12.5px;}
+  .gl-item .desc{font-size:12px;color:#647387;margin-top:3px;}
+
+  /* 链接 */
+  .res-list{list-style:none;padding-left:0;}
+  .res-list li{padding:9px 12px;border:1px solid var(--border);border-radius:7px;margin:8px 0;background:#fff;}
+  .res-list a{color:var(--proposed);font-weight:600;text-decoration:none;font-size:13.5px;}
+  .res-list a:hover{text-decoration:underline;}
+  .res-list .note{font-size:11.5px;color:#9aa5b1;margin-top:2px;}
+
+  /* 缩写提示 */
+  abbr.tt{border-bottom:1px dotted var(--secondary);cursor:help;color:var(--secondary);font-weight:600;text-decoration:none;}
+
+  /* 搜索高亮 */
+  mark{background:#ffe58a;color:#5a3e00;padding:0 1px;border-radius:2px;}
+
+  /* 返回顶部 */
+  .to-top{position:fixed;right:22px;bottom:22px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.25);display:none;z-index:60;}
+  .to-top:hover{background:var(--primary-soft);}
+
+  .school-head{font-size:12px;color:var(--text-soft);background:var(--bg-gray2);padding:8px 14px;border-radius:6px;margin-bottom:10px;}
+
+  /* 响应式 */
+  /* 中屏：侧边栏与内容留白随屏幕收缩，多列网格降为两列 */
+  @media(max-width:1200px){
+    .sidebar{width:196px;}
+    .content{margin-left:196px;}
+    .content{max-width:1300px;}
+    .g4{grid-template-columns:repeat(2,1fr);}
+    .g3{grid-template-columns:repeat(2,1fr);}
+    .chain{flex-direction:column;align-items:stretch;padding-bottom:0;overflow-x:visible;}
+    .chain .node{min-width:auto;flex:none;width:100%;padding:10px 12px;font-size:13px;}
+    .chain .arrow{padding:2px 0;transform:rotate(90deg);font-size:16px;}
+    .glossary{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
+  }
+  @media(max-width:1024px){
+    .sidebar{width:178px;}
+    .content{margin-left:178px;padding:22px 24px 70px;}
+    .g4{grid-template-columns:repeat(2,1fr);}
+    .g3{grid-template-columns:repeat(2,1fr);}
+  }
+  /* 平板 / 中小窗口：切换为抽屉式侧边栏，避免挤压内容 */
+  @media(max-width:880px){
+    .hamburger{display:block;}
+    .sidebar{transform:translateX(-100%);transition:transform .25s;width:250px;box-shadow:2px 0 12px rgba(0,0,0,.18);}
+    .sidebar.open{transform:translateX(0);}
+    .content{margin-left:0;padding:18px 16px 70px;max-width:100%;}
+    .g2,.g3,.g4{grid-template-columns:1fr;}
+    .topbar .t-sub{display:none;}
+    .search-wrap{flex:0 1 160px;}
+    section > .sec-head h2{font-size:16px;}
+  }
+  /* 手机：顶部栏精简、字号下调、网格单列、信息卡两列 */
+  @media(max-width:560px){
+    .topbar{padding:0 12px;gap:8px;}
+    .topbar .t-title{font-size:13.5px;}
+    .badge-train{display:none;}
+    .search-wrap{flex:1 1 80px;min-width:56px;}
+    .search-wrap input{max-width:none;}
+    .top-actions .btn-top{padding:6px 8px;font-size:11px;}
+    .top-actions #topBtn{display:none;}
+    .content{padding:14px 12px 70px;}
+    .legend{flex-wrap:wrap;gap:8px 14px;}
+    .kcard{grid-template-columns:repeat(auto-fit,minmax(110px,1fr));}
+    .ready-grid{grid-template-columns:1fr;}
+    .glossary{grid-template-columns:1fr;}
+    section > .sec-head .en{display:none;}
+    .sec-body{padding:16px 14px;}
+  }
+  /* 超宽屏：内容区适度放宽，避免过窄 */
+  @media(min-width:1700px){
+    .content{max-width:1500px;}
+  }
+
+  /* 打印 */
+  @media print{
+    .topbar,.sidebar,.to-top,.legend,.top-actions,.hamburger{display:none!important;}
+    .layout{padding-top:0;}
+    .content{margin-left:0;padding:0;max-width:100%;}
+    section{break-inside:avoid;box-shadow:none;border:1px solid #999;margin-bottom:14px;}
+    body{background:#fff;}
+    .card,.tbl-wrap,details{break-inside:avoid;}
+    a{color:#000;text-decoration:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- 顶部标题区 -->
+<header class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="菜单">☰</button>
+  <div>
+    <div class="t-title">欧律生 FDA与Amazon合规内部知识看板</div>
+    <div class="t-sub">Aurillis FDA &amp; Amazon Compliance Knowledge Hub</div>
+  </div>
+  <span class="badge-train">内部培训资料</span>
+  <div class="spacer"></div>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="全局关键词搜索…" autocomplete="off">
+    <span class="search-ico">🔍</span>
+    <span class="search-count" id="searchCount" style="display:none;"></span>
+  </div>
+  <div class="top-actions">
+    <button class="btn-top" id="printBtn">打印 / 导出PDF</button>
+    <button class="btn-top" id="topBtn">返回顶部</button>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- 左侧导航 -->
+  <aside class="sidebar" id="sidebar">
+    <div class="nav-hint">盆底电刺激产品｜合规链路培训</div>
+    <nav id="nav">
+      <a href="#s1">1. 总览</a>
+      <a href="#s2">2. 四条核心链路</a>
+      <a href="#s3">3. 主体与角色</a>
+      <a href="#s4">4. 产品与510(k)</a>
+      <a href="#s5">5. FDA注册与UDI</a>
+      <a href="#s6">6. Amazon上架合规</a>
+      <a href="#s7">7. Amazon运营避坑</a>
+      <a href="#s7check">8. 上架前检查清单</a>
+      <a href="#s7allow">9. 运营允许与禁止</a>
+      <a href="#s7bound">10. 跨部门工作边界</a>
+      <a href="#s8">11. HSA/FSA</a>
+      <a href="#s9">12. 阶段资料包</a>
+      <a href="#s10">13. 首票进口</a>
+      <a href="#s11">14. 当前待确认事项</a>
+      <a href="#s12">15. 后续导师QA</a>
+      <a href="#s13">16. 专业名词库</a>
+      <a href="#s14">17. 官方资料来源</a>
+    </nav>
+  </aside>
+
+  <!-- 右侧内容 -->
+  <main class="content">
+
+    <!-- 1 总览 -->
+    <section id="s1">
+      <div class="sec-head">
+        <h2><span class="num">1</span>总览</h2>
+        <div class="en">Overview</div>
+      </div>
+      <div class="legend">
+        <span><span class="dot dot-confirmed"></span>已确认</span>
+        <span><span class="dot dot-proposed"></span>当前拟议方案</span>
+        <span><span class="dot dot-pending"></span>待专业机构确认</span>
+        <span><span class="dot dot-risk"></span>风险或禁止事项</span>
+      </div>
+      <div class="sec-body">
+        <div class="callout callout-info">
+          <b>整个项目合规逻辑：</b>依士文负责制造和产品合规，深圳欧律生负责中国采购与出口协调，香港欧律生负责美国市场销售及相应FDA商业角色，美国合作方负责进口申报和上市后进口商责任。
+        </div>
+
+        <div class="grid g4">
+          <div class="card">
+            <h4>① 产品合规</h4>
+            <ul>
+              <li><b>510(k)：</b>K241899</li>
+              <li><b>持有人：</b>Easymed Instruments Co., Ltd.</li>
+              <li><span class="st st-confirmed">已确认</span> 当前可作为项目合规基础进行评估</li>
+              <li><b>关键前提：</b>最终产品不得改变预期用途、核心工作原理和主要技术参数</li>
+              <li><b>量产前要求：</b>完成书面差异评估或 No New 510(k) Assessment</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>② 主体角色</h4>
+            <ul>
+              <li><b>依士文：</b>制造商及 Device Listing 责任主体</li>
+              <li><b>深圳欧律生：</b>中国采购、供应链协调和中国出口主体</li>
+              <li><b>香港欧律生：</b>美国市场销售主体，拟承担境外自有品牌经销商及可能的外国出口商角色</li>
+              <li><b>美国合作方：</b>Importer of Record 及 Device Initial Importer，具体主体 <span class="st st-pending">待确认</span></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>③ Amazon上架</h4>
+            <ul>
+              <li>Amazon审核 ≠ FDA合规</li>
+              <li>必须提前形成完整、真实、彼此一致的证据链</li>
+              <li>运营不得自行修改医疗宣称、产品分类或合规文件</li>
+              <li>UPC、UDI、品牌、型号、包装和 Listing 信息必须一致</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>④ HSA/FSA</h4>
+            <ul>
+              <li>FDA合规 ≠ 自动获得 HSA/FSA 资格</li>
+              <li>需完成产品资格判断、SIGIS 相关路径及 UPC 与 ASIN 映射</li>
+              <li>HSA/FSA 应在产品合规链路稳定后单独推进</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 style="color:var(--primary);font-size:15px;margin-top:26px;">当前最关键的五个结论</h3>
+        <div class="grid g2">
+          <div class="callout callout-ok"><span class="st st-confirmed">已确认</span> 1. 依士文可以为 Aurillis 品牌和型号进行 Device Listing。</div>
+          <div class="callout callout-ok"><span class="st st-confirmed">已确认</span> 2. Device Listing 原则上由依士文完成。</div>
+          <div class="callout callout-ok"><span class="st st-confirmed">已确认</span> 3. 香港欧律生拟完成 FDA 注册。</div>
+          <div class="callout callout-ok"><span class="st st-confirmed">已确认</span> 4. 深圳欧律生在当前结构下原则上不注册 FDA。</div>
+          <div class="callout callout-warn" style="grid-column:1/-1;"><span class="st st-pending">待确认</span> 5. 美国 Device Initial Importer 及 Importer of Record 尚待落实。</div>
+        </div>
+        <div class="callout callout-warn">以上是当前项目组织方案，不代表所有角色已经完成最终法律或监管确认。</div>
+      </div>
+    </section>
+
+    <!-- 2 四条核心链路 -->
+    <section id="s2">
+      <div class="sec-head">
+        <h2><span class="num">2</span>四条核心链路</h2>
+        <div class="en">Four Core Chains</div>
+      </div>
+      <div class="sec-body">
+        <div class="grid g2">
+          <div class="card">
+            <h4>① 商业与合同链</h4>
+            <div class="chain">
+              <div class="node">依士文</div><div class="arrow">→</div>
+              <div class="node">深圳欧律生</div><div class="arrow">→</div>
+              <div class="node">香港欧律生</div><div class="arrow">→</div>
+              <div class="node">美国消费者</div>
+            </div>
+            <ul>
+              <li>依士文向深圳欧律生供应产品</li>
+              <li>深圳欧律生向香港欧律生销售</li>
+              <li>香港欧律生负责 Amazon 美国站销售</li>
+              <li>合同、发票和付款需要支持这一真实交易关系</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>② 货物流</h4>
+            <div class="chain">
+              <div class="node">依士文<br>佛山工厂</div><div class="arrow">→</div>
+              <div class="node">中国<br>出口口岸</div><div class="arrow">→</div>
+              <div class="node">美国<br>进口口岸</div><div class="arrow">→</div>
+              <div class="node">美国3PL<br>/FBA</div>
+            </div>
+            <ul>
+              <li>货物可以不经过深圳和香港实体所在地</li>
+              <li>商业交易路径和实际货运路径可以不同</li>
+              <li>必须通过合同、直发指令、发票和运输文件解释清楚</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>③ 中国出口链</h4>
+            <div class="chain">
+              <div class="node">依士文<br>供货</div><div class="arrow">→</div>
+              <div class="node">深圳欧律生<br>出口主体</div><div class="arrow">→</div>
+              <div class="node">香港欧律生<br>境外交易方</div><div class="arrow">→</div>
+              <div class="node">美国</div>
+            </div>
+            <ul>
+              <li>中国海关境内发货人 ≠ FDA Foreign Exporter</li>
+              <li>中国出口报关角色不能直接代替美国 FDA 角色</li>
+              <li>贸易国、运抵国、境外收货人和最终目的国应由中国报关行根据真实业务确认</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>④ FDA与美国进口链</h4>
+            <div class="chain">
+              <div class="node">依士文<br>Manufacturer</div><div class="arrow">→</div>
+              <div class="node">香港欧律生<br>境外商业角色</div><div class="arrow">→</div>
+              <div class="node">Customs<br>Broker</div><div class="arrow">→</div>
+              <div class="node">IOR/<br>Initial Importer</div><div class="arrow">→</div>
+              <div class="node">FBA</div>
+            </div>
+            <div class="callout callout-danger" style="margin-bottom:0;">Manufacturer、Foreign Exporter、Importer of Record、Device Initial Importer、U.S. Agent 和 Amazon FBA 是不同角色，不能混为一谈。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 主体与角色 -->
+    <section id="s3">
+      <div class="sec-head">
+        <h2><span class="num">3</span>主体与角色矩阵</h2>
+        <div class="en">Entities &amp; Roles</div>
+      </div>
+      <div class="sec-body">
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th>主体</th><th>中文角色</th><th>主要工作</th><th>边界 / 强调</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="role-tag">依士文</td>
+                <td>
+                  • 产品制造商<br>• FDA境外制造商<br>• 510(k)持有人<br>• Device Listing 责任主体
+                </td>
+                <td>
+                  • 保持 FDA Establishment Registration 有效<br>• 实际生产地址与FDA登记一致<br>• 将 Aurillis 品牌和型号纳入正确的 Device Listing<br>• 提供 K241899 相关资料<br>• 审核产品差异<br>• 提供书面差异评估或 No New 510(k) Assessment<br>• 配合 UDI、标签和进口资料
+                </td>
+                <td>
+                  <span class="st st-risk">风险</span> 允许贴牌 ≠ 最终产品自动被 K241899 覆盖<br><span class="st st-risk">风险</span> 口头确认不能代替书面差异评估<br><span class="st st-risk">风险</span> 实际量产版本必须与评估版本一致
+                </td>
+              </tr>
+              <tr>
+                <td class="role-tag">深圳欧律生</td>
+                <td>
+                  • 国内采购主体<br>• 供应链协调主体<br>• 产品合作及项目管理主体<br>• 中国出口相关主体
+                </td>
+                <td>
+                  • 组织采购、生产、质量和交付<br>• 维护中国采购及出口资料<br>• 协调依士文、香港公司、物流商和美国合作方<br>• 确保供应链文件与FDA申报故事一致<br>• 控制最终量产版本不得超出已评估范围
+                </td>
+                <td>
+                  <span class="st st-confirmed">已确认</span> 原则上不承担 FDA 注册主体角色<br><span class="st st-confirmed">已确认</span> 不作为 Manufacturer<br><span class="st st-confirmed">已确认</span> 不作为 510(k) Holder<br><span class="st st-risk">风险</span> 不建议在 ACE 申报中随意填写为 Foreign Exporter 或 DFE<br><span class="st st-risk">风险</span> 不应形成对最终设计规格和设计控制的完全独立控制，以免被认定为 Specification Developer
+                </td>
+              </tr>
+              <tr>
+                <td class="role-tag">香港欧律生</td>
+                <td>
+                  • 美国市场销售主体<br>• Amazon店铺经营主体<br>• 境外自有品牌经销商<br>• 可能承担外国出口商角色<br>• 拟作为 UDI Labeler<br><br>
+                  <span style="color:var(--secondary);font-size:12px;">Foreign Private Label Distributor / Foreign Exporter / UDI Labeler</span>
+                </td>
+                <td>
+                  • 完成适用的 FDA 企业注册<br>• 确认注册时准确的 Establishment Activity<br>• 配合产品 Device Listing 关系<br>• 申请或管理 UDI<br>• 负责美国销售资料和 Amazon 上架资料<br>• 维护标签、包装、品牌、型号和 ASIN 一致性
+                </td>
+                <td>
+                  <span class="st st-pending">待确认</span> 最终应采用哪个 FDA 活动类型<br><span class="st st-pending">待确认</span> 是否同时承担 Foreign Exporter<br><span class="st st-pending">待确认</span> Device Listing 由依士文完成后，香港公司如何建立关联<br><span class="st st-pending">待确认</span> 香港公司作为 UDI Labeler 的具体责任范围
+                </td>
+              </tr>
+              <tr>
+                <td class="role-tag">美国 Importer of Record</td>
+                <td>美国海关进口记录进口商 / 美国进口申报责任主体</td>
+                <td>
+                  • 承担 CBP 海关进口申报责任<br>• 提供 IOR Number<br>• 配置 Customs Bond<br>• 向 Customs Broker 提供 POA<br>• 对进口货值、HTS 和海关申报负责
+                </td>
+                <td><span class="st st-warn" style="background:var(--pending-bg);color:var(--pending);">强调</span> Importer of Record 主要是美国海关角色，不自动等于 FDA Device Initial Importer。</td>
+              </tr>
+              <tr>
+                <td class="role-tag">Device Initial Importer</td>
+                <td>医疗器械初始进口商</td>
+                <td>
+                  • 作为医疗器械首次进入美国商业链条的进口责任主体<br>• 完成适用的 FDA 注册<br>• 建立投诉、MDR、召回和供应商沟通机制<br>• 保存适用的进口和质量记录
+                </td>
+                <td><span class="st st-warn" style="background:var(--pending-bg);color:var(--pending);">强调</span> Device Initial Importer 不能简单理解为收货地址、货代或 Amazon 仓库。</td>
+              </tr>
+              <tr>
+                <td class="role-tag">U.S. Agent</td>
+                <td>美国代理人 / 美国联络代理</td>
+                <td>主要作为 FDA 与境外企业之间的美国联系窗口</td>
+                <td><span class="st st-warn" style="background:var(--pending-bg);color:var(--pending);">强调</span> 不自动承担海关 IOR 责任 / Initial Importer 责任 / 产品质量和召回责任。</td>
+              </tr>
+              <tr>
+                <td class="role-tag">Amazon FBA</td>
+                <td>送达仓库 / 履约仓库</td>
+                <td>仓储与履约</td>
+                <td><span class="st st-risk">风险</span> FBA 不是默认的 Importer of Record；不是默认的 Device Initial Importer；仓库地址不能代替合规进口主体。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 产品与510(k) -->
+    <section id="s4">
+      <div class="sec-head">
+        <h2><span class="num">4</span>产品与510(k)</h2>
+        <div class="en">Product &amp; 510(k) K241899</div>
+      </div>
+      <div class="sec-body">
+        <h4 style="color:var(--primary);margin-top:0;">K241899 信息卡</h4>
+        <div class="kcard">
+          <div class="cell"><div class="k">510(k) Number</div><div class="v">K241899</div></div>
+          <div class="cell"><div class="k">Applicant</div><div class="v">Easymed Instruments Co., Ltd.</div></div>
+          <div class="cell"><div class="k">Product</div><div class="v">Pelvic Floor Stimulator</div></div>
+          <div class="cell"><div class="k">Classification</div><div class="v">Class II</div></div>
+          <div class="cell"><div class="k">Regulation Number</div><div class="v">21 CFR 876.5320</div></div>
+          <div class="cell"><div class="k">Product Code</div><div class="v">KPI</div></div>
+          <div class="cell"><div class="k">Decision Date</div><div class="v">2024-11-27</div></div>
+          <div class="cell"><div class="k">Decision</div><div class="v">Substantially Equivalent</div></div>
+        </div>
+
+        <h4 style="color:var(--primary);margin-top:24px;">三色产品变更判断框架</h4>
+        <div class="grid g3">
+          <div class="change-box change-green">
+            <h4>🟢 绿色：一般可推进，仍需记录</h4>
+            <ul>
+              <li>品牌名称</li>
+              <li>型号名称</li>
+              <li>包装视觉</li>
+              <li>外壳颜色</li>
+              <li>不影响性能的人机界面文字调整</li>
+              <li>不改变安全性和有效性的轻微外观变化</li>
+            </ul>
+            <div class="callout callout-ok" style="margin:10px 0 0;">绿色不代表无需审核，仍应纳入差异报告。</div>
+          </div>
+          <div class="change-box change-yellow">
+            <h4>🟡 黄色：须由依士文和专业机构评估</h4>
+            <ul>
+              <li>外壳结构；屏幕；按键；线材；接口</li>
+              <li>电极探头尺寸；电极探头材料</li>
+              <li>软件界面；训练记录功能；新增记忆功能</li>
+              <li>包装结构；英文说明书</li>
+              <li>警告语和禁忌症</li>
+            </ul>
+          </div>
+          <div class="change-box change-red">
+            <h4>🔴 红色：未经新法规评估不得修改</h4>
+            <ul>
+              <li>Intended Use 预期用途</li>
+              <li>Indications for Use 适用范围</li>
+              <li>治疗原理；核心波形</li>
+              <li>输出电流；输出电压；脉冲宽度；频率范围</li>
+              <li>关键治疗模式；关键安全控制</li>
+              <li>与510(k)清关内容不同的医疗宣称</li>
+            </ul>
+            <div class="callout callout-danger" style="margin:10px 0 0;">贴牌、改品牌或新增型号不等于可以改变产品的医疗用途和核心技术参数。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 FDA注册与UDI -->
+    <section id="s5">
+      <div class="sec-head">
+        <h2><span class="num">5</span>FDA注册、Device Listing、510(k)和UDI</h2>
+        <div class="en">Registration · Listing · 510(k) · UDI</div>
+      </div>
+      <div class="sec-body">
+        <div class="grid g2">
+          <div class="card">
+            <h4>FDA Establishment Registration</h4>
+            <div class="school-head">中文：FDA企业或场所注册</div>
+            <p style="font-size:13px;margin:0 0 8px;"><b>回答的问题：</b>“哪些企业或场所参与了医疗器械生产、出口、进口或相关活动？”</p>
+            <ul>
+              <li>注册需要按年度维护</li>
+              <li>注册不能证明产品获得 510(k)</li>
+              <li><span class="st st-risk">禁止</span> 虚构 Registration Number 或 FEI Number</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>Device Listing</h4>
+            <div class="school-head">中文：医疗器械产品列名</div>
+            <p style="font-size:13px;margin:0 0 8px;"><b>回答的问题：</b>“某个已注册企业正在生产或经营哪些医疗器械？”</p>
+            <p style="font-size:13px;margin:0 0 6px;"><b>本项目拟议安排：</b></p>
+            <ul>
+              <li>由依士文将 Aurillis 品牌和型号纳入正确的 Device Listing</li>
+              <li>必须确认 Listing 所关联的 510(k)、产品代码、品牌和型号准确</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>510(k)</h4>
+            <div class="school-head">中文：上市前通知 / 实质等同路径</div>
+            <p style="font-size:13px;margin:0 0 8px;"><b>回答的问题：</b>“该产品是否通过实质等同路径获得上市许可？”</p>
+            <ul>
+              <li>510(k) 不是企业注册</li>
+              <li>510(k) 不是 Device Listing</li>
+              <li>510(k) 不是品牌授权书</li>
+              <li>使用工厂 K 号必须确认最终产品是否仍在其许可范围内</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4>UDI</h4>
+            <div class="school-head">中文：唯一器械标识</div>
+            <p style="font-size:13px;margin:0 0 8px;"><b>回答的问题：</b>“如何通过标准化编码识别具体医疗器械、版本和包装层级？”</p>
+            <p style="font-size:13px;margin:0 0 6px;"><b>本项目拟议安排：</b></p>
+            <ul>
+              <li>香港欧律生完成 FDA 注册后，计划自行承担 UDI Labeler 角色</li>
+              <li>需选择符合 FDA 要求的 UDI Issuing Agency</li>
+              <li>建立 DI、包装层级、标签和 GUDID 数据之间的对应关系</li>
+              <li>具体流程 <span class="st st-pending">待专业机构确认</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout callout-warn">UPC 和 UDI 可能都使用 GS1 体系，但 UPC 商品条码不能简单等同于 UDI。</div>
+      </div>
+    </section>
+
+    <!-- 6 Amazon上架合规 -->
+    <section id="s6">
+      <div class="sec-head">
+        <h2><span class="num">6</span>Amazon医疗器械上架合规</h2>
+        <div class="en">Amazon Medical Device Listing Compliance</div>
+      </div>
+      <div class="sec-body">
+        <h4 style="color:var(--primary);margin-top:0;">平台明确规则</h4>
+        <p style="font-size:13.5px;">运营需要准备或随时能够提供：</p>
+        <div class="grid g3">
+          <div class="card"><ul>
+            <li>产品真实名称</li><li>品牌和型号</li><li>510(k) Number</li><li>Manufacturer 信息</li><li>FDA Registration 相关信息</li><li>Device Listing 相关信息</li>
+          </ul></div>
+          <div class="card"><ul>
+            <li>产品标签</li><li>英文说明书</li><li>包装图片</li><li>UDI 信息</li><li>产品实拍图</li><li>授权或合作关系文件</li>
+          </ul></div>
+          <div class="card"><ul>
+            <li>适用的检测报告</li><li>供应商及生产信息</li><li>标签与说明书一致性</li><li>包装与页面一致性</li><li>合规文件可核验版本</li><li>提交与回复记录</li>
+          </ul></div>
+        </div>
+        <div class="callout callout-danger">
+          • Amazon 审核通过 ≠ FDA 已经确认合规。<br>
+          • FDA 网站能查到 K 号，≠ Aurillis 产品自动获得覆盖。<br>
+          • 产品图片、标签、说明书和 Amazon 页面宣称必须保持一致。<br>
+          • 平台可能要求补充多个文件，不一定一次性告知全部要求。<br>
+          • <span class="st st-risk">禁止</span> 把未经确认的医疗宣称写入标题、五点、A+、图片或广告。
+        </div>
+
+        <h4 style="color:var(--primary);margin-top:24px;">项目操作原则</h4>
+        <div class="grid g2">
+          <div class="card"><ul>
+            <li>上架前先建立完整合规资料包</li>
+            <li>文件中的品牌、型号、公司名称和地址保持一致</li>
+            <li>PDF 文件使用清晰、完整、可核验版本</li>
+            <li>不上传经过涂改、拼接或无法追溯的合规文件</li>
+          </ul></div>
+          <div class="card"><ul>
+            <li>每次修改 Listing 前，先判断是否涉及医疗宣称</li>
+            <li><span class="st st-risk">禁止</span> 运营单独修改 Intended Use、适用人群或治疗效果</li>
+            <li>产品分类、FDA 信息和医疗宣称变化，先由项目负责人审核</li>
+            <li>保存每次向 Amazon 提交的文件和平台回复记录</li>
+          </ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 Amazon运营避坑 -->
+    <section id="s7">
+      <div class="sec-head">
+        <h2><span class="num">7</span>Amazon运营实操避坑</h2>
+        <div class="en">Operational Pitfalls</div>
+      </div>
+      <div class="sec-body">
+        <div class="tbl-wrap">
+          <table class="pitfall">
+            <thead><tr><th style="width:30%;">常见做法</th><th style="width:35%;">风险</th><th style="width:35%;">正确处理方式</th></tr></thead>
+            <tbody>
+              <tr><td>把 Amazon 审核通过当作 FDA 合规</td><td class="pf-w">平台审核只是平台层面的准入判断，不能替代 FDA 合规责任。</td><td class="pf-r">同时维护 FDA 证据链和 Amazon 资料链。</td></tr>
+              <tr><td>直接使用工厂 K 号上架</td><td class="pf-w">若没有品牌、型号、Listing 和产品差异文件，易被质疑产品与 K 号关系。</td><td class="pf-r">准备工厂授权、Device Listing、产品差异说明和标签资料。</td></tr>
+              <tr><td>运营自行扩大医疗宣称</td><td class="pf-w">页面宣称可能超出 510(k) 许可范围，触发平台审核或 FDA 风险。</td><td class="pf-r">建立“允许使用的宣称词库”和“禁止使用的宣称词库”。</td></tr>
+              <tr><td>为上架把 Class II 产品填成普通商品</td><td class="pf-w">可能造成分类错误、文件不一致和账号风险。</td><td class="pf-r">按照产品真实法规属性申报。</td></tr>
+              <tr><td>UPC、型号、UDI 和 ASIN 关系混乱</td><td class="pf-w">可能影响上架审核、HSA/FSA、后续追溯和召回。</td><td class="pf-r">建立一份统一的编码映射表。</td></tr>
+              <tr><td>先发货，再补 FDA 注册或 Device Listing</td><td class="pf-w">可能造成 FDA 进口申报错误、扣货或无法解释主体关系。</td><td class="pf-r">发货前完成注册、Listing 及 ACE 数据预审。</td></tr>
+              <tr><td>让货代自行决定 FDA Shipper 或 DFE</td><td class="pf-w">货代可能按运输习惯填写，而非按 FDA 角色填写。</td><td class="pf-r">由 FDA 顾问、美国报关行和项目负责人共同确认。</td></tr>
+              <tr><td>使用不披露 IOR 和 ACE 数据的包税渠道</td><td class="pf-w">公司无法确认谁承担进口责任，也无法取得完整进口档案。</td><td class="pf-r">必须知道 IOR、Customs Broker、ACE 申报数据和最终进口文件。</td></tr>
+              <tr><td>购买账号、伪造资料或借用无关资质</td><td class="pf-w">高风险行为，可能造成账号、资金、库存和监管风险。</td><td class="pf-r">只使用真实公司、真实产品和真实文件。</td></tr>
+              <tr><td>把行业“潜规则”当作正式政策</td><td class="pf-w">个别卖家历史经验不一定适用当前平台规则，也不一定合规。</td><td class="pf-r">将内容分为“官方规则 / 实操经验 / 风险做法”三个等级。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 上架前检查清单 -->
+    <section id="s7check">
+      <div class="sec-head">
+        <h2><span class="num">8</span>运营上架前检查清单</h2>
+        <div class="en">Pre-launch Checklist</div>
+      </div>
+      <div class="sec-body">
+        <div class="grid g2">
+          <details open>
+            <summary>产品身份一致性</summary>
+            <div class="det-body"><ul class="check-list">
+              <li>品牌是否统一</li>
+              <li>型号是否统一</li>
+              <li>Manufacturer 是否统一</li>
+              <li>产品名称是否统一</li>
+              <li>包装和说明书是否对应实际销售版本</li>
+              <li>Amazon 图片是否对应实际量产版本</li>
+            </ul></div>
+          </details>
+          <details open>
+            <summary>FDA资料一致性</summary>
+            <div class="det-body"><ul class="check-list">
+              <li>K号是否正确</li>
+              <li>Device Listing 是否覆盖 Aurillis 品牌和型号</li>
+              <li>FDA 注册是否有效</li>
+              <li>Manufacturer 名称和地址是否正确</li>
+              <li>UDI 信息是否正确</li>
+              <li>标签上的 FDA 相关信息是否存在误导</li>
+            </ul></div>
+          </details>
+          <details open>
+            <summary>医疗宣称</summary>
+            <div class="det-body"><ul class="check-list">
+              <li>标题是否超范围</li>
+              <li>五点描述是否超范围</li>
+              <li>A+ 是否超范围</li>
+              <li>图片文字是否超范围</li>
+              <li>广告关键词是否暗示未经许可的治疗效果</li>
+              <li>站外推广话术是否与 Amazon 页面和说明书一致</li>
+            </ul></div>
+          </details>
+          <details open>
+            <summary>文件提交</summary>
+            <div class="det-body"><ul class="check-list">
+              <li>文件是否清晰</li>
+              <li>是否为完整页面</li>
+              <li>是否使用最终版本</li>
+              <li>是否存在涂改或拼接</li>
+              <li>公司名称、品牌、型号和地址是否一致</li>
+              <li>是否保存提交记录及 Amazon 回复</li>
+            </ul></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 运营允许与禁止 -->
+    <section id="s7allow">
+      <div class="sec-head">
+        <h2><span class="num">9</span>运营允许使用与禁止使用的规则</h2>
+        <div class="en">Allowed vs. Prohibited for Operations</div>
+      </div>
+      <div class="sec-body">
+        <div class="grid g2">
+          <div class="change-box change-green">
+            <h4>🟢 运营可以做</h4>
+            <ul>
+              <li>使用已经审核通过的产品名称和医疗宣称</li>
+              <li>按照统一资料包提交 Amazon 审核</li>
+              <li>维护 UPC、UDI、型号和 ASIN 映射</li>
+              <li>保存平台回复和提交记录</li>
+              <li>发现竞品新宣称时提交内部评估</li>
+              <li>收集客户反馈并转交质量和产品团队</li>
+              <li>根据批准版本制作页面和广告</li>
+            </ul>
+          </div>
+          <div class="change-box change-red">
+            <h4>🔴 运营不能单独做</h4>
+            <ul>
+              <li>修改产品预期用途</li>
+              <li>增加新的疾病治疗宣称</li>
+              <li>把医疗器械改成普通消费品分类</li>
+              <li>修改 Manufacturer 信息</li>
+              <li>随意填写 FDA Registration 或 Listing Number</li>
+              <li>直接使用工厂 K 号但不核实产品覆盖</li>
+              <li>修改型号后不通知供应链和合规负责人</li>
+              <li>自行制作或修改 FDA 文件</li>
+              <li>使用虚假授权、拼接文件或无关检测报告</li>
+              <li>承诺 HSA/FSA 资格</li>
+              <li>让货代代替公司决定 FDA 角色</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 跨部门工作边界 -->
+    <section id="s7bound">
+      <div class="sec-head">
+        <h2><span class="num">10</span>跨部门工作边界</h2>
+        <div class="en">Cross-functional Responsibility Boundaries</div>
+      </div>
+      <div class="sec-body">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th style="width:18%;">部门</th><th style="width:41%;">负责</th><th style="width:41%;">不得单独决定</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="role-tag">供应链</td>
+                <td>
+                  • 供应商 FDA 资料<br>• 生产地址<br>• 量产一致性<br>• 产品变更沟通<br>• 出口和运输资料<br>• 物流合作方协调
+                </td>
+                <td>
+                  <span class="st st-risk">禁止</span> 510(k) 覆盖结论<br><span class="st st-risk">禁止</span> FDA 注册角色<br><span class="st st-risk">禁止</span> Amazon 医疗宣称
+                </td>
+              </tr>
+              <tr>
+                <td class="role-tag">产品与项目团队</td>
+                <td>
+                  • 最终产品定义<br>• 差异清单<br>• 参数锁定<br>• 标签和说明书版本<br>• 跨部门资料一致性
+                </td>
+                <td><span class="st st-risk">禁止</span> 某项重大变更一定不需要新 510(k)</td>
+              </tr>
+              <tr>
+                <td class="role-tag">Amazon运营</td>
+                <td>
+                  • 平台上架<br>• 页面资料<br>• 平台审核<br>• HSA/FSA 推进<br>• 保存平台沟通记录<br>• 监控竞品和平台规则变化
+                </td>
+                <td>
+                  <span class="st st-risk">禁止</span> 产品 FDA 分类<br><span class="st st-risk">禁止</span> 医疗宣称范围<br><span class="st st-risk">禁止</span> FDA 主体角色<br><span class="st st-risk">禁止</span> 合规文件内容
+                </td>
+              </tr>
+              <tr>
+                <td class="role-tag">管理层</td>
+                <td>
+                  • 确定总体组织方案<br>• 选择 FDA 机构和美国合作方<br>• 审批重大风险<br>• 确认首票是否可以发货
+                </td>
+                <td><span style="color:var(--text-soft);font-size:12.5px;">总体统筹，对重大合规与发货决策负最终责任。</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 HSA/FSA -->
+    <section id="s8">
+      <div class="sec-head">
+        <h2><span class="num">11</span>HSA/FSA</h2>
+        <div class="en">HSA / FSA Eligibility Path</div>
+      </div>
+      <div class="sec-body">
+        <div class="callout callout-info">HSA/FSA 是美国健康消费账户的支付资格路径，<b>不是 FDA 许可</b>。产品完成 FDA 合规并不代表自动获得 HSA/FSA 资格。</div>
+
+        <h4 style="color:var(--primary);">建议路径</h4>
+        <ol class="steps">
+          <li>确认产品是否属于可使用 HSA/FSA 支付的合格医疗费用</li>
+          <li>确认产品是否属于需要处方或 Letter of Medical Necessity 的类型</li>
+          <li>确认香港欧律生、美国销售结构和商品编码关系</li>
+          <li>准备 UPC、品牌、型号、产品类别和 FDA 支持文件</li>
+          <li>按照 SIGIS 及相关支付资格规则进行申请或数据提交</li>
+          <li>建立 UPC 与 Amazon ASIN 的准确映射</li>
+          <li>向 Amazon 提交 HSA/FSA 相关申请或配合平台数据匹配</li>
+          <li>检查商品详情页是否出现 FSA/HSA Eligible 标识</li>
+          <li>监控 UPC、ASIN、变体及包装调整是否影响资格</li>
+        </ol>
+
+        <h4 style="color:var(--primary);margin-top:20px;">HSA/FSA 资料包</h4>
+        <div class="grid g3">
+          <div class="card"><ul>
+            <li>产品名称</li><li>品牌和型号</li><li>UPC</li><li>ASIN</li>
+          </ul></div>
+          <div class="card"><ul>
+            <li>产品类别</li><li>产品用途</li><li>510(k) Number</li><li>Manufacturer</li>
+          </ul></div>
+          <div class="card"><ul>
+            <li>Device Listing 支持材料</li><li>产品标签</li><li>英文说明书</li><li>产品图片</li>
+          </ul></div>
+        </div>
+        <div class="card" style="margin-top:12px;"><ul>
+          <li>SIGIS 相关资料</li><li>UPC 与 ASIN 映射表</li>
+        </ul></div>
+
+        <div class="callout callout-danger">
+          • 不要把 HSA/FSA 当作医疗器械认证。<br>
+          • 不要仅凭竞品带有 HSA/FSA 标识，就判断自己的产品一定可以申请。<br>
+          • 不要在 UPC、型号和 ASIN 尚未稳定时过早申请。<br>
+          • HSA/FSA 具体申请主体、费用和周期 <span class="st st-pending">待有实操经验的导师确认</span>。
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 阶段资料包 -->
+    <section id="s9">
+      <div class="sec-head">
+        <h2><span class="num">12</span>分阶段资料包</h2>
+        <div class="en">Phase-based Documentation Packages</div>
+      </div>
+      <div class="sec-body">
+        <details open>
+          <summary>阶段一：供应商和法规基础确认</summary>
+          <div class="det-body">
+            <div class="school-head">资料</div>
+            <ul>
+              <li>依士文 FDA Establishment Registration</li>
+              <li>企业名称及注册地址</li>
+              <li>实际生产地址</li>
+              <li>K241899 Clearance Letter</li>
+              <li>K241899 Summary 或 Statement</li>
+              <li>当前 Device Listing 信息</li>
+              <li>FDA-cleared Label</li>
+              <li>FDA-cleared IFU</li>
+              <li>产品技术参数</li>
+              <li>OTC 或 Prescription 属性说明</li>
+            </ul>
+            <div class="callout callout-ok"><b>进入下一阶段条件：</b>确认依士文主体、生产地址、K241899 和产品基础信息真实有效。</div>
+          </div>
+        </details>
+        <details>
+          <summary>阶段二：产品定义和差异评估</summary>
+          <div class="det-body">
+            <ul>
+              <li>Aurillis 最终产品定义</li>
+              <li>外观差异表</li>
+              <li>技术参数差异表</li>
+              <li>电极探头差异</li>
+              <li>软件和 UI 差异</li>
+              <li>标签差异</li>
+              <li>说明书差异</li>
+              <li>测试和验证报告</li>
+              <li>No New 510(k) Assessment</li>
+            </ul>
+            <div class="callout callout-ok"><b>进入下一阶段条件：</b>书面确认最终产品不需要提交新的 510(k)，或已确定新的法规路径。</div>
+          </div>
+        </details>
+        <details>
+          <summary>阶段三：品牌、注册、Listing 和 UDI</summary>
+          <div class="det-body">
+            <ul>
+              <li>香港公司 FDA 注册</li>
+              <li>准确 Establishment Activity</li>
+              <li>U.S. Agent 信息</li>
+              <li>Aurillis 品牌和型号 Device Listing</li>
+              <li>Private Label 或品牌合作协议</li>
+              <li>FDA 资料使用授权</li>
+              <li>UDI Labeler 确认</li>
+              <li>DI 编码</li>
+              <li>GUDID 资料</li>
+              <li>最终标签</li>
+            </ul>
+            <div class="callout callout-ok"><b>进入下一阶段条件：</b>品牌、型号、Listing、UDI 和标签关系完整且一致。</div>
+          </div>
+        </details>
+        <details>
+          <summary>阶段四：Amazon上架资料</summary>
+          <div class="det-body">
+            <ul>
+              <li>产品主图和详情图</li>
+              <li>英文说明书</li>
+              <li>标签和包装图</li>
+              <li>510(k) 支持资料</li>
+              <li>FDA 注册支持资料</li>
+              <li>Device Listing 支持资料</li>
+              <li>授权文件</li>
+              <li>检测报告</li>
+              <li>允许使用的医疗宣称</li>
+              <li>UPC、UDI、型号和 ASIN 映射表</li>
+            </ul>
+            <div class="callout callout-ok"><b>进入下一阶段条件：</b>运营可以使用统一、完整且经过审核的资料上架。</div>
+          </div>
+        </details>
+        <details>
+          <summary>阶段五：首票进口资料</summary>
+          <div class="det-body">
+            <ul>
+              <li>出口合同</li>
+              <li>商业发票</li>
+              <li>装箱单</li>
+              <li>中国出口报关草单</li>
+              <li>Direct Shipment Instruction</li>
+              <li>提单或空运单</li>
+              <li>Importer of Record 信息</li>
+              <li>Device Initial Importer 信息</li>
+              <li>Customs Bond</li>
+              <li>Customs Broker POA</li>
+              <li>ACE Draft Entry</li>
+              <li>FDA 实体代码</li>
+              <li>510(k)、Listing 和 UDI 信息</li>
+              <li>FDA May Proceed</li>
+              <li>CBP Form 7501</li>
+              <li>美国入仓证明</li>
+            </ul>
+            <div class="callout callout-ok"><b>进入下一阶段条件：</b>美国报关行已完成 ACE 数据预审，所有主体和代码均可解释且相互一致。</div>
+          </div>
+        </details>
+        <details>
+          <summary>阶段六：上市后资料</summary>
+          <div class="det-body">
+            <ul>
+              <li>客诉记录</li>
+              <li>不良事件判断</li>
+              <li>MDR 流程</li>
+              <li>退换货原因</li>
+              <li>CAPA 记录</li>
+              <li>召回预案</li>
+              <li>Initial Importer 沟通机制</li>
+              <li>批次和 UDI 追溯记录</li>
+              <li>Amazon 审核和申诉记录</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- 10 首票进口 -->
+    <section id="s10">
+      <div class="sec-head">
+        <h2><span class="num">13</span>首票进口关键门槛</h2>
+        <div class="en">Ready to Ship · First Shipment Gate</div>
+      </div>
+      <div class="sec-body">
+        <div class="callout callout-warn">以下仅做信息展示，不需要勾选、提交或填写功能。只有当全部事项明确后，才可判定“首票可发货”。</div>
+        <h4 style="color:var(--primary);margin-top:8px;">“Ready to Ship” 首票可发货判断</h4>
+        <div class="ready-grid">
+          <div class="ready-item no"><span class="mark">!</span>依士文 FDA 注册有效</div>
+          <div class="ready-item no"><span class="mark">!</span>实际生产地址一致</div>
+          <div class="ready-item no"><span class="mark">!</span>K241899 覆盖判断完成</div>
+          <div class="ready-item no"><span class="mark">!</span>No New 510(k) Assessment 完成</div>
+          <div class="ready-item no"><span class="mark">!</span>Aurillis 品牌和型号完成 Device Listing</div>
+          <div class="ready-item no"><span class="mark">!</span>香港公司的 FDA 角色和注册完成</div>
+          <div class="ready-item no"><span class="mark">!</span>UDI 路径完成</div>
+          <div class="ready-item no"><span class="mark">!</span>Importer of Record 确定</div>
+          <div class="ready-item no"><span class="mark">!</span>Device Initial Importer 确定</div>
+          <div class="ready-item no"><span class="mark">!</span>Customs Broker 确定</div>
+          <div class="ready-item no"><span class="mark">!</span>ACE Draft Entry 预审完成</div>
+          <div class="ready-item no"><span class="mark">!</span>发票、提单和 FDA 申报主体一致</div>
+          <div class="ready-item no"><span class="mark">!</span>Amazon 上架资料包基本完整</div>
+        </div>
+        <div class="callout callout-danger">Not Ready ｜ 当前不建议安排首票发货。（橙色项均为尚未落实的待确认事项，详见第 11 节。）</div>
+      </div>
+    </section>
+
+    <!-- 11 当前待确认事项 -->
+    <section id="s11">
+      <div class="sec-head">
+        <h2><span class="num">14</span>当前待确认事项</h2>
+        <div class="en">Open Items · Pending Confirmation</div>
+      </div>
+      <div class="sec-body">
+        <div class="pending-card">
+          <h4>🔶 FDA机构需要确认</h4>
+          <ol>
+            <li>香港欧律生应注册为什么 Establishment Activity？</li>
+            <li>香港欧律生应被认定为 Foreign Private Label Distributor、Foreign Exporter，还是同时承担两种活动？</li>
+            <li>深圳欧律生在目前职责下是否完全不需要 FDA 注册？</li>
+            <li>深圳欧律生是否存在被认定为 Specification Developer 的风险？</li>
+            <li>依士文如何把 Aurillis 品牌和型号加入 Device Listing？</li>
+            <li>香港欧律生作为 UDI Labeler 是否合适？</li>
+            <li>香港公司 UDI 与依士文 Device Listing 如何建立正确关系？</li>
+            <li>最终产品差异评估应由谁签署？</li>
+            <li>什么程度的外观、UI、线材、电极探头和软件变化会触发新 510(k)？</li>
+            <li>产品最终属于 OTC、Prescription 还是两者适用？</li>
+            <li>标签、说明书和 Amazon 页面可以使用哪些医疗宣称？</li>
+            <li>香港公司注册后需要承担哪些持续性合规责任？</li>
+          </ol>
+        </div>
+        <div class="pending-card">
+          <h4>🔶 美国物流和报关合作方需要确认</h4>
+          <ol>
+            <li>谁担任 Importer of Record？</li>
+            <li>谁担任 Device Initial Importer？</li>
+            <li>两个角色是否由同一家公司承担？</li>
+            <li>ACE 中的 Manufacturer、Shipper、DEV、DFE、LST、PM#、DI 和 FD1 分别如何填写？</li>
+            <li>提单 Shipper 应填写依士文、深圳欧律生还是香港欧律生？</li>
+            <li>物流商是否可以提供完整 ACE 申报数据？</li>
+            <li>是否可以提供 CBP Form 7501 和 FDA May Proceed？</li>
+            <li>首票发货前能否进行 ACE Draft Entry 预审？</li>
+            <li>Amazon FBA 在申报中仅作为 Delivered-to Party 是否正确？</li>
+            <li>进口发生 FDA 查验、扣货或补资料时由谁处理？</li>
+          </ol>
+        </div>
+        <div class="pending-card">
+          <h4>🔶 Amazon实操导师需要确认</h4>
+          <ol>
+            <li>当前 Amazon 医疗器械上架的实际审核入口和资料要求是什么？</li>
+            <li>新 ASIN 和老 ASIN 在医疗器械审核上有何差异？</li>
+            <li>哪些字段最容易触发 Medical Device 审核？</li>
+            <li>平台通常如何核验 510(k)、Registration 和 Device Listing？</li>
+            <li>品牌、型号、UPC、UDI 和 ASIN 如何建立最稳定的映射？</li>
+            <li>产品上架后修改标题、类目、宣称或图片，哪些动作风险最高？</li>
+            <li>Amazon 常见拒绝原因是什么？</li>
+            <li>被要求补充文件时，怎样组织资料最容易通过？</li>
+            <li>HSA/FSA 目前的实际申请入口、资料、费用和周期是什么？</li>
+            <li>变体、换 UPC 或换包装是否会影响 HSA/FSA 资格？</li>
+            <li>哪些所谓“实操技巧”已经失效或风险过高？</li>
+            <li>哪些资料应在产品量产前就准备，而不是等平台审核后再补？</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 后续导师QA -->
+    <section id="s12">
+      <div class="sec-head">
+        <h2><span class="num">15</span>后续导师QA</h2>
+        <div class="en">Follow-up Mentor Q&amp;A</div>
+      </div>
+      <div class="sec-body">
+        <div class="callout callout-warn">本节用于集中收录课程培训和行业交流后，向 FDA 机构、Amazon 实操导师和物流合作方确认的问题与答复，作为内部知识库持续更新。内容按“官方规则 / 实操经验 / 风险做法”三级归档，不把培训老师的经验包装成 FDA 或 Amazon 官方政策。</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th style="width:18%;">来源</th><th style="width:42%;">问题</th><th style="width:40%;">答复 / 结论</th></tr></thead>
+            <tbody>
+              <tr><td>FDA机构</td><td>（见第11节 FDA机构待确认清单）</td><td><span class="st st-pending">待确认</span> 收到答复后归档</td></tr>
+              <tr><td>物流/报关</td><td>（见第11节 物流报关待确认清单）</td><td><span class="st st-pending">待确认</span> 收到答复后归档</td></tr>
+              <tr><td>Amazon导师</td><td>（见第11节 Amazon导师待确认清单）</td><td><span class="st st-pending">待确认</span> 收到答复后归档</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:12.5px;color:var(--text-soft);">归档原则：官方规则标绿引用来源链接；实操经验标蓝注明“经验判断、非官方政策”；风险做法标红并加禁止标识。</p>
+      </div>
+    </section>
+
+    <!-- 13 专业名词库 -->
+    <section id="s13">
+      <div class="sec-head">
+        <h2><span class="num">16</span>专业名词库</h2>
+        <div class="en">Glossary</div>
+      </div>
+      <div class="sec-body">
+        <p style="font-size:13px;color:var(--text-soft);">鼠标悬停页面内英文缩写也可显示中文解释。以下为完整术语对照：</p>
+        <div class="glossary">
+          <div class="gl-item"><div class="term">Manufacturer</div><div class="cn">制造商</div><div class="desc">实际生产医疗器械的企业。</div></div>
+          <div class="gl-item"><div class="term">Foreign Manufacturer</div><div class="cn">境外制造商</div><div class="desc">位于美国以外的制造商。</div></div>
+          <div class="gl-item"><div class="term">Specification Developer</div><div class="cn">规格开发商</div><div class="desc">对最终设计规格和设计控制独立负责的主体，可能被认定为需注册方。</div></div>
+          <div class="gl-item"><div class="term">Foreign Private Label Distributor</div><div class="cn">境外自有品牌经销商</div><div class="desc">以自有品牌转售他人制造产品，位于境外。</div></div>
+          <div class="gl-item"><div class="term">Foreign Exporter</div><div class="cn">外国出口商</div><div class="desc">将产品出口至美国的相关主体，是 FDA 角色而非中国报关角色。</div></div>
+          <div class="gl-item"><div class="term">Establishment Registration</div><div class="cn">企业或场所注册</div><div class="desc">企业/场所向 FDA 登记其医疗器械相关活动。</div></div>
+          <div class="gl-item"><div class="term">Device Listing</div><div class="cn">医疗器械产品列名</div><div class="desc">已注册企业列明其生产或经营的医疗器械。</div></div>
+          <div class="gl-item"><div class="term">510(k)</div><div class="cn">上市前通知 / 实质等同路径</div><div class="desc">证明产品与已上市合法产品实质等同的上市路径。</div></div>
+          <div class="gl-item"><div class="term">K Number</div><div class="cn">510(k) 编号</div><div class="desc">如 K241899。</div></div>
+          <div class="gl-item"><div class="term">UDI</div><div class="cn">唯一器械标识</div><div class="desc">用于识别医疗器械的标准化编码。</div></div>
+          <div class="gl-item"><div class="term">UDI Labeler</div><div class="cn">UDI 标签责任方</div><div class="desc">负责将 UDI 赋予并标注于标签的主体。</div></div>
+          <div class="gl-item"><div class="term">DI</div><div class="cn">器械标识</div><div class="desc">UDI 中识别标签主体与包装层级的固定部分。</div></div>
+          <div class="gl-item"><div class="term">PI</div><div class="cn">生产标识</div><div class="desc">UDI 中识别批次、序列号、生产日期等的可变部分。</div></div>
+          <div class="gl-item"><div class="term">GUDID</div><div class="cn">全球唯一器械标识数据库</div><div class="desc">FDA 维护的 UDI 公开数据库。</div></div>
+          <div class="gl-item"><div class="term">U.S. Agent</div><div class="cn">美国代理人</div><div class="desc">FDA 与境外企业之间的美国联系窗口。</div></div>
+          <div class="gl-item"><div class="term">Importer of Record</div><div class="cn">美国海关进口申报责任主体</div><div class="desc">承担 CBP 进口申报责任的美国主体。</div></div>
+          <div class="gl-item"><div class="term">Device Initial Importer</div><div class="cn">医疗器械初始进口商</div><div class="desc">器械首次进入美国商业链条的进口责任主体。</div></div>
+          <div class="gl-item"><div class="term">Customs Broker</div><div class="cn">美国报关行</div><div class="desc">代理办理美国海关进口申报的机构。</div></div>
+          <div class="gl-item"><div class="term">ACE</div><div class="cn">美国自动化商业环境申报系统</div><div class="desc">CBP 用于进口申报的自动化系统。</div></div>
+          <div class="gl-item"><div class="term">DFE</div><div class="cn">FDA 境外出口方相关实体代码</div><div class="desc">FDA 申报中的 Foreign Exporter 实体标识。</div></div>
+          <div class="gl-item"><div class="term">DEV</div><div class="cn">FDA 境外制造商相关实体代码</div><div class="desc">FDA 申报中的 Manufacturer 实体标识。</div></div>
+          <div class="gl-item"><div class="term">LST</div><div class="cn">Device Listing 相关编号</div><div class="desc">与产品列名关联的标识。</div></div>
+          <div class="gl-item"><div class="term">PM#</div><div class="cn">上市前申报编号</div><div class="desc">如 510(k) 编号的申报标识。</div></div>
+          <div class="gl-item"><div class="term">Delivered-to Party</div><div class="cn">最终送达方</div><div class="desc">货物最终送达的地址/主体，如 FBA 仓库。</div></div>
+          <div class="gl-item"><div class="term">FDA May Proceed</div><div class="cn">FDA 允许货物继续进口流程</div><div class="desc">FDA 对进口器械放行或未异议的指令。</div></div>
+          <div class="gl-item"><div class="term">MDR</div><div class="cn">医疗器械报告</div><div class="desc">不良事件报告义务。</div></div>
+          <div class="gl-item"><div class="term">CAPA</div><div class="cn">纠正和预防措施</div><div class="desc">质量体系中的 corrective and preventive action。</div></div>
+          <div class="gl-item"><div class="term">Recall</div><div class="cn">召回</div><div class="desc">对已上市缺陷产品的收回/纠正措施。</div></div>
+          <div class="gl-item"><div class="term">HSA</div><div class="cn">健康储蓄账户</div><div class="desc">免税医疗储蓄账户。</div></div>
+          <div class="gl-item"><div class="term">FSA</div><div class="cn">灵活支出账户</div><div class="desc">税前灵活医疗支出账户。</div></div>
+          <div class="gl-item"><div class="term">SIGIS</div><div class="cn">特殊利益群体信息标准机构</div><div class="desc">管理 HSA/FSA 合格商品数据标准的组织。</div></div>
+          <div class="gl-item"><div class="term">UPC</div><div class="cn">通用商品代码</div><div class="desc">零售商品条码，不等于 UDI。</div></div>
+          <div class="gl-item"><div class="term">ASIN</div><div class="cn">Amazon 标准识别号</div><div class="desc">Amazon 平台商品唯一标识。</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14 官方资料来源 -->
+    <section id="s14">
+      <div class="sec-head">
+        <h2><span class="num">17</span>官方资料来源</h2>
+        <div class="en">Official References</div>
+      </div>
+      <div class="sec-body">
+        <div class="callout callout-info">官方资料与课程经验分开呈现。不虚构法规条款或官方链接；无法核实的具体信息标注“待专业机构确认”；不把培训老师的经验包装成 FDA 或 Amazon 官方政策。</div>
+        <ul class="res-list">
+          <li><a href="https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm" target="_blank" rel="noopener">FDA 510(k) 公开查询（K241899）</a><div class="note">输入 K241899 查询 Easymed Instruments Co., Ltd. 的实质等同决定。</div></li>
+          <li><a href="https://www.fda.gov/medical-devices/device-registration-and-listing/who-must-register-list-and-pay-fee" target="_blank" rel="noopener">FDA · Who Must Register, List and Pay the Fee</a><div class="note">界定哪些主体须注册、列名及付费。</div></li>
+          <li><a href="https://www.fda.gov/medical-devices/importing-medical-devices" target="_blank" rel="noopener">FDA · Importing Medical Devices</a><div class="note">进口医疗器械的 FDA 要求与流程。</div></li>
+          <li><a href="https://www.fda.gov/medical-devices/unique-device-identification-system-udi-system/unique-device-identification-udi-system-basics" target="_blank" rel="noopener">FDA · UDI Basics</a><div class="note">UDI 体系基本概念与要求。</div></li>
+          <li><a href="https://www.fda.gov/regulatory-information/medical-devices-guidance-documents-class-ii-iii/deciding-when-submit-510k-change-existing-device" target="_blank" rel="noopener">FDA · Deciding When to Submit a 510(k) for a Change to an Existing Device</a><div class="note">判断变更是否需提交新 510(k) 的指南。</div></li>
+          <li><a href="https://sellercentral.amazon.com/help/hub/reference/GVPSS8TCHX9BWH7X" target="_blank" rel="noopener">Amazon · Medical Devices and Accessories 政策页面</a><div class="note">医疗器械及配件上架政策（以 Seller Central 实际页面为准）。</div></li>
+          <li><a href="https://sellercentral.amazon.com/help/hub/reference/G202074680" target="_blank" rel="noopener">Amazon · FSA/HSA 政策页面</a><div class="note">HSA/FSA Eligible 标识申请政策（以 Seller Central 实际页面为准）。</div></li>
+          <li><a href="https://www.sigis.org/" target="_blank" rel="noopener">SIGIS 官方网站</a><div class="note">Special Interest Group for IIAS Standards，管理 HSA/FSA 合格数据标准。</div></li>
+        </ul>
+        <p style="font-size:12px;color:#9aa5b1;">注：以上链接为官方站点入口，具体页面路径与要求以官网实时内容为准；部分链接若无法访问，请通过 FDA / Amazon Seller Central 站内搜索对应标题。</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="to-top" id="toTop" title="返回顶部">↑</button>
+
+<script>
+(function(){
+  "use strict";
+  /* ---------- 缩写悬停提示 ---------- */
+  var ABBR = {
+    "510(k)":"上市前通知 / 实质等同路径",
+    "UDI":"唯一器械标识 (Unique Device Identification)",
+    "FDA":"美国食品药品监督管理局 (U.S. Food and Drug Administration)",
+    "FBA":"亚马逊物流履约 (Fulfillment by Amazon)",
+    "ACE":"美国自动化商业环境申报系统 (Automated Commercial Environment)",
+    "HSA":"健康储蓄账户 (Health Savings Account)",
+    "FSA":"灵活支出账户 (Flexible Spending Account)",
+    "SIGIS":"特殊利益群体信息标准机构 (Special Interest Group for IIAS Standards)",
+    "UPC":"通用商品代码 (Universal Product Code)",
+    "ASIN":"Amazon 标准识别号 (Amazon Standard Identification Number)",
+    "MDR":"医疗器械报告 (Medical Device Reporting)",
+    "CAPA":"纠正和预防措施 (Corrective and Preventive Action)",
+    "GUDID":"全球唯一器械标识数据库 (Global Unique Device Identification Database)",
+    "CBP":"美国海关与边境保护局 (U.S. Customs and Border Protection)",
+    "IOR":"Importer of Record 美国进口申报责任主体",
+    "DFE":"FDA 境外出口方相关实体代码",
+    "DEV":"FDA 境外制造商相关实体代码",
+    "LST":"Device Listing 相关编号",
+    "PM#":"上市前申报编号",
+    "DI":"器械标识 (Device Identifier)",
+    "PI":"生产标识 (Production Identifier)",
+    "POA":"授权委托书 (Power of Attorney)",
+    "HTS":"协调关税表 (Harmonized Tariff Schedule)"
+  };
+  function wrapAbbreviations(root){
+    var skip = {SCRIPT:1,STYLE:1,MARK:1,ABBR:1,A:1};
+    var re = new RegExp("\\b(" + Object.keys(ABBR).map(function(k){return k.replace(/[()#]/g,function(c){return "\\"+c;});}).join("|") + ")\\b","g");
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while(walker.nextNode()){ if(!skip[walker.currentNode.parentNode.nodeName]) nodes.push(walker.currentNode); }
+    nodes.forEach(function(node){
+      var txt = node.nodeValue;
+      if(!re.test(txt)) return;
+      re.lastIndex = 0;
+      var frag = document.createDocumentFragment();
+      var last = 0, m;
+      while((m = re.exec(txt)) !== null){
+        if(m.index > last) frag.appendChild(document.createTextNode(txt.slice(last, m.index)));
+        var ab = document.createElement("abbr");
+        ab.className = "tt";
+        ab.title = ABBR[m[0]];
+        ab.textContent = m[0];
+        frag.appendChild(ab);
+        last = m.index + m[0].length;
+      }
+      if(last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+      if(frag.childNodes.length) node.parentNode.replaceChild(frag, node);
+    });
+  }
+  wrapAbbreviations(document.querySelector(".content"));
+
+  /* ---------- 导航高亮（scroll spy） ---------- */
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute("href")); });
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var current = 0;
+    for(var i=0;i<sections.length;i++){ if(sections[i] && sections[i].offsetTop <= pos) current = i; }
+    navLinks.forEach(function(a,i){ a.classList.toggle("active", i===current); });
+    document.getElementById("toTop").style.display = window.scrollY > 400 ? "block" : "none";
+  }
+  window.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- 返回顶部 / 打印 ---------- */
+  document.getElementById("toTop").addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
+  document.getElementById("topBtn").addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
+  document.getElementById("printBtn").addEventListener("click", function(){ window.print(); });
+
+  /* ---------- 导航点击：显式平滑滚动，避免 GitHub 等托管环境下默认锚点失效 ---------- */
+  var sidebar = document.getElementById("sidebar");
+  document.getElementById("hamburger").addEventListener("click", function(e){ e.stopPropagation(); sidebar.classList.toggle("open"); });
+  navLinks.forEach(function(a){
+    a.addEventListener("click", function(e){
+      e.preventDefault();
+      var target = document.querySelector(a.getAttribute("href"));
+      if(!target) return;
+      var headerOffset = 78;
+      var y = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+      window.scrollTo({top:y, behavior:"smooth"});
+      try { history.replaceState(null, "", a.getAttribute("href")); } catch(err){}
+      if(window.innerWidth <= 880) sidebar.classList.remove("open");
+    });
+  });
+  // 点击内容区关闭移动端抽屉
+  document.querySelector(".content").addEventListener("click", function(){ if(window.innerWidth <= 880) sidebar.classList.remove("open"); });
+
+  /* ---------- 全局搜索 ---------- */
+  var searchInput = document.getElementById("searchInput");
+  var searchCount = document.getElementById("searchCount");
+  var marks = [];
+  function clearMarks(){
+    marks.forEach(function(mk){
+      var parent = mk.parentNode;
+      if(parent){ parent.replaceChild(document.createTextNode(mk.textContent), mk); parent.normalize(); }
+    });
+    marks = [];
+    searchCount.style.display = "none";
+  }
+  searchInput.addEventListener("input", function(){
+    clearMarks();
+    var q = this.value.trim();
+    if(q.length < 2) return;
+    var content = document.querySelector(".content");
+    var walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while(walker.nextNode()){ var n = walker.currentNode; if(n.parentNode.nodeName !== "SCRIPT" && n.parentNode.nodeName !== "STYLE") nodes.push(n); }
+    var lower = q.toLowerCase();
+    var first = null, count = 0;
+    nodes.forEach(function(node){
+      var txt = node.nodeValue;
+      if(txt.toLowerCase().indexOf(lower) === -1) return;
+      var frag = document.createDocumentFragment();
+      var idx = 0, found = -1, lowerTxt = txt.toLowerCase();
+      while((found = lowerTxt.indexOf(lower, idx)) !== -1){
+        if(found > idx) frag.appendChild(document.createTextNode(txt.slice(idx, found)));
+        var mk = document.createElement("mark");
+        mk.textContent = txt.slice(found, found + q.length);
+        frag.appendChild(mk);
+        marks.push(mk);
+        count++;
+        if(!first) first = mk;
+        idx = found + q.length;
+      }
+      if(idx < txt.length) frag.appendChild(document.createTextNode(txt.slice(idx)));
+      if(frag.childNodes.length) node.parentNode.replaceChild(frag, node);
+    });
+    if(count > 0){
+      searchCount.style.display = "inline";
+      searchCount.textContent = count;
+      if(first) first.scrollIntoView({behavior:"smooth", block:"center"});
+    } else {
+      searchCount.style.display = "inline";
+      searchCount.textContent = "0";
+    }
+  });
+  searchInput.addEventListener("keydown", function(e){ if(e.key === "Escape"){ this.value=""; clearMarks(); } });
+
+  /* ---------- 初始 hash 定位（带顶部偏移） ---------- */
+  function scrollToHash(){
+    var hash = window.location.hash;
+    if(!hash) return;
+    var target = document.querySelector(hash);
+    if(target){
+      setTimeout(function(){
+        var y = target.getBoundingClientRect().top + window.pageYOffset - 78;
+        window.scrollTo({top:y, behavior:"auto"});
+      }, 0);
+    }
+  }
+  scrollToHash();
+  window.addEventListener("hashchange", scrollToHash);
+})();
+</script>
+</body>
+</html>
