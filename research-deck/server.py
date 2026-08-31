@@ -485,6 +485,42 @@ def demo_amz_eu(topic=""):
 # ---------------------------------------------------------------------------
 # 报告组装
 # ---------------------------------------------------------------------------
+def _auto_archive(payload, report):
+    """v2.2.1 断点保护：把刚生成完成的报告自动归档为「草稿」(draft:true)。
+    前端正常拿到结果后会以同 id 覆盖为正式记录；若前端刷新/断线，草稿留在云端，
+    前端下次启动检测到后提示「恢复并正式归档」。失败静默（不影响主响应）。"""
+    if not isinstance(report, dict) or not report.get("topic") or not report.get("generatedAt"):
+        return
+    try:
+        rid = report.get("id") or (report.get("topic", "") + "|" + report.get("generatedAt", ""))
+        rec = {
+            "id": rid,
+            "topic": report.get("topic", ""),
+            "generatedAt": report.get("generatedAt", ""),
+            "_ts": report.get("_ts") or (report.get("generatedAt", "") + "-auto"),
+            "mode": report.get("mode", ""),
+            "dims": list((report.get("sections") or {}).keys()),
+            "data": report,
+            "product_id": (payload or {}).get("product_id"),
+            "research_id": (payload or {}).get("research_id"),
+            "research_type": (payload or {}).get("research_type") or "other",
+            "research_mode": (payload or {}).get("research_mode") or report.get("mode") or "standard",
+            "status": "completed",
+            "created_at": (payload or {}).get("created_at"),
+            "completed_at": None,
+            "cloud": True,
+            "draft": True,
+        }
+        content, sha = gh_get_report_file()
+        if content is None or not isinstance(content, list):
+            content = []
+        content = [r for r in content if r.get("id") != rid]
+        content.insert(0, rec)
+        gh_save_report_file(content[:200], sha)
+    except Exception:
+        pass
+
+
 def build_report(topic, dims, source="template", llm=None, mode="standard", question=""):
     topic = (topic or "").strip() or "未命名调研主题"
     dims = [d for d in dims if d in DIMS]
@@ -1198,6 +1234,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send(400, {"error": "后端未配置 LLM Key（OPENAI_API_KEY/ANTHROPIC_API_KEY 环境变量）。请联系站长。"})
                 return
             result = build_report(topic, dims, source=source, llm=llm, mode=mode, question=question)
+            # v2.2.1 断点保护：生成完成后自动归档为「草稿」（draft:true）。
+            # 前端正常收到结果后 saveReport 会以同 id 覆盖为正式记录；若前端刷新/断线，
+            # 草稿留在云端，下次打开调研台由前端检测并提示「恢复并正式归档」。
+            if isinstance(result, dict):
+                try:
+                    _auto_archive(payload, result)
+                except Exception:
+                    pass
             self._send(200, result)
         elif _path == "/api/reports":
             # 保存报告到云端（需 token + GITHUB_TOKEN）
