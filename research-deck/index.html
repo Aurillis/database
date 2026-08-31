@@ -340,6 +340,82 @@
   .banner-research{background:linear-gradient(90deg,rgba(15,181,166,.14),rgba(15,181,166,.05));border:1px solid rgba(15,181,166,.35);border-radius:11px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .banner-research .tagp{font-weight:700;color:var(--teal)}
   .banner-research .cancel{margin-left:auto;font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline}
+  /* ============ v2.2.0 产品综合研究总览（研究驾驶舱） ============ */
+  .ov-pending-bar{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,#FEF3C7,#FFF7E0);border:1px solid #F5D98B;border-radius:12px;padding:11px 16px;margin:12px 0 4px;font-size:13.5px;cursor:pointer;transition:.15s}
+  .ov-pending-bar:hover{border-color:#EAB308}
+  .ov-pending-bar b{color:#B45309}
+  .ov-pending-bar .go{margin-left:auto;font-size:12px;color:#B45309;font-weight:600;white-space:nowrap}
+  .ov-section{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-top:18px;box-shadow:var(--shadow)}
+  .ov-section>h3{font-size:15.5px;font-weight:800;color:var(--navy-2);display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .ov-section>h3 .tip{font-size:11px;color:var(--muted);font-weight:400}
+  .ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .ov-kpi{background:#F7FBFA;border:1px solid var(--line);border-radius:12px;padding:11px 12px;text-align:center}
+  .ov-kpi .v{font-size:19px;font-weight:800;color:var(--teal)}
+  .ov-kpi .l{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .ov-dims{display:flex;flex-direction:column;gap:14px}
+  .ov-dim .dim-h{font-size:12.5px;font-weight:700;color:var(--navy-2);margin-bottom:7px;display:flex;align-items:center;gap:7px}
+  .ov-dim .dim-h .cnt{font-size:10.5px;color:var(--muted);font-weight:400}
+  .ov-empty{font-size:12.5px;color:var(--muted);padding:10px 12px;background:#F7FBFA;border-radius:10px;border:1px dashed var(--line)}
+  .ov-finding{display:flex;gap:9px;padding:9px 11px;border-radius:10px;background:#F7FBFA;border:1px solid var(--line);margin-bottom:7px;align-items:flex-start}
+  .ov-finding .kind{flex-shrink:0;font-size:10px;font-weight:800;padding:2px 7px;border-radius:9px;margin-top:2px}
+  .ov-finding .kind.FACT{background:#E0F2FE;color:#0369A1}
+  .ov-finding .kind.INSIGHT{background:#EDE9FE;color:#5B21B6}
+  .ov-finding .txt{font-size:13px;color:var(--txt);line-height:1.55;flex:1}
+  .ov-finding .conflict-tag{display:inline-block;font-size:10px;font-weight:700;color:#B45309;background:#FEF3C7;border:1px solid #F5D98B;border-radius:8px;padding:1px 6px;margin-top:4px;cursor:help}
+  .ov-src{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:var(--teal-d);background:var(--teal-l);border-radius:8px;padding:2px 7px;cursor:pointer;font-weight:600;white-space:nowrap}
+  .ov-src:hover{background:#BFEAE4}
+  .ov-src-pop{position:fixed;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 34px rgba(15,42,67,.18);padding:12px;z-index:500;max-width:300px;font-size:12px}
+  .ov-src-pop .it{padding:6px 8px;border-radius:8px;cursor:pointer;color:var(--navy-2);display:flex;gap:6px;align-items:flex-start}
+  .ov-src-pop .it:hover{background:var(--teal-l)}
+  .ov-src-pop .it .t{flex:1;min-width:0}
+  .ov-opprisk{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:900px){.ov-opprisk{grid-template-columns:1fr}}
+  .ov-card{border:1px solid var(--line);border-radius:12px;padding:12px 13px;margin-bottom:9px;background:#FBFDFD}
+  .ov-card .ct{font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .ov-card .cd{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.6}
+  .pill{display:inline-block;font-size:10px;font-weight:700;border-radius:9px;padding:2px 7px}
+  .pill.High{background:#FEE2E2;color:#B91C1C}
+  .pill.Medium{background:#FEF3C7;color:#B45309}
+  .pill.Low{background:#E0F2FE;color:#0369A1}
+  .pill.st-wait{background:#FEF3C7;color:#B45309}
+  .pill.st-ok{background:#D1FAE5;color:#065F46}
+  .pill.st-done{background:#D1FAE5;color:#065F46}
+  .ov-gap-row{display:flex;gap:11px;align-items:flex-start;padding:11px 13px;border:1px solid var(--line);border-radius:12px;margin-bottom:9px;background:#FBFDFD}
+  .ov-gap-row .gt{font-size:13px;font-weight:600;flex:1}
+  .ov-gap-row .gd{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.55}
+  .ov-gap-row .btn-gap{flex-shrink:0;font-size:11.5px;padding:6px 12px;border-radius:9px;background:var(--teal);color:#fff;border:none;cursor:pointer;font-weight:600;font-family:inherit}
+  .ov-gap-row .btn-gap:hover{background:var(--teal-d)}
+  .ov-gap-row .btn-gap.done{background:#D1FAE5;color:#065F46;cursor:default}
+  .ov-update{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:11px;background:#FFFDF5}
+  .ov-update .ut{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .ov-update .ud{font-size:12px;color:var(--muted);margin:5px 0 8px;line-height:1.6}
+  .ov-update .ub{display:flex;gap:8px;flex-wrap:wrap}
+  .ov-update .ub button{font-size:12px;padding:6px 14px;border-radius:9px;border:none;cursor:pointer;font-weight:600;font-family:inherit}
+  .ub-accept{background:var(--teal);color:#fff}
+  .ub-accept:hover{background:var(--teal-d)}
+  .ub-ignore{background:#EEF4F4;color:var(--navy-2)}
+  .ub-ignore:hover{background:#DFEBEB}
+  .ub-conflict{background:#FEF3C7;color:#B45309}
+  .ub-conflict:hover{background:#F5D98B}
+  .ov-update .ut .tag-typ{font-size:10px;font-weight:800;padding:2px 8px;border-radius:9px}
+  .tag-typ.add{background:#D1FAE5;color:#065F46}
+  .tag-typ.modify{background:#DBEAFE;color:#1D4ED8}
+  .tag-typ.conflict{background:#FEE2E2;color:#B91C1C}
+  .ov-recent{display:flex;flex-direction:column;gap:8px}
+  .ov-recent-row{display:flex;align-items:center;gap:10px;padding:10px 13px;border:1px solid var(--line);border-radius:11px;background:#FBFDFD;cursor:pointer;transition:.15s}
+  .ov-recent-row:hover{border-color:var(--teal)}
+  .ov-recent-row .rt{flex:1;min-width:0}
+  .ov-recent-row .rt .t{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ov-recent-row .rt .m{font-size:11px;color:var(--muted);margin-top:2px}
+  .ov-recent-row .view{font-size:11.5px;color:var(--teal);font-weight:600;white-space:nowrap}
+  #ovPendingOverlay{position:fixed;inset:0;background:rgba(15,42,67,.45);z-index:600;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto}
+  #ovPendingOverlay.on{display:flex}
+  .ov-pending-box{background:#fff;border-radius:16px;max-width:720px;width:100%;padding:24px 26px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+  .ov-pending-box h3{font-size:17px;font-weight:800;color:var(--navy-2);margin-bottom:4px}
+  .ov-pending-box .sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+  .ov-pending-box .close{float:right;cursor:pointer;color:var(--muted);font-size:18px}
+  .ov-legend{font-size:11px;color:var(--muted);margin-top:14px;line-height:1.7}
+  .ov-note{font-size:11px;color:#B45309;background:#FEF3C7;border-radius:8px;padding:6px 10px;margin:4px 0 8px}
 </style>
 </head>
 <body>
@@ -1184,6 +1260,7 @@ let _curProduct=null;        // 当前打开的产品
 let _productView='list';     // s8 视图: list / form / home
 let _prodCat='all';          // 产品主页分类 Tab
 let _researchCtx=null;       // 继续研究的上下文 {product_id, product_name, research_id, research_type, research_mode}
+let _overviews={};           // v2.2.0：产品综合研究总览缓存（pid -> overview）
 
 // 研究分类（可扩展，新增类型加这里即可）
 const RESEARCH_CATS=[
@@ -1352,11 +1429,22 @@ function delProduct(pid){
 }
 function renderProductHome(box){
   const p=_curProduct; if(!p){ backToProductLib(); return; }
-  const rs=reportsOf(p.product_id);
+  const pid=p.product_id;
+  const rs=reportsOf(pid);
   const stats={}; rs.forEach(r=>{ const c=mapResearchType(r.research_type); stats[c]=(stats[c]||0)+1; });
   const catHtml=RESEARCH_CATS.map(c=>`<button class="cat-tab ${_prodCat===c.id?'active':''}" onclick="setProdCat('${c.id}')">${c.label}${c.id==='all'?(' ('+rs.length+')'):(' ('+(stats[c.id]||0)+')')}</button>`).join('');
   const list=rs.filter(r=>_prodCat==='all'||mapResearchType(r.research_type)===_prodCat)
     .sort((a,b)=>String(b._ts||b.generatedAt||'').localeCompare(String(a._ts||a.generatedAt||'')));
+  const ov=_overviews[pid]||null;
+  const pendingN=ovPendingCount(ov);
+  const ovHtml = ov ? `
+    <div class="ov-section"><h3>📊 研究概况 <span class="tip">基于真实 Research 数据统计</span></h3>${ovStatsHtml(rs)}</div>
+    <div class="ov-section"><h3>🧭 当前核心结论 <span class="tip">已确认结论 · 保留 Research 来源</span></h3>${ovFindingsHtml(ov)}</div>
+    <div class="ov-section"><h3>🎯 核心机会 <span class="tip">Opportunity</span></h3>${(ov.opportunities||[]).length?('<div>'+ov.opportunities.map(o=>ovCardHtml('opp',o,pid)).join('')+'</div>'):'<div class="ov-empty">尚无已确认的机会。</div>'}</div>
+    <div class="ov-section"><h3>⚠️ 核心风险 <span class="tip">Risk</span></h3>${(ov.risks||[]).length?('<div>'+ov.risks.map(r=>ovCardHtml('risk',r,pid)).join('')+'</div>'):'<div class="ov-empty">尚无已确认的风险。</div>'}</div>
+    <div class="ov-section"><h3>❓ 待验证问题 <span class="tip">Research Gap · 点击【继续研究】进入专题调研</span></h3>${ovGapsHtml(ov)}</div>
+    <div class="ov-section"><h3>🕒 最近研究 <span class="tip">按时间倒序</span></h3>${ovRecentHtml(rs)}</div>
+  ` : `<div class="ov-section"><h3>📊 综合研究总览</h3><div class="ov-empty">${(BACKEND_URL&&RD_TOKEN)?'正在加载综合研究总览…':'登录后加载综合研究总览（本功能需要云端）'}</div></div>`;
   box.innerHTML=`
     <div class="plib-top">
       <div>
@@ -1377,6 +1465,8 @@ function renderProductHome(box){
         <button class="btn-ghost del" style="height:46px;color:#C0392B;border-color:#FCA5A5" onclick="delProduct('${esc(p.product_id)}')">🗑 删除产品</button>
       </div>
     </div>
+    ${pendingN?ovPendingBarHtml(pid,ov):''}
+    ${ovHtml}
     <div class="stats">
       <div class="stat"><div class="sv">${rs.length}</div><div class="sl">全部研究</div></div>
       ${RESEARCH_CATS.filter(c=>c.id!=='all').map(c=>{ if(!stats[c.id]) return ''; return `<div class="stat"><div class="sv">${stats[c.id]}</div><div class="sl">${c.label}</div></div>`; }).join('')}
@@ -1385,6 +1475,12 @@ function renderProductHome(box){
     ${list.length?'<div>'+list.map((r,i)=>prodReportRowHtml(r,i)).join('')+'</div>':'<div class="pempty">该分类下还没有研究。点右上角「＋ 继续研究这个产品」开始第一份研究。</div>'}
   `;
   window.__prodReports=list;
+  // 异步加载综合总览（首次进入），加载后重绘
+  if(!ov){
+    loadOverview(pid,(loadedOv)=>{
+      if(_productView==='home'&&_curProduct&&_curProduct.product_id===pid&&document.getElementById('productLib')) renderProductLib();
+    });
+  }
 }
 function setProdCat(c){ _prodCat=c; renderProductLib(); }
 function prodReportRowHtml(r,i){
@@ -1424,13 +1520,224 @@ function editProductBasic(){
 }
 
 // —— 【＋继续研究这个产品】：绑定 product_id，进入现有 3 种调研形式 ——
-function startResearchForProduct(){
+// v2.2.0：支持从「待验证问题」点击【继续研究】进入，自动带入默认研究问题（question）
+function startResearchForProduct(question){
   const p=_curProduct; if(!p){ toast('请先进入产品','err'); return; }
   _researchCtx={ product_id:p.product_id, product_name:p.name };
   show('s1');
+  if(question){ setQuestion(question); const qi=document.getElementById('questionInput'); if(qi){ qi.focus(); } }
   const banner=document.getElementById('researchBanner');
   if(banner){ banner.style.display='flex'; banner.innerHTML=`<span>正在研究：<span class="tagp">${esc(p.name)}</span> —— 完成后将自动归档到该产品</span><span class="cancel" onclick="cancelResearchCtx()">取消绑定</span>`; }
   toast('将归档到产品「'+p.name+'」','info');
+}
+
+// ================= v2.2.0 产品综合研究总览（研究驾驶舱） =================
+const OV_DIMS=[['mkt','市场判断'],['ecom','电商判断'],['usr','用户判断'],['comp','竞品判断'],['tech','技术判断'],['reg','法规判断'],['sc','供应链判断'],['other','其他']];
+const OV_DIM_KEY=OV_DIMS.map(d=>d[0]);
+const OV_RTYPE_DIM={market:'mkt',ecom:'ecom',comp:'comp',user:'usr',tech:'tech',reg:'reg',sc:'sc',patent:'other',other:'other',comprehensive:'other'};
+
+function loadOverview(pid,cb){
+  if(_overviews[pid]){ cb&&cb(_overviews[pid]); return; }
+  if(!(BACKEND_URL&&RD_TOKEN)){ cb&&cb(null); return; }
+  fetch(api('/api/overviews?product_id='+encodeURIComponent(pid)),{headers:apiHeaders()})
+    .then(r=>r.ok?r.json():null)
+    .then(j=>{ if(j&&j.overview) _overviews[pid]=j.overview; cb&&cb((j&&j.overview)||null); })
+    .catch(()=>cb&&cb(null));
+}
+function saveOverview(pid,ov,cb){
+  if(!(BACKEND_URL&&RD_TOKEN)){ cb&&cb(false); return; }
+  fetch(api('/api/overviews'),{method:'POST',headers:apiHeaders(),body:JSON.stringify({overview:ov})})
+    .then(r=>r.json()).then(j=>{ if(j.ok){ _overviews[pid]=ov; cb&&cb(true); } else cb&&cb(false); })
+    .catch(()=>cb&&cb(false));
+}
+// 新 Research 完成后自动调用：AI 生成「综合总览更新建议」（只进 pending_updates，不直接改总览）
+function suggestOverview(pid,researchIds){
+  if(!(BACKEND_URL&&RD_TOKEN)) return;
+  const body={product_id:pid};
+  if(researchIds&&researchIds.length) body.research_ids=researchIds;
+  fetch(api('/api/overview/suggest'),{method:'POST',headers:apiHeaders(),body:JSON.stringify(body)})
+    .then(r=>r.json()).then(j=>{
+      if(j.ok&&j.added>0){
+        const ov=_overviews[pid]||{product_id:pid,findings:{},opportunities:[],risks:[],research_gaps:[],pending_updates:[]};
+        ov.pending_updates=j.pending||[];
+        _overviews[pid]=ov;
+        toast('AI 已生成 '+j.added+' 条综合总览更新建议','info');
+        if(_curProduct&&_curProduct.product_id===pid&&_productView==='home'){ renderProductLib(); }
+      }else if(j.error){ toast('总览建议生成失败：'+j.error,'err'); }
+    }).catch(()=>{});
+}
+// 用户确认/忽略一条更新建议
+function confirmOverviewUpdate(pid,uid,action){
+  fetch(api('/api/overview/confirm'),{method:'POST',headers:apiHeaders(),body:JSON.stringify({product_id:pid,update_id:uid,action:action})})
+    .then(r=>r.json()).then(j=>{
+      if(j.ok){
+        toast(action==='accept'?'已接受更新 ✓':'已忽略','ok');
+        loadOverview(pid,()=>{ renderProductLib(); renderPendingPanel(); });
+      }else{ toast(j.error||'操作失败','err'); renderPendingPanel(); }
+    }).catch(()=>toast('操作失败，请检查网络','err'));
+}
+// 按报告 id 打开原报告（供 source_research_ids 溯源）
+function openReportById(rid){
+  const all=allReports();
+  const rec=all.find(r=>r.id===rid);
+  if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4'); }
+  else toast('未找到该研究原文（可能已被删除）','err');
+}
+// 来源引用：【来自N项研究】→ 点击弹出可打开原报告
+function srcRefsHtml(ids){
+  const arr=(ids||[]).filter(Boolean);
+  if(!arr.length) return '<span class="pill Low">无来源</span>';
+  const n=arr.length;
+  return `<span class="ov-src" onclick="event.stopPropagation();showSrcPop(event,'${esc(ids.join('||'))}')" title="点击查看来源研究">📄 来自 ${n} 项研究</span>`;
+}
+function showSrcPop(ev,joined){
+  closeSrcPop();
+  const ids=joined.split('||').filter(Boolean);
+  const all=allReports(); const map={}; all.forEach(r=>{map[r.id]=r;});
+  const box=document.createElement('div'); box.className='ov-src-pop'; box.id='ovSrcPop';
+  box.innerHTML=ids.length?ids.map(id=>{
+    const r=map[id];
+    const t=r?(r.topic||r.id||'未命名'):(id||'');
+    const m=r?(catLabel(mapResearchType(r.research_type))+' · '+esc(r.generatedAt||'')):'';
+    return `<div class="it" onclick="closeSrcPop();openReportById('${esc(id)}')"><span>📄</span><span class="t"><div style="font-weight:600">${esc(String(t).slice(0,46))}</div><div style="color:var(--muted);font-size:10.5px">${m}</div></span></div>`;
+  }).join(''):'<div class="it">无来源记录</div>';
+  document.body.appendChild(box);
+  const r=box.getBoundingClientRect();
+  let x=ev.clientX, y=ev.clientY;
+  if(x+r.width>window.innerWidth-8) x=window.innerWidth-r.width-8;
+  if(y+r.height>window.innerHeight-8) y=window.innerHeight-r.height-8;
+  box.style.left=x+'px'; box.style.top=y+'px';
+  setTimeout(()=>{ document.addEventListener('click',closeSrcPop,{once:true}); },10);
+}
+function closeSrcPop(){ const b=document.getElementById('ovSrcPop'); if(b) b.remove(); }
+
+// —— 驾驶舱各模块渲染 ——
+function ovStatsHtml(rs){
+  const all=rs.length;
+  const byType={}; rs.forEach(r=>{ const c=mapResearchType(r.research_type); byType[c]=(byType[c]||0)+1; });
+  const done=rs.filter(r=>String(r.status||'completed')==='completed').length;
+  const running=rs.filter(r=>String(r.status||'')!=='completed').length;
+  let last='—';
+  const sorted=rs.slice().sort((a,b)=>String(b._ts||b.generatedAt||'').localeCompare(String(a._ts||a.generatedAt||'')));
+  if(sorted[0]) last=String(sorted[0].generatedAt||'—');
+  const typeRows=RESEARCH_CATS.filter(c=>c.id!=='all'&&byType[c.id]).map(c=>`<div class="ov-kpi"><div class="v">${byType[c.id]}</div><div class="l">${c.label}</div></div>`).join('');
+  return `<div class="ov-grid">
+    <div class="ov-kpi"><div class="v">${all}</div><div class="l">全部研究</div></div>
+    ${typeRows}
+    <div class="ov-kpi"><div class="v">${running}</div><div class="l">进行中</div></div>
+    <div class="ov-kpi"><div class="v">${done}</div><div class="l">已完成</div></div>
+    <div class="ov-kpi"><div class="v" style="font-size:14px;line-height:1.35">${esc(last)}</div><div class="l">最近研究时间</div></div>
+  </div>`;
+}
+function ovFindingsHtml(ov){
+  const f=(ov&&ov.findings)||{};
+  const hasAny=OV_DIM_KEY.some(d=>(f[d]||[]).length);
+  if(!hasAny) return '<div class="ov-empty">尚无已确认的结论。完成新研究后，AI 会生成「综合总览更新建议」，确认后结论会显示在这里。</div>';
+  return `<div class="ov-dims">`+OV_DIMS.map(([dk,label])=>{
+    const arr=(f[dk]||[]).filter(x=>x&&x.text);
+    if(!arr.length) return '';
+    return `<div class="ov-dim"><div class="dim-h">${label} <span class="cnt">${arr.length} 条</span></div>`+
+      arr.map(x=>{
+        const kind=(x.kind==='FACT')?'FACT':'INSIGHT';
+        const conflicts=(x.conflicts||[]).map(c=>`<div class="conflict-tag" title="新研究主张：${esc(c.new_claim||'')}｜${esc(c.note||'')}">⚠ Evidence Conflict</div>`).join('');
+        return `<div class="ov-finding"><span class="kind ${kind}">${kind}</span><div class="txt">${esc(x.text)}${conflicts}${x.replaced_from?('<div style="font-size:10.5px;color:var(--muted);margin-top:3px">已修订：旧版「'+esc(String(x.replaced_from).slice(0,50))+'」</div>'):''}<div style="margin-top:4px">${srcRefsHtml(x.source_research_ids)}</div></div></div>`;
+      }).join('')+`</div>`;
+  }).join('')+`</div>`;
+}
+function ovCardHtml(kind,item,pid){
+  // kind: opp / risk
+  if(kind==='opp'){
+    return `<div class="ov-card"><div class="ct">${esc(item.title||'')} <span class="pill ${item.confidence||'Low'}">${item.confidence||'Low'}</span></div>
+      <div class="cd">${esc(item.description||'')}</div>
+      <div style="margin-top:6px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        ${(item.related_dimensions||[]).map(d=>{const m=OV_DIMS.find(x=>x[0]===d);return m?`<span class="pill Low">${m[1]}</span>`:'';}).join('')}
+        ${srcRefsHtml(item.source_research_ids)}
+      </div></div>`;
+  }
+  return `<div class="ov-card"><div class="ct">${esc(item.title||'')} <span class="pill ${item.severity||'Low'}">${item.severity||'Low'}</span></div>
+    <div class="cd">${esc(item.description||'')}</div>
+    <div style="margin-top:6px;display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+      <span class="pill ${item.status==='已解决'?'st-done':'st-wait'}">${item.status||'待验证'}</span>${srcRefsHtml(item.source_research_ids)}
+    </div></div>`;
+}
+function ovGapsHtml(ov){
+  const gs=ov&&ov.research_gaps||[];
+  if(!gs.length) return '<div class="ov-empty">暂无待验证问题。研究越多，系统会在这里持续追问「还没研究清楚什么」。</div>';
+  return gs.map(g=>{
+    const st=g.status||'未研究';
+    const btn = st==='已解决'
+      ? `<span class="btn-gap done">✓ 已解决</span>`
+      : `<button class="btn-gap" onclick="startResearchForProduct('${esc(String(g.title).replace(/"/g,''))}')">继续研究 →</button>`;
+    return `<div class="ov-gap-row">
+      <div style="flex:1;min-width:0">
+        <div class="gt">${esc(g.title||'')} <span class="pill ${g.priority||'Low'}">${g.priority||'Low'}</span> <span class="pill st-wait">${st}</span></div>
+        <div class="gd">${esc(g.description||'')}${g.dimension&&g.dimension!=='other'?(' · 领域：'+esc((OV_DIMS.find(d=>d[0]===g.dimension)||[,''])[1])):''}</div>
+        <div style="margin-top:5px">${srcRefsHtml(g.source_research_ids)}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">${btn}</div>
+    </div>`;
+  }).join('');
+}
+function ovRecentHtml(rs){
+  const sorted=rs.slice().sort((a,b)=>String(b._ts||b.generatedAt||'').localeCompare(String(a._ts||a.generatedAt||''))).slice(0,8);
+  if(!sorted.length) return '<div class="ov-empty">该产品还没有研究。</div>';
+  return `<div class="ov-recent">`+sorted.map(r=>{
+    const fm=r.research_mode==='topic'?'专题':(r.research_mode==='comprehensive'?'综合立项':(r.research_mode||'标准'));
+    return `<div class="ov-recent-row" onclick="openReportById('${esc(r.id)}')">
+      <div class="rt"><div class="t">${esc(r.topic||'')}</div><div class="m">${catLabel(mapResearchType(r.research_type))} · ${fm} · ${esc(r.generatedAt||'')} · <span style="color:#065F46">已完成</span></div></div>
+      <span class="view">查看报告 →</span>
+    </div>`;
+  }).join('')+`</div>`;
+}
+function ovPendingCount(ov){ return ((ov&&ov.pending_updates)||[]).filter(u=>u.status==='pending').length; }
+function ovPendingBarHtml(pid,ov){
+  const n=ovPendingCount(ov);
+  if(!n) return '';
+  return `<div class="ov-pending-bar" onclick="openPendingPanel()">📋 <b>${n} 项研究更新待确认</b><span style="color:#92400E">新研究已产出更新建议，确认后才会写入综合总览</span><span class="go">查看 →</span></div>`;
+}
+function refreshProductHome(){ if(_curProduct&&_productView==='home') renderProductLib(); }
+
+// —— 待确认更新面板 ——
+function openPendingPanel(){
+  const pid=_curProduct?_curProduct.product_id:null;
+  if(!pid) return;
+  loadOverview(pid,(ov)=>{ if(!ov){ toast('暂无总览数据','info'); return; } renderPendingPanel(ov); });
+}
+function renderPendingPanel(ov){
+  let overlay=document.getElementById('ovPendingOverlay');
+  if(!overlay){ overlay=document.createElement('div'); overlay.id='ovPendingOverlay'; document.body.appendChild(overlay); }
+  const pid=_curProduct?_curProduct.product_id:'';
+  const ups=((ov&&ov.pending_updates)||[]).filter(u=>u.status==='pending');
+  if(!ups.length){ overlay.classList.remove('on'); toast('没有待确认的更新 ✓','ok'); return; }
+  const h=(u)=>{
+    const p=u.payload||{}; const typ=u.type; const tgt=u.target;
+    let title='', body='', tag='', tagCls='';
+    if(typ==='add'){
+      if(tgt==='finding'){ tag='新增结论'; tagCls='add'; title=(p.dim&&(OV_DIMS.find(d=>d[0]===p.dim)||[,''])[1]||'')+' · '+p.kind; body=p.text||''; }
+      else if(tgt==='opportunity'){ tag='新增机会'; tagCls='add'; title=p.title||''; body=(p.description||'')+((p.confidence)?('　置信度：'+p.confidence):''); }
+      else if(tgt==='risk'){ tag='新增风险'; tagCls='add'; title=p.title||''; body=(p.description||'')+((p.severity)?('　严重度：'+p.severity):''); }
+      else if(tgt==='gap'){ tag='新增待验证问题'; tagCls='add'; title=p.title||''; body=(p.description||'')+((p.priority)?('　优先级：'+p.priority):''); }
+    }else if(typ==='modify'){ tag='修改结论'; tagCls='modify'; title='修订已有结论'; body='原结论 → <b>'+esc(p.new_text||'')+'</b>'+((p.reason)?('<br/><span style="color:#B45309">原因：'+esc(p.reason)+'</span>'):''); }
+    else if(typ==='conflict'){ tag='结论冲突'; tagCls='conflict'; title='Evidence Conflict'; body='新研究主张：<b>'+esc(p.new_claim||'')+'</b><br/>'+esc(p.note||'')+((p.suggest_gap)?('<br/><span style="color:#B45309">建议新增待验证问题：「'+esc(p.suggest_gap)+'」</span>'):''); }
+    const btns = typ==='conflict'
+      ? `<button class="ub-conflict" onclick="confirmOverviewUpdate('${esc(pid)}','${esc(u.id)}','accept')">✓ 接受冲突标注</button><button class="ub-ignore" onclick="confirmOverviewUpdate('${esc(pid)}','${esc(u.id)}','ignore')">忽略</button>`
+      : (typ==='modify'
+          ? `<button class="ub-accept" onclick="confirmOverviewUpdate('${esc(pid)}','${esc(u.id)}','accept')">接受修改</button><button class="ub-ignore" onclick="confirmOverviewUpdate('${esc(pid)}','${esc(u.id)}','ignore')">保留原结论</button>`
+          : `<button class="ub-accept" onclick="confirmOverviewUpdate('${esc(pid)}','${esc(u.id)}','accept')">接受</button><button class="ub-ignore" onclick="confirmOverviewUpdate('${esc(pid)}','${esc(u.id)}','ignore')">忽略</button>`);
+    return `<div class="ov-update">
+      <div class="ut"><span class="tag-typ ${tagCls}">${tag}</span>${title?('<span>'+esc(title)+'</span>'):''}</div>
+      <div class="ud">${body}<div style="margin-top:6px">${srcRefsHtml(u.source_research_ids)}</div></div>
+      <div class="ub">${btns}</div>
+    </div>`;
+  };
+  overlay.classList.add('on');
+  overlay.innerHTML=`<div class="ov-pending-box">
+    <span class="close" onclick="document.getElementById('ovPendingOverlay').classList.remove('on')">✕</span>
+    <h3>📋 研究更新待确认（${ups.length} 项）</h3>
+    <div class="sub">以下建议由 AI 基于新完成的研究生成，<b>只有你确认后才会写入综合总览</b>。冲突结论不会被自动覆盖。</div>
+    ${ups.map(h).join('')}
+    <div class="ov-legend">·「接受」：写入产品综合总览（含来源 Research 追踪）<br/>·「忽略」：保留总览原内容<br/>·「接受冲突标注」：旧结论保留，附加冲突提示，并视情况生成新的待验证问题</div>
+  </div>`;
 }
 function cancelResearchCtx(){
   _researchCtx=null;
@@ -1500,6 +1807,11 @@ function saveReport(data){
       if(r.ok){
         if(_cloudReports) _cloudReports.loaded=false;
         markCloudSync(reportId(data), true);
+        // v2.2.0：新 Research 已归档 → AI 生成「综合总览更新建议」（不直接改总览，等用户确认）
+        if(data.product_id){
+          const rids=data.research_id?[data.research_id]:[];
+          suggestOverview(data.product_id,rids);
+        }
         return r.json().then(j=>{_cloudReports={list:j.reports||_cloudReports.list,loaded:true};});
       }
       // 非 2xx：标记未同步 + 提示
