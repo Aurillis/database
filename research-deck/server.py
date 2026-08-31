@@ -776,6 +776,252 @@ def _build_topic(topic, question, llm):
 
 
 # ---------------------------------------------------------------------------
+# v2.2.0 产品综合研究总览 Product Research Overview
+# 定位：不是再生成一份综合报告，而是每个产品主页里「持续更新的研究驾驶舱」。
+# 铁律：新 Research 完成后 → 报告照旧自动归档 → AI 只产出「更新建议」(pending_updates)
+#       → 用户确认后才写入 findings / opportunities / risks / research_gaps。
+# ---------------------------------------------------------------------------
+# 总览结论按领域分组（与前端展示顺序一致）
+OVERVIEW_DIMS = [
+    ("mkt", "市场判断"), ("ecom", "电商判断"), ("usr", "用户判断"),
+    ("comp", "竞品判断"), ("tech", "技术判断"), ("reg", "法规判断"),
+    ("sc", "供应链判断"), ("other", "其他"),
+]
+OVERVIEW_DIM_KEYS = [d for d, _ in OVERVIEW_DIMS]
+# 研究类型 → 结论领域
+RTYPE_TO_DIM = {
+    "market": "mkt", "ecom": "ecom", "comp": "comp", "user": "usr",
+    "tech": "tech", "reg": "reg", "sc": "sc",
+    "patent": "other", "other": "other", "comprehensive": "other",
+}
+OVERVIEW_CONFIDENCE = ("High", "Medium", "Low")
+OVERVIEW_SEVERITY = ("High", "Medium", "Low")
+OVERVIEW_PRIORITY = ("High", "Medium", "Low")
+GAP_STATUS = ("未研究", "研究中", "已解决")
+RISK_STATUS = ("待验证", "已验证", "已解决")
+
+
+def _uid(prefix):
+    """生成带时间前缀的唯一 id（同一毫秒内靠随机后缀区分）。"""
+    import random
+    import string
+    return "{}_{}{}".format(
+        prefix,
+        datetime.datetime.now(BEIJING_TZ).strftime("%y%m%d%H%M%S"),
+        "".join(random.choice(string.ascii_lowercase) for _ in range(3)),
+    )
+
+
+def overview_skeleton(pid):
+    """产品的空总览结构（所有内容必须与 product_id 绑定）。"""
+    return {
+        "product_id": pid,
+        "findings": {},          # {dim: [{id, kind, text, source_research_ids, created_at, updated_at}]}
+        "opportunities": [],     # [{id, title, description, source_research_ids, related_dimensions, confidence, status, created_at, updated_at}]
+        "risks": [],             # [{id, title, description, severity, source_research_ids, status, created_at, updated_at}]
+        "hypotheses": [],        # [{id, text, source_research_ids, status, created_at, updated_at}]
+        "research_gaps": [],     # [{gap_id, title, description, dimension, priority, status, source_research_ids, created_at, updated_at}]
+        "pending_updates": [],   # 待用户确认的更新建议
+        "updated_at": None,
+    }
+
+
+def _report_digest(rec, max_chars=1500):
+    """把一份 Research 压缩成给 LLM 的摘要文本（控制 token，避免超时/截断）。"""
+    d = rec.get("data") or {}
+    if not isinstance(d, dict):
+        d = {}
+    lines = [
+        "【Research】id={}".format(rec.get("research_id") or rec.get("id") or ""),
+        "主题：{}".format(rec.get("topic") or ""),
+        "类型：{}｜形式：{}｜完成时间：{}".format(
+            rec.get("research_type") or "other",
+            rec.get("research_mode") or "standard",
+            rec.get("generatedAt") or ""),
+    ]
+    s = (d.get("summary") or "").strip()
+    if s:
+        lines.append("摘要：" + s[:500])
+    secs = d.get("sections") or {}
+    if isinstance(secs, dict):
+        for k, v in list(secs.items())[:14]:
+            if not isinstance(v, dict):
+                continue
+            bit = "- {}：{}".format(k, (v.get("summary") or "").strip()[:180])
+            for tb in (v.get("tables") or [])[:1]:
+                head = tb.get("head") or []
+                rows = (tb.get("rows") or [])[:3]
+                if head and rows:
+                    bit += " 表[{}] {}".format(
+                        "|".join(str(h)[:12] for h in head[:5]),
+                        " ; ".join(" / ".join(str(c)[:22] for c in row[:5]) for row in rows))
+            for c in (v.get("callouts") or [])[:2]:
+                bit += " ｜提示：" + str(c)[:110]
+            lines.append(bit)
+    return "\n".join(lines)[:max_chars]
+
+
+def analyze_overview(product, overview, researches, llm):
+    """基于若干份真实 Research，产出「综合总览更新建议」（不直接改写总览）。
+
+    返回 pending_updates 列表：每项含 type(add/modify/conflict) + target + payload
+    + source_research_ids，等待用户在产品主页确认后才写入正式内容。
+    """
+    import random
+
+    pid = (product or {}).get("product_id", "")
+    ov = overview if isinstance(overview, dict) else overview_skeleton(pid)
+    ov.setdefault("findings", {})
+    ov.setdefault("opportunities", [])
+    ov.setdefault("risks", [])
+    ov.setdefault("research_gaps", [])
+
+    # —— 已有总览（供 LLM 判断重复/修改/冲突）——
+    exist_lines = []
+    for dim in OVERVIEW_DIM_KEYS:
+        for f in (ov.get("findings") or {}).get(dim, []) or []:
+            exist_lines.append("- [{}] id={} {}：{}".format(
+                dim, f.get("id", ""), f.get("kind", "INSIGHT"), (f.get("text") or "")[:130]))
+    exist_txt = "\n".join(exist_lines) if exist_lines else "（暂无已有结论）"
+    eopp = "\n".join("- id={} {}".format(o.get("id", ""), (o.get("title") or "")[:80]) for o in (ov.get("opportunities") or [])) or "（暂无）"
+    erisk = "\n".join("- id={} {}".format(r.get("id", ""), (r.get("title") or "")[:80]) for r in (ov.get("risks") or [])) or "（暂无）"
+    egap = "\n".join("- id={} [{}/{}] {}".format(
+        g.get("gap_id", ""), g.get("dimension", "other"), g.get("status", "未研究"), (g.get("title") or "")[:80])
+        for g in (ov.get("research_gaps") or [])) or "（暂无）"
+
+    rid_list, digests = [], []
+    for rec in researches or []:
+        rid_list.append(rec.get("research_id") or rec.get("id") or "")
+        digests.append(_report_digest(rec))
+    digests_txt = "\n\n".join(digests)
+    if len(digests_txt) > 11000:
+        digests_txt = digests_txt[:11000]
+
+    prompt = (
+        "你是「产品研究总览」分析助手。\n"
+        "产品：{name}（{en}）\n类别：{cat}｜目标市场：{mkt}｜研究目的：{goal}\n产品说明：{desc}\n\n"
+        "【已有综合总览·当前结论】\n{exist}\n\n"
+        "【已有机会】\n{eopp}\n\n【已有风险】\n{erisk}\n\n【已有待验证问题】\n{egap}\n\n"
+        "【本次纳入分析的 Research（共 {n} 份，research_id：{ids}）】\n{digests}\n\n"
+        "请基于上述 Research 的真实内容，产出「综合总览更新建议」JSON（只提建议，不要直接改写总览）：\n"
+        "{{\n"
+        "  \"findings\":[{{\"dim\":\"mkt|ecom|usr|comp|tech|reg|sc|other\",\"kind\":\"FACT|INSIGHT\",\"text\":\"一条真正重要的结论（20-60字）\"}}],\n"
+        "  \"finding_modifications\":[{{\"target_id\":\"已有结论id\",\"new_text\":\"修改后的结论\",\"reason\":\"修改原因\"}}],\n"
+        "  \"conflicts\":[{{\"target_id\":\"已有结论id\",\"new_claim\":\"新研究中的说法\",\"note\":\"可能的差异原因（年份/统计口径/市场定义/数据源）\",\"suggest_gap\":\"建议新增的待验证问题标题\"}}],\n"
+        "  \"opportunities\":[{{\"title\":\"机会标题\",\"description\":\"机会描述1-3句，说明依据\",\"confidence\":\"High|Medium|Low\",\"related_dimensions\":[\"tech\",\"usr\"]}}],\n"
+        "  \"risks\":[{{\"title\":\"风险标题\",\"description\":\"风险描述1-3句\",\"severity\":\"High|Medium|Low\"}}],\n"
+        "  \"research_gaps\":[{{\"title\":\"还没研究清楚的问题\",\"description\":\"为什么重要1-2句\",\"dimension\":\"mkt|ecom|usr|comp|tech|reg|sc|other\",\"priority\":\"High|Medium|Low\"}}]\n"
+        "}}\n"
+        "硬性规则：\n"
+        "1. 只基于上面提供的 Research 内容，禁止编造数据；证据不足时不要硬写结论，改为写进 research_gaps。\n"
+        "2. findings 每个领域最多 3-5 条，只写真正重要的，不要把所有报告压缩成长摘要。\n"
+        "3. 与已有结论重复的不要重复提；需要修正的放 finding_modifications；明显矛盾的放 conflicts（不得直接覆盖旧结论）。\n"
+        "4. FACT = 研究中可直接引用的事实/数据；INSIGHT = 基于研究的判断/推论，推论必须能被上面的内容支撑。\n"
+        "5. confidence/severity/priority 只能取 High/Medium/Low，证据不足一律 Low。\n"
+        "6. 只输出 JSON 对象，不要解释文字、不要 markdown 代码块。\n"
+    ).format(
+        name=(product or {}).get("name") or "该产品",
+        en=(product or {}).get("name_en") or "",
+        cat=(product or {}).get("category") or "未填写",
+        mkt="、".join((product or {}).get("target_market") or []) or "未填写",
+        goal=(product or {}).get("research_goal") or "未填写",
+        desc=(product or {}).get("description") or "无",
+        exist=exist_txt, eopp=eopp, erisk=erisk, egap=egap,
+        n=len(researches or []), ids=",".join(rid_list), digests=digests_txt,
+    )
+
+    payload = {
+        "model": llm["model"],
+        "messages": [
+            {"role": "system", "content": "你是产品研究总览分析助手，输出严格 JSON。数据诚实：只基于给定研究内容，禁止编造。"},
+            {"role": "user", "content": prompt},
+        ],
+        "temperature": 0.2,
+    }
+    req = urllib.request.Request(
+        llm["base"].rstrip("/") + "/chat/completions",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Authorization": "Bearer " + llm["key"], "Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        content = json.loads(resp.read().decode("utf-8"))["choices"][0]["message"]["content"]
+    res = _extract_json(content)
+    if not isinstance(res, dict):
+        res = {}
+
+    now = now_beijing()
+    pending = []
+
+    def _push(t, target, payload_obj):
+        pending.append({
+            "id": _uid("pu"), "type": t, "target": target, "payload": payload_obj,
+            "source_research_ids": list(rid_list), "created_at": now, "status": "pending",
+        })
+
+    for f in (res.get("findings") or [])[:24]:
+        dim = f.get("dim") if f.get("dim") in OVERVIEW_DIM_KEYS else "other"
+        text = (f.get("text") or "").strip()
+        if not text:
+            continue
+        kind = (f.get("kind") or "INSIGHT").upper()
+        if kind not in ("FACT", "INSIGHT"):
+            kind = "INSIGHT"
+        _push("add", "finding", {"dim": dim, "kind": kind, "text": text})
+
+    for m in (res.get("finding_modifications") or [])[:12]:
+        if not m.get("target_id") or not (m.get("new_text") or "").strip():
+            continue
+        _push("modify", "finding", {
+            "target_id": m.get("target_id"),
+            "new_text": (m.get("new_text") or "").strip(),
+            "reason": (m.get("reason") or "").strip(),
+        })
+
+    for c in (res.get("conflicts") or [])[:12]:
+        if not c.get("target_id"):
+            continue
+        _push("conflict", "finding", {
+            "target_id": c.get("target_id"),
+            "new_claim": (c.get("new_claim") or "").strip(),
+            "note": (c.get("note") or "").strip(),
+            "suggest_gap": (c.get("suggest_gap") or "").strip(),
+        })
+
+    for o in (res.get("opportunities") or [])[:10]:
+        title = (o.get("title") or "").strip()
+        if not title:
+            continue
+        conf = o.get("confidence") if o.get("confidence") in OVERVIEW_CONFIDENCE else "Low"
+        dims = [d for d in (o.get("related_dimensions") or []) if d in OVERVIEW_DIM_KEYS][:4]
+        _push("add", "opportunity", {
+            "title": title, "description": (o.get("description") or "").strip(),
+            "confidence": conf, "related_dimensions": dims, "status": "待验证",
+        })
+
+    for r in (res.get("risks") or [])[:10]:
+        title = (r.get("title") or "").strip()
+        if not title:
+            continue
+        sev = r.get("severity") if r.get("severity") in OVERVIEW_SEVERITY else "Low"
+        _push("add", "risk", {
+            "title": title, "description": (r.get("description") or "").strip(),
+            "severity": sev, "status": "待验证",
+        })
+
+    for g in (res.get("research_gaps") or [])[:12]:
+        title = (g.get("title") or "").strip()
+        if not title:
+            continue
+        dim = g.get("dimension") if g.get("dimension") in OVERVIEW_DIM_KEYS else "other"
+        pri = g.get("priority") if g.get("priority") in OVERVIEW_PRIORITY else "Low"
+        _push("add", "gap", {
+            "title": title, "description": (g.get("description") or "").strip(),
+            "dimension": dim, "priority": pri, "status": "未研究",
+        })
+    return pending
+
+
+# ---------------------------------------------------------------------------
 # HTTP 处理器
 # ---------------------------------------------------------------------------
 class Handler(http.server.BaseHTTPRequestHandler):
@@ -790,7 +1036,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             # 允许 GitHub Pages 等前端跨域调用；生产可改为具体域名
             self.send_header("Access-Control-Allow-Origin", os.environ.get("RD_CORS_ORIGIN", "*"))
             self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-            self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
@@ -883,6 +1129,23 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send(500, {"error": "读取云端产品失败: {}".format(e)})
                 return
             self._send(200, {"products": content if content else []})
+        elif _path == "/api/overviews":
+            # v2.2.0：产品综合研究总览（按 product_id 一份）
+            if not self._token_valid():
+                self._send(401, {"error": "未授权：缺少有效 token。"})
+                return
+            try:
+                content, _sha = gh_get_json(OVERVIEWS_PATH)
+            except Exception as e:
+                self._send(500, {"error": "读取云端总览失败: {}".format(e)})
+                return
+            ovs = content if isinstance(content, dict) else {}
+            from urllib.parse import parse_qs, urlsplit
+            pid = parse_qs(urlsplit(self.path).query).get("product_id", [""])[0]
+            if pid:
+                self._send(200, {"overview": ovs.get(pid) or overview_skeleton(pid)})
+            else:
+                self._send(200, {"overviews": ovs})
         else:
             self._send(404, {"error": "not found"})
 
@@ -1035,6 +1298,281 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 self._send(500, {"error": "保存云端产品失败: {}".format(e)})
                 return
             self._send(200, {"ok": True, "id": product.get("product_id"), "count": len(content)})
+        elif _path == "/api/overviews":
+            # v2.2.0：保存产品综合研究总览（按 product_id upsert）
+            if not self._token_valid():
+                self._send(401, {"error": "未授权：缺少有效 token。"})
+                return
+            if not os.environ.get("GITHUB_TOKEN"):
+                self._send(500, {"error": "后端未配置 GITHUB_TOKEN（环境变量）。请联系站长开启云端总览。"})
+                return
+            try:
+                length = int(self.headers.get("Content-Length", 0) or 0)
+                body = self.rfile.read(length) if length else b"{}"
+                payload = json.loads(body.decode("utf-8"))
+            except Exception as e:
+                self._send(400, {"error": "bad request: {}".format(e)})
+                return
+            ov = payload.get("overview")
+            if not ov or not isinstance(ov, dict) or not ov.get("product_id"):
+                self._send(400, {"error": "缺少 overview 对象（需含 product_id）"})
+                return
+            try:
+                content, sha = gh_get_json(OVERVIEWS_PATH)
+                if not isinstance(content, dict):
+                    content = {}
+                pid = ov.get("product_id")
+                ov = dict(ov)
+                ov["updated_at"] = now_beijing()
+                content[pid] = ov
+                gh_save_json(OVERVIEWS_PATH, content, sha)
+            except Exception as e:
+                self._send(500, {"error": "保存云端总览失败: {}".format(e)})
+                return
+            self._send(200, {"ok": True, "id": pid, "count": len(content)})
+        elif _path == "/api/overview/suggest":
+            # v2.2.0：分析 Research → 生成「综合总览更新建议」（不直接改总览，等用户确认）
+            if not self._token_valid():
+                self._send(401, {"error": "未授权：缺少有效 token。"})
+                return
+            if not os.environ.get("GITHUB_TOKEN"):
+                self._send(500, {"error": "后端未配置 GITHUB_TOKEN（环境变量）。"})
+                return
+            if not LLM_KEY:
+                self._send(400, {"error": "后端未配置 LLM Key，无法生成总览建议。"})
+                return
+            try:
+                length = int(self.headers.get("Content-Length", 0) or 0)
+                body = self.rfile.read(length) if length else b"{}"
+                payload = json.loads(body.decode("utf-8"))
+            except Exception as e:
+                self._send(400, {"error": "bad request: {}".format(e)})
+                return
+            pid = payload.get("product_id") or ""
+            if not pid:
+                self._send(400, {"error": "缺少 product_id"})
+                return
+            only_ids = payload.get("research_ids") or []
+            try:
+                products, _ps = gh_get_json(PRODUCTS_PATH)
+                reports, _rs = gh_get_report_file()
+                ovs, osha = gh_get_json(OVERVIEWS_PATH)
+            except Exception as e:
+                self._send(500, {"error": "读取云端数据失败: {}".format(e)})
+                return
+            product = None
+            for p in (products or []):
+                if isinstance(p, dict) and p.get("product_id") == pid:
+                    product = p
+                    break
+            if not product:
+                self._send(404, {"error": "未找到该产品：{}".format(pid)})
+                return
+            ovs = ovs if isinstance(ovs, dict) else {}
+            overview = ovs.get(pid) or overview_skeleton(pid)
+            # 该产品下的 Research（可限定只分析新完成的几份）
+            rs = [r for r in (reports or []) if isinstance(r, dict) and r.get("product_id") == pid]
+            if only_ids:
+                rs = [r for r in rs if (r.get("research_id") or r.get("id")) in only_ids]
+            if not rs:
+                self._send(400, {"error": "该产品下还没有可分析的 Research。"})
+                return
+            llm = {"key": LLM_KEY, "base": LLM_BASE, "model": LLM_MODEL}
+            try:
+                pending = analyze_overview(product, overview, rs, llm)
+            except Exception as e:
+                self._send(500, {"error": "生成总览建议失败: {}".format(e)})
+                return
+            # 去重：同 target + 同内容 且仍为 pending 的建议不重复加入
+            exist = [u for u in (overview.get("pending_updates") or []) if u.get("status") == "pending"]
+            def _key(u):
+                p = u.get("payload") or {}
+                return (u.get("type"), u.get("target"), str(p.get("text") or p.get("new_text") or p.get("title") or p.get("new_claim") or ""))
+            known = set(_key(u) for u in exist)
+            added = []
+            for u in pending:
+                if _key(u) in known:
+                    continue
+                known.add(_key(u))
+                added.append(u)
+            overview = dict(overview)
+            overview["pending_updates"] = exist + added
+            overview["updated_at"] = now_beijing()
+            ovs[pid] = overview
+            try:
+                gh_save_json(OVERVIEWS_PATH, ovs, osha)
+            except Exception as e:
+                self._send(500, {"error": "保存待确认更新失败: {}".format(e)})
+                return
+            self._send(200, {"ok": True, "added": len(added), "pending": overview["pending_updates"]})
+        elif _path == "/api/overview/confirm":
+            # v2.2.0：用户确认/忽略一条「综合总览更新建议」（accept → 写入正式内容；ignore → 丢弃）
+            if not self._token_valid():
+                self._send(401, {"error": "未授权：缺少有效 token。"})
+                return
+            if not os.environ.get("GITHUB_TOKEN"):
+                self._send(500, {"error": "后端未配置 GITHUB_TOKEN（环境变量）。"})
+                return
+            try:
+                length = int(self.headers.get("Content-Length", 0) or 0)
+                body = self.rfile.read(length) if length else b"{}"
+                payload = json.loads(body.decode("utf-8"))
+            except Exception as e:
+                self._send(400, {"error": "bad request: {}".format(e)})
+                return
+            pid = payload.get("product_id") or ""
+            uid = payload.get("update_id") or ""
+            action = payload.get("action") or "accept"   # accept / ignore
+            if not pid or not uid:
+                self._send(400, {"error": "缺少 product_id 或 update_id"})
+                return
+            try:
+                ovs, osha = gh_get_json(OVERVIEWS_PATH)
+            except Exception as e:
+                self._send(500, {"error": "读取云端总览失败: {}".format(e)})
+                return
+            ovs = ovs if isinstance(ovs, dict) else {}
+            ov = ovs.get(pid)
+            if not isinstance(ov, dict):
+                self._send(404, {"error": "该产品还没有综合总览。"})
+                return
+            updates = ov.get("pending_updates") or []
+            upd = next((u for u in updates if u.get("id") == uid), None)
+            if not upd:
+                self._send(404, {"error": "未找到该更新建议（可能已被处理）。"})
+                return
+            if upd.get("status") != "pending":
+                self._send(400, {"error": "该建议已处理（status={}）。".format(upd.get("status"))})
+                return
+            now = now_beijing()
+            src_ids = list(upd.get("source_research_ids") or [])
+            p = upd.get("payload") or {}
+            applied = False
+            note = ""
+            if action == "ignore":
+                upd["status"] = "ignored"
+                upd["decided_at"] = now
+                note = "已忽略"
+            else:
+                t, target = upd.get("type"), upd.get("target")
+                if t == "add":
+                    if target == "finding":
+                        dim = p.get("dim") if p.get("dim") in OVERVIEW_DIM_KEYS else "other"
+                        arr = ov.setdefault("findings", {}).setdefault(dim, [])
+                        arr.append({
+                            "id": _uid("f"),
+                            "kind": (p.get("kind") or "INSIGHT") if (p.get("kind") or "INSIGHT") in ("FACT", "INSIGHT") else "INSIGHT",
+                            "text": p.get("text") or "",
+                            "source_research_ids": src_ids,
+                            "created_at": now, "updated_at": now,
+                        })
+                        applied = True
+                    elif target == "opportunity":
+                        ov.setdefault("opportunities", []).append({
+                            "id": _uid("o"),
+                            "title": p.get("title") or "",
+                            "description": p.get("description") or "",
+                            "source_research_ids": src_ids,
+                            "related_dimensions": p.get("related_dimensions") or [],
+                            "confidence": p.get("confidence") if p.get("confidence") in OVERVIEW_CONFIDENCE else "Low",
+                            "status": p.get("status") or "待验证",
+                            "created_at": now, "updated_at": now,
+                        })
+                        applied = True
+                    elif target == "risk":
+                        ov.setdefault("risks", []).append({
+                            "id": _uid("rk"),
+                            "title": p.get("title") or "",
+                            "description": p.get("description") or "",
+                            "severity": p.get("severity") if p.get("severity") in OVERVIEW_SEVERITY else "Low",
+                            "source_research_ids": src_ids,
+                            "status": p.get("status") or "待验证",
+                            "created_at": now, "updated_at": now,
+                        })
+                        applied = True
+                    elif target == "gap":
+                        ov.setdefault("research_gaps", []).append({
+                            "gap_id": _uid("g"),
+                            "title": p.get("title") or "",
+                            "description": p.get("description") or "",
+                            "dimension": p.get("dimension") if p.get("dimension") in OVERVIEW_DIM_KEYS else "other",
+                            "priority": p.get("priority") if p.get("priority") in OVERVIEW_PRIORITY else "Low",
+                            "status": p.get("status") or "未研究",
+                            "source_research_ids": src_ids,
+                            "created_at": now, "updated_at": now,
+                        })
+                        applied = True
+                elif t == "modify" and target == "finding":
+                    # 修改：替换已有结论文本（保留原 id 与历史来源，追加新来源）
+                    target_id = p.get("target_id") or ""
+                    done = False
+                    for dim, arr in (ov.get("findings") or {}).items():
+                        for f in arr:
+                            if f.get("id") == target_id:
+                                old = f.get("text") or ""
+                                f["text"] = p.get("new_text") or old
+                                f["updated_at"] = now
+                                f["replaced_from"] = old
+                                merged = list(set((f.get("source_research_ids") or []) + src_ids))
+                                f["source_research_ids"] = sorted(merged)
+                                done = True
+                                break
+                        if done:
+                            break
+                    if done:
+                        applied = True
+                    else:
+                        note = "未找到目标结论（可能已被修改），建议已标记忽略"
+                        upd["status"] = "ignored"
+                elif t == "conflict" and target == "finding":
+                    # 冲突：不覆盖旧结论，旧结论加冲突标注；可同时产生新 Gap（重新核验）
+                    target_id = p.get("target_id") or ""
+                    done = False
+                    for dim, arr in (ov.get("findings") or {}).items():
+                        for f in arr:
+                            if f.get("id") == target_id:
+                                f.setdefault("conflicts", []).append({
+                                    "new_claim": p.get("new_claim") or "",
+                                    "note": p.get("note") or "",
+                                    "source_research_ids": src_ids,
+                                    "created_at": now,
+                                })
+                                f["updated_at"] = now
+                                done = True
+                                break
+                        if done:
+                            break
+                    if done:
+                        applied = True
+                    else:
+                        note = "未找到目标结论，冲突标注未生效"
+                    sg = (p.get("suggest_gap") or "").strip()
+                    if sg:
+                        ov.setdefault("research_gaps", []).append({
+                            "gap_id": _uid("g"),
+                            "title": sg,
+                            "description": "由研究结论冲突产生，需重新核验：{}".format((p.get("note") or "").strip()),
+                            "dimension": "mkt",
+                            "priority": "High",
+                            "status": "未研究",
+                            "source_research_ids": src_ids,
+                            "created_at": now, "updated_at": now,
+                        })
+                else:
+                    note = "未知建议类型（{} / {}），已标记忽略".format(t, target)
+                    upd["status"] = "ignored"
+            if action == "accept" and applied:
+                upd["status"] = "accepted"
+                upd["decided_at"] = now
+            ov["pending_updates"] = updates
+            ov["updated_at"] = now
+            ovs[pid] = ov
+            try:
+                gh_save_json(OVERVIEWS_PATH, ovs, osha)
+            except Exception as e:
+                self._send(500, {"error": "保存总览失败: {}".format(e)})
+                return
+            self._send(200, {"ok": True, "update_id": uid, "status": upd.get("status"), "applied": applied, "note": note})
         else:
             self._send(404, {"error": "not found"})
 
@@ -1057,8 +1595,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if not os.environ.get("GITHUB_TOKEN"):
             self._send(500, {"error": "后端未配置 GITHUB_TOKEN（环境变量）。请联系站长开启云端报告。"})
             return
-        from urllib.parse import parse_qs, urlsplit
-        rid = parse_qs(urlsplit(self.path).query).get("id", [""])[0]
+        from urllib.parse import parse_qs, urlsplit, unquote
+        rid = unquote(parse_qs(urlsplit(self.path).query).get("id", [""])[0])
         if not rid:
             self._send(400, {"error": "缺少 id 参数"})
             return
@@ -1096,6 +1634,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
 # ---------------------------------------------------------------------------
 REPORTS_PATH = os.environ.get("RD_REPORTS_PATH", "research-deck/saved/reports.json")
 PRODUCTS_PATH = os.environ.get("RD_PRODUCTS_PATH", "research-deck/saved/products.json")
+# v2.2.0：产品综合研究总览（Product Research Overview），按 product_id 存一份
+OVERVIEWS_PATH = os.environ.get("RD_OVERVIEWS_PATH", "research-deck/saved/overviews.json")
 GITHUB_API = "https://api.github.com"
 GITHUB_REPO = os.environ.get("GITHUB_REPO", "Aurillis/database")
 
@@ -1208,7 +1748,7 @@ def main_handler(event, context):
                 "Content-Type": ctype,
                 "Access-Control-Allow-Origin": os.environ.get("RD_CORS_ORIGIN", "*"),
                 "Access-Control-Allow-Headers": "Content-Type, Authorization",
-                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Methods": "GET, POST, DELETE, OPTIONS",
             }
             captured["body"] = body.decode("utf-8") if isinstance(body, bytes) else body
 
