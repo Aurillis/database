@@ -1041,7 +1041,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
     def do_DELETE(self):
         """删除云端报告：DELETE /api/reports?id=<reportId>  （需 token）"""
         _path = self.path.split("?")[0]
-        if _path not in ("/api/reports", "/api/products"):
+        if _path != "/api/reports":
             self._send(404, {"error": "not found"})
             return
         rd_token = os.environ.get("RD_TOKEN")
@@ -1063,15 +1063,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self._send(400, {"error": "缺少 id 参数"})
             return
         try:
-            if _path == "/api/products":
-                content, sha = gh_get_json(PRODUCTS_PATH)
-                if content is None or not isinstance(content, list):
-                    content = []
-                before = len(content)
-                content = [p for p in content if p.get("product_id") != rid]
-                gh_save_json(PRODUCTS_PATH, content, sha)
-                self._send(200, {"ok": True, "deleted": before - len(content), "count": len(content)})
-                return
             content, sha = gh_get_report_file()
             if content is None:
                 content = []
