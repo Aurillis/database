@@ -536,7 +536,8 @@ def _auto_archive(payload, report):
 
 
 def build_report(topic, dims, source="template", llm=None, mode="standard", question=""):
-    topic = (topic or "").strip() or "未命名调研主题"
+    # v2.2.3：专题调研(topic 模式)下 topic 可能为空(前端只填了问题)，优先用 question 兜底，避免归档成「未命名调研主题」
+    topic = (topic or "").strip() or (question or "").strip() or "未命名调研主题"
     dims = [d for d in dims if d in DIMS]
     if not dims:
         dims = list(DIMS.keys())
