@@ -1116,16 +1116,16 @@ function renderReport(data){
     toc+=`<a onclick="scrollTo('sec-${k}')">${idx}. ${esc(secTitle)}</a>`;
     html+=`<div class="sec" id="sec-${k}"><div class="sh"><span class="n">${idx}</span><h3>${esc(secTitle)}</h3><span class="badge">${esc(secBadge)}</span></div>`;
     if(s.note) html+=`<p class="note">${escKeep(s.note)}</p>`;
-    if(s.kpis&&s.kpis.length){
-      html+='<div class="kpis">'+s.kpis.map(kp=>`<div class="kpi"><div class="v">${esc(kp.v)}</div><div class="l">${esc(kp.l)}</div></div>`).join('')+'</div>';
+    if(Array.isArray(s.kpis)&&s.kpis.length){
+      html+='<div class="kpis">'+s.kpis.slice(0,6).map(kp=>`<div class="kpi"><div class="v">${esc(kp&&kp.v)}</div><div class="l">${esc(kp&&kp.l)}</div></div>`).join('')+'</div>';
     }
-    if(s.tables) s.tables.forEach(tb=>{
+    if(Array.isArray(s.tables)) s.tables.forEach(tb=>{
       if(!tb.head||!tb.rows) return;
       html+='<table class="t"><tr>'+tb.head.map(h=>`<th>${esc(h)}</th>`).join('')+'</tr>';
-      tb.rows.forEach(row=>{ html+='<tr>'+row.map(c=>`<td>${escKeep(c)}</td>`).join('')+'</tr>'; });
+      (Array.isArray(tb.rows)?tb.rows:[]).forEach(row=>{ html+='<tr>'+(Array.isArray(row)?row:[]).map(c=>`<td>${escKeep(c)}</td>`).join('')+'</tr>'; });
       html+='</table>';
     });
-    if(s.callouts) s.callouts.forEach(c=>{ html+=`<div class="callout">${escKeep(c)}</div>`; });
+    if(Array.isArray(s.callouts)) s.callouts.forEach(c=>{ html+=`<div class="callout">${escKeep(c)}</div>`; });
     html+='</div>';
     idx++;
   }
