@@ -33,6 +33,12 @@
       "icon": "fas fa-folder",
       "parentId": "product-pelvic",
       "updatedAt": 1787998410537
+    },
+    {
+      "id": "cat_1786703524901",
+      "name": "其他",
+      "icon": "fas fa-folder",
+      "parentId": null
     }
   ],
   "fileCats": {
