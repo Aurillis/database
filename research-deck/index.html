@@ -416,9 +416,20 @@
   .ov-pending-box .close{float:right;cursor:pointer;color:var(--muted);font-size:18px}
   .ov-legend{font-size:11px;color:var(--muted);margin-top:14px;line-height:1.7}
   .ov-note{font-size:11px;color:#B45309;background:#FEF3C7;border-radius:8px;padding:6px 10px;margin:4px 0 8px}
+  /* v2.2.1 断点保护：后台完成草稿提示横幅 */
+  #draftBar{display:none;position:fixed;left:50%;transform:translateX(-50%);top:14px;z-index:998;background:linear-gradient(90deg,#0FB5A6,#0C9A8E);color:#fff;padding:11px 20px;border-radius:12px;font-size:13.5px;cursor:pointer;box-shadow:0 10px 30px rgba(15,181,166,.35);align-items:center;gap:10px;max-width:92vw}
+  #draftBar:hover{filter:brightness(1.05)}
+  #draftBar .go{margin-left:auto;font-size:12px;font-weight:700;white-space:nowrap;background:rgba(255,255,255,.2);padding:3px 10px;border-radius:9px}
+  #draftBar .x{margin-left:6px;font-size:15px;opacity:.7;padding:2px 6px}
 </style>
 </head>
 <body>
+<!-- v2.2.1 断点保护：后台完成的研究草稿提示横幅 -->
+<div id="draftBar" onclick="recoverDraft()">
+  <span>📋 上次有 <b style="font-size:15px">0</b> 份研究已在后台完成</span>
+  <span class="go">查看并归档 →</span>
+  <span class="x" onclick="event.stopPropagation();hideDraftBar()" title="忽略">✕</span>
+</div>
 <!-- v1.9.0：门禁遮罩（输入正确 token 后才能看到调研台内容） -->
 <div id="gate">
   <div class="gate-box">
@@ -1885,7 +1896,7 @@ function loadCloudReports(cb){
   if(!BACKEND_URL || !RD_TOKEN){ cb&&cb([]); return; }
   fetch(api('/api/reports'),{headers:apiHeaders()}).then(r=>{
     if(r.status===401){ cb&&cb([]); return; }
-    return r.json().then(j=>{ const list=(j.reports||[]).map(x=>({...x,cloud:true})); _cloudReports={list,loaded:true}; cb&&cb(list); });
+    return r.json().then(j=>{ const list=(j.reports||[]).map(x=>({...x,cloud:true})); _cloudReports={list,loaded:true}; cb&&cb(list); checkDraftReports(); });
   }).catch(()=>{ cb&&cb([]); });
 }
 function renderReports(){
@@ -2057,6 +2068,29 @@ function renderHistory(){
   } else show(arr);
 }
 
+// v2.2.1 断点保护：启动时检测云端「后台自动归档草稿」(draft:true)，提示恢复并正式归档
+let _draftPending=null;
+function checkDraftReports(){
+  const list=_cloudReports&&_cloudReports.list?_cloudReports.list:[];
+  const drafts=list.filter(r=>r.draft===true&&r.data);
+  const bar=document.getElementById('draftBar');
+  if(!bar) return;
+  if(!drafts.length){ bar.style.display='none'; return; }
+  _draftPending=drafts[0];
+  const b=bar.querySelector('b'); if(b) b.textContent=drafts.length;
+  bar.style.display='flex';
+}
+function hideDraftBar(){ const bar=document.getElementById('draftBar'); if(bar) bar.style.display='none'; _draftPending=null; }
+function recoverDraft(){
+  const d=_draftPending; if(!d||!d.data){ hideDraftBar(); return; }
+  hideDraftBar();
+  // 打开报告 + 正式归档（saveReport 以同 id 覆盖云端草稿 → draft 字段消失 = 正式）
+  lastReport=d.data; renderReport(d.data); show('s4');
+  saveReport(d.data);
+  toast('已恢复「'+String(d.topic||'').slice(0,20)+'」并正式归档','ok');
+  _draftPending=null;
+}
+
 // 后端连接状态徽章
 function setBackendBadge(ok, msg){
   const b=document.getElementById('betaBadge');
@@ -2093,6 +2127,7 @@ function bootStatus(){
     updateModePill();
   }).catch(()=>{ setBackendBadge(false,'后端未连接 · 检查地址'); });
   loadProducts(); // v2.1.0：启动加载产品研究库（本地+云端）
+  loadCloudReports(); // v2.2.1：启动即拉云端报告 → checkDraftReports 检测断点保护草稿
 }
 function bootGate(){
   // 有已存 token → 验证；无 → 直接显示门禁
