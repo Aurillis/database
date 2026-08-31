@@ -898,7 +898,18 @@ function toggleAdvanced(){
 function goGen(question){
   const topic=document.getElementById('topicInput').value.trim();
   const isLLM = srcMode==='llm';
-  if(!isLLM){ toast('请选择「大模型实时生成」数据源','err'); return; }
+  if(!isLLM){
+    // v2.2.1：未选「大模型实时生成」时，高亮数据源按钮并滚动到可见位置，避免用户找不到切换入口
+    const b=document.getElementById('srcLlm');
+    if(b){
+      b.style.boxShadow='0 0 0 3px rgba(239,68,68,.45)';
+      b.style.transition='box-shadow .2s';
+      setTimeout(()=>{ b.style.boxShadow=''; }, 2800);
+      try{ b.scrollIntoView({behavior:'smooth',block:'center'}); }catch(e){}
+    }
+    toast('请先选择「大模型实时生成」数据源（右上角红色提示按钮）','err');
+    return;
+  }
   // 组装请求参数
   let mode='standard', dims=[], q=question||'';
   if(curForm==='topic'){
