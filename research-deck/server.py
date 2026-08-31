@@ -264,6 +264,20 @@ def _extract_json(content):
     raise ValueError("无法从 LLM 输出中解析 JSON: " + s[:80])
 
 
+def _norm_sec(d):
+    """v2.2.2：LLM 返回的 section 字段归一化——callouts/kpis/tables 必须是数组，
+    模型偶发返回字符串/对象时转成单元素数组，避免前端 .forEach 崩溃。"""
+    if not isinstance(d, dict):
+        return d
+    for k in ("callouts", "kpis", "tables"):
+        v = d.get(k)
+        if v is None:
+            d[k] = []
+        elif not isinstance(v, list):
+            d[k] = [v]
+    return d
+
+
 def call_llm_dim(topic, dim_key, llm):
     """调用 LLM 生成单个维度的结构化结果，返回 dict（见 schema）。llm={key,base,model}"""
     prompt = DIM_PROMPTS[dim_key].format(topic=topic)
@@ -313,15 +327,15 @@ def call_llm_dim(topic, dim_key, llm):
         j = json.loads(resp.read().decode("utf-8"))
     content = j["choices"][0]["message"]["content"]
     try:
-        return _extract_json(content)
+        return _norm_sec(_extract_json(content))
     except Exception:
-        return {
+        return _norm_sec({
             "note": "该维度模型返回无法解析为 JSON，已降级为结构骨架。",
             "kpis": [],
             "tables": [],
             "callouts": ["⚠️ 模型返回格式异常，建议重试或检查模型是否支持结构化输出。"],
             "summary": "生成失败（JSON 解析）",
-        }
+        })
 
 
 # ---------------------------------------------------------------------------
