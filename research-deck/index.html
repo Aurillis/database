@@ -919,7 +919,11 @@ function toggleAdvanced(){
   renderDims();
 }
 function goGen(question){
-  const topic=document.getElementById('topicInput').value.trim();
+  // v2.2.3：专题调研下 topicInput 隐藏为空 → 用问题/产品名兜底，避免归档成「未命名调研主题」
+  const topic=document.getElementById('topicInput').value.trim()
+    || (question||'').trim()
+    || (_researchCtx&&_researchCtx.product_name)||''
+    || '未命名调研主题';
   const isLLM = srcMode==='llm';
   if(!isLLM){
     // v2.2.1：未选「大模型实时生成」时，高亮数据源按钮并滚动到可见位置（s1/s2 各自有按钮）
@@ -2089,7 +2093,11 @@ function hideDraftBar(){ const bar=document.getElementById('draftBar'); if(bar) 
 function recoverDraft(){
   const d=_draftPending; if(!d||!d.data){ hideDraftBar(); return; }
   hideDraftBar();
-  // 打开报告 + 正式归档（saveReport 以同 id 覆盖云端草稿 → draft 字段消失 = 正式）
+  // v2.2.3：历史「未命名主题」草稿（专题调研）→ 用问题/主题字段修正显示后再打开归档
+  if(d.data.topic==='未命名调研主题' && (d.data.question||'').trim()){
+    d.data.topic=(d.data.question||'').trim();
+    d.topic=d.data.topic;
+  }
   lastReport=d.data; renderReport(d.data); show('s4');
   saveReport(d.data);
   toast('已恢复「'+String(d.topic||'').slice(0,20)+'」并正式归档','ok');
