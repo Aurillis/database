@@ -1,0 +1,3 @@
+# 强制 LF：避免 Windows 克隆后 scf_bootstrap 变 CRLF 导致 SCF 启动失败
+research-deck/scf_bootstrap text eol=lf
+research-deck/server.py text eol=lf

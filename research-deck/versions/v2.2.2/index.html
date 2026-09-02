@@ -463,7 +463,7 @@
     </div>
     <div class="mode-pill demo" id="modePill">DEMO 模式</div>
     <button class="tok-toggle" id="tokenToggle" style="display:none" onclick="toggleTokenBox()">⚙ 令牌设置</button>
-    <div class="foot">ResearchDeck <b>v2.2.4</b> · 后端 /api/research · Python<br/>© 2026 Aurillis Lab</div>
+    <div class="foot">后端 /api/research · Python<br/>© 2026 Aurillis Lab</div>
   </aside>
 
   <div class="main">
@@ -787,7 +787,6 @@ const META = {
 let selected = new Set(['mkt','usr','prod','comp','tech','reg']);
 let lastReport = null;
 let srcMode = 'template';
-const APP_VERSION = 'v2.2.4';  // v2.2.4：Product Research Overview 闭环修复版
 
 function setSrc(m){
   srcMode = m;
@@ -920,11 +919,7 @@ function toggleAdvanced(){
   renderDims();
 }
 function goGen(question){
-  // v2.2.3：专题调研下 topicInput 隐藏为空 → 用问题/产品名兜底，避免归档成「未命名调研主题」
-  const topic=document.getElementById('topicInput').value.trim()
-    || (question||'').trim()
-    || (_researchCtx&&_researchCtx.product_name)||''
-    || '未命名调研主题';
+  const topic=document.getElementById('topicInput').value.trim();
   const isLLM = srcMode==='llm';
   if(!isLLM){
     // v2.2.1：未选「大模型实时生成」时，高亮数据源按钮并滚动到可见位置（s1/s2 各自有按钮）
@@ -1461,8 +1456,6 @@ function delProduct(pid){
     reportsOf(pid).forEach(r=>{
       fetch(api('/api/reports?id='+encodeURIComponent(r.id)),{method:'DELETE',headers:apiHeaders()}).catch(()=>{});
     });
-    // v2.2.4：同步清理该产品的综合研究总览（findings/opportunities/risks/hypotheses/research_gaps/pending_updates），避免孤儿数据
-    fetch(api('/api/overview?id='+encodeURIComponent(pid)),{method:'DELETE',headers:apiHeaders()}).catch(()=>{});
     if(_cloudReports) _cloudReports.loaded=false;
   }
   toast('产品已删除 ✓','ok');
@@ -1483,7 +1476,6 @@ function renderProductHome(box){
     <div class="ov-section"><h3>🧭 当前核心结论 <span class="tip">已确认结论 · 保留 Research 来源</span></h3>${ovFindingsHtml(ov)}</div>
     <div class="ov-section"><h3>🎯 核心机会 <span class="tip">Opportunity</span></h3>${(ov.opportunities||[]).length?('<div>'+ov.opportunities.map(o=>ovCardHtml('opp',o,pid)).join('')+'</div>'):'<div class="ov-empty">尚无已确认的机会。</div>'}</div>
     <div class="ov-section"><h3>⚠️ 核心风险 <span class="tip">Risk</span></h3>${(ov.risks||[]).length?('<div>'+ov.risks.map(r=>ovCardHtml('risk',r,pid)).join('')+'</div>'):'<div class="ov-empty">尚无已确认的风险。</div>'}</div>
-    <div class="ov-section"><h3>💡 待验证假设 <span class="tip">Hypothesis · 基于洞察但证据不足，点击【继续研究】进入专题调研验证</span></h3>${ovHypHtml(ov)}</div>
     <div class="ov-section"><h3>❓ 待验证问题 <span class="tip">Research Gap · 点击【继续研究】进入专题调研</span></h3>${ovGapsHtml(ov)}</div>
     <div class="ov-section"><h3>🕒 最近研究 <span class="tip">按时间倒序</span></h3>${ovRecentHtml(rs)}</div>
   ` : `<div class="ov-section"><h3>📊 综合研究总览</h3><div class="ov-empty">${(BACKEND_URL&&RD_TOKEN)?'正在加载综合研究总览…':'登录后加载综合研究总览（本功能需要云端）'}</div></div>`;
@@ -1563,50 +1555,14 @@ function editProductBasic(){
 
 // —— 【＋继续研究这个产品】：绑定 product_id，进入现有 3 种调研形式 ——
 // v2.2.0：支持从「待验证问题」点击【继续研究】进入，自动带入默认研究问题（question）
-function startResearchForProduct(question, opts){
+function startResearchForProduct(question){
   const p=_curProduct; if(!p){ toast('请先进入产品','err'); return; }
   _researchCtx={ product_id:p.product_id, product_name:p.name };
-  opts=opts||{};
   show('s1');
-  // v2.2.4：从 Overview 的 Gap / Hypothesis 进入时，自动切换为「专题调研」并带入问题
-  if(opts.mode==='topic'){ setForm('topic'); }
   if(question){ setQuestion(question); const qi=document.getElementById('questionInput'); if(qi){ qi.focus(); } }
-  if(opts.dimension){
-    const sel=document.getElementById('topicCatSel');
-    if(sel) sel.value = optDimToCatSel(opts.dimension);
-  }
   const banner=document.getElementById('researchBanner');
   if(banner){ banner.style.display='flex'; banner.innerHTML=`<span>正在研究：<span class="tagp">${esc(p.name)}</span> —— 完成后将自动归档到该产品</span><span class="cancel" onclick="cancelResearchCtx()">取消绑定</span>`; }
   toast('将归档到产品「'+p.name+'」','info');
-}
-// v2.2.4：Overview 维度(mkt/usr/...) → 专题调研分类选择器(topicCatSel) 值映射
-function optDimToCatSel(d){
-  const m={mkt:'market',ecom:'ecom',usr:'user',comp:'comp',tech:'tech',reg:'reg',sc:'sc',patent:'patent',other:'other'};
-  return m[d]||'other';
-}
-// v2.2.4：Research Gap → 专题调研闭环
-function gapToQuestion(pname, gapTitle){
-  return `围绕「${gapTitle}」，系统梳理${pname?('「'+pname+'」'):'该产品'}已有的研究证据、主要分歧与尚未解决的关键问题，并给出可验证的研究路径与可靠来源。`;
-}
-function continueFromGap(i){
-  const p=_curProduct; if(!p) return;
-  const ov=_overviews[p.product_id];
-  const g=ov&&ov.research_gaps&&ov.research_gaps[i];
-  if(!g){ toast('未找到该待验证问题','err'); return; }
-  startResearchForProduct(gapToQuestion(p.name, g.title||''), {mode:'topic', dimension:g.dimension});
-}
-// v2.2.4：Hypothesis → 专题调研闭环
-function hypToQuestion(pname, h){
-  const t=(h&&h.title)||'该假设';
-  const c=(h&&h.content)||'';
-  return `验证假设：「${t}」${c?('（'+c+'）'):''} 请通过专题研究评估其是否成立，梳理支撑与反驳证据，明确验证所需的真实数据来源。`;
-}
-function continueFromHypothesis(i){
-  const p=_curProduct; if(!p) return;
-  const ov=_overviews[p.product_id];
-  const h=ov&&ov.hypotheses&&ov.hypotheses[i];
-  if(!h){ toast('未找到该假设','err'); return; }
-  startResearchForProduct(hypToQuestion(p.name, h), {mode:'topic', dimension:h.dimension});
 }
 
 // ================= v2.2.0 产品综合研究总览（研究驾驶舱） =================
@@ -1614,17 +1570,13 @@ const OV_DIMS=[['mkt','市场判断'],['ecom','电商判断'],['usr','用户判�
 const OV_DIM_KEY=OV_DIMS.map(d=>d[0]);
 const OV_RTYPE_DIM={market:'mkt',ecom:'ecom',comp:'comp',user:'usr',tech:'tech',reg:'reg',sc:'sc',patent:'other',other:'other',comprehensive:'other'};
 
-function loadOverview(pid,cb,forceRefresh){
-  if(_overviews[pid] && !forceRefresh){ cb&&cb(_overviews[pid]); return; }
+function loadOverview(pid,cb){
+  if(_overviews[pid]){ cb&&cb(_overviews[pid]); return; }
   if(!(BACKEND_URL&&RD_TOKEN)){ cb&&cb(null); return; }
   fetch(api('/api/overviews?product_id='+encodeURIComponent(pid)),{headers:apiHeaders()})
     .then(r=>r.ok?r.json():null)
-    .then(j=>{
-      if(j&&j.overview) _overviews[pid]=j.overview;
-      // forceRefresh 时以服务端为准；失败则保留旧缓存，避免整页刷新
-      cb&&cb((j&&j.overview)|| (forceRefresh?null:(_overviews[pid]||null)));
-    })
-    .catch(()=>cb&&cb(_overviews[pid]||null));
+    .then(j=>{ if(j&&j.overview) _overviews[pid]=j.overview; cb&&cb((j&&j.overview)||null); })
+    .catch(()=>cb&&cb(null));
 }
 function saveOverview(pid,ov,cb){
   if(!(BACKEND_URL&&RD_TOKEN)){ cb&&cb(false); return; }
@@ -1642,14 +1594,11 @@ function suggestOverview(pid,researchIds){
     .then(r=>r.json().catch(()=>null))
     .then(j=>{
       if(j&&j.ok&&j.added>0){
-        // v2.2.4：先清缓存再强制从后端拉最新（含 pending_updates），避免用骨架覆盖真实总览
-        delete _overviews[pid];
-        loadOverview(pid,(freshOv)=>{
-          const ov=freshOv||{product_id:pid,findings:{},opportunities:[],risks:[],hypotheses:[],research_gaps:[],pending_updates:j.pending||[],updated_at:null};
-          if(!freshOv) _overviews[pid]=ov;
-          toast('AI 已生成 '+j.added+' 条综合总览更新建议','info');
-          if(_curProduct&&_curProduct.product_id===pid&&_productView==='home'){ renderProductLib(); }
-        }, true);
+        const ov=_overviews[pid]||{product_id:pid,findings:{},opportunities:[],risks:[],research_gaps:[],pending_updates:[]};
+        ov.pending_updates=j.pending||[];
+        _overviews[pid]=ov;
+        toast('AI 已生成 '+j.added+' 条综合总览更新建议','info');
+        if(_curProduct&&_curProduct.product_id===pid&&_productView==='home'){ renderProductLib(); }
       }
     }).catch(()=>{});
 }
@@ -1659,18 +1608,16 @@ function confirmOverviewUpdate(pid,uid,action){
     .then(r=>r.json()).then(j=>{
       if(j.ok){
         toast(action==='accept'?'已接受更新 ✓':'已忽略','ok');
-        // v2.2.4：操作后强制从后端重新加载总览（清缓存），页面立即刷新到最新状态，无需整页刷新
-        loadOverview(pid,()=>{ renderProductLib(); renderPendingPanel(); }, true);
+        loadOverview(pid,()=>{ renderProductLib(); renderPendingPanel(); });
       }else{ toast(j.error||'操作失败','err'); renderPendingPanel(); }
     }).catch(()=>toast('操作失败，请检查网络','err'));
 }
 // 按报告 id 打开原报告（供 source_research_ids 溯源）
 function openReportById(rid){
   const all=allReports();
-  // v2.2.4：来源追踪兼容旧数据（旧报告只有 id，新报告带 research_id）
-  const rec=all.find(r=>r.id===rid || r.research_id===rid);
+  const rec=all.find(r=>r.id===rid);
   if(rec&&rec.data){ lastReport=rec.data; renderReport(rec.data); show('s4'); }
-  else toast('未找到该研究原文（可能已被删除，或来源为旧版 report.id）','err');
+  else toast('未找到该研究原文（可能已被删除）','err');
 }
 // 来源引用：【来自N项研究】→ 点击弹出可打开原报告
 function srcRefsHtml(ids){
@@ -1682,7 +1629,7 @@ function srcRefsHtml(ids){
 function showSrcPop(ev,joined){
   closeSrcPop();
   const ids=joined.split('||').filter(Boolean);
-  const all=allReports(); const map={}; all.forEach(r=>{map[r.id]=r; if(r.research_id) map[r.research_id]=r;});
+  const all=allReports(); const map={}; all.forEach(r=>{map[r.id]=r;});
   const box=document.createElement('div'); box.className='ov-src-pop'; box.id='ovSrcPop';
   box.innerHTML=ids.length?ids.map(id=>{
     const r=map[id];
@@ -1752,11 +1699,11 @@ function ovCardHtml(kind,item,pid){
 function ovGapsHtml(ov){
   const gs=ov&&ov.research_gaps||[];
   if(!gs.length) return '<div class="ov-empty">暂无待验证问题。研究越多，系统会在这里持续追问「还没研究清楚什么」。</div>';
-  return gs.map((g,i)=>{
+  return gs.map(g=>{
     const st=g.status||'未研究';
     const btn = st==='已解决'
       ? `<span class="btn-gap done">✓ 已解决</span>`
-      : `<button class="btn-gap" onclick="continueFromGap(${i})">继续研究 →</button>`;
+      : `<button class="btn-gap" onclick="startResearchForProduct('${esc(String(g.title).replace(/"/g,''))}')">继续研究 →</button>`;
     return `<div class="ov-gap-row">
       <div style="flex:1;min-width:0">
         <div class="gt">${esc(g.title||'')} <span class="pill ${g.priority||'Low'}">${g.priority||'Low'}</span> <span class="pill st-wait">${st}</span></div>
@@ -1764,22 +1711,6 @@ function ovGapsHtml(ov){
         <div style="margin-top:5px">${srcRefsHtml(g.source_research_ids)}</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">${btn}</div>
-    </div>`;
-  }).join('');
-}
-function ovHypHtml(ov){
-  const hs=(ov&&ov.hypotheses)||[];
-  if(!hs.length) return '<div class="ov-empty">尚无待验证假设。完成研究后，AI 会基于事实与洞察提炼「证据不足、仍需验证」的判断，显示在这里。</div>';
-  return hs.map((h,i)=>{
-    const conf=h.confidence||'Low';
-    const dimLabel=(h.dimension&&h.dimension!=='other')?((OV_DIMS.find(d=>d[0]===h.dimension)||[,''])[1]):'';
-    return `<div class="ov-gap-row">
-      <div style="flex:1;min-width:0">
-        <div class="gt"><span class="pill" style="background:#EEF2FF;color:#4338CA">HYPOTHESIS</span> ${esc(h.title||'')} <span class="pill ${conf}">${conf}</span> <span class="pill st-wait">${h.status||'待验证'}</span></div>
-        <div class="gd">${esc(h.content||'')}${dimLabel?(' · 领域：'+esc(dimLabel)):''}</div>
-        <div style="margin-top:5px">${srcRefsHtml(h.source_research_ids)}</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end"><button class="btn-gap" onclick="continueFromHypothesis(${i})">继续研究 →</button></div>
     </div>`;
   }).join('');
 }
@@ -2158,11 +2089,7 @@ function hideDraftBar(){ const bar=document.getElementById('draftBar'); if(bar) 
 function recoverDraft(){
   const d=_draftPending; if(!d||!d.data){ hideDraftBar(); return; }
   hideDraftBar();
-  // v2.2.3：历史「未命名主题」草稿（专题调研）→ 用问题/主题字段修正显示后再打开归档
-  if(d.data.topic==='未命名调研主题' && (d.data.question||'').trim()){
-    d.data.topic=(d.data.question||'').trim();
-    d.topic=d.data.topic;
-  }
+  // 打开报告 + 正式归档（saveReport 以同 id 覆盖云端草稿 → draft 字段消失 = 正式）
   lastReport=d.data; renderReport(d.data); show('s4');
   saveReport(d.data);
   toast('已恢复「'+String(d.topic||'').slice(0,20)+'」并正式归档','ok');

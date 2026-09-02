@@ -264,20 +264,6 @@ def _extract_json(content):
     raise ValueError("无法从 LLM 输出中解析 JSON: " + s[:80])
 
 
-def _norm_sec(d):
-    """v2.2.2：LLM 返回的 section 字段归一化——callouts/kpis/tables 必须是数组，
-    模型偶发返回字符串/对象时转成单元素数组，避免前端 .forEach 崩溃。"""
-    if not isinstance(d, dict):
-        return d
-    for k in ("callouts", "kpis", "tables"):
-        v = d.get(k)
-        if v is None:
-            d[k] = []
-        elif not isinstance(v, list):
-            d[k] = [v]
-    return d
-
-
 def call_llm_dim(topic, dim_key, llm):
     """调用 LLM 生成单个维度的结构化结果，返回 dict（见 schema）。llm={key,base,model}"""
     prompt = DIM_PROMPTS[dim_key].format(topic=topic)
@@ -327,15 +313,15 @@ def call_llm_dim(topic, dim_key, llm):
         j = json.loads(resp.read().decode("utf-8"))
     content = j["choices"][0]["message"]["content"]
     try:
-        return _norm_sec(_extract_json(content))
+        return _extract_json(content)
     except Exception:
-        return _norm_sec({
+        return {
             "note": "该维度模型返回无法解析为 JSON，已降级为结构骨架。",
             "kpis": [],
             "tables": [],
             "callouts": ["⚠️ 模型返回格式异常，建议重试或检查模型是否支持结构化输出。"],
             "summary": "生成失败（JSON 解析）",
-        })
+        }
 
 
 # ---------------------------------------------------------------------------
@@ -536,8 +522,7 @@ def _auto_archive(payload, report):
 
 
 def build_report(topic, dims, source="template", llm=None, mode="standard", question=""):
-    # v2.2.3：专题调研(topic 模式)下 topic 可能为空(前端只填了问题)，优先用 question 兜底，避免归档成「未命名调研主题」
-    topic = (topic or "").strip() or (question or "").strip() or "未命名调研主题"
+    topic = (topic or "").strip() or "未命名调研主题"
     dims = [d for d in dims if d in DIMS]
     if not dims:
         dims = list(DIMS.keys())
@@ -870,7 +855,7 @@ def overview_skeleton(pid):
         "findings": {},          # {dim: [{id, kind, text, source_research_ids, created_at, updated_at}]}
         "opportunities": [],     # [{id, title, description, source_research_ids, related_dimensions, confidence, status, created_at, updated_at}]
         "risks": [],             # [{id, title, description, severity, source_research_ids, status, created_at, updated_at}]
-        "hypotheses": [],        # [{id, title, content, dimension, source_research_ids, confidence, status, created_at, updated_at}]
+        "hypotheses": [],        # [{id, text, source_research_ids, status, created_at, updated_at}]
         "research_gaps": [],     # [{gap_id, title, description, dimension, priority, status, source_research_ids, created_at, updated_at}]
         "pending_updates": [],   # 待用户确认的更新建议
         "updated_at": None,
@@ -926,7 +911,6 @@ def analyze_overview(product, overview, researches, llm):
     ov.setdefault("opportunities", [])
     ov.setdefault("risks", [])
     ov.setdefault("research_gaps", [])
-    ov.setdefault("hypotheses", [])
 
     # —— 已有总览（供 LLM 判断重复/修改/冲突）——
     exist_lines = []
@@ -940,9 +924,6 @@ def analyze_overview(product, overview, researches, llm):
     egap = "\n".join("- id={} [{}/{}] {}".format(
         g.get("gap_id", ""), g.get("dimension", "other"), g.get("status", "未研究"), (g.get("title") or "")[:80])
         for g in (ov.get("research_gaps") or [])) or "（暂无）"
-    ehyp = "\n".join("- id={} [{}] {}：{}".format(
-        h.get("id", ""), h.get("dimension", "other"), (h.get("title") or "")[:60], (h.get("content") or "")[:110])
-        for h in (ov.get("hypotheses") or [])) or "（暂无）"
 
     rid_list, digests = [], []
     for rec in researches or []:
@@ -956,7 +937,7 @@ def analyze_overview(product, overview, researches, llm):
         "你是「产品研究总览」分析助手。\n"
         "产品：{name}（{en}）\n类别：{cat}｜目标市场：{mkt}｜研究目的：{goal}\n产品说明：{desc}\n\n"
         "【已有综合总览·当前结论】\n{exist}\n\n"
-        "【已有机会】\n{eopp}\n\n【已有风险】\n{erisk}\n\n【已有待验证问题】\n{egap}\n\n【已有待验证假设】\n{ehyp}\n\n"
+        "【已有机会】\n{eopp}\n\n【已有风险】\n{erisk}\n\n【已有待验证问题】\n{egap}\n\n"
         "【本次纳入分析的 Research（共 {n} 份，research_id：{ids}）】\n{digests}\n\n"
         "请基于上述 Research 的真实内容，产出「综合总览更新建议」JSON（只提建议，不要直接改写总览）：\n"
         "{{\n"
@@ -965,8 +946,7 @@ def analyze_overview(product, overview, researches, llm):
         "  \"conflicts\":[{{\"target_id\":\"已有结论id\",\"new_claim\":\"新研究中的说法\",\"note\":\"可能的差异原因（年份/统计口径/市场定义/数据源）\",\"suggest_gap\":\"建议新增的待验证问题标题\"}}],\n"
         "  \"opportunities\":[{{\"title\":\"机会标题\",\"description\":\"机会描述1-3句，说明依据\",\"confidence\":\"High|Medium|Low\",\"related_dimensions\":[\"tech\",\"usr\"]}}],\n"
         "  \"risks\":[{{\"title\":\"风险标题\",\"description\":\"风险描述1-3句\",\"severity\":\"High|Medium|Low\"}}],\n"
-        "  \"research_gaps\":[{{\"title\":\"还没研究清楚的问题\",\"description\":\"为什么重要1-2句\",\"dimension\":\"mkt|ecom|usr|comp|tech|reg|sc|other\",\"priority\":\"High|Medium|Low\"}}],\n"
-        "  \"hypotheses\":[{{\"dimension\":\"mkt|ecom|usr|comp|tech|reg|sc|other\",\"title\":\"假设标题（待验证的判断）\",\"content\":\"假设内容：明确这是证据不足、仍需验证的判断，不能写成已证实结论\",\"confidence\":\"High|Medium|Low\"}}]\n"
+        "  \"research_gaps\":[{{\"title\":\"还没研究清楚的问题\",\"description\":\"为什么重要1-2句\",\"dimension\":\"mkt|ecom|usr|comp|tech|reg|sc|other\",\"priority\":\"High|Medium|Low\"}}]\n"
         "}}\n"
         "硬性规则：\n"
         "1. 只基于上面提供的 Research 内容，禁止编造数据；证据不足时不要硬写结论，改为写进 research_gaps。\n"
@@ -975,7 +955,6 @@ def analyze_overview(product, overview, researches, llm):
         "4. FACT = 研究中可直接引用的事实/数据；INSIGHT = 基于研究的判断/推论，推论必须能被上面的内容支撑。\n"
         "5. confidence/severity/priority 只能取 High/Medium/Low，证据不足一律 Low。\n"
         "6. 只输出 JSON 对象，不要解释文字、不要 markdown 代码块。\n"
-        "7. hypotheses 是证据尚不充分、仍需要进一步研究验证的产品/市场假设；content 必须明确其「待验证」性质，不得写成已被证实的结论；维度用 mkt/ecom/usr/comp/tech/reg/sc/other。\n"
     ).format(
         name=(product or {}).get("name") or "该产品",
         en=(product or {}).get("name_en") or "",
@@ -983,7 +962,7 @@ def analyze_overview(product, overview, researches, llm):
         mkt="、".join((product or {}).get("target_market") or []) or "未填写",
         goal=(product or {}).get("research_goal") or "未填写",
         desc=(product or {}).get("description") or "无",
-        exist=exist_txt, eopp=eopp, erisk=erisk, egap=egap, ehyp=ehyp,
+        exist=exist_txt, eopp=eopp, erisk=erisk, egap=egap,
         n=len(researches or []), ids=",".join(rid_list), digests=digests_txt,
     )
 
@@ -1074,16 +1053,6 @@ def analyze_overview(product, overview, researches, llm):
         _push("add", "gap", {
             "title": title, "description": (g.get("description") or "").strip(),
             "dimension": dim, "priority": pri, "status": "未研究",
-        })
-    for h in (res.get("hypotheses") or [])[:10]:
-        title = (h.get("title") or "").strip()
-        if not title:
-            continue
-        dim = h.get("dimension") if h.get("dimension") in OVERVIEW_DIM_KEYS else "other"
-        conf = h.get("confidence") if h.get("confidence") in OVERVIEW_CONFIDENCE else "Low"
-        _push("add", "hypothesis", {
-            "title": title, "content": (h.get("content") or "").strip(),
-            "dimension": dim, "confidence": conf, "status": "待验证",
         })
     return pending
 
@@ -1577,18 +1546,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
                             "created_at": now, "updated_at": now,
                         })
                         applied = True
-                    elif target == "hypothesis":
-                        ov.setdefault("hypotheses", []).append({
-                            "id": _uid("h"),
-                            "title": p.get("title") or "",
-                            "content": p.get("content") or "",
-                            "dimension": p.get("dimension") if p.get("dimension") in OVERVIEW_DIM_KEYS else "other",
-                            "source_research_ids": src_ids,
-                            "confidence": p.get("confidence") if p.get("confidence") in OVERVIEW_CONFIDENCE else "Low",
-                            "status": p.get("status") or "待验证",
-                            "created_at": now, "updated_at": now,
-                        })
-                        applied = True
                 elif t == "modify" and target == "finding":
                     # 修改：替换已有结论文本（保留原 id 与历史来源，追加新来源）
                     target_id = p.get("target_id") or ""
@@ -1666,7 +1623,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
     def do_DELETE(self):
         """删除云端报告：DELETE /api/reports?id=<reportId>  （需 token）"""
         _path = self.path.split("?")[0]
-        if _path not in ("/api/reports", "/api/products", "/api/overview"):
+        if _path not in ("/api/reports", "/api/products"):
             self._send(404, {"error": "not found"})
             return
         rd_token = os.environ.get("RD_TOKEN")
@@ -1695,16 +1652,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 before = len(content)
                 content = [p for p in content if p.get("product_id") != rid]
                 gh_save_json(PRODUCTS_PATH, content, sha)
-                self._send(200, {"ok": True, "deleted": before - len(content), "count": len(content)})
-                return
-            if _path == "/api/overview":
-                # v2.2.4：删除产品时同步清理该产品的综合研究总览（只删指定 product_id）
-                content, sha = gh_get_json(OVERVIEWS_PATH)
-                if content is None or not isinstance(content, dict):
-                    content = {}
-                before = len(content)
-                content = {k: v for k, v in content.items() if k != rid}
-                gh_save_json(OVERVIEWS_PATH, content, sha)
                 self._send(200, {"ok": True, "deleted": before - len(content), "count": len(content)})
                 return
             content, sha = gh_get_report_file()
