@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+cd "$(dirname "$0")"
+export PORT="${PORT:-9000}"
+for p in /var/lang/python39/bin/python3.9 /var/lang/python3/bin/python3 /usr/bin/python3; do
+  if [ -x "$p" ]; then exec "$p" server.py; fi
+done
+exec "$(command -v python3 || command -v python)" server.py
