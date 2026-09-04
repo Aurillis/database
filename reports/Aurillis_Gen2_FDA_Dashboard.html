@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>欧律生第二代智能盆底产品｜FDA开发路径看板</title>
+<style>
+:root{
+  --navy:#0f2a4a;        /* 深蓝：FDA和核心结构 */
+  --navy-2:#16395f;
+  --teal:#1f9e8f;        /* 青绿：已有FDA公开案例支持 */
+  --teal-bg:#e6f5f2;
+  --blue:#2f6fb0;        /* 蓝：当前建议方案 */
+  --blue-bg:#e8f0f8;
+  --orange:#d9822b;      /* 橙：需要FDA机构确认 */
+  --orange-bg:#fdf0e2;
+  --red:#c0392b;         /* 红：可能显著增加监管风险 */
+  --red-bg:#fbe9e7;
+  --gray:#8a94a0;        /* 灰：背景资料 */
+  --gray-bg:#f1f3f5;
+  --ink:#1d2733;
+  --ink-2:#46535f;
+  --line:#d9e0e7;
+  --bg:#f5f7f9;
+  --card:#ffffff;
+  --shadow:0 1px 3px rgba(15,42,74,.08),0 1px 2px rgba(15,42,74,.06);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;font-family:"PingFang SC","Microsoft YaHei","Segoe UI",Helvetica,Arial,sans-serif;
+  color:var(--ink);background:var(--bg);font-size:14px;line-height:1.65;
+}
+a{color:var(--blue);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+/* ===== 布局 ===== */
+.layout{display:flex;min-height:100vh;}
+.sidebar{
+  width:248px;flex:0 0 248px;background:var(--navy);color:#cdd8e4;
+  position:fixed;top:0;left:0;height:100vh;overflow-y:auto;padding:18px 0 40px;z-index:30;
+}
+.sidebar h1{font-size:15px;color:#fff;margin:0 14px 4px;line-height:1.4;}
+.sidebar .sub{font-size:11px;color:#8fa6bf;margin:0 14px 14px;line-height:1.5;}
+.sidebar .nav-search{padding:0 12px 12px;}
+.sidebar .nav-search input{
+  width:100%;padding:7px 9px;border:1px solid #2a486b;background:#0c2238;color:#dce6f0;
+  border-radius:6px;font-size:12px;outline:none;
+}
+.sidebar .nav-search input::placeholder{color:#6f86a3;}
+.sidebar nav a{
+  display:block;color:#b9c8d8;padding:7px 16px;font-size:12.5px;border-left:3px solid transparent;
+}
+.sidebar nav a:hover{background:#16395f;color:#fff;text-decoration:none;}
+.sidebar nav a.active{background:#16395f;color:#fff;border-left-color:var(--teal);}
+.sidebar .nav-group{font-size:10.5px;color:#6f86a3;text-transform:uppercase;letter-spacing:.06em;padding:12px 16px 4px;}
+
+.main{margin-left:248px;flex:1;padding:0 0 80px;max-width:1240px;}
+.topbar{
+  position:sticky;top:0;background:rgba(245,247,249,.92);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);padding:10px 28px;display:flex;gap:10px;align-items:center;
+  flex-wrap:wrap;z-index:20;
+}
+.topbar .tools{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+.btn{
+  border:1px solid var(--line);background:#fff;color:var(--ink);padding:6px 12px;border-radius:6px;
+  font-size:12.5px;cursor:pointer;transition:.15s;
+}
+.btn:hover{border-color:var(--blue);color:var(--blue);}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy);}
+.btn.primary:hover{background:var(--navy-2);color:#fff;}
+.searchbox{flex:1;min-width:200px;max-width:360px;position:relative;}
+.searchbox input{
+  width:100%;padding:7px 30px 7px 12px;border:1px solid var(--line);border-radius:6px;font-size:13px;
+  background:#fff;outline:none;
+}
+.searchbox input:focus{border-color:var(--blue);}
+.searchbox .clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#9aa7b3;cursor:pointer;display:none;font-size:15px;}
+.search-count{font-size:12px;color:var(--gray);white-space:nowrap;}
+
+.content{padding:0 28px;}
+
+/* ===== 头部边界提示 ===== */
+.boundary{
+  margin:22px 0 8px;background:var(--orange-bg);border:1px solid var(--orange);border-left:5px solid var(--orange);
+  border-radius:8px;padding:14px 18px;
+}
+.boundary .tag{display:inline-block;background:var(--orange);color:#fff;font-size:11px;padding:2px 9px;border-radius:4px;margin-bottom:8px;font-weight:600;}
+.boundary p{margin:6px 0;color:#6b4416;font-size:13px;}
+.boundary strong{color:#9a5a12;}
+
+/* ===== 标题区 ===== */
+.hero{background:var(--navy);color:#fff;border-radius:10px;padding:24px 26px;margin:18px 0 8px;}
+.hero h1{margin:0 0 4px;font-size:22px;letter-spacing:.02em;}
+.hero .en{color:#9fc0dd;font-size:13px;font-weight:400;margin-bottom:10px;}
+.hero .sub2{display:inline-block;background:#16395f;color:#cfe0f0;font-size:12.5px;padding:6px 12px;border-radius:6px;margin-top:6px;}
+
+/* ===== 区块 ===== */
+section{margin:26px 0;}
+section > h2{
+  font-size:18px;color:var(--navy);border-bottom:2px solid var(--navy);padding-bottom:8px;margin:0 0 14px;
+  display:flex;align-items:center;gap:8px;
+}
+section > h2 .num{background:var(--navy);color:#fff;font-size:12px;width:24px;height:24px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;flex:0 0 24px;}
+.lead{color:var(--ink-2);font-size:13.5px;margin:0 0 14px;}
+
+/* ===== 卡片 ===== */
+.card{background:var(--card);border:1px solid var(--line);border-radius:9px;margin:12px 0;box-shadow:var(--shadow);overflow:hidden;}
+.card-head{
+  display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;user-select:none;
+  border-bottom:1px solid transparent;
+}
+.card-head:hover{background:#f8fafc;}
+.card.collapsed .card-head{border-bottom:none;}
+.card-head .chev{margin-left:auto;color:var(--gray);transition:.2s;font-size:13px;}
+.card.collapsed .chev{transform:rotate(-90deg);}
+.card-head .ttl{font-size:15px;font-weight:600;color:var(--navy);}
+.card-head .meta{font-size:12px;color:var(--gray);margin-left:4px;font-weight:400;}
+.card-body{padding:4px 16px 16px;}
+.card.collapsed .card-body{display:none;}
+
+/* ===== 状态徽章 ===== */
+.badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600;line-height:1.5;white-space:nowrap;}
+.badge.green{background:var(--teal-bg);color:#0e6b5e;border:1px solid #9fd9cf;}
+.badge.blue{background:var(--blue-bg);color:#1f4f86;border:1px solid #a9c8e8;}
+.badge.orange{background:var(--orange-bg);color:#9a5a12;border:1px solid #ecc089;}
+.badge.red{background:var(--red-bg);color:#a3271a;border:1px solid #eab4ac;}
+.badge.gray{background:var(--gray-bg);color:#5b6671;border:1px solid #cfd6dd;}
+.badge.navy{background:var(--navy);color:#fff;}
+
+/* ===== 提示框 ===== */
+.note{border-radius:8px;padding:12px 15px;margin:12px 0;font-size:13px;border-left:4px solid;}
+.note.green{background:var(--teal-bg);border-color:var(--teal);color:#0e5a4f;}
+.note.blue{background:var(--blue-bg);border-color:var(--blue);color:#1f4f86;}
+.note.orange{background:var(--orange-bg);border-color:var(--orange);color:#8a5212;}
+.note.red{background:var(--red-bg);border-color:var(--red);color:#9a271a;}
+.note.gray{background:var(--gray-bg);border-color:var(--gray);color:#4a555f;}
+.note strong{font-weight:700;}
+
+/* ===== 系统架构 ===== */
+.arch{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:14px 0;}
+.arch .node{background:#fff;border:1px solid var(--line);border-top:4px solid var(--navy);border-radius:9px;padding:14px 16px;}
+.arch .node h3{margin:0 0 4px;font-size:14.5px;color:var(--navy);}
+.arch .node .role{font-size:11.5px;color:var(--teal);font-weight:600;margin-bottom:8px;}
+.arch .node ul{margin:6px 0 0;padding-left:18px;}
+.arch .node li{font-size:12.5px;margin:3px 0;color:var(--ink-2);}
+.arch-rule{background:var(--navy);color:#fff;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13px;line-height:1.6;}
+.arch-rule strong{color:#9fe0d3;}
+
+/* ===== 流程 ===== */
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:14px 0;}
+.flow .step{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 12px;flex:1 1 150px;min-width:150px;position:relative;}
+.flow .step .n{display:inline-block;background:var(--navy);color:#fff;font-size:11px;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px;margin-bottom:6px;}
+.flow .step p{margin:0;font-size:12.5px;color:var(--ink-2);}
+
+/* ===== 表格 ===== */
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:9px;}
+table{border-collapse:collapse;width:100%;font-size:12.5px;background:#fff;}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top;}
+th{background:var(--navy);color:#fff;font-weight:600;white-space:nowrap;}
+tbody tr:nth-child(even){background:#fafbfc;}
+td .k{font-weight:700;color:var(--navy);}
+
+/* ===== 决策模块 ===== */
+.reco{background:linear-gradient(180deg,#eef4fa,#fff);border:2px solid var(--blue);border-radius:11px;padding:18px 20px;margin:16px 0;}
+.reco h3{margin:0 0 12px;color:var(--blue);font-size:16px;display:flex;align-items:center;gap:8px;}
+.reco .row{display:grid;grid-template-columns:200px 1fr;gap:14px;padding:10px 0;border-top:1px dashed var(--line);}
+.reco .row:first-of-type{border-top:none;}
+.reco .row .lbl{font-weight:700;color:var(--navy);font-size:13px;}
+.reco .row .lbl span{display:block;font-weight:400;color:var(--gray);font-size:11px;margin-top:2px;}
+.reco .row ul{margin:0;padding-left:18px;}
+.reco .row li{font-size:12.5px;margin:2px 0;color:var(--ink-2);}
+
+/* ===== 合规矩阵 ===== */
+.matrix{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0;}
+.matrix .col{border:1px solid var(--line);border-radius:9px;overflow:hidden;}
+.matrix .col h3{margin:0;padding:10px 14px;color:#fff;font-size:13.5px;}
+.matrix .col.green h3{background:var(--teal);}
+.matrix .col.yellow h3{background:var(--orange);}
+.matrix .col.red h3{background:var(--red);}
+.matrix .col ul{margin:0;padding:10px 14px 14px 30px;}
+.matrix .col li{font-size:12.5px;margin:5px 0;color:var(--ink-2);}
+
+/* ===== 列表模块 ===== */
+.layer{border:1px solid var(--line);border-radius:9px;margin:12px 0;overflow:hidden;}
+.layer-head{background:var(--navy);color:#fff;padding:10px 15px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:8px;}
+.layer-body{padding:12px 16px;background:#fff;}
+.chips{display:flex;flex-wrap:wrap;gap:7px;}
+.chip{background:var(--gray-bg);border:1px solid var(--line);border-radius:6px;padding:5px 10px;font-size:12px;color:var(--ink-2);}
+.chip.blue{background:var(--blue-bg);border-color:#a9c8e8;color:#1f4f86;}
+
+/* ===== 阶段路线图 ===== */
+.roadmap{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:16px 0;}
+.stage{border:1px solid var(--line);border-radius:9px;background:#fff;overflow:hidden;}
+.stage .top{background:var(--navy);color:#fff;padding:9px 11px;font-size:12.5px;font-weight:700;}
+.stage .top .ph{display:block;font-size:10.5px;color:#9fc0dd;font-weight:400;}
+.stage .body{padding:10px 11px;}
+.stage .body h4{margin:0 0 5px;font-size:12px;color:var(--teal);}
+.stage .body ul{margin:0;padding-left:16px;}
+.stage .body li{font-size:11.5px;margin:3px 0;color:var(--ink-2);}
+.stage .gate{margin-top:8px;background:var(--orange-bg);border:1px solid #ecc089;border-radius:6px;padding:6px 9px;font-size:11px;color:#8a5212;}
+
+/* ===== 问题卡 ===== */
+.qgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:14px 0;}
+.qcard{background:var(--orange-bg);border:1px solid #ecc089;border-radius:9px;padding:12px 15px;display:flex;gap:10px;}
+.qcard .qn{background:var(--orange);color:#fff;font-weight:700;font-size:13px;width:26px;height:26px;border-radius:50%;flex:0 0 26px;display:flex;align-items:center;justify-content:center;}
+.qcard p{margin:0;font-size:12.5px;color:#6b4416;}
+
+/* ===== 组织卡片 ===== */
+.org{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:14px 0;}
+.org .oc{border:1px solid var(--line);border-radius:9px;overflow:hidden;}
+.org .oc .oh{background:var(--navy-2);color:#fff;padding:11px 15px;font-size:13.5px;font-weight:600;}
+.org .oc .ob{padding:12px 16px;}
+.org .oc ul{margin:0 0 10px;padding-left:18px;}
+.org .oc li{font-size:12.5px;margin:4px 0;color:var(--ink-2);}
+.org .oc .eval{background:var(--blue-bg);border:1px solid #a9c8e8;border-radius:7px;padding:9px 12px;font-size:12px;color:#1f4f86;}
+
+/* ===== 工具提示 ===== */
+.term{border-bottom:1px dotted var(--blue);cursor:help;color:var(--navy);font-weight:500;}
+#tip{position:fixed;z-index:999;background:var(--navy);color:#eaf2fa;padding:7px 11px;border-radius:6px;
+  font-size:12px;max-width:280px;line-height:1.5;box-shadow:0 4px 14px rgba(0,0,0,.25);pointer-events:none;
+  display:none;border:1px solid #2a486b;}
+#tip b{color:#9fe0d3;}
+
+/* ===== 筛选 ===== */
+.filterbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0;padding:10px 12px;background:#fff;border:1px solid var(--line);border-radius:8px;}
+.filterbar .flbl{font-size:12px;color:var(--gray);font-weight:600;margin-right:2px;}
+.fchip{border:1px solid var(--line);background:#fff;color:var(--ink-2);padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;transition:.15s;}
+.fchip:hover{border-color:var(--blue);color:var(--blue);}
+.fchip.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* ===== 返回顶部 ===== */
+.backtop{position:fixed;right:24px;bottom:24px;background:var(--navy);color:#fff;border:none;border-radius:50%;
+  width:46px;height:46px;font-size:18px;cursor:pointer;box-shadow:0 3px 12px rgba(15,42,74,.3);display:none;z-index:40;}
+.backtop:hover{background:var(--navy-2);}
+
+.dim{opacity:.18;filter:grayscale(.4);}
+mark{background:#fff2a8;color:inherit;padding:0 1px;border-radius:2px;}
+
+/* ===== 响应式 ===== */
+@media(max-width:980px){
+  .sidebar{display:none;}
+  .main{margin-left:0;}
+  .arch,.matrix,.org,.qgrid{grid-template-columns:1fr;}
+  .roadmap{grid-template-columns:repeat(2,1fr);}
+  .reco .row{grid-template-columns:1fr;}
+}
+@media print{
+  .sidebar,.topbar,.backtop,.filterbar,.searchbox,.nav-search{display:none !important;}
+  .main{margin-left:0;max-width:100%;}
+  .content{padding:0 12px;}
+  .card{break-inside:avoid;box-shadow:none;}
+  .card.collapsed .card-body{display:block !important;}
+  section{break-inside:avoid;}
+  body{background:#fff;font-size:11px;}
+  .hero,.boundary,.arch-rule{break-inside:avoid;}
+  a{color:var(--ink);}
+}
+</style>
+</head>
+<body>
+
+<div id="tip"></div>
+
+<div class="layout">
+  <!-- 侧边导航 -->
+  <aside class="sidebar">
+    <h1>欧律生第二代智能盆底产品<br>FDA开发路径看板</h1>
+    <div class="sub">Aurillis Gen 2 Smart Pelvic Health System<br>FDA Development &amp; Substantial Equivalence Dashboard</div>
+    <div class="nav-search">
+      <input id="navSearch" type="text" placeholder="页面内关键词搜索…" oninput="applyFilters()">
+    </div>
+    <nav id="nav">
+      <div class="nav-group">基础</div>
+      <a href="#overview">看板定位与项目边界</a>
+      <a href="#system">第二代产品系统定义</a>
+      <a href="#equivalence">FDA实质等同总体思路</a>
+      <div class="nav-group">Predicate 与参考</div>
+      <a href="#predicates">四个主要510(k)参考对象</a>
+      <a href="#appref">补充APP参考 K231780</a>
+      <a href="#combination">推荐的Predicate组合</a>
+      <a href="#momcozy">Momcozy APP申报案例</a>
+      <div class="nav-group">合规与验证</div>
+      <a href="#compliance">功能合规分级</a>
+      <a href="#software">APP软件验证框架</a>
+      <a href="#bluetooth">蓝牙与无线验证</a>
+      <a href="#cyber">网络安全监管框架</a>
+      <a href="#emg">EMG与评估算法验证</a>
+      <a href="#stim">电刺激及整机验证</a>
+      <a href="#humanfactors">人因与可用性验证</a>
+      <div class="nav-group">路径与组织</div>
+      <a href="#stages">建议的研发阶段门槛</a>
+      <a href="#questions">待FDA机构确认的问题</a>
+      <a href="#org">内部组织设计提示</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <!-- 顶部工具条 -->
+    <div class="topbar">
+      <div class="searchbox">
+        <input id="pageSearch" type="text" placeholder="🔍 页面内关键词搜索（如 EMG、K220161、Cyber）" oninput="applyFilters()">
+        <span class="clear" id="searchClear" onclick="clearSearch()">×</span>
+      </div>
+      <span class="search-count" id="searchCount"></span>
+      <div class="tools">
+        <button class="btn" onclick="window.print()">🖨 打印</button>
+        <button class="btn primary" onclick="exportPDF()">⬇ 导出PDF</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- 头部 -->
+      <div class="hero">
+        <h1>欧律生第二代智能盆底产品｜FDA开发路径看板</h1>
+        <div class="en">Aurillis Gen 2 Smart Pelvic Health System — FDA Development &amp; Substantial Equivalence Dashboard</div>
+        <div class="sub2">新主机 ｜ 肌电评估 ｜ 生物反馈 ｜ 电刺激 ｜ APP ｜ 蓝牙 ｜ 训练方案</div>
+      </div>
+
+      <!-- 项目边界 -->
+      <div class="boundary" id="boundary">
+        <span class="tag">项目边界 · 必读</span>
+        <p>本看板讨论的是<span style="color:#9a5a12;font-weight:700">欧律生第二代自主开发产品</span>，<strong>不是</strong>依士文现有主机增加APP，也<strong>不是</strong>第一代ODM产品的简单升级。</p>
+        <p>第二代产品拟重新开发：新主机、新探头或传感器系统、电刺激系统、<span class="term" data-cn="肌电图/肌电信号（Electromyography）">EMG</span>肌电信号采集、生物反馈训练、盆底功能评估、APP、蓝牙通信、训练记录、训练方案推荐、后续可能扩展的智能算法。</p>
+        <p>本看板展示的是"<strong>初步法规路径建议</strong>"，<strong>不能</strong>把候选<span class="term" data-cn="主要对比器械，用于证明实质等同">Predicate Device</span>显示为已经获得FDA确认的最终结论。</p>
+      </div>
+
+      <!-- ===== 一/二 概览 ===== -->
+      <section id="overview">
+        <h2><span class="num">01</span>看板定位与四个核心问题</h2>
+        <p class="lead">这是一份<strong>内部产品开发与FDA路径知识看板</strong>，不是公司介绍、商业计划书、会议纪要或复杂任务管理系统。重点放在产品定义、技术边界、<span class="term" data-cn="主要对比器械">Predicate</span>选择、验证路径和研发阶段门槛。</p>
+        <div class="card">
+          <div class="card-head" onclick="toggle(this)"><span class="ttl">看板要解决的四个核心问题</span><span class="chev">▼</span></div>
+          <div class="card-body">
+            <div class="flow">
+              <div class="step"><span class="n">1</span><p>欧律生第二代产品准备开发成什么</p></div>
+              <div class="step"><span class="n">2</span><p>哪些FDA <span class="term" data-cn="美国FDA上市前通告，二类器械常规上市路径">510(k)</span>产品可作为<span class="term" data-cn="主要对比器械">Predicate Device</span>或<span class="term" data-cn="技术参考器械，支持某一项具体技术特征">Reference Device</span></p></div>
+              <div class="step"><span class="n">3</span><p>建议采用什么实质等同组合</p></div>
+              <div class="step"><span class="n">4</span><p>为完成<span class="term" data-cn="美国FDA上市前通告">510(k)</span>，硬件、肌电、电刺激、APP、蓝牙、算法和网络安全分别需做哪些验证</p></div>
+            </div>
+            <div class="note gray"><strong>本看板不包含：</strong>公司介绍、品牌故事、市场规模、销售预测、融资内容、第一代供应链交易结构、深圳/香港/Amazon链路、任务编辑与负责人系统、会议纪要、宣传文案。决策原则：<strong>"开发周期和成本可控"</strong>作为重要约束。</p></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head" onclick="toggle(this)"><span class="ttl">状态颜色图例</span><span class="chev">▼</span></div>
+          <div class="card-body">
+            <div class="chips">
+              <span class="badge green">绿色：已有FDA公开案例支持</span>
+              <span class="badge blue">蓝色：当前建议方案</span>
+              <span class="badge orange">橙色：需要FDA机构确认</span>
+              <span class="badge red">红色：可能显著增加监管风险</span>
+              <span class="badge gray">灰色：背景资料</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 四 系统定义 ===== -->
+      <section id="system">
+        <h2><span class="num">02</span>第二代产品系统定义</h2>
+        <p class="lead">第二代产品为"主机 + 探头 + APP + 云端（非安全核心）"的系统化架构。核心电刺激安全边界必须由主机固件控制。</p>
+        <div class="arch">
+          <div class="node filterable" data-type="system">
+            <h3>① 阴道探头或传感器</h3>
+            <div class="role">可能与主机有线/无线连接</div>
+            <ul>
+              <li><span class="term" data-cn="肌电图信号采集">EMG</span>肌电信号采集</li>
+              <li>电刺激输出</li>
+              <li>盆底肌收缩识别</li>
+              <li>探头接触状态识别</li>
+              <li>与主机有线或无线连接</li>
+            </ul>
+          </div>
+          <div class="node filterable" data-type="system">
+            <h3>② 智能主机</h3>
+            <div class="role">安全控制核心</div>
+            <ul>
+              <li><span class="term" data-cn="肌电图信号采集与处理">EMG</span>信号采集与处理</li>
+              <li>电刺激输出控制</li>
+              <li>核心安全限制（最大电流/频率/脉宽/时长）</li>
+              <li>蓝牙通信、断连保护</li>
+              <li>数据缓存、固件运行</li>
+            </ul>
+          </div>
+          <div class="node filterable" data-type="system">
+            <h3>③ 手机APP</h3>
+            <div class="role">用户交互层</div>
+            <ul>
+              <li>设备连接、用户引导</li>
+              <li>肌电数据展示、实时训练反馈、游戏化训练</li>
+              <li>训练记录、趋势分析</li>
+              <li>预设训练方案推荐、设备升级</li>
+              <li>用户账号及数据管理</li>
+            </ul>
+          </div>
+          <div class="node filterable" data-type="system">
+            <h3>④ 后台或云端</h3>
+            <div class="role">第一版非治疗安全核心</div>
+            <ul>
+              <li>账号管理、数据同步</li>
+              <li>内容更新、用户服务</li>
+              <li>非实时数据分析</li>
+            </ul>
+          </div>
+        </div>
+        <div class="arch-rule">
+          <strong>系统安全原则：</strong>核心电刺激安全边界必须由主机固件控制，APP、蓝牙或云端<strong>不能突破</strong>主机设定的最大电流、频率、脉宽、治疗时间和模式范围。
+        </div>
+      </section>
+
+      <!-- ===== 五 实质等同思路 ===== -->
+      <section id="equivalence">
+        <h2><span class="num">03</span>FDA实质等同总体思路</h2>
+        <p class="lead">从预期用途到<span class="term" data-cn="传统510(k)申报路径">Traditional 510(k)</span>提交的九步路径，并区分<span class="term" data-cn="主要对比器械">Predicate Device</span>与<span class="term" data-cn="技术参考器械">Reference Device</span>的角色。</p>
+        <div class="flow">
+          <div class="step"><span class="n">1</span><p>确定<span class="term" data-cn="预期用途">Intended Use</span></p></div>
+          <div class="step"><span class="n">2</span><p>确定<span class="term" data-cn="适用范围/适应症">Indications for Use</span></p></div>
+          <div class="step"><span class="n">3</span><p>确定<span class="term" data-cn="非处方">OTC</span>或<span class="term" data-cn="处方">Prescription</span>属性</p></div>
+          <div class="step"><span class="n">4</span><p>选相同预期用途的主<span class="term" data-cn="主要对比器械">Predicate</span></p></div>
+          <div class="step"><span class="n">5</span><p>电刺激/<span class="term" data-cn="肌电图">EMG</span>/生物反馈/APP/蓝牙逐项比较</p></div>
+          <div class="step"><span class="n">6</span><p>新特征寻找<span class="term" data-cn="技术参考器械">Reference Device</span></p></div>
+          <div class="step"><span class="n">7</span><p>证明差异未引起新的安全有效性问题</p></div>
+          <div class="step"><span class="n">8</span><p>完成性能/软件/人因/无线/网络安全验证</p></div>
+          <div class="step"><span class="n">9</span><p>通过<span class="term" data-cn="传统510(k)申报路径">Traditional 510(k)</span>提交</p></div>
+        </div>
+        <div class="card">
+          <div class="card-head" onclick="toggle(this)"><span class="ttl">Predicate Device 与 Reference Device 的角色区分</span><span class="chev">▼</span></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="note blue"><strong>Predicate Device（主要对比器械）</strong><br>支持整体实质等同；重点证明预期用途、适用范围、工作原理和整体技术特征具有可比性。</div>
+              <div class="note gray"><strong>Reference Device（技术参考器械）</strong><br>支持某一项具体技术特征（如APP、蓝牙、<span class="term" data-cn="肌电图">EMG</span>采集、生物反馈或<span class="term" data-cn="肌电触发电刺激">ETS</span>）；不能简单用多个<span class="term" data-cn="技术参考器械">Reference Device</span>拼出一个完全不同的新产品。</div>
+            </div>
+            <div class="note orange"><strong>固定提示：</strong>一个主<span class="term" data-cn="主要对比器械">Predicate</span>不一定必须具备Aurillis所有细节，但Aurillis新增技术差异<strong>不能引起新的安全性和有效性问题</strong>。</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 六 四个主要参考对象 ===== -->
+      <section id="predicates">
+        <h2><span class="num">04</span>四个主要510(k)参考对象</h2>
+        <p class="lead">以下四个K号均为FDA公开<span class="term" data-cn="上市前通告，已Cleared（获准上市）">510(k)</span>案例（绿色徽章表示"已有FDA公开案例支持"）。其在Aurillis路径中的角色与状态见各卡。</p>
+
+        <div class="filterbar">
+          <span class="flbl">Predicate筛选：</span>
+          <span class="fchip active" data-filter="all" onclick="setFilter('all',this)">全部</span>
+          <span class="fchip" data-filter="main" onclick="setFilter('main',this)">主Predicate候选</span>
+          <span class="fchip" data-filter="ref" onclick="setFilter('ref',this)">Reference Device</span>
+          <span class="fchip" data-filter="supp" onclick="setFilter('supp',this)">补充参考</span>
+        </div>
+
+        <!-- K220161 -->
+        <div class="card filterable kc-card" data-role="main">
+          <div class="card-head" onclick="toggle(this)">
+            <span class="ttl">K220161 ｜ Biofeedback Nerve and Muscle Stimulator</span>
+            <span class="badge green">FDA公开案例</span>
+            <span class="badge orange">主Predicate候选 · 需FDA确认</span>
+            <span class="chev">▼</span>
+          </div>
+          <div class="card-body">
+            <p><span class="meta">型号：KM530B、KM531B、KM536、KM537 ｜ 建议作为主<span class="term" data-cn="主要对比器械">Predicate</span>候选</span></p>
+            <div class="tbl-wrap">
+              <table>
+                <tr><th style="width:130px">监管信息</th><td><span class="k">Class II</span>（二类）；Regulation：21 CFR 876.5320、21 CFR 882.5050；<span class="term" data-cn="产品代码">Product Code</span>：KPI、HCC；使用属性：<span class="term" data-cn="非处方">OTC</span></td></tr>
+              </table>
+            </div>
+            <h4 style="color:var(--teal);margin:12px 0 4px;font-size:13px;">已覆盖功能</h4>
+            <div class="chips">
+              <span class="chip">女性盆底肌康复</span><span class="chip">压力性尿失禁</span><span class="chip">急迫性尿失禁</span><span class="chip">混合性尿失禁</span>
+              <span class="chip">盆底电刺激</span><span class="chip"><span class="term" data-cn="肌电">EMG</span>肌电采集</span><span class="chip"><span class="term" data-cn="肌电">EMG</span>生物反馈</span><span class="chip"><span class="term" data-cn="肌电图">EMG</span>训练</span>
+              <span class="chip">六种反馈训练游戏</span><span class="chip"><span class="term" data-cn="肌电触发电刺激">ETS</span>（<span class="term" data-cn="肌电图">EMG</span>达阈值触发电刺激）</span><span class="chip">固定电刺激程序</span><span class="chip">家庭环境使用</span><span class="chip"><span class="term" data-cn="非处方">OTC</span>销售</span>
+            </div>
+            <h4 style="color:var(--orange);margin:12px 0 4px;font-size:13px;">与Aurillis二代主要差异</h4>
+            <ul style="font-size:12.5px;color:var(--ink-2);margin:4px 0;">
+              <li>原产品主要通过主机触摸屏操作</li>
+              <li>没有公开的手机APP、蓝牙连接、自动评估算法、自动训练方案输出</li>
+              <li>产品外形、探头、硬件架构和软件界面不同</li>
+            </ul>
+            <div class="note blue"><strong>建议定位：</strong>当前最适合支持Aurillis二代整体设备、<span class="term" data-cn="非处方">OTC</span>属性、电刺激、<span class="term" data-cn="肌电图">EMG</span>、生物反馈、<span class="term" data-cn="肌电触发电刺激">ETS</span>及女性尿失禁适用范围的主<span class="term" data-cn="主要对比器械">Predicate</span>候选。</div>
+            <div class="note orange"><strong>状态标记：</strong>橙色——需要FDA机构进行正式<span class="term" data-cn="主要对比器械差异评估">Predicate Gap Assessment</span>。</div>
+            <p style="font-size:12px;margin-top:8px;"><a href="https://www.accessdata.fda.gov/cdrh_docs/pdf22/K220161.pdf" target="_blank" rel="noopener">官方链接：accessdata.fda.gov/cdrh_docs/pdf22/K220161.pdf ↗</a></p>
+          </div>
+        </div>
+
+        <!-- K252748 -->
+        <div class="card filterable kc-card" data-role="ref">
+          <div class="card-head" onclick="toggle(this)">
+            <span class="ttl">K252748 ｜ Pelvic Floor Exerciser PF01</span>
+            <span class="badge green">FDA公开案例</span>
+            <span class="badge blue">APP/蓝牙 Reference候选</span>
+            <span class="chev">▼</span>
+          </div>
+          <div class="card-body">
+            <div class="tbl-wrap">
+              <table>
+                <tr><th style="width:130px">监管信息</th><td><span class="k">Class II</span>；Regulation：21 CFR 884.1425；<span class="term" data-cn="产品代码">Product Code</span>：HIR；产品类型：<span class="term" data-cn="盆底肌力计">Perineometer</span>；使用属性：<span class="term" data-cn="非处方">OTC</span>；<span class="term" data-cn="主要对比器械">Predicate</span>：Perifit Care+，K231780</td></tr>
+              </table>
+            </div>
+            <h4 style="color:var(--teal);margin:12px 0 4px;font-size:13px;">已覆盖功能</h4>
+            <div class="chips">
+              <span class="chip">阴道插入式探头</span><span class="chip">盆底肌收缩力量检测</span><span class="chip">无线传输</span><span class="chip">手机APP</span>
+              <span class="chip">实时视觉反馈</span><span class="chip">凯格尔训练游戏</span><span class="chip">成人女性家庭使用</span><span class="chip">软件验证</span><span class="chip">网络安全验证</span><span class="chip">蓝牙信号强度及连接稳定性测试</span>
+            </div>
+            <div class="note red"><strong>重要边界（严谨区分）：</strong>该产品使用<strong>Force Sensing Resistors（力敏电阻）</strong>测量探头受到的挤压力——<u>它不是<span class="term" data-cn="肌电图">EMG</span>肌电采集设备</u>；<u>它没有电刺激功能</u>；它输出的是<strong>未经临床校准</strong>的力量数据；它<strong>不能单独</strong>支持Aurillis的肌电、电刺激或临床诊断功能。</div>
+            <div class="note blue"><strong>建议定位：</strong>用于支持APP、蓝牙、手机GUI、实时反馈、家庭<span class="term" data-cn="非处方">OTC</span>使用及游戏化训练的<span class="term" data-cn="技术参考器械">Reference Device</span>候选。</div>
+            <p style="font-size:12px;margin-top:8px;"><a href="https://www.accessdata.fda.gov/cdrh_docs/pdf25/K252748.pdf" target="_blank" rel="noopener">官方链接：accessdata.fda.gov/cdrh_docs/pdf25/K252748.pdf ↗</a></p>
+          </div>
+        </div>
+
+        <!-- K202648 -->
+        <div class="card filterable kc-card" data-role="ref">
+          <div class="card-head" onclick="toggle(this)">
+            <span class="ttl">K202648 ｜ Biofeedback Nerve and Muscle Stimulator</span>
+            <span class="badge green">FDA公开案例</span>
+            <span class="badge blue">EMG/ETS Reference</span>
+            <span class="badge gray">Prescription（非OTC）</span>
+            <span class="chev">▼</span>
+          </div>
+          <div class="card-body">
+            <p><span class="meta">型号：KM530、KM531</span></p>
+            <div class="tbl-wrap">
+              <table>
+                <tr><th style="width:130px">监管信息</th><td><span class="k">Class II</span>；<span class="term" data-cn="产品代码">Product Code</span>：IPF、KPI、HCC；使用属性：<span class="term" data-cn="处方">Prescription</span>；主<span class="term" data-cn="主要对比器械">Predicate</span>：K080950；<span class="term" data-cn="技术参考器械">Reference Devices</span>：K053434、K081480</td></tr>
+              </table>
+            </div>
+            <h4 style="color:var(--teal);margin:12px 0 4px;font-size:13px;">已覆盖功能</h4>
+            <div class="chips">
+              <span class="chip"><span class="term" data-cn="肌电测试">EMG Test</span></span><span class="chip"><span class="term" data-cn="肌电图">EMG</span>信号采集</span><span class="chip">双通道<span class="term" data-cn="肌电图">EMG</span></span><span class="chip"><span class="term" data-cn="肌电图">EMG</span>训练游戏</span>
+              <span class="chip">肌电生物反馈</span><span class="chip"><span class="term" data-cn="肌电触发电刺激">ETS</span>肌电触发电刺激</span><span class="chip">固定电刺激程序</span><span class="chip">专业人员指导下自定义程序</span>
+              <span class="chip">盆底肌/腹肌/臀肌<span class="term" data-cn="肌电图">EMG</span>评估</span><span class="chip">双通道电刺激</span><span class="chip"><span class="term" data-cn="肌电图">EMG</span>采样范围/带宽/信号处理</span><span class="chip">IEC 60601-2-40相关验证</span>
+            </div>
+            <div class="note red"><strong>重要边界：</strong>属于<strong>处方（<span class="term" data-cn="处方">Prescription</span>）使用</strong>，产品形态偏专业医疗设备；没有公开APP和蓝牙；自定义刺激程序需医生或专业人员指导；<u>不能直接证明家庭用户可自主生成治疗方案</u>。注意：<strong>切勿将其写成<span class="term" data-cn="非处方">OTC</span>产品</strong>。</div>
+            <div class="note blue"><strong>建议定位：</strong>用于补强<span class="term" data-cn="肌电图">EMG</span>采集性能、<span class="term" data-cn="肌电图">EMG</span>评估、双通道、<span class="term" data-cn="肌电触发电刺激">ETS</span>和肌电测试方法的技术<span class="term" data-cn="技术参考器械">Reference Device</span>。</div>
+            <p style="font-size:12px;margin-top:8px;"><a href="https://www.accessdata.fda.gov/cdrh_docs/pdf20/K202648.pdf" target="_blank" rel="noopener">官方链接：accessdata.fda.gov/cdrh_docs/pdf20/K202648.pdf ↗</a></p>
+          </div>
+        </div>
+
+        <!-- K222201 -->
+        <div class="card filterable kc-card" data-role="supp">
+          <div class="card-head" onclick="toggle(this)">
+            <span class="ttl">K222201 ｜ Biological Feedback and Stimulation System</span>
+            <span class="badge green">FDA公开案例</span>
+            <span class="badge gray">补充参考（非首选）</span>
+            <span class="badge gray">Prescription（非OTC）</span>
+            <span class="chev">▼</span>
+          </div>
+          <div class="card-body">
+            <div class="tbl-wrap">
+              <table>
+                <tr><th style="width:130px">监管信息</th><td><span class="k">Class II</span>；<span class="term" data-cn="产品代码">Product Code</span>：IPF、KPI、HCC；使用属性：<span class="term" data-cn="处方">Prescription</span>；申报类型：<span class="term" data-cn="传统510(k)申报路径">Traditional 510(k)</span>；<span class="term" data-cn="主要对比器械">Predicate</span>：K202648</td></tr>
+              </table>
+            </div>
+            <h4 style="color:var(--teal);margin:12px 0 4px;font-size:13px;">已覆盖功能</h4>
+            <div class="chips">
+              <span class="chip">肌电信号采集</span><span class="chip">肌电活动评估</span><span class="chip">多媒体生物反馈训练</span><span class="chip"><span class="term" data-cn="肌电触发电刺激">ETS</span></span>
+              <span class="chip">被动电刺激</span><span class="chip">双通道<span class="term" data-cn="肌电图">EMG</span></span><span class="chip">双通道电刺激</span><span class="chip">女性尿失禁治疗</span><span class="chip">IEC 60601-2-10</span><span class="chip">IEC 60601-2-40</span>
+            </div>
+            <div class="note red"><strong>重要边界：</strong>属于<strong>专业处方设备</strong>，没有公开APP和蓝牙，没有明确自动方案生成，本身以K202648为<span class="term" data-cn="主要对比器械">Predicate</span>；对Aurillis新增参考价值<strong>低于K220161和K252748</strong>。注意：<strong>切勿将其写成<span class="term" data-cn="非处方">OTC</span>产品</strong>。</div>
+            <div class="note gray"><strong>建议定位：</strong>作为专业型肌电、生物反馈与电刺激系统的补充参考，不作为当前首选主<span class="term" data-cn="主要对比器械">Predicate</span>。</div>
+            <p style="font-size:12px;margin-top:8px;"><a href="https://www.accessdata.fda.gov/cdrh_docs/pdf22/K222201.pdf" target="_blank" rel="noopener">官方链接：accessdata.fda.gov/cdrh_docs/pdf22/K222201.pdf ↗</a></p>
+          </div>
+        </div>
+
+        <h3 style="margin:18px 0 6px;color:var(--navy);font-size:14px;">四K号横向对比表</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th>K号</th><th>产品</th><th>属性</th><th>Product Code</th><th>Regulation</th><th>在Aurillis路径中的角色</th><th>关键覆盖</th><th>关键边界</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="k">K220161</td><td>Biofeedback Nerve &amp; Muscle Stimulator</td><td><span class="badge orange">OTC</span></td><td>KPI, HCC</td><td>876.5320 / 882.5050</td><td>主<span class="term" data-cn="主要对比器械">Predicate</span>候选（需确认）</td><td>OTC盆底电刺激+<span class="term" data-cn="肌电图">EMG</span>+生物反馈+<span class="term" data-cn="肌电触发电刺激">ETS</span>+女性尿失禁</td><td>无公开APP/蓝牙/自动评估</td></tr>
+              <tr><td class="k">K252748</td><td>Pelvic Floor Exerciser PF01</td><td><span class="badge orange">OTC</span></td><td>HIR</td><td>884.1425</td><td>APP/蓝牙<span class="term" data-cn="技术参考器械">Reference</span></td><td>力传感器+APP+蓝牙+游戏化</td><td><u>力传感器非<span class="term" data-cn="肌电图">EMG</span></u>；<u>无电刺激</u></td></tr>
+              <tr><td class="k">K202648</td><td>Biofeedback Nerve &amp; Muscle Stimulator</td><td><span class="badge gray">Rx</span></td><td>IPF, KPI, HCC</td><td>—</td><td><span class="term" data-cn="肌电图">EMG</span>/<span class="term" data-cn="肌电触发电刺激">ETS</span> <span class="term" data-cn="技术参考器械">Reference</span></td><td>双通道<span class="term" data-cn="肌电图">EMG</span>+<span class="term" data-cn="肌电触发电刺激">ETS</span>+专业评估</td><td>处方使用；无APP/蓝牙</td></tr>
+              <tr><td class="k">K222201</td><td>Biological Feedback &amp; Stimulation System</td><td><span class="badge gray">Rx</span></td><td>IPF, KPI, HCC</td><td>—</td><td>补充参考（非首选）</td><td>专业肌电+生物反馈+电刺激</td><td>处方；以K202648为<span class="term" data-cn="主要对比器械">Predicate</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== 七 补充APP ===== -->
+      <section id="appref">
+        <h2><span class="num">05</span>补充APP参考对象 · K231780</h2>
+        <div class="card filterable">
+          <div class="card-head" onclick="toggle(this)">
+            <span class="ttl">K231780 ｜ Perifit Care+</span>
+            <span class="badge green">FDA公开案例</span>
+            <span class="badge blue">APP/蓝牙参考</span>
+            <span class="chev">▼</span>
+          </div>
+          <div class="card-body">
+            <p class="lead">K252748的主<span class="term" data-cn="主要对比器械">Predicate</span>就是K231780，因此应纳入Aurillis APP和蓝牙参考资料库。</p>
+            <div class="chips" style="margin-bottom:8px;">
+              <span class="chip"><span class="term" data-cn="非处方">OTC</span>家庭使用</span><span class="chip">阴道探头</span><span class="chip">力量传感器</span><span class="chip">Bluetooth</span>
+              <span class="chip">iOS/Android APP</span><span class="chip">手机实时反馈</span><span class="chip">软件验证</span><span class="chip">IEC 62304</span><span class="chip">网络安全</span>
+              <span class="chip">无线医疗器械评估</span><span class="chip">用户操作理解测试</span>
+            </div>
+            <div class="note red"><strong>重要限制：</strong>没有<span class="term" data-cn="肌电图">EMG</span>、没有电刺激；<strong>不能作为</strong>Aurillis整体系统的唯一<span class="term" data-cn="主要对比器械">Predicate</span>。</div>
+            <p style="font-size:12px;margin-top:8px;"><a href="https://www.accessdata.fda.gov/cdrh_docs/pdf23/K231780.pdf" target="_blank" rel="noopener">官方链接：accessdata.fda.gov/cdrh_docs/pdf23/K231780.pdf ↗</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 八 推荐组合 ===== -->
+      <section id="combination">
+        <h2><span class="num">06</span>推荐的Predicate组合（当前推荐方案）</h2>
+        <div class="reco">
+          <h3>◎ 当前推荐路径</h3>
+          <div class="row">
+            <div class="lbl">主Predicate候选<span>支持整体实质等同</span></div>
+            <div><strong>K220161</strong>
+              <ul><li><span class="term" data-cn="非处方">OTC</span>、家庭使用</li><li>盆底电刺激、<span class="term" data-cn="肌电图">EMG</span>采集、生物反馈、<span class="term" data-cn="肌电图">EMG</span>训练游戏</li><li><span class="term" data-cn="肌电触发电刺激">ETS</span></li><li>女性压力性、急迫性和混合性尿失禁</li></ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="lbl">APP/蓝牙 Reference<span>技术特征支持</span></div>
+            <div><strong>K252748 和 K231780</strong>
+              <ul><li>手机APP、Bluetooth、手机GUI</li><li>实时数据反馈、游戏化训练</li><li>家庭用户操作、无线稳定性</li><li>软件和网络安全验证思路</li></ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="lbl">EMG技术补充 Reference<span>性能与逻辑支持</span></div>
+            <div><strong>K202648</strong>
+              <ul><li><span class="term" data-cn="肌电测试">EMG Test</span>、肌电采集性能、信号范围</li><li>采样和带宽、双通道<span class="term" data-cn="肌电图">EMG</span></li><li>肌电生物反馈、<span class="term" data-cn="肌电触发电刺激">ETS</span>触发逻辑</li><li>盆底肌及辅助肌群评估</li></ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="lbl">专业设备补充资料<span>复杂系统验证</span></div>
+            <div><strong>K222201</strong>
+              <ul><li>专业肌电评估、生物反馈、电刺激</li><li>复杂硬件系统验证参考</li></ul>
+            </div>
+          </div>
+          <div class="note blue" style="margin-top:14px;"><strong>一句话概括：</strong>K220161证明产品仍然是家用<span class="term" data-cn="非处方">OTC</span>盆底电刺激和肌电反馈设备；K252748/K231780证明APP、蓝牙和手机反馈可用于家用盆底训练；K202648补强<span class="term" data-cn="肌电图">EMG</span>评估及<span class="term" data-cn="肌电触发电刺激">ETS</span>的技术依据。</div>
+          <div class="note orange"><strong>固定橙色提示：</strong>以上组合是内部建议，<strong>不代表FDA已经接受</strong>。正式立项前应由FDA机构完成<span class="term" data-cn="主要对比器械">Predicate</span>合法性、适用范围和技术差异评估。</div>
+        </div>
+      </section>
+
+      <!-- ===== 九 Momcozy ===== -->
+      <section id="momcozy">
+        <h2><span class="num">07</span>Momcozy APP申报案例 · K251394</h2>
+        <div class="card filterable">
+          <div class="card-head" onclick="toggle(this)">
+            <span class="ttl">K251394 ｜ Momcozy Wearable Breast Pump BP223</span>
+            <span class="badge green">FDA公开案例</span>
+            <span class="badge gray">非盆底Predicate（仅供理解APP路径）</span>
+            <span class="chev">▼</span>
+          </div>
+          <div class="card-body">
+            <div class="note gray"><strong>注意：</strong>该案例<strong>不能</strong>作为盆底产品的<span class="term" data-cn="主要对比器械">Predicate</span>，但可用于理解FDA如何处理"传统医疗器械＋APP＋无线连接"。</div>
+            <h4 style="color:var(--navy);margin:12px 0 4px;font-size:13px;">申报思路</h4>
+            <div class="flow">
+              <div class="step"><span class="n">1</span><p>以普通电动吸奶器K241322作为<span class="term" data-cn="主要对比器械">Predicate</span></p></div>
+              <div class="step"><span class="n">2</span><p>证明产品类型、人群、预期用途、核心吸乳原理一致</p></div>
+              <div class="step"><span class="n">3</span><p>明确把Mobile Application列为技术差异</p></div>
+              <div class="step"><span class="n">4</span><p>对软件和网络安全单独验证</p></div>
+              <div class="step"><span class="n">5</span><p>证明新增APP未引起新的安全有效性问题</p></div>
+            </div>
+            <h4 style="color:var(--teal);margin:12px 0 4px;font-size:13px;">APP公开功能</h4>
+            <div class="chips">
+              <span class="chip">无线连接手机</span><span class="chip">APP控制设备</span><span class="chip">三种预设模式</span><span class="chip">个性化模式</span><span class="chip">设置吸力等级</span><span class="chip">设置工作时长</span><span class="chip">溢奶提醒</span><span class="chip">吸奶量记录追踪</span>
+            </div>
+            <h4 style="color:var(--teal);margin:12px 0 4px;font-size:13px;">公开验证内容</h4>
+            <div class="chips">
+              <span class="chip">Software Verification and Validation</span><span class="chip">Basic Documentation Level</span><span class="chip">Cybersecurity</span><span class="chip">电气安全</span><span class="chip">EMC</span><span class="chip">整机性能验证</span>
+            </div>
+            <div class="note blue"><strong>对Aurillis的启示：</strong>APP不需要另找一个完全相同的蓝牙产品作为主<span class="term" data-cn="主要对比器械">Predicate</span>，但APP必须作为完整医疗器械系统的一部分进行软件、无线和网络安全验证。</div>
+            <div class="note red"><strong>明确边界：</strong>Momcozy是吸奶器，<strong>不能</strong>作为Aurillis盆底产品的正式<span class="term" data-cn="主要对比器械">Predicate</span>或用于证明盆底产品安全有效。</div>
+            <p style="font-size:12px;margin-top:8px;"><a href="https://www.accessdata.fda.gov/cdrh_docs/pdf25/K251394.pdf" target="_blank" rel="noopener">官方链接：accessdata.fda.gov/cdrh_docs/pdf25/K251394.pdf ↗</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 十 功能合规分级 ===== -->
+      <section id="compliance">
+        <h2><span class="num">08</span>功能合规分级（绿 / 黄 / 红）</h2>
+        <p class="lead">按监管风险将功能分为三档。黄色功能可开发但需专项验证；红色功能可能引发新的监管问题，应避免或严格限定。</p>
+        <div class="filterbar">
+          <span class="flbl">功能筛选：</span>
+          <span class="fchip active" data-flevel="all" onclick="setFLevel('all',this)">全部</span>
+          <span class="fchip" data-flevel="green" onclick="setFLevel('green',this)">绿色·强依据</span>
+          <span class="fchip" data-flevel="yellow" onclick="setFLevel('yellow',this)">黄色·需验证</span>
+          <span class="fchip" data-flevel="red" onclick="setFLevel('red',this)">红色·高风险</span>
+        </div>
+        <div class="matrix">
+          <div class="col green filterable func-item" data-level="green">
+            <h3>绿色 · 已有较强参考依据</h3>
+            <ul>
+              <li>盆底电刺激</li><li><span class="term" data-cn="肌电图">EMG</span>肌电采集</li><li><span class="term" data-cn="肌电图">EMG</span>实时反馈</li><li><span class="term" data-cn="肌电图">EMG</span>训练游戏</li>
+              <li>固定治疗模式</li><li><span class="term" data-cn="肌电触发电刺激">ETS</span>肌电触发电刺激</li><li>手机APP</li><li>Bluetooth</li>
+              <li>训练记录</li><li>趋势展示</li><li>用户手动选择训练目标</li><li>用户在安全范围内调整强度</li>
+            </ul>
+          </div>
+          <div class="col yellow filterable func-item" data-level="yellow">
+            <h3>黄色 · 可开发但需专项验证</h3>
+            <ul>
+              <li>肌力评分</li><li>肌肉耐力评分</li><li>收缩控制能力评分</li><li>放松能力评分</li>
+              <li>错误发力识别</li><li>腹肌/臀肌代偿识别</li><li>训练完成度评分</li>
+              <li>根据初次测试推荐预设训练程序</li><li>根据训练历史调整游戏难度</li><li>根据训练表现推荐下一阶段课程</li><li>APP与固件OTA升级</li>
+            </ul>
+          </div>
+          <div class="col red filterable func-item" data-level="red">
+            <h3>红色 · 可能引发新的监管问题</h3>
+            <ul>
+              <li>自动诊断压力性/急迫性/混合性尿失禁</li><li>自动判断病情等级</li><li>根据<span class="term" data-cn="肌电图">EMG</span>数据生成医疗处方</li>
+              <li>APP自主改变核心电刺激波形</li><li>自动突破已验证的电流/频率/脉宽/治疗时间</li><li>AI独立制定治疗方案</li>
+              <li>云端实时控制电刺激</li><li>医生远程控制但无明确安全机制</li><li>宣称替代临床检查</li><li>输出疾病治疗结论</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note orange"><strong>建议法规表述：</strong>"训练表现评估与预设训练程序推荐，<u>不用于诊断疾病、判断疾病严重程度或替代医生处方</u>。"（不得将训练表现评估写成疾病诊断，不得将预设程序推荐写成自动医疗处方。）</div>
+      </section>
+
+      <!-- ===== 十一 软件验证 ===== -->
+      <section id="software">
+        <h2><span class="num">09</span>APP软件验证框架（六层）</h2>
+        <div class="layer">
+          <div class="layer-head">① 软件需求与架构</div>
+          <div class="layer-body"><div class="chips">
+            <span class="chip">软件功能说明</span><span class="chip">系统架构图</span><span class="chip">APP/云端/蓝牙/主机固件/探头数据流</span><span class="chip">Software Requirements Specification</span><span class="chip">接口规范</span><span class="chip">安全边界</span><span class="chip">软件版本规则</span><span class="chip">第三方软件清单</span>
+          </div></div>
+        </div>
+        <div class="layer">
+          <div class="layer-head">② 软件功能验证</div>
+          <div class="layer-body"><div class="chips">
+            <span class="chip">注册与登录</span><span class="chip">蓝牙配对</span><span class="chip">设备绑定</span><span class="chip">模式选择</span><span class="chip">强度调节</span><span class="chip">开始/暂停/停止</span><span class="chip"><span class="term" data-cn="肌电图">EMG</span>数据显示</span><span class="chip">游戏反馈</span><span class="chip">训练记录</span><span class="chip">趋势分析</span><span class="chip">程序推荐</span><span class="chip">消息提醒</span><span class="chip">数据同步</span><span class="chip">固件升级</span>
+          </div></div>
+        </div>
+        <div class="layer">
+          <div class="layer-head">③ 软件测试层级</div>
+          <div class="layer-body"><div class="chips">
+            <span class="chip">Unit Testing（单元测试）</span><span class="chip">Integration Testing（集成测试）</span><span class="chip">System Testing（系统测试）</span><span class="chip">Regression Testing（回归测试）</span><span class="chip">Installation Testing（安装测试）</span><span class="chip">Upgrade Testing（升级测试）</span><span class="chip">Recovery Testing（恢复测试）</span><span class="chip">Compatibility Testing（兼容测试）</span>
+          </div></div>
+        </div>
+        <div class="layer">
+          <div class="layer-head">④ 异常情况测试</div>
+          <div class="layer-body"><div class="chips">
+            <span class="chip">APP闪退</span><span class="chip">手机锁屏</span><span class="chip">系统杀后台</span><span class="chip">手机关机</span><span class="chip">来电/切换APP</span><span class="chip">主机低电量</span><span class="chip">蓝牙断连</span><span class="chip">重复指令</span><span class="chip">延迟指令</span><span class="chip">错误参数</span><span class="chip">APP/固件版本不匹配</span><span class="chip">OTA升级失败</span><span class="chip">数据同步失败</span><span class="chip">云端不可用</span>
+          </div></div>
+        </div>
+        <div class="layer">
+          <div class="layer-head">⑤ 数据准确性验证</div>
+          <div class="layer-body"><div class="chips">
+            <span class="chip"><span class="term" data-cn="肌电图">EMG</span>数值</span><span class="chip">强度等级</span><span class="chip">工作模式</span><span class="chip">治疗时间</span><span class="chip">训练记录</span><span class="chip">时间戳</span><span class="chip">趋势曲线</span><span class="chip">评分结果</span><span class="chip">方案推荐结果</span>
+          </div></div>
+        </div>
+        <div class="layer">
+          <div class="layer-head">⑥ FDA软件文件</div>
+          <div class="layer-body">
+            <div class="chips" style="margin-bottom:8px;">
+              <span class="chip">Documentation Level判断（<span class="term" data-cn="文件层级">Basic</span>/<span class="term" data-cn="文件层级">Enhanced</span>）</span><span class="chip">软件需求</span><span class="chip">软件架构</span><span class="chip">风险管理文件</span><span class="chip">需求/风险控制/测试追溯矩阵</span><span class="chip">软件验证报告</span><span class="chip">版本管理</span><span class="chip">配置管理</span><span class="chip">未解决异常清单</span><span class="chip">发布记录</span>
+            </div>
+            <p style="font-size:12px;margin:4px 0 0;"><a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/content-premarket-submissions-device-software-functions" target="_blank" rel="noopener">官方参考：FDA — Content of Premarket Submissions for Device Software Functions ↗</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 十二 蓝牙 ===== -->
+      <section id="bluetooth">
+        <h2><span class="num">10</span>蓝牙与无线验证</h2>
+        <div class="layer">
+          <div class="layer-head">无线验证项目清单</div>
+          <div class="layer-body"><div class="chips">
+            <span class="chip">蓝牙协议及版本</span><span class="chip">配对成功率</span><span class="chip">连接建立时间</span><span class="chip">有效距离</span><span class="chip">信号强度</span><span class="chip">传输延迟</span><span class="chip">数据包丢失</span><span class="chip">重复指令</span><span class="chip">弱信号</span><span class="chip">自动重连</span><span class="chip">多设备环境</span><span class="chip">Wi-Fi与蓝牙共存</span><span class="chip">不同手机蓝牙芯片兼容</span><span class="chip">错误手机连接</span><span class="chip">两台手机同时连接</span><span class="chip">断连后的安全状态</span><span class="chip">蓝牙开启状态下的EMC</span><span class="chip">无线QoS（服务质量）</span><span class="chip">Wireless Coexistence（无线共存）</span><span class="chip">FCC设备授权</span>
+          </div></div>
+        </div>
+        <div class="note red"><strong>固定提示：</strong>蓝牙断连<strong>不能</strong>导致电刺激失控。无论APP是否在线，主机必须独立执行最大输出限制、治疗时间限制和紧急停止逻辑。</div>
+        <p style="font-size:12px;margin-top:6px;"><a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/radio-frequency-wireless-technology-medical-devices-guidance-industry-and-fda-staff" target="_blank" rel="noopener">官方参考：FDA — Radio Frequency Wireless Technology for Medical Devices ↗</a></p>
+      </section>
+
+      <!-- ===== 十三 网络安全 ===== -->
+      <section id="cyber">
+        <h2><span class="num">11</span>网络安全监管框架</h2>
+        <div class="note orange"><strong>页面顶部提示：</strong>如果设备通过APP直接或间接连接互联网，应按<span class="term" data-cn="网络安全设备，受FD&C Act Section 524B约束">Cyber Device</span>路径提前准备，最终适用性由FDA机构确认。</div>
+        <div class="card">
+          <div class="card-head" onclick="toggle(this)"><span class="ttl">法律要求（FD&amp;C Act Section 524B）</span><span class="chev">▼</span></div>
+          <div class="card-body"><div class="chips">
+            <span class="chip">上市后漏洞监控计划</span><span class="chip">漏洞识别和处置机制</span><span class="chip">Coordinated Vulnerability Disclosure（协同漏洞披露）</span><span class="chip">网络安全设计和开发流程</span><span class="chip">安全更新和补丁机制</span><span class="chip">SBOM（软件物料清单）</span><span class="chip">商业/开源/第三方组件清单</span>
+          </div></div>
+        </div>
+        <div class="card">
+          <div class="card-head" onclick="toggle(this)"><span class="ttl">网络安全设计</span><span class="chev">▼</span></div>
+          <div class="card-body"><div class="chips">
+            <span class="chip">用户身份认证</span><span class="chip">设备身份认证</span><span class="chip">蓝牙安全配对</span><span class="chip">权限管理</span><span class="chip">最小权限</span><span class="chip">传输加密</span><span class="chip">本地数据加密</span><span class="chip">云端数据加密</span><span class="chip">防止重放攻击</span><span class="chip">防止非法指令</span><span class="chip">固件签名</span><span class="chip">安全启动</span><span class="chip">安全OTA</span><span class="chip">密钥管理</span><span class="chip">日志记录</span><span class="chip">账号注销</span><span class="chip">数据删除</span><span class="chip">异常访问提醒</span>
+          </div></div>
+        </div>
+        <div class="card">
+          <div class="card-head" onclick="toggle(this)"><span class="ttl">网络安全验证</span><span class="chev">▼</span></div>
+          <div class="card-body"><div class="chips">
+            <span class="chip">Threat Modeling（威胁建模）</span><span class="chip">Cybersecurity Risk Assessment（网络安全风险评估）</span><span class="chip">漏洞扫描</span><span class="chip">渗透测试</span><span class="chip">Fuzz Testing（模糊测试）</span><span class="chip">蓝牙中间人攻击测试</span><span class="chip">身份认证绕过测试</span><span class="chip">未授权治疗参数修改测试</span><span class="chip">固件篡改测试</span><span class="chip">APP反编译检查</span><span class="chip">敏感信息泄漏检查</span><span class="chip">API安全测试</span><span class="chip">云端权限测试</span><span class="chip">第三方组件漏洞检查</span><span class="chip">补丁及升级验证</span>
+          </div>
+          <p style="font-size:12px;margin:8px 0 0;">
+            <a href="https://www.fda.gov/regulatory-information/search-fda-guidance-documents/cybersecurity-medical-devices-quality-management-system-considerations-and-content-premarket" target="_blank" rel="noopener">官方参考1：Cybersecurity in Medical Devices — QMSR Considerations &amp; Premarket Content ↗</a><br>
+            <a href="https://www.fda.gov/medical-devices/digital-health-center-excellence/cybersecurity-medical-devices-frequently-asked-questions-faqs" target="_blank" rel="noopener">官方参考2：Cybersecurity in Medical Devices — FAQs ↗</a>
+          </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 十四 EMG ===== -->
+      <section id="emg">
+        <h2><span class="num">12</span>EMG与评估算法验证</h2>
+        <div class="card">
+          <div class="card-head" onclick="toggle(this)"><span class="ttl">EMG硬件性能（参考 IEC 60601-2-40）</span><span class="chev">▼</span></div>
+          <div class="card-body"><div class="chips">
+            <span class="chip">输入范围</span><span class="chip">采样率</span><span class="chip">带宽</span><span class="chip">灵敏度</span><span class="chip">分辨率</span><span class="chip">噪声</span><span class="chip">共模抑制（<span class="term" data-cn="共模抑制比">CMRR</span>）</span><span class="chip">信号漂移</span><span class="chip">重复性</span><span class="chip">通道一致性</span><span class="chip">电刺激伪迹抑制</span><span class="chip">运动伪迹</span><span class="chip">探头接触状态</span><span class="chip">腹肌/臀肌代偿信号</span><span class="chip">不同人体阻抗下的表现</span>
+          </div></div>
+        </div>
+        <div class="card">
+          <div class="card-head" onclick="toggle(this)"><span class="ttl">EMG评估算法（若输出肌力/耐力/控制力/放松评分）</span><span class="chev">▼</span></div>
+          <div class="card-body"><div class="chips">
+            <span class="chip">评分公式</span><span class="chip">输入数据</span><span class="chip">阈值来源</span><span class="chip">重复测试一致性</span><span class="chip">日内/日间差异</span><span class="chip">不同用户区分能力</span><span class="chip">探头位置变化影响</span><span class="chip">体位变化影响</span><span class="chip">基线校准</span><span class="chip">异常数据处理</span><span class="chip">评分结果可解释性</span><span class="chip">与专业评估方法一致性</span><span class="chip">评分误差是否导致错误训练建议</span>
+          </div></div>
+        </div>
+        <div class="card">
+          <div class="card-head" onclick="toggle(this)"><span class="ttl">方案推荐算法（若APP根据评估推荐训练方案）</span><span class="chev">▼</span></div>
+          <div class="card-body"><div class="chips">
+            <span class="chip">输入条件</span><span class="chip">推荐规则</span><span class="chip">每条规则临床/技术依据</span><span class="chip">推荐结果是否始终落在预设安全程序内</span><span class="chip">数据缺失时处理</span><span class="chip">异常数据时是否停止推荐</span><span class="chip">用户可确认或拒绝</span><span class="chip">推荐是否改变核心电刺激参数</span><span class="chip">错误推荐风险及控制措施</span>
+          </div>
+          <div class="note orange"><strong>建议第一版限定：</strong>从<strong>已经验证的固定程序库</strong>中进行训练程序推荐，<u>不自动生成新的治疗参数组合</u>。</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 十五 电刺激 ===== -->
+      <section id="stim">
+        <h2><span class="num">13</span>电刺激及整机验证</h2>
+        <div class="layer">
+          <div class="layer-head">电刺激与整机验证项目</div>
+          <div class="layer-body"><div class="chips">
+            <span class="chip">输出波形</span><span class="chip">最大输出电流</span><span class="chip">最大输出电压</span><span class="chip">频率</span><span class="chip">脉宽</span><span class="chip">相电荷</span><span class="chip">净电荷</span><span class="chip">电流密度</span><span class="chip">功率密度</span><span class="chip">不同负载下的输出</span><span class="chip">输出精度</span><span class="chip">模式切换</span><span class="chip">强度变化</span><span class="chip">无负载保护</span><span class="chip">过载保护</span><span class="chip">自动停止</span><span class="chip">患者紧急停止</span><span class="chip">单一故障状态</span><span class="chip">电池和充电</span><span class="chip">电气安全</span><span class="chip">EMC</span><span class="chip">家庭使用环境</span><span class="chip">探头安全</span><span class="chip">生物相容性</span><span class="chip">清洁和重复使用</span><span class="chip">使用寿命</span><span class="chip">跌落和运输</span>
+          </div></div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th style="width:200px">参考标准</th><th>范围</th></tr></thead>
+            <tbody>
+              <tr><td class="k">IEC 60601-1</td><td>医用电气设备通用安全</td></tr>
+              <tr><td class="k">IEC 60601-1-2</td><td>电磁兼容（EMC）</td></tr>
+              <tr><td class="k">IEC 60601-1-11</td><td>家庭护理环境用医疗设备</td></tr>
+              <tr><td class="k">IEC 60601-2-10</td><td>神经肌肉刺激器专用安全</td></tr>
+              <tr><td class="k">IEC 60601-2-40</td><td>电刺激理疗设备（含<span class="term" data-cn="肌电图">EMG</span>反馈）专用安全</td></tr>
+              <tr><td class="k">ISO 10993系列</td><td>生物学评价（探头生物相容性）</td></tr>
+              <tr><td class="k">IEC 62304</td><td>医疗器械软件生命周期</td></tr>
+              <tr><td class="k">ISO 14971</td><td>医疗器械风险管理</td></tr>
+              <tr><td class="k">IEC 62366-1</td><td>可用性工程</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note orange"><strong>提示：</strong>最终采用的标准版本及FDA认可状态，应在测试立项前由FDA机构和实验室确认。</div>
+      </section>
+
+      <!-- ===== 十六 人因 ===== -->
+      <section id="humanfactors">
+        <h2><span class="num">14</span>人因与可用性验证</h2>
+        <p class="lead">重点验证家庭用户能否安全完成以下关键任务：</p>
+        <div class="chips" style="margin-bottom:12px;">
+          <span class="chip">阅读禁忌症</span><span class="chip">正确放置探头</span><span class="chip">连接正确设备</span><span class="chip">正确进行基线测试</span><span class="chip">理解<span class="term" data-cn="肌电图">EMG</span>数据</span><span class="chip">理解评估结果</span><span class="chip">选择/接受训练方案</span><span class="chip">调节电刺激强度</span><span class="chip">开始/暂停/停止</span><span class="chip">识别蓝牙断连</span><span class="chip">处理APP错误</span><span class="chip">理解疼痛和停止使用条件</span><span class="chip">清洁和保存探头</span><span class="chip">区分训练建议与医疗诊断</span>
+        </div>
+        <div class="flow">
+          <div class="step"><span class="n">1</span><p>使用相关风险分析</p></div>
+          <div class="step"><span class="n">2</span><p>形成式测试（Formative）</p></div>
+          <div class="step"><span class="n">3</span><p>UI和说明书修改</p></div>
+          <div class="step"><span class="n">4</span><p>关键任务确认</p></div>
+          <div class="step"><span class="n">5</span><p>代表性用户的人因确认测试</p></div>
+          <div class="step"><span class="n">6</span><p>最终人因工程报告</p></div>
+        </div>
+      </section>
+
+      <!-- ===== 十七 阶段 ===== -->
+      <section id="stages">
+        <h2><span class="num">15</span>建议的研发阶段门槛（六阶段）</h2>
+        <div class="roadmap">
+          <div class="stage">
+            <div class="top">阶段一<span class="ph">法规和产品边界</span></div>
+            <div class="body">
+              <h4>输出</h4>
+              <ul><li><span class="term" data-cn="预期用途">Intended Use</span></li><li><span class="term" data-cn="适用范围">Indications for Use</span></li><li><span class="term" data-cn="非处方">OTC</span>/Rx判断</li><li><span class="term" data-cn="产品代码">Product Code</span></li><li>主<span class="term" data-cn="主要对比器械">Predicate</span></li><li><span class="term" data-cn="技术参考器械">Reference Devices</span></li><li>功能合规分级</li><li>初步风险分析</li></ul>
+              <div class="gate">放行：FDA机构确认总体路径原则可行</div>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="top">阶段二<span class="ph">系统方案</span></div>
+            <div class="body">
+              <h4>输出</h4>
+              <ul><li>产品系统架构</li><li>主机与APP边界</li><li>探头方案</li><li><span class="term" data-cn="肌电图">EMG</span>方案</li><li>电刺激方案</li><li>蓝牙方案</li><li>云端方案</li><li>核心安全机制</li></ul>
+              <div class="gate">放行：无明显突破<span class="term" data-cn="主要对比器械">Predicate</span>安全边界的功能</div>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="top">阶段三<span class="ph">工程样机</span></div>
+            <div class="body">
+              <h4>输出</h4>
+              <ul><li>硬件样机</li><li>探头样机</li><li>APP原型</li><li>固件</li><li><span class="term" data-cn="肌电图">EMG</span>采集验证</li><li>电刺激输出验证</li><li>蓝牙连接验证</li><li>初步可用性测试</li></ul>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="top">阶段四<span class="ph">设计冻结</span></div>
+            <div class="body">
+              <h4>输出</h4>
+              <ul><li>最终规格</li><li>风险管理文件</li><li>软件需求</li><li>参数范围</li><li>算法规则</li><li>标签和说明书草稿</li><li>完整测试计划</li></ul>
+              <div class="gate">放行：用于FDA测试的版本不得再随意变更</div>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="top">阶段五<span class="ph">正式验证</span></div>
+            <div class="body">
+              <h4>输出</h4>
+              <ul><li>电气安全</li><li>EMC</li><li>电刺激专项</li><li><span class="term" data-cn="肌电图">EMG</span>专项</li><li>生物相容性</li><li>软件验证</li><li>蓝牙/无线共存</li><li>网络安全</li><li>人因验证</li><li>算法验证</li><li>整机性能验证</li></ul>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="top">阶段六<span class="ph">510(k)申报</span></div>
+            <div class="body">
+              <h4>输出</h4>
+              <ul><li><span class="term" data-cn="FDA电子提交模板">eSTAR</span>资料</li><li>实质等同对比表</li><li><span class="term" data-cn="主要对比器械">Predicate</span>论证</li><li><span class="term" data-cn="技术参考器械">Reference Device</span>论证</li><li>全部测试报告</li><li>软件资料</li><li>网络安全资料</li><li>标签 / <span class="term" data-cn="使用说明书">IFU</span></li><li>FDA补充问题回复</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="note gray"><strong>决策原则：</strong>各阶段都应评估"开发周期和成本可控"，作为是否进入下一阶段的门槛之一。</div>
+      </section>
+
+      <!-- ===== 十八 问题 ===== -->
+      <section id="questions">
+        <h2><span class="num">16</span>当前必须向FDA机构确认的问题（20项）</h2>
+        <div class="note orange"><strong>以下均为"待FDA机构确认"事项（橙色），不代表内部已得出结论。</strong></div>
+        <div class="qgrid">
+          <div class="qcard"><span class="qn">1</span><p>K220161是否可以作为Aurillis二代的正式主<span class="term" data-cn="主要对比器械">Predicate</span>？</p></div>
+          <div class="qcard"><span class="qn">2</span><p>K220161由<span class="term" data-cn="处方">Prescription</span> <span class="term" data-cn="主要对比器械">Predicate</span>转为<span class="term" data-cn="非处方">OTC</span>的逻辑是否可以沿用？</p></div>
+          <div class="qcard"><span class="qn">3</span><p>K252748和K231780能否作为APP、蓝牙和手机交互的<span class="term" data-cn="技术参考器械">Reference Devices</span>？</p></div>
+          <div class="qcard"><span class="qn">4</span><p>K202648是否适合作为<span class="term" data-cn="肌电图">EMG</span>评估和<span class="term" data-cn="肌电触发电刺激">ETS</span>的<span class="term" data-cn="技术参考器械">Reference Device</span>？</p></div>
+          <div class="qcard"><span class="qn">5</span><p>Aurillis产品可能涉及KPI、HCC、HIR中的哪些<span class="term" data-cn="产品代码">Product Code</span>？</p></div>
+          <div class="qcard"><span class="qn">6</span><p>APP显示<span class="term" data-cn="肌电图">EMG</span>数据是否改变产品监管分类？</p></div>
+          <div class="qcard"><span class="qn">7</span><p>肌力、耐力、控制力和放松能力评分是否属于允许的训练评估？</p></div>
+          <div class="qcard"><span class="qn">8</span><p>根据评估结果推荐固定训练程序是否会引起新的安全性和有效性问题？</p></div>
+          <div class="qcard"><span class="qn">9</span><p>哪些"方案输出"表述会被理解为治疗处方？</p></div>
+          <div class="qcard"><span class="qn">10</span><p>是否需要临床性能数据验证<span class="term" data-cn="肌电图">EMG</span>评分或训练推荐算法？</p></div>
+          <div class="qcard"><span class="qn">11</span><p>产品是否可以维持<span class="term" data-cn="非处方">OTC</span>属性？</p></div>
+          <div class="qcard"><span class="qn">12</span><p>软件应按<span class="term" data-cn="文件层级">Basic</span>还是<span class="term" data-cn="文件层级">Enhanced Documentation Level</span>准备？</p></div>
+          <div class="qcard"><span class="qn">13</span><p>产品是否属于FD&amp;C Act Section 524B规定的<span class="term" data-cn="网络安全设备">Cyber Device</span>？</p></div>
+          <div class="qcard"><span class="qn">14</span><p>是否必须进行正式渗透测试？</p></div>
+          <div class="qcard"><span class="qn">15</span><p>无线共存需要采用什么测试标准？</p></div>
+          <div class="qcard"><span class="qn">16</span><p>哪些人因测试必须纳入<span class="term" data-cn="上市前通告">510(k)</span>？</p></div>
+          <div class="qcard"><span class="qn">17</span><p>主机、APP、云端和探头应如何定义为一个医疗器械系统？</p></div>
+          <div class="qcard"><span class="qn">18</span><p>Aurillis由谁作为<span class="term" data-cn="上市前通告">510(k)</span> Applicant及<span class="term" data-cn="规格开发者">Specification Developer</span>最合适？</p></div>
+          <div class="qcard"><span class="qn">19</span><p>生产工厂应承担什么设计控制和质量体系责任？</p></div>
+          <div class="qcard"><span class="qn">20</span><p>后续APP和算法升级如何判断是否需要新的<span class="term" data-cn="上市前通告">510(k)</span>？</p></div>
+        </div>
+      </section>
+
+      <!-- ===== 十九 组织 ===== -->
+      <section id="org">
+        <h2><span class="num">17</span>内部组织设计提示（待管理层确定）</h2>
+        <div class="note orange"><strong>以下两种方案均标记为"待组织设计确认"，本看板不直接替管理层作最终决定。</strong></div>
+        <div class="org">
+          <div class="oc">
+            <div class="oh">方案A：Aurillis控制510(k)和产品定义</div>
+            <div class="ob">
+              <ul>
+                <li>Aurillis或其指定主体作为<span class="term" data-cn="规格开发者">Specification Developer</span></li>
+                <li>Aurillis控制产品规格、APP、算法和知识产权</li>
+                <li>工厂作为Contract Manufacturer（合约制造商）</li>
+                <li>供应商替换能力更强</li>
+                <li>需Aurillis承担更完整的<span class="term" data-cn="质量管理体系法规">QMSR</span>和上市后责任</li>
+              </ul>
+              <div class="eval">建议评价：战略控制力更强，适合真正自主开发的第二代产品，但合规体系投入更高。</div>
+            </div>
+          </div>
+          <div class="oc">
+            <div class="oh">方案B：研发制造合作方持有510(k)</div>
+            <div class="ob">
+              <ul>
+                <li>合作方作为<span class="term" data-cn="上市前通告">510(k)</span> Applicant</li>
+                <li>Aurillis参与产品定义和APP开发</li>
+                <li>合作方承担主要设计控制</li>
+                <li>初期合规组织成本可能较低</li>
+                <li>对合同、知识产权、软件版本控制和供应商绑定要求更高</li>
+              </ul>
+              <div class="eval">建议评价：短期效率较高，但必须通过合同确保品牌、软件、数据、知识产权和后续供应权。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="note gray" style="margin-top:24px;">
+        <strong>严谨性声明：</strong>本看板为欧律生内部初步法规路径建议，所有候选<span class="term" data-cn="主要对比器械">Predicate</span>/<span class="term" data-cn="技术参考器械">Reference Device</span>未经FDA正式确认；K252748为力传感器（非<span class="term" data-cn="肌电图">EMG</span>）、无电刺激；K202648/K222201为处方设备（非<span class="term" data-cn="非处方">OTC</span>）；Momcozy吸奶器非盆底<span class="term" data-cn="主要对比器械">Predicate</span>；训练评估非诊断、预设推荐非处方；未虚构任何临床测试或FDA认可结论。
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<button class="backtop" id="backtop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// ===== 卡片展开/折叠 =====
+function toggle(head){
+  var card=head.closest('.card');
+  card.classList.toggle('collapsed');
+}
+
+// ===== 顶部导航高亮 =====
+var sections=Array.from(document.querySelectorAll('section[id]'));
+var navLinks=Array.from(document.querySelectorAll('#nav a'));
+window.addEventListener('scroll',function(){
+  var pos=window.scrollY+120;
+  var cur=sections[0];
+  sections.forEach(function(s){ if(s.offsetTop<=pos) cur=s; });
+  navLinks.forEach(function(a){
+    a.classList.toggle('active', a.getAttribute('href')==='#'+cur.id);
+  });
+  document.getElementById('backtop').style.display = window.scrollY>400 ? 'block':'none';
+});
+
+// ===== 工具提示 =====
+var tip=document.getElementById('tip');
+document.addEventListener('mouseover',function(e){
+  var t=e.target.closest('.term');
+  if(t){
+    tip.innerHTML='<b>'+(t.textContent)+'</b><br>'+t.getAttribute('data-cn');
+    tip.style.display='block';
+    var r=t.getBoundingClientRect();
+    var x=r.left, y=r.bottom+6;
+    if(x+280>window.innerWidth) x=window.innerWidth-286;
+    if(y+tip.offsetHeight>window.innerHeight) y=r.top-tip.offsetHeight-6;
+    tip.style.left=x+'px'; tip.style.top=y+'px';
+  }
+});
+document.addEventListener('mouseout',function(e){
+  if(e.target.closest('.term')) tip.style.display='none';
+});
+
+// ===== 搜索 + 筛选 =====
+var predFilter='all';
+var funcFilter='all';
+function setFilter(v,el){
+  predFilter=v;
+  document.querySelectorAll('.fchip[data-filter]').forEach(function(c){c.classList.toggle('active',c===el);});
+  applyFilters();
+}
+function setFLevel(v,el){
+  funcFilter=v;
+  document.querySelectorAll('.fchip[data-flevel]').forEach(function(c){c.classList.toggle('active',c===el);});
+  applyFilters();
+}
+function clearSearch(){
+  document.getElementById('pageSearch').value='';
+  document.getElementById('navSearch').value='';
+  document.getElementById('searchClear').style.display='none';
+  applyFilters();
+}
+function applyFilters(){
+  var q=(document.getElementById('pageSearch').value||document.getElementById('navSearch').value||'').trim().toLowerCase();
+  document.getElementById('searchClear').style.display = q? 'block':'none';
+  var count=0;
+  // Predicate 卡筛选
+  document.querySelectorAll('.kc-card').forEach(function(c){
+    var ok = (predFilter==='all') || (c.getAttribute('data-role')===predFilter);
+    c.style.display = ok? '' : 'none';
+  });
+  // 功能矩阵筛选
+  document.querySelectorAll('.func-item').forEach(function(c){
+    var ok = (funcFilter==='all') || (c.getAttribute('data-level')===funcFilter);
+    c.style.display = ok? '' : 'none';
+  });
+  // 关键词搜索：高亮 + 计数（作用于全页 .filterable 与 section 文本）
+  document.querySelectorAll('mark').forEach(function(m){ var p=m.parentNode; p.replaceChild(document.createTextNode(m.textContent),m); p.normalize(); });
+  if(q){
+    var blocks=document.querySelectorAll('.content');
+    blocks.forEach(function(block){
+      walk(block,q,function(){});
+    });
+    // 计数匹配卡片
+    document.querySelectorAll('.filterable').forEach(function(c){
+      if(c.style.display!=='none' && c.textContent.toLowerCase().includes(q)) count++;
+    });
+    document.getElementById('searchCount').textContent='匹配约 '+count+' 个内容块';
+  } else {
+    document.getElementById('searchCount').textContent='';
+  }
+}
+// 文本节点高亮遍历
+function walk(node,q,cb){
+  if(node.nodeType===3){
+    var txt=node.nodeValue;
+    var low=txt.toLowerCase();
+    var idx=low.indexOf(q);
+    if(idx>=0 && q.length>0){
+      var span=document.createElement('span');
+      // 简单高亮第一个匹配（避免递归过深）
+      var before=document.createTextNode(txt.slice(0,idx));
+      var mark=document.createElement('mark'); mark.textContent=txt.slice(idx,idx+q.length);
+      var after=document.createTextNode(txt.slice(idx+q.length));
+      var parent=node.parentNode;
+      parent.insertBefore(before,node); parent.insertBefore(mark,node); parent.insertBefore(after,node);
+      parent.removeChild(node);
+    }
+  } else if(node.nodeType===1 && !['SCRIPT','STYLE','MARK'].includes(node.tagName)){
+    Array.from(node.childNodes).slice().forEach(function(ch){ walk(ch,q,cb); });
+  }
+}
+
+// ===== 导出PDF =====
+function exportPDF(){
+  window.print();
+}
+
+// 初始化
+applyFilters();
+</script>
+</body>
+</html>
