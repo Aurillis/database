@@ -722,16 +722,19 @@ async function handleUpload(body, origin) {
   const filePath = '/contents/reports/' + encodeURIComponent(safeName);
 
   try {
-    const head = await ghRequest('GET', filePath + '?ref=' + branch);
-    const sha = (head.json && head.json.sha) || null;
-    const oldContent = (head.json && head.json.content) || null;
-
-    // 覆盖前先备份旧内容(防误删/恶意覆盖)
-    await backupBeforeOverwrite(safeName, oldContent, branch);
-
-    const putBody = { message: 'upload: ' + safeName, content: content, branch: branch };
-    if (sha) putBody.sha = sha;
-    const putRes = await ghRequest('PUT', filePath, putBody);
+    // 优化 v2.3.1: 新文件直接 PUT(无 sha) -> 仅 3 次 GitHub 往返; 仅当返回 422(已存在)才回退 head+备份+覆盖(5 次)
+    // 原逻辑每次都先 GET head(即使新文件也消耗 1 次往返), 5 次往返在 3s 函数超时下易触发 Failed to fetch
+    let putRes = await ghRequest('PUT', filePath, { message: 'upload: ' + safeName, content: content, branch: branch });
+    if (putRes.status === 422) {
+      // 422 = 文件已存在, 需取旧 sha 并备份后再覆盖
+      const head = await ghRequest('GET', filePath + '?ref=' + branch);
+      const sha = (head.json && head.json.sha) || null;
+      const oldContent = (head.json && head.json.content) || null;
+      await backupBeforeOverwrite(safeName, oldContent, branch); // 覆盖前备份旧内容(防误删/恶意覆盖)
+      if (sha) {
+        putRes = await ghRequest('PUT', filePath, { message: 'upload(overwrite): ' + safeName, content: content, sha: sha, branch: branch });
+      }
+    }
     if (putRes.status >= 300) {
       const msg = (putRes.json && putRes.json.message) || putRes.status;
       return send(500, { error: 'GitHub 写入失败: ' + msg }, origin);

@@ -1645,42 +1645,54 @@ function handleUpload(fileList) {
   var done = 0, ok = 0, fail = [];
   var uploadedEntries = []; // 收集本次成功上传的文件元数据, 用于本地兜底(即使 manifest 读取失败也能立即/刷新后可见)
 
+  var MAX_UPLOAD_ATTEMPT = 2; // v2.3.1: 网络错误自动重试 1 次(应对偶发网关/云函数超时 Failed to fetch)
   files.forEach(function(file) {
+    uploadOneFile(file, cat, S.adminToken, 1, MAX_UPLOAD_ATTEMPT).then(function(resp) {
+      done++;
+      if (resp.ok) {
+        ok++;
+        var upName = safeNameOf(file.name);
+        uploadedEntries.push({
+          name: upName,
+          title: upName.replace(/\.[^.]+$/, ''),
+          size: file.size,
+          mtime: Math.floor(Date.now() / 1000),
+          category: cat
+        });
+      } else {
+        var errMsg = (resp.j && resp.j.error) ? resp.j.error : '失败';
+        if (resp._netErr) errMsg += '（已自动重试仍失败：疑似网络/服务端超时，可稍后重试；或请管理员在腾讯云调高云函数超时时间）';
+        fail.push(file.name + ' (' + errMsg + ')');
+      }
+      if (done === files.length) finishUpload(result, ok, fail, bad, uploadedEntries);
+    });
+  });
+}
+
+// 单文件上传(含网络错误自动重试)；返回 Promise<{ok, j, _netErr?}>
+function uploadOneFile(file, cat, token, attempt, maxAttempt) {
+  return new Promise(function(resolve) {
     var reader = new FileReader();
     reader.onload = function(e) {
       var dataUrl = e.target.result;
       var base64 = dataUrl.split(',')[1] || '';
       fetch(UPLOAD_API, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-token': S.adminToken },
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
         body: JSON.stringify({ op: 'upload', filename: file.name, content: base64, category: cat })
       })
       .then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); })
-      .then(function(resp) {
-        done++;
-        if (resp.ok) {
-          ok++;
-          var upName = safeNameOf(file.name);
-          uploadedEntries.push({
-            name: upName,
-            title: upName.replace(/\.[^.]+$/, ''),
-            size: file.size,
-            mtime: Math.floor(Date.now() / 1000),
-            category: cat
-          });
-        } else fail.push(file.name + ' (' + (resp.j.error || '失败') + ')');
-        if (done === files.length) finishUpload(result, ok, fail, bad, uploadedEntries);
-      })
-      .catch(function(e) {
-        done++;
-        var msg = (e && e.message) ? e.message : '无法连接服务端';
-        var hint = (e && (e.name === 'TimeoutError' || (e.message && /timeout/i.test(e.message))))
-          ? '（疑似文件过大导致服务端处理超时）'
-          : '（疑似文件过大触及网关限额，或网络不稳定）';
-        fail.push(file.name + ' (网络错误：' + msg + hint + ')');
-        if (done === files.length) finishUpload(result, ok, fail, bad, uploadedEntries);
+      .then(function(resp) { resolve(resp); })
+      .catch(function(err) {
+        if (attempt < maxAttempt) {
+          setTimeout(function() { resolve(uploadOneFile(file, cat, token, attempt + 1, maxAttempt)); }, 500 * attempt);
+        } else {
+          var msg = (err && err.message) ? err.message : '无法连接服务端';
+          resolve({ ok: false, j: { error: '网络错误：' + msg }, _netErr: true });
+        }
       });
     };
+    reader.onerror = function() { resolve({ ok: false, j: { error: '读取本地文件失败' } }); };
     reader.readAsDataURL(file);
   });
 }
