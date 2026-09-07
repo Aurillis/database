@@ -33,6 +33,13 @@
       "icon": "fas fa-folder",
       "parentId": null,
       "updatedAt": 1787302607516
+    },
+    {
+      "id": "c-0z5spblc",
+      "name": "运营文件",
+      "icon": "fas fa-folder",
+      "parentId": null,
+      "updatedAt": 1788774289408
     }
   ],
   "fileCats": {
