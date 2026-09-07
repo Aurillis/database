@@ -3,3 +3,9 @@ research-deck/scf_bootstrap text eol=lf
 research-deck/server.py text eol=lf
 research-deck/versions/**/scf_bootstrap text eol=lf
 research-deck/versions/**/server.py text eol=lf
+# 主站 Portal 归档同样强制 LF（统一版本标准，避免 Windows 克隆后 CRLF）
+portal/versions/** text eol=lf
+# 版本标准/记忆文档统一 LF，保证跨环境一致可读
+CHANGELOG.md text eol=lf
+PROJECT_MEMORY.md text eol=lf
+DESIGN.md text eol=lf
