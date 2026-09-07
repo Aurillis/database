@@ -10,6 +10,22 @@
 - 仓库 `Aurillis/database` 分支 `main`，云端工作区 `/workspace/report-portal/`。
 - 唯一持续修改文件：`index.html`（前端）；后端 `scf/index.js`。
 
+## 版本标准与变更记录（2026-09-07 强化，永久生效）
+
+> **用户要求（2026-09-07）**：以后每次改动都必须记入记忆，且要有统一版本标准，以便新对话/新环境可直接使用或修改本项目。
+> **单一事实源 = 根目录 `CHANGELOG.md`**（git 跟踪，clone 即读，含版本标准 + 变更记录表 + 回滚方式）。本文件与本地 `MEMORY.md` 仅作快速参考，权威以 `CHANGELOG.md` 为准。
+
+### 两条独立版本线
+| 组件 | 范围 | 版本变量 | 归档目录 | 部署包 |
+|------|------|----------|----------|--------|
+| 主站 Portal | 根 `index.html` + `scf/index.js` | `PORTAL_VERSION` | `portal/versions/vX.Y.Z/` | `portal/scf_upload_deploy_vX.Y.Z.zip` |
+| 调研台 ResearchDeck | `research-deck/index.html` + `server.py` | `APP_VERSION` | `research-deck/versions/vX.Y.Z/` | `researchdeck_deploy_vX.Y.Z.zip` |
+
+- 语义 `vMAJOR.MINOR.PATCH`：MAJOR=架构/不兼容；MINOR=新增兼容功能；PATCH=修复/小调整。
+- **每次改动闭环（不可省）**：①升版本号 ②归档 `versions/` ③出部署包(LF/755 铁律) ④推 git main（**禁本地 rebase**，用重克隆+overlay+单提交）⑤**记 `CHANGELOG.md` 追加一行** ⑥同步本地 `MEMORY.md` 最新状态 ⑦改后端必重传 SCF。
+- **当前版本（2026-09-07）**：主站 Portal **v2.3.1**（上传稳定性修复，已推 `d04cbf6` + SCF 已重传）；调研台 ResearchDeck **v2.3.0**（动态 Research Creation Model，部署包待重传）。
+- 历史版本（v1.0.0–v2.2.x）逐版明细见下方「版本基线」章节。
+
 ## 云端环境要点（2026-08-26 实测）
 - **GitHub 直连不通**（github.com / api.github.com / raw / pages 全部超时），走镜像：
   - 克隆/拉取：`https://gh-proxy.com/https://github.com/Aurillis/database.git`（快，约 0.6s）或 `https://ghproxy.net/...`
@@ -93,7 +109,7 @@
 - v1.0.1（2026-08-20，commit `c0ce04c`）—— 删除/恢复后首页不刷新修复。
 - v1.0.0（2026-08-20，commit `21b8387`）—— 稳定基线。
 - 递增规则（用户 2026-08-20 确认，助手自动递增）：新增功能/界面→Minor；修 bug→Patch；不兼容/架构变更→Major。每次修改后助手自行升级版本号、更新本基线、记入当日日志。
-- **版本管理约定（用户 2026-08-29 要求，永久生效）**：修改 bug/功能时**绝不覆盖旧版本**——先归档当前版本到 `research-deck/versions/<版本号>/`，再生成新版本；部署包命名 `researchdeck_deploy_v<版本号>.zip`；详见 `research-deck/VERSIONING.md`。
+- **版本管理约定（用户 2026-08-29 要求，永久生效；2026-09-07 强化）**：修改 bug/功能时**绝不覆盖旧版本**——先归档当前版本到 `versions/<版本号>/`，再生成新版本；部署包按版本号命名。**调研台归档 `research-deck/versions/` + `researchdeck_deploy_v<版本号>.zip`（详见 `research-deck/VERSIONING.md`）；主站 Portal 自 v2.3.1 起同样归档 `portal/versions/` + `portal/scf_upload_deploy_v<版本号>.zip`。统一版本标准与全量变更记录见根目录 `CHANGELOG.md`（每次改动必须追加一行）。**
 - **模板无死数据红线（用户 2026-08-29 要求，永久生效，优先级最高）**：无论新增任何调研维度/模板，**一律禁止写死固定产品的真实数据**（如盆底肌、哺乳按摩器、Momcozy 等具体品牌/销量/份额）。所有维度只允许两种形态：①「大模型模式」= LLM 按结构对用户输入主题实时生成真实数据；②「模板模式」= 主题驱动的通用结构骨架，数据标注「待实时生成/待核验」。任何含固定产品数据的 demo 函数、提示词、前端文案均属违规，发现即删。**每次新增模板必须过此检查**（grep 固定产品名 + 人工核对）。
 - **主站隔离红线（用户 2026-08-29 要求，永久生效，优先级最高）**：**调研台的一切改动只允许在 `research-deck/` 目录内**，**绝不触碰数据库主站文件**（根目录 `index.html`、`manifest.json`、`meta.json`、`api/`、`scf/`、`reports/`、`backups/` 等）。背景：2026-08-29 曾为修加载慢改动根目录 index.html 的 manifest/meta 加载逻辑（v1.9.1/v1.9.2），用户将"动主站文件"与"数据库加载变慢"关联，明确要求以后调研台迭代不得动主站。**主站文件需要任何改动（即使只是优化）必须先用 AskUserQuestion 单独征得用户同意，获准后才动**。
 

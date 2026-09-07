@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>我的研究知识库</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f8f9fa;--sidebar-bg:#fff;--card-bg:#fff;
+  --ink:#1a1a2e;--muted:#6b7280;--light:#9ca3af;
+  --line:#e5e7eb;--hover:#f3f4f6;--hover2:#eef2f7;
+  --accent:#236b6f;--accent-light:#e8f4f3;--accent-dark:#1a5559;
+  --danger:#e53e3e;--warning:#d97706;
+  --radius:8px;--radius-lg:12px;
+  --shadow:0 1px 3px rgba(0,0,0,.06);
+  --shadow-md:0 4px 12px rgba(0,0,0,.08);
+  --shadow-lg:0 8px 30px rgba(0,0,0,.12);
+  --sidebar-w:280px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,"Segoe UI","Microsoft YaHei",Roboto,sans-serif;
+  background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select{font-family:inherit}
+
+/* ===== HEADER ===== */
+.header{
+  background:#fff;border-bottom:1px solid var(--line);
+  height:56px;display:flex;align-items:center;
+  padding:0 24px;gap:16px;position:sticky;top:0;z-index:100;
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+}
+.logo{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.logo-icon{
+  width:32px;height:32px;background:var(--accent);
+  border-radius:7px;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:16px;
+}
+.logo-text{font-size:16px;font-weight:700;color:var(--ink)}
+.search-bar{flex:1;max-width:500px;position:relative}
+.search-bar input{
+  width:100%;padding:8px 12px 8px 36px;
+  border:1px solid var(--line);border-radius:var(--radius);
+  font-size:13px;background:var(--bg);transition:all .2s;
+}
+.search-bar input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(35,107,111,.1)}
+.search-bar i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--light);font-size:13px}
+.header-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.icon-btn{
+  width:36px;height:36px;border-radius:var(--radius);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);transition:all .15s;
+}
+.icon-btn:hover{background:var(--hover);color:var(--ink)}
+.icon-btn.active{background:var(--accent-light);color:var(--accent)}
+.badge{
+  background:var(--danger);color:#fff;font-size:10px;font-weight:700;
+  padding:1px 5px;border-radius:8px;position:absolute;top:4px;right:4px;
+}
+.admin-entry{
+  display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;
+  border:1px solid var(--line);border-radius:var(--radius);
+  font-size:13px;font-weight:600;color:var(--ink);background:#fff;cursor:pointer;transition:all .15s;
+}
+.admin-entry:hover{background:var(--accent-light);color:var(--accent);border-color:var(--accent)}
+.admin-entry i{font-size:14px}
+.admin-entry-txt{font-size:13px}
+.rd-entry{
+  display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;
+  border:1px solid var(--accent);border-radius:var(--radius);
+  font-size:13px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--accent),#2a7d84);
+  cursor:pointer;transition:all .15s;text-decoration:none;
+}
+.rd-entry:hover{opacity:.9;transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.rd-entry i{font-size:14px}
+
+/* 移动端汉堡按钮(默认隐藏, 仅 @media 显示) */
+.menu-toggle{display:none;width:36px;height:36px;border-radius:var(--radius);align-items:center;justify-content:center;color:var(--muted);font-size:17px;flex-shrink:0}
+.menu-toggle:hover{background:var(--hover);color:var(--ink)}
+/* 移动端侧边栏遮罩(点遮罩收起抽屉) */
+.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(17,24,39,.45);z-index:95;opacity:0;pointer-events:none;transition:opacity .25s}
+
+/* ===== LAYOUT ===== */
+.layout{display:flex;min-height:calc(100vh - 56px)}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width:var(--sidebar-w);background:var(--sidebar-bg);
+  border-right:1px solid var(--line);padding:12px 0;
+  overflow-y:auto;position:sticky;top:56px;
+  height:calc(100vh - 56px);flex-shrink:0;
+}
+.sidebar-section{padding:0 8px;margin-bottom:8px}
+.sidebar-label{font-size:11px;font-weight:600;color:var(--light);text-transform:uppercase;letter-spacing:.5px;padding:8px 12px 4px}
+.nav-item{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 12px;border-radius:var(--radius);
+  font-size:13px;font-weight:500;color:var(--ink);
+  cursor:pointer;transition:all .12s;user-select:none;
+}
+.nav-item:hover{background:var(--hover)}
+.nav-item.active{background:var(--accent-light);color:var(--accent)}
+.nav-item i{width:16px;text-align:center;font-size:13px;color:var(--muted)}
+.nav-item.active i{color:var(--accent)}
+.nav-item .count{margin-left:auto;font-size:11px;color:var(--light)}
+.nav-children{padding-left:12px}
+.nav-child{
+  display:flex;align-items:center;gap:8px;
+  padding:5px 12px 5px 36px;border-radius:6px;
+  font-size:12px;color:var(--muted);cursor:pointer;
+  transition:all .12s;
+}
+.nav-child:hover{background:var(--hover);color:var(--ink)}
+.nav-child.active{color:var(--accent);font-weight:600}
+.nav-child .count{margin-left:auto;font-size:10px;color:var(--light)}
+.tree-chevron{font-size:10px;transition:transform .2s;color:var(--light)}
+.tree-chevron.open{transform:rotate(90deg)}
+.sidebar-add{
+  margin:8px 12px;padding:8px;border:1px dashed var(--line);
+  border-radius:var(--radius);text-align:center;font-size:12px;
+  color:var(--muted);cursor:pointer;transition:all .15s;
+}
+.sidebar-add:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+
+/* ===== MAIN CONTENT ===== */
+.main{flex:1;padding:24px;overflow-x:hidden;min-width:0}
+.main-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.main-title{font-size:20px;font-weight:700}
+.main-tools{display:flex;gap:8px;align-items:center}
+.sort-select{
+  padding:6px 12px;border:1px solid var(--line);border-radius:6px;
+  font-size:12px;background:#fff;color:var(--ink);cursor:pointer;
+}
+.view-btn{
+  width:32px;height:32px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);transition:all .15s;
+}
+.view-btn:hover,.view-btn.active{background:var(--hover);color:var(--accent)}
+
+/* ===== FILE GRID ===== */
+.file-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:14px;
+}
+.file-card{
+  background:var(--card-bg);border:1px solid var(--line);
+  border-radius:var(--radius-lg);padding:16px;
+  cursor:pointer;transition:all .2s;position:relative;
+  display:flex;flex-direction:column;gap:8px;
+}
+.file-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:#d1d5db}
+.file-card-top{display:flex;align-items:flex-start;gap:10px}
+.file-card-icon{
+  width:36px;height:36px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+}
+.file-card-body{flex:1;min-width:0}
+.file-card-title{
+  font-size:14px;font-weight:600;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.file-card-cat{font-size:11px;color:var(--light);margin-top:3px}
+.file-card-tags{display:flex;flex-wrap:wrap;gap:4px}
+.file-tag{
+  font-size:10px;padding:2px 7px;border-radius:4px;
+  background:#f0f0f0;color:var(--muted);
+}
+.file-card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:8px;border-top:1px solid #f5f5f5;
+  font-size:11px;color:var(--light);
+}
+.file-card-footer .left{display:flex;gap:10px;align-items:center}
+.fmt-badge{display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:.3px;padding:2px 7px;border-radius:4px;line-height:1.4;white-space:nowrap}
+.li-fmt{flex-shrink:0;display:flex;align-items:center;width:74px}
+.fav-btn{
+  width:28px;height:28px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--light);transition:all .15s;flex-shrink:0;
+}
+.fav-btn:hover{background:var(--hover);color:var(--warning)}
+.fav-btn.active{color:var(--warning)}
+
+/* ===== FILE LIST VIEW ===== */
+.file-list{display:flex;flex-direction:column;gap:2px}
+.list-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 14px;border-radius:var(--radius);cursor:pointer;
+  transition:all .12s;
+}
+.list-item:hover{background:var(--hover)}
+.list-item .li-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.list-item .li-title{flex:1;font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.list-item .li-cat{font-size:11px;color:var(--light);flex-shrink:0}
+.list-item .li-date{font-size:11px;color:var(--light);flex-shrink:0;width:80px}
+.list-item .li-size{font-size:11px;color:var(--light);flex-shrink:0;width:60px;text-align:right}
+
+/* ===== EMPTY ===== */
+.empty-state{text-align:center;padding:80px 20px;color:var(--light)}
+.empty-state i{font-size:48px;margin-bottom:16px;opacity:.3}
+.empty-state p{font-size:14px}
+
+/* ===== ADMIN PANEL ===== */
+.admin-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;
+  backdrop-filter:blur(4px);display:none;
+}
+.admin-overlay.show{display:flex;align-items:center;justify-content:center}
+.admin-box{
+  background:#fff;border-radius:var(--radius-lg);width:420px;
+  padding:32px;box-shadow:var(--shadow-lg);
+}
+.admin-box h2{font-size:18px;margin-bottom:8px;text-align:center}
+.admin-box p{font-size:12px;color:var(--muted);text-align:center;margin-bottom:20px}
+.admin-box input{
+  width:100%;padding:10px 14px;border:1px solid var(--line);
+  border-radius:var(--radius);font-size:14px;margin-bottom:12px;
+}
+.admin-box input:focus{outline:none;border-color:var(--accent)}
+.admin-box .btn{
+  width:100%;padding:10px;border-radius:var(--radius);
+  font-size:14px;font-weight:600;transition:all .15s;
+}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-dark)}
+.admin-error{color:var(--danger);font-size:12px;text-align:center;min-height:18px}
+
+/* ===== ADMIN VIEW ===== */
+.admin-view{padding:24px}
+.admin-bar{position:sticky;top:56px;z-index:50;background:#fff;padding:8px 0 12px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+.admin-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;
+}
+.admin-tabs{display:flex;gap:2px;background:var(--hover);padding:3px;border-radius:8px}
+.admin-tab{
+  padding:7px 16px;border-radius:6px;font-size:13px;font-weight:500;
+  color:var(--muted);cursor:pointer;transition:all .15s;
+}
+.admin-tab.active{background:#fff;color:var(--ink);box-shadow:var(--shadow)}
+.admin-section{display:none}
+.admin-section.show{display:block}
+
+/* Upload area */
+.upload-zone{
+  border:2px dashed var(--line);border-radius:var(--radius-lg);
+  padding:40px;text-align:center;cursor:pointer;transition:all .2s;
+  margin-bottom:16px;
+}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:var(--accent-light)}
+.upload-zone i{font-size:36px;color:var(--light);margin-bottom:12px}
+.upload-zone p{font-size:13px;color:var(--muted)}
+.upload-zone .hint{font-size:11px;color:var(--light);margin-top:4px}
+
+/* Admin file table */
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+.admin-table th{
+  text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);
+  font-size:11px;font-weight:600;color:var(--light);text-transform:uppercase;
+}
+.admin-table td{padding:8px 12px;border-bottom:1px solid #f5f5f5}
+.admin-table tr:hover{background:var(--hover)}
+.admin-table .actions{display:flex;gap:4px}
+.admin-table .act-btn{
+  width:28px;height:28px;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--muted);transition:all .15s;
+}
+.admin-table .act-btn:hover{background:var(--hover2)}
+.admin-table .act-btn.danger:hover{background:#fee;color:var(--danger)}
+
+/* 文件管理：合并在线+已删除 + 筛选标签 */
+.af-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.af-filters{display:flex;gap:6px}
+.af-filter{font-size:13px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted);cursor:pointer;user-select:none;transition:all .15s}
+.af-filter:hover{background:var(--hover)}
+.af-filter.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.af-count{font-size:11px;opacity:.8;margin-left:4px}
+.af-badge{font-size:11px;padding:2px 8px;border-radius:999px;white-space:nowrap;display:inline-block}
+.af-badge.online{background:#e7f6ee;color:#1f9d57}
+.af-badge.deleted{background:#fdecec;color:var(--danger)}
+.af-del-row td{color:var(--muted)}
+
+/* Category editor */
+.cat-editor{display:flex;flex-direction:column;gap:8px}
+.cat-row{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius);
+}
+.cat-row .cat-name{flex:1;font-size:13px;font-weight:500}
+.cat-row .act-btn{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s}
+.cat-row .act-btn:hover{background:var(--hover2)}
+
+/* Tag editor */
+.tag-editor{display:flex;flex-wrap:wrap;gap:6px;padding:12px;border:1px solid var(--line);border-radius:var(--radius);min-height:48px}
+.tag-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:6px;background:var(--accent-light);
+  color:var(--accent);font-size:12px;font-weight:500;
+}
+.tag-chip .remove{cursor:pointer;opacity:.6}
+.tag-chip .remove:hover{opacity:1}
+.tag-input-row{display:flex;gap:8px;margin-top:8px}
+.tag-input-row input{flex:1;padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius);font-size:13px}
+
+/* ===== MODAL ===== */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;
+  display:none;align-items:center;justify-content:center;
+}
+.modal-overlay.show{display:flex}
+.modal-box{
+  background:#fff;border-radius:var(--radius-lg);
+  width:90%;max-width:500px;box-shadow:var(--shadow-lg);
+  overflow:hidden;
+}
+.modal-header{
+  padding:16px 20px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.modal-header h3{font-size:15px;font-weight:600}
+.modal-body{padding:20px}
+.modal-body input,.modal-body select{
+  width:100%;padding:8px 12px;border:1px solid var(--line);
+  border-radius:var(--radius);font-size:13px;margin-bottom:10px;
+}
+.modal-body input:focus,.modal-body select:focus{outline:none;border-color:var(--accent)}
+.modal-footer{padding:12px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+.btn-sm{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600}
+.btn-ghost{background:var(--hover);color:var(--ink)}
+.btn-ghost:hover{background:var(--hover2)}
+
+/* ===== TOAST ===== */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:8px;
+  font-size:13px;z-index:500;box-shadow:var(---shadow-lg);
+  opacity:0;transition:opacity .3s,bottom .3s;pointer-events:none;
+}
+.toast.show{opacity:1;bottom:32px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .menu-toggle{display:flex}
+  .sidebar{position:fixed;top:56px;left:-280px;bottom:0;z-index:99;transition:left .25s ease;box-shadow:2px 0 18px rgba(0,0,0,.14)}
+  .sidebar.show{left:0}
+  .sidebar-backdrop{display:block;opacity:0;pointer-events:none}
+  .sidebar-backdrop.show{opacity:1;pointer-events:auto}
+  .main{padding:16px}
+  .file-grid{grid-template-columns:1fr}
+  .logo-text{display:none}
+}
+@media(max-width:560px){
+  .header{gap:10px;padding:0 14px}
+  .admin-entry-txt{display:none}
+  .search-bar input{padding-left:34px}
+}
+
+/* ===== VIEWER GATE（查看密码，防止外人直接浏览全部文件） ===== */
+.viewer-lock{
+  position:fixed;inset:0;background:rgba(20,22,40,.97);z-index:400;
+  display:none;align-items:center;justify-content:center;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)
+}
+.viewer-lock.show{display:flex}
+.vl-box{background:#fff;border-radius:16px;width:380px;max-width:90vw;padding:34px 32px;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.35)}
+.vl-icon{width:58px;height:58px;border-radius:50%;background:var(--accent-light);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px}
+.vl-box h2{font-size:18px;margin-bottom:6px}
+.vl-box p{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6}
+.vl-chk{display:flex;align-items:center;gap:7px;justify-content:center;margin:-6px 0 16px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none}
+.vl-box input[type=password]{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-size:14px;margin-bottom:12px;box-sizing:border-box}
+.vl-box input[type=password]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(35,107,111,.12)}
+.vl-box .btn{width:100%;padding:11px;border-radius:8px;font-size:14px;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;transition:all .15s}
+.vl-box .btn:hover{background:var(--accent-dark)}
+.vl-err{color:var(--danger);font-size:12px;min-height:16px}
+
+/* 自定义分类下拉(select 透明叠 div): 选中后显示"一级 - 二级"完整路径, 下拉打开的 option 仍用简短名 */
+.cat-select-wrap{position:relative;width:100%}
+.cat-select-display{position:relative;padding:8px 28px 8px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);font-size:14px;color:var(--text);min-height:18px;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:none;line-height:20px}
+.cat-select-display::after{content:"▾";position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:11px;pointer-events:none}
+.cat-select-display.placeholder{color:var(--muted)}
+.cat-select-real{position:absolute;left:0;right:0;top:0;bottom:0;width:100%;height:100%;opacity:0;cursor:pointer;border:none;background:transparent;padding:0;margin:0}
+.cat-select-real:focus{outline:none}
+.cat-select-real:focus + .cat-select-display{border-color:var(--accent)}
+</style>
+</head>
+<body>
+
+<!-- Font Awesome (本地托管，避免依赖国外 CDN 导致图标不显示) -->
+<link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
+
+<!-- Header -->
+<div class="header">
+  <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" title="菜单 / 分类" aria-label="打开菜单"><i class="fas fa-bars"></i></button>
+  <div class="logo">
+    <div class="logo-icon"><i class="fas fa-book-open"></i></div>
+    <span class="logo-text">我的研究知识库</span>
+  </div>
+  <div class="search-bar">
+    <i class="fas fa-search"></i>
+    <input type="text" id="searchInput" placeholder="搜索文件名、标签、分类..." autocomplete="off">
+  </div>
+  <div class="header-right">
+    <button class="icon-btn" id="favBtn" title="收藏夹"><i class="fas fa-star"></i></button>
+    <button class="icon-btn" id="recentBtn" title="最近访问"><i class="fas fa-clock-rotate-left"></i></button>
+    <a class="rd-entry" id="rdEntry" href="research-deck/index.html?backend=https://1461447139-ds1sdwfe7p.ap-guangzhou.tencentscf.com" target="_blank" rel="noopener" title="AI 调研台：输入主题，生成结构化研究报告（新标签页打开）"><i class="fas fa-magnifying-glass-chart"></i> <span class="admin-entry-txt">调研台</span></a>
+    <button class="admin-entry" id="adminBtn"><i class="fas fa-gear"></i> <span class="admin-entry-txt">管理后台</span></button>
+  </div>
+</div>
+
+<!-- Layout -->
+<div class="layout">
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar"></div>
+  <!-- Main -->
+  <div class="main" id="main"></div>
+</div>
+
+<!-- 移动端侧边栏遮罩(点此收起) -->
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+<!-- Admin Login -->
+<div class="admin-overlay" id="adminLogin">
+  <div class="admin-box">
+    <h2><i class="fas fa-lock"></i> 管理员登录</h2>
+    <p>请输入管理密码访问后台</p>
+    <input type="password" id="adminPwdInput" placeholder="管理密码" autofocus>
+    <div class="admin-error" id="adminError"></div>
+    <button class="btn btn-primary" id="adminLoginBtn">登录</button>
+  </div>
+</div>
+
+<!-- 查看密码（防止外人直接浏览全部文件） -->
+<div class="viewer-lock" id="viewerLock">
+  <div class="vl-box">
+    <div class="vl-icon"><i class="fas fa-lock"></i></div>
+    <h2>私人知识库 · 需要密码</h2>
+    <p>这是私人知识库，请输入查看密码以访问文件。</p>
+    <input type="password" id="viewPwdInput" placeholder="查看密码" autofocus>
+    <label class="vl-chk"><input type="checkbox" id="viewRemember"> 记住本设备（免密进入）</label>
+    <div class="vl-err" id="viewErr"></div>
+    <button class="btn" id="viewUnlockBtn">进入</button>
+  </div>
+</div>
+
+<!-- Admin Panel -->
+<div class="admin-view" id="adminPanel" style="display:none"></div>
+
+<!-- Generic Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalTitle">标题</h3>
+      <button class="icon-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+<script src="vendor/marked/marked.min.js"></script>
+<script>
+
+// ===== CONFIG =====
+// 服务端上传函数 URL（腾讯云 SCF 函数 URL，部署后填入）。
+// GitHub 令牌只存在该服务端，绝不进这个页面。
+var UPLOAD_API = 'https://1461447139-m5rkq2fg8n.ap-guangzhou.tencentscf.com';
+
+// 注意：网页不再保存任何密钥或密码，登录与上传均走服务端令牌鉴权。
+
+var FILES = [{"filename": "ABM_Protocol_36_Mastitis_Spectrum_2022.pdf", "title": "ABM_Protocol_36_Mastitis_Spectrum_2022", "size": 2056065, "mtime": 1783676572, "category": "product-lactation-tech"}, {"filename": "Aurillis盆底肌_17周上市行动看板.html", "title": "Aurillis盆底肌_17周上市行动看板", "size": 73798, "mtime": 1786693366, "category": "other-misc"}, {"filename": "Bloom_乳房健康问题地图_产品机会矩阵看板.html", "title": "Bloom_乳房健康问题地图_产品机会矩阵看板", "size": 25558, "mtime": 1785738991, "category": "product-lactation-opportunity"}, {"filename": "Bloom_冷敷vs热敷振动_场景人群辨析.html", "title": "Bloom_冷敷vs热敷振动_场景人群辨析", "size": 10666, "mtime": 1785738970, "category": "product-lactation-market"}, {"filename": "Bloom_冷热敷使用时机定义_权威依据.html", "title": "Bloom_冷热敷使用时机定义_权威依据", "size": 14039, "mtime": 1785738983, "category": "product-lactation-market"}, {"filename": "Bloom_用户行为地图_User_Journey_Map.html", "title": "Bloom_用户行为地图_User_Journey_Map", "size": 48337, "mtime": 1785738995, "category": "product-lactation-market"}, {"filename": "Lansinoh_B01J61VL9W_冷热敷洞察看板.html", "title": "Lansinoh_B01J61VL9W_冷热敷洞察看板", "size": 21925, "mtime": 1785738998, "category": "product-lactation-competitor"}, {"filename": "Momcozy_A1Pro_B0DM5YGBMS_加热震动洞察看板.html", "title": "Momcozy_A1Pro_B0DM5YGBMS_加热震动洞察看板", "size": 30386, "mtime": 1785739003, "category": "product-lactation-competitor"}, {"filename": "Momcozy乳房按摩器使用时机和场景.html", "title": "Momcozy乳房按摩器使用时机和场景", "size": 15957, "mtime": 1786076052, "category": "product-lactation-competitor"}, {"filename": "US Bladder Control Devices 盆底肌训练器机会评分看板.html", "title": "US Bladder Control Devices 盆底肌训练器机会评分看板", "size": 117035, "mtime": 1785465027.659554, "category": "product-pelvic-market"}, {"filename": "「震动功能」专项分析：使用情境与用户反馈问题.md", "title": "「震动功能」专项分析：使用情境与用户反馈问题", "size": 5560, "mtime": 1784537589, "category": "product-lactation-tech"}, {"filename": "全球成人乳房玩具功能技术及哺乳按摩器迁移研究.html", "title": "全球成人乳房玩具功能技术及哺乳按摩器迁移研究", "size": 21715, "mtime": 1785465027.9768794, "category": "product-lactation-tech"}, {"filename": "全球盆底相关FDA_510k数据库_2026-07-22.xlsx", "title": "全球盆底相关FDA_510k数据库_2026-07-22", "size": 115826, "mtime": 1784703752, "category": "product-pelvic-tech"}, {"filename": "哺乳按摩器_社媒洞察.md", "title": "哺乳按摩器_社媒洞察", "size": 10627, "mtime": 1783929422, "category": "product-lactation-market"}, {"filename": "哺乳按摩器【冷敷】功能调研报告.html", "title": "哺乳按摩器【冷敷】功能调研报告", "size": 4521318, "mtime": 1784889231, "category": "product-lactation-tech"}, {"filename": "哺乳按摩器评论语义分析报告.md", "title": "哺乳按摩器评论语义分析报告", "size": 19990, "mtime": 1784539860, "category": "product-lactation-market"}, {"filename": "欧洲盆底肌修复仪市场看板.html", "title": "欧洲盆底肌修复仪市场看板", "size": 83071, "mtime": 1784607741, "category": "product-pelvic-market"}, {"filename": "盆底肌修复市场调研 -2020703.pptx", "title": "盆底肌修复市场调研 -2020703", "size": 10458656, "mtime": 1783330015, "category": "product-pelvic-market"}, {"filename": "盆底肌竞品分析0706.xlsx", "title": "盆底肌竞品分析0706", "size": 9707003, "mtime": 1783586426, "category": "product-pelvic-competitor"}, {"filename": "经痛热敷路径_亚马逊未满足需求与溢价标杆_V4.html", "title": "经痛热敷路径_亚马逊未满足需求与溢价标杆_V4", "size": 17998, "mtime": 1785739281, "category": "product-dysmenorrhea-market"}, {"filename": "美国冷热敷产品市场与用户洞察.html", "title": "美国冷热敷产品市场与用户洞察", "size": 145723, "mtime": 1784794030, "category": "product-lactation-market"}, {"filename": "美国哺乳按摩器机会评分分析看板.html", "title": "美国哺乳按摩器机会评分分析看板", "size": 149759, "mtime": 1783680336, "category": "product-lactation-market"}, {"filename": "女性胸部冷敷与冷疗技术研究报告.html", "title": "女性胸部冷敷与冷疗技术研究报告", "size": 62204, "mtime": 1786867308, "category": "product-lactation-tech"}, {"filename": "breast_cooling_tech_report_V5.html", "title": "breast_cooling_tech_report_V5", "size": 107578, "mtime": 1786870029, "category": "product-lactation-tech"}, {"filename": "Aurillis_南京研发团队接触计划(1).html", "title": "Aurillis_南京研发团队接触计划(1)", "size": 14968, "mtime": 1786872842, "category": "other-misc"}, {"filename": "美国电刺激盆底肌训练器程序数研究.html", "title": "美国电刺激盆底肌训练器程序数研究", "size": 32208, "mtime": 1786932610, "category": "product-pelvic-tech"}, {"filename": "Aurillis-Company-Profile-2026.html", "title": "Aurillis-Company-Profile-2026", "size": 337768, "mtime": 1787066921, "category": "c-kfzz91r5"}, {"filename": "index.html", "title": "index", "size": 337768, "mtime": 1787067422, "category": "c-kfzz91r5"}, {"filename": "FDA510k电刺激盆底肌修复仪 _ 阴道探头尺寸调研报告.html", "title": "FDA510k电刺激盆底肌修复仪 _ 阴道探头尺寸调研报告", "size": 39468, "mtime": 1787105018, "category": "product-pelvic-research"}, {"filename": "AMZ美国电刺激盆底肌修复仪 _ 阴道探头尺寸调研.html", "title": "AMZ美国电刺激盆底肌修复仪 _ 阴道探头尺寸调研", "size": 22707, "mtime": 1787105063, "category": "product-pelvic-research"}, {"filename": "电刺激盆底肌训练器 _ 治疗模式类型与推荐治疗周期调研.html", "title": "电刺激盆底肌训练器 _ 治疗模式类型与推荐治疗周期调研", "size": 18552, "mtime": 1787105070, "category": "product-pelvic-research"}, {"filename": "武汉名校理工科毕业生就业去向研究.html", "title": "武汉名校理工科毕业生就业去向研究", "size": 23000, "mtime": 1787127154, "category": "other-misc"}, {"filename": "pelvic-health-company-dashboard.html", "title": "pelvic-health-company-dashboard", "size": 99180, "mtime": 1787188177, "category": "product-pelvic-market"}, {"filename": "阴道探头外观专利设计避让报告.html", "title": "阴道探头外观专利设计避让报告", "size": 773964, "mtime": 1787568218, "category": "product-pelvic-research"}, {"filename": "COWAY Therasol U 产品技术与商业信息看板.html", "title": "COWAY Therasol U 产品技术与商业信息看板", "size": 23433, "mtime": 1787568254, "category": "other-misc"}, {"filename": "全球盆底肌磁刺激产品调研__院线级与消费级市场.html", "title": "全球盆底肌磁刺激产品调研__院线级与消费级市场", "size": 158279, "mtime": 1787624708, "category": "product-pelvic-market"}, {"filename": "BLOOM__ 产品技术与商业信息看板.html", "title": "BLOOM__ 产品技术与商业信息看板", "size": 21027, "mtime": 1787625072, "category": "other-misc"}, {"filename": "Aurillis_女性健康智能产品双轨发展战略.html", "title": "Aurillis_女性健康智能产品双轨发展战略", "size": 28284, "mtime": 1787630330, "category": "c-kfzz91r5"}];
+var TREE = [
+  {"id": "product-lactation", "name": "哺乳按摩器", "icon": "fas fa-baby", "children": [
+    {"id": "product-lactation-market", "name": "市场与用户洞察", "icon": "fas fa-chart-line"},
+    {"id": "product-lactation-competitor", "name": "竞品分析", "icon": "fas fa-balance-scale"},
+    {"id": "product-lactation-tech", "name": "技术与功能", "icon": "fas fa-microchip"},
+    {"id": "product-lactation-opportunity", "name": "机会与战略", "icon": "fas fa-lightbulb"}
+  ]},
+  {"id": "product-dysmenorrhea", "name": "痛经缓解产品", "icon": "fas fa-spa", "children": [
+    {"id": "product-dysmenorrhea-market", "name": "市场与机会", "icon": "fas fa-chart-line"}
+  ]},
+  {"id": "product-pelvic", "name": "盆底肌修复仪", "icon": "fas fa-flask", "children": [
+    {"id": "product-pelvic-market", "name": "市场与机会", "icon": "fas fa-chart-line"},
+    {"id": "product-pelvic-competitor", "name": "竞品分析", "icon": "fas fa-balance-scale"},
+    {"id": "product-pelvic-tech", "name": "技术与功能", "icon": "fas fa-microchip"},
+    {"id": "product-pelvic-research", "name": "调研资料", "icon": "fas fa-book"}
+  ]}
+];
+
+// 直读 raw.githubusercontent.com 的 manifest.json —— 永远最新, 无需等 Pages 构建(~1分钟)
+// 由当前页地址推导: https://<user>.github.io/<repo>/... -> raw/<user>/<repo>/<branch>/manifest.json
+function rawManifestUrl() {
+  try {
+    var u = new URL(location.href);
+    if (u.hostname.endsWith('.github.io')) {
+      var parts = u.pathname.split('/').filter(function(p) { return p; }); // ['database', 'index.html']
+      if (parts.length >= 1) {
+        var user = u.hostname.split('.')[0];
+        var repo = parts[0];
+        var branch = 'main'; // 与仓库默认分支保持一致(如需改分支, 只改这里)
+        return 'https://raw.githubusercontent.com/' + user + '/' + repo + '/' + branch + '/manifest.json';
+      }
+    }
+  } catch (e) {}
+  // 本地预览 / 非 Pages 环境: 退回同源 manifest(无 raw 可直读)
+  return 'manifest.json?t=' + Date.now();
+}
+
+// 直读 raw.githubusercontent.com 的 meta.json(分类/标签等云端元数据) —— 与 manifest 同理
+function metaUrl() {
+  try {
+    var u = new URL(location.href);
+    if (u.hostname.endsWith('.github.io')) {
+      var parts = u.pathname.split('/').filter(function(p) { return p; });
+      if (parts.length >= 1) {
+        var user = u.hostname.split('.')[0];
+        var repo = parts[0];
+        var branch = 'main'; // 与仓库默认分支保持一致(如需改分支, 只改这里)
+        return 'https://raw.githubusercontent.com/' + user + '/' + repo + '/' + branch + '/meta.json';
+      }
+    }
+  } catch (e) {}
+  // 本地预览 / 非 Pages 环境: 退回同源 meta.json
+  return 'meta.json?t=' + Date.now();
+}
+
+// 拉取云端元数据覆盖本地分类/标签(云端为权威源); 首次(404)用本地数据初始化云端
+// 读取策略: 优先直读 raw; 若 raw 被墙/超时(国内常见), 自动经 SCF 中继读取, 避免退回陈旧本地数据
+function loadMeta(cb) {
+  fetchMeta().then(function(res) {
+    if (!res) { if (cb) cb(); return; }            // 两端都失败: 保留本机数据
+    if (res.missing) { syncMetaToCloud(); if (cb) cb(); return; } // 首次: 本地数据推上云
+    applyMeta(res.data);
+    if (cb) cb();
+    renderSidebar(); renderMain();
+  }).catch(function() { if (cb) cb(); });
+}
+// raw + SCF 中继读取 meta.json（v1.9.2：并行竞速，谁先返回用谁）；解析为 {data} / {missing} / null
+function fetchMeta() {
+  return new Promise(function(resolve) {
+    var done = false;
+    var finish = function(v) { if (done) return; done = true; resolve(v); };
+    var scfPending = true;
+    // 通道1: raw（带 5s 超时；404 不立即判定，等待 SCF 结果更可靠）
+    fetchRawTimeout(metaUrl() + '?t=' + Date.now(), 5000).then(function(r) {
+      if (r.status === 404) { if (!scfPending) finish({ missing: true }); return; }
+      if (!r.ok) { return; }
+      return r.json();
+    }).then(function(d) {
+      if (d === undefined) return;
+      finish(d ? { data: d } : null);
+    }).catch(function() { });
+    // 通道2: SCF 中继（并行，国内快）
+    fetchMetaViaSCF(function(m) {
+      scfPending = false;
+      if (m) finish({ data: m });
+      else if (!done) finish(null);
+    });
+  });
+}
+// 处理云端 meta 数据(合并逻辑集中在此, loadMeta 调用)
+function applyMeta(d) {
+  if (!d) return;
+  // 分类: 云端+本机取并集(按 id); 同 id 冲突时取 updatedAt 更新的一方(最近写入优先),
+  // 避免"改名后同步失败→刷新被云端旧名覆盖"以及"换设备时旧缓存覆盖云端新数据"
+  if (Array.isArray(d.customCats)) {
+    var cloudCats = d.customCats;
+    var localCats = (S.customCats || []).slice();
+    var map = {};
+    cloudCats.concat(localCats).forEach(function(c){
+      if (!c || !c.id) return;
+      var ex = map[c.id];
+      if (!ex) map[c.id] = c;
+      else if ((c.updatedAt||0) > (ex.updatedAt||0)) map[c.id] = c;
+    });
+    var merged = [];
+    Object.keys(map).forEach(function(k){ merged.push(map[k]); });
+    S.customCats = merged;
+    // 本机有更新/更新的分类(新增或改名) -> 已登录则立即补传到云端(让其他设备也能看到)
+    var hasLocalNewer = localCats.some(function(c){
+      if (!c || !c.id) return false;
+      var cl = cloudCats.find(function(x){ return x && x.id===c.id; });
+      return !cl || (c.updatedAt||0) > (cl.updatedAt||0);
+    });
+    if (hasLocalNewer && S.adminToken) syncMetaToCloud();
+  }
+  if (d.fileCats && typeof d.fileCats === 'object') {
+    // fileCats: 云端为权威源, 但保留本机独有项
+    var localFC = S.fileCats || {};
+    S.fileCats = d.fileCats;
+    Object.keys(localFC).forEach(function(fn) { if (!(fn in S.fileCats)) S.fileCats[fn] = localFC[fn]; });
+  }
+  if (d.fileTags && typeof d.fileTags === 'object') {
+    // fileTags: 同 fileCats
+    var localFT = S.fileTags || {};
+    S.fileTags = d.fileTags;
+    Object.keys(localFT).forEach(function(fn) { if (!(fn in S.fileTags)) S.fileTags[fn] = localFT[fn]; });
+  }
+  // allTags: 云端+本机取并集, 但排除本机已删除的标签(防止删除后刷新从云端复活)
+  if (Array.isArray(d.allTags)) {
+    var cloudTags = d.allTags;
+    var localTags = (S.allTags || []).slice();
+    var deleted = (S.deletedTags || []).slice();
+    var seenT = {}; var mergedT = [];
+    cloudTags.concat(localTags).forEach(function(t) {
+      if (!t || seenT[t] || deleted.indexOf(t) >= 0) return;
+      seenT[t] = true; mergedT.push(t);
+    });
+    S.allTags = mergedT;
+    // 本机有而云端没有的标签(且未被删除) -> 已登录则补传
+    var hasLocalOnlyT = localTags.some(function(t) { return t && cloudTags.indexOf(t) < 0 && deleted.indexOf(t) < 0; });
+    if (hasLocalOnlyT && S.adminToken) syncMetaToCloud();
+  }
+  // 分类顺序: 取 catOrderUpdatedAt 更新的一方(最近排序优先), 本机更新且已登录则补传
+  if (Array.isArray(d.catOrder)) {
+    var cloudAt = d.catOrderUpdatedAt || 0;
+    var localAt = S.catOrderUpdatedAt || 0;
+    if (cloudAt > localAt) {
+      S.catOrder = d.catOrder.slice();
+      S.catOrderUpdatedAt = cloudAt;
+    } else if (localAt > 0 && localAt > cloudAt && S.adminToken) {
+      syncMetaToCloud();
+    }
+  }
+  // 已删除分类: 云端+本机取并集(删除不可逆, 任何一端删过都不复活)
+  if (Array.isArray(d.deletedCats)) {
+    var seenD = {}; var mergedD = [];
+    (d.deletedCats || []).concat(S.deletedCats || []).forEach(function(id) {
+      if (id && !seenD[id]) { seenD[id] = true; mergedD.push(id); }
+    });
+    S.deletedCats = mergedD;
+  }
+}
+
+// 把分类/标签推送到云端 meta.json(管理员令牌鉴权, 最近写入优先; 防抖合并)
+var _metaTimer = null;
+var _pendingMetaSync = false; // 本机有待补传到云端的改动(登录/解锁后自动补传)
+// 强制重新登录弹窗(令牌过期时调用), 并标记"有待补传到云端的本地改动"
+function promptRelogin(msg) {
+  _pendingMetaSync = true;
+  try {
+    var e = document.getElementById('adminError');
+    if (e && msg) e.textContent = msg;
+    var box = document.getElementById('adminLogin');
+    if (box) { box.classList.add('show'); var i = document.getElementById('adminPwdInput'); if (i) i.focus(); }
+  } catch (_) {}
+}
+// relogin=true(默认): 令牌过期 -> 切回未登录界面并弹重新登录; relogin=false: 仅提示(如切后台时静默失效)
+function clearAdminToken(relogin) {
+  S.adminToken = '';
+  S.isAdmin = false;
+  try { localStorage.removeItem('kb_admin_token'); sessionStorage.removeItem('kb_admin_token'); } catch (e) {}
+  renderSidebar(); renderMain();
+  if (relogin === false) { toast('后台登录已过期，请重新登录以同步分类/标签到云端', false); }
+  else { promptRelogin('后台登录已过期，请重新登录以同步分类/标签到云端'); }
+}
+// 页面卸载/隐藏前的同步兜底(尽力送达, 避免分类因未刷新而丢失)
+function flushMetaNow() {
+  if (!S.adminToken) return false;
+  var data = {
+    customCats: S.customCats || [],
+    fileCats: S.fileCats || {},
+    fileTags: S.fileTags || {},
+    allTags: S.allTags || [],
+    deletedTags: S.deletedTags || [],
+    deletedCats: S.deletedCats || [],
+    catOrder: S.catOrder || [],
+    catOrderUpdatedAt: S.catOrderUpdatedAt || 0
+  };
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', UPLOAD_API, false);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('x-admin-token', S.adminToken);
+    xhr.send(JSON.stringify({ op: 'meta', data: data }));
+    if (xhr.status === 401) { clearAdminToken(false); return false; }
+    return xhr.status < 300;
+  } catch (e) { return false; }
+}
+function syncMetaToCloud() {
+  if (!S.adminToken) return; // 仅管理员可写云端元数据(未登录则仅本机可见)
+  _pendingMetaSync = true;
+  if (_metaTimer) clearTimeout(_metaTimer);
+  _metaTimer = setTimeout(function() {
+    _pendingMetaSync = false;
+    var data = {
+      customCats: S.customCats || [],
+      fileCats: S.fileCats || {},
+      fileTags: S.fileTags || {},
+      allTags: S.allTags || [],
+      deletedTags: S.deletedTags || [],
+      deletedCats: S.deletedCats || [],
+      catOrder: S.catOrder || [],
+      catOrderUpdatedAt: S.catOrderUpdatedAt || 0
+    };
+    fetch(UPLOAD_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': S.adminToken },
+      body: JSON.stringify({ op: 'meta', data: data })
+    }).then(function(r) {
+      if (r.status === 401) { clearAdminToken(); } // 令牌过期: 弹重新登录并排队补传
+      else if (!r.ok) { toast('分类保存到云端失败（服务端错误 ' + r.status + '），已暂存本机', false); }
+    }).catch(function(e) { toast('分类保存失败（网络错误），已暂存本机', false); });
+  }, 150);
+}
+// 页面隐藏/卸载前兜底送达, 避免分类因未刷新而丢失
+document.addEventListener('visibilitychange', function() { if (document.visibilityState === 'hidden') flushMetaNow(); });
+
+// Load the dynamic manifest (rewritten by the upload function after each upload).
+// 优先直读 raw(无构建延迟); 若 raw 被墙/超时(国内常见), 自动经腾讯云 SCF 中继读取(国内稳定),
+// 二者皆失败才退回嵌入数据 —— 杜绝"上传成功却看不到"因读取失败退回陈旧内置列表。
+// v1.9.2：raw 与 SCF **并行竞速**——谁先返回用谁（SCF 国内秒回，避免等 raw 超时拖慢加载）
+function fetchRawTimeout(url, ms) {
+  var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, ms || 6000) : null;
+  var opt = ctrl ? { signal: ctrl.signal } : undefined;
+  return fetch(url, opt).then(function(r){ if (timer) clearTimeout(timer); return r; })
+    .catch(function(e){ if (timer) clearTimeout(timer); throw e; });
+}
+// 并行竞速拉 manifest：raw 与 SCF 同时请求，谁先成功用谁
+function loadManifestRace() {
+  var done = false;
+  function finish(d) {
+    if (done || !d) return;
+    done = true;
+    FILES = d;
+    renderSidebar(); renderMain(); pruneGhostUploads();
+  }
+  // 通道1: raw（带 5s 超时，不阻塞）
+  fetchRawTimeout(rawManifestUrl() + '?t=' + Date.now(), 5000)
+    .then(function(r){ return r.json(); })
+    .then(function(d){ if (Array.isArray(d) && d.length) finish(d); })
+    .catch(function(){});
+  // 通道2: SCF 中继（国内快，通常 1s 内）
+  fetchManifestViaSCF(function(m){ if (m && m.length) finish(m); });
+}
+(function loadManifest() {
+  loadManifestRace();
+})();
+
+var S = {
+  view: 'browser',      // 'browser' | 'admin'
+  cat: 'all',
+  search: '',
+  sort: 'date-desc',
+  gridView: true,
+  isAdmin: false,
+  showFav: false,
+  showRecent: false,
+  expanded: {},
+  // localStorage data
+  favorites: LS('kb_favorites', []),
+  recent: LS('kb_recent', []),
+  fileTags: LS('kb_fileTags', {}),
+  allTags: LS('kb_allTags', []),
+  deletedTags: LS('kb_deletedTags', []), // 本机已删除的标签(防止刷新后从云端复活)
+  customCats: LS('kb_customCats', []),
+  catOrder: LS('kb_catOrder', []),              // 自定义分类顺序(id 数组, 含内置分类, 用于按用户意愿排序)
+  catOrderUpdatedAt: LS('kb_catOrderUpdatedAt', 0),
+  deletedCats: LS('kb_deletedCats', []),        // 已删除的分类 id(含内置, 用于隐藏; 删除不可逆故取并集合并)
+  uploaded: LS('kb_uploaded', []),
+  adminToken: localStorage.getItem('kb_admin_token') || sessionStorage.getItem('kb_admin_token') || '',
+  fileCats: LS('kb_fileCats', {}),  // custom category overrides
+};
+
+function LS(k, def) {
+  try { var v = JSON.parse(localStorage.getItem(k)); return v || def; } catch(e) { return def; }
+}
+function Save() {
+  localStorage.setItem('kb_favorites', JSON.stringify(S.favorites));
+  localStorage.setItem('kb_recent', JSON.stringify(S.recent));
+  localStorage.setItem('kb_fileTags', JSON.stringify(S.fileTags));
+  localStorage.setItem('kb_allTags', JSON.stringify(S.allTags));
+  localStorage.setItem('kb_deletedTags', JSON.stringify(S.deletedTags));
+  localStorage.setItem('kb_customCats', JSON.stringify(S.customCats));
+  localStorage.setItem('kb_catOrder', JSON.stringify(S.catOrder));
+  localStorage.setItem('kb_catOrderUpdatedAt', JSON.stringify(S.catOrderUpdatedAt));
+  localStorage.setItem('kb_deletedCats', JSON.stringify(S.deletedCats));
+  localStorage.setItem('kb_uploaded', JSON.stringify(S.uploaded));
+  localStorage.setItem('kb_fileCats', JSON.stringify(S.fileCats));
+  // 分类/标签等云端元数据: 防抖推送到 meta.json(仅管理员)
+  syncMetaToCloud();
+  // 令牌已在前端登录时单独持久化，不在此处理
+}
+
+// ===== UTILS =====
+function esc(s) { var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function fmtDate(ts) { var d=new Date(ts*1000); var p=function(n){return String(n).padStart(2,'0');}; return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes()); }
+function fmtSize(b) { if(b<1048576) return Math.round(b/1024)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
+function toast(msg) { var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show')},2500); }
+
+// 文件名安全过滤：必须与后端 scf/index.js 的 safeNameOf 保持一致。
+// 后端上传时会把非法字符（中文破折号 ——、书名号、《》、&、空格外的标点等）替换为 _，
+// 因此 GitHub 实际文件名与本地原始名可能不同；前端统一按此规则归一，避免"同名两条 / 一条 404"。
+function safeNameOf(filename) {
+  return String(filename)
+    .replace(/[^\w.\-\u4e00-\u9fa5 ()]/g, '_')
+    .replace(/^\.+/, '')
+    .slice(0, 200);
+}
+
+function getAllFiles() {
+  var sf = safeNameOf;
+  var uploaded = S.uploaded.map(function(f) {
+    return {filename:f.name, title:f.title||f.name, size:f.size, mtime:f.mtime, category:f.category||'other', isUploaded:true, data:f.data};
+  });
+  // 云端优先：先放 manifest 条目，并标记其原始名 + 安全名（云端采用的安全化文件名）
+  var seen = {};       // 原始 filename
+  var seenSafe = {};   // safeNameOf(filename)
+  var out = [];
+  (FILES||[]).forEach(function(f) {
+    if (!f || !f.filename) return;
+    if (seen[f.filename]) return;
+    seen[f.filename] = true; seenSafe[sf(f.filename)] = true;
+    out.push(f);
+  });
+  // 本地兜底：原始名重复 或 安全名已被云端占用(说明云端有同名真实文件) → 视为重复, 跳过(避免脏数据 / 404)
+  uploaded.forEach(function(f) {
+    if (!f || !f.filename) return;
+    if (seen[f.filename]) return;
+    if (seenSafe[sf(f.filename)]) return;
+    seen[f.filename] = true; seenSafe[sf(f.filename)] = true;
+    out.push(f);
+  });
+  return out;
+}
+
+// 自愈：清理本地兜底 S.uploaded 中"被后端安全化改名"产生的脏数据（其安全名已在云端 manifest 中存在）。
+// 仅清理 原始名≠安全名 的条目（即确实被后端改过名的），正常合法文件名(原始名==安全名)的兜底保留, 不误删。
+function pruneGhostUploads() {
+  if (!S.uploaded || !S.uploaded.length) return;
+  var cloudSafe = {};
+  (FILES||[]).forEach(function(f){ if (f && f.filename) cloudSafe[safeNameOf(f.filename)] = true; });
+  var before = S.uploaded.length;
+  S.uploaded = S.uploaded.filter(function(u) {
+    if (!u || !u.name) return false;
+    var safe = safeNameOf(u.name);
+    if (cloudSafe[safe] && u.name !== safe) return false; // 云端已有同名真实文件且本名曾被改名 → 丢弃
+    return true;
+  });
+  if (S.uploaded.length !== before) {
+    try { localStorage.setItem('kb_uploaded', JSON.stringify(S.uploaded)); } catch (e) {}
+  }
+}
+
+function getFileCat(filename) {
+  if (S.fileCats[filename]) return S.fileCats[filename];
+  var f = getAllFiles().find(function(f) { return f.filename === filename; });
+  return f ? f.category : 'other';
+}
+
+// 深拷贝内置分类树(避免 getTree 覆盖/排序时污染全局 TREE, 导致删除 override 无法恢复默认)
+function cloneTree() {
+  return TREE.map(function(c){
+    var n = { id: c.id, name: c.name, icon: c.icon || 'fas fa-folder' };
+    if (c.children) {
+      n.children = c.children.map(function(ch){
+        return { id: ch.id, name: ch.name, icon: ch.icon || 'fas fa-file' };
+      });
+    }
+    return n;
+  });
+}
+
+// 合并分类树: 内置 TREE(克隆) + 自定义分类; 带 parentId 的自定义分类挂到对应父分类 children 下(成为二级分类), 否则作为顶级分类;
+// customCats 中与内置分类同 id 的条目会覆盖内置(用于内置分类改名/换图标)
+function getTree() {
+  var tree = cloneTree();
+  (S.customCats || []).forEach(function(c){
+    if (!c || !c.id) return;
+    var idx = tree.findIndex(function(x){ return x.id === c.id; });
+    if (idx >= 0) { tree[idx] = c; return; } // 覆盖内置顶级分类
+    if (c.parentId) {
+      var p = tree.find(function(x){ return x.id === c.parentId; });
+      if (p) {
+        if (!p.children) p.children = [];
+        var ci = p.children.findIndex(function(ch){ return ch.id === c.id; });
+        if (ci >= 0) { p.children[ci] = c; return; } // 覆盖内置二级分类
+        p.children.push(c);
+        return;
+      }
+      // 父分类不存在: 退化为顶级分类
+    }
+    tree.push(c);
+  });
+  // 过滤已删除的分类(一级 + 二级)
+  var del = S.deletedCats || [];
+  tree = tree.filter(function(c){ return del.indexOf(c.id) < 0; });
+  tree.forEach(function(c){
+    if (c.children) c.children = c.children.filter(function(ch){ return del.indexOf(ch.id) < 0; });
+  });
+  return sortTree(tree);
+}
+
+// 按 S.catOrder(id 数组) 排序分类树: 一级按顺序, 二级在各自父级内按顺序; 未列出的保持默认顺序排后
+function sortTree(tree) {
+  var order = S.catOrder || [];
+  if (!order.length) return tree;
+  var rank = {};
+  order.forEach(function(id, i){ rank[id] = i; });
+  var tops = tree.filter(function(c){ return !c.parentId; });
+  tops.sort(function(a,b){ return (rank[a.id]!=null?rank[a.id]:1e9) - (rank[b.id]!=null?rank[b.id]:1e9); });
+  tops.forEach(function(c){
+    if (c.children && c.children.length) {
+      c.children.sort(function(a,b){ return (rank[a.id]!=null?rank[a.id]:1e9) - (rank[b.id]!=null?rank[b.id]:1e9); });
+    }
+  });
+  return tops;
+}
+
+// 分类上移/下移(dir=-1 上移, 1 下移): 在"同级分类"内交换位置, 顺序持久化到本地并同步云端
+function moveCatOrder(catId, dir) {
+  var tree = getTree();
+  var sibs = null;
+  for (var i=0;i<tree.length;i++) {
+    var c = tree[i];
+    if (c.id === catId) { sibs = tree.filter(function(x){ return !x.parentId; }); break; }
+    if (c.children) {
+      var ch = c.children.find(function(x){ return x.id===catId; });
+      if (ch) { sibs = c.children; break; }
+    }
+  }
+  if (!sibs) return;
+  var ids = sibs.map(function(x){ return x.id; });
+  var pos = ids.indexOf(catId);
+  var target = pos + dir;
+  if (target < 0 || target >= ids.length) { toast('已经是第一个/最后一个了'); return; }
+  var order = (S.catOrder || []).slice();
+  ids.forEach(function(id){ if (order.indexOf(id) < 0) order.push(id); });
+  var a = order.indexOf(catId), b = order.indexOf(ids[target]);
+  if (a < 0 || b < 0) return;
+  var t = order[a]; order[a] = order[b]; order[b] = t;
+  S.catOrder = order;
+  S.catOrderUpdatedAt = Date.now();
+  Save(); renderAdminCats(); renderSidebar(); renderMain();
+}
+
+function catName(catId) {
+  if (catId === 'other') return '未分类';
+  for (var i=0; i<TREE.length; i++) {
+    if (TREE[i].id === catId) return TREE[i].name;
+    if (TREE[i].children) {
+      for (var j=0; j<TREE[i].children.length; j++) {
+        if (TREE[i].children[j].id === catId) return TREE[i].children[j].name;
+      }
+    }
+  }
+  for (var k=0; k<S.customCats.length; k++) {
+    if (S.customCats[k].id === catId) return S.customCats[k].name;
+  }
+  return catId;
+}
+
+function catIcon(catId) {
+  for (var i=0; i<TREE.length; i++) {
+    if (TREE[i].id === catId) return TREE[i].icon||'fas fa-folder';
+    if (TREE[i].children) {
+      for (var j=0; j<TREE[i].children.length; j++) {
+        if (TREE[i].children[j].id === catId) return TREE[i].children[j].icon||'fas fa-file';
+      }
+    }
+  }
+  for (var k=0; k<S.customCats.length; k++) {
+    if (S.customCats[k].id === catId) return S.customCats[k].icon||'fas fa-folder';
+  }
+  return 'fas fa-folder';
+}
+
+// 按扩展名返回文件图标(支持任意类型后,让混合文件列表更直观)
+function fileIcon(filename) {
+  var ext = (String(filename).split('.').pop() || '').toLowerCase();
+  var map = {
+    'html':'fa-file-code','htm':'fa-file-code','css':'fa-file-code','js':'fa-file-code',
+    'pdf':'fa-file-pdf',
+    'png':'fa-file-image','jpg':'fa-file-image','jpeg':'fa-file-image','gif':'fa-file-image',
+    'svg':'fa-file-image','webp':'fa-file-image','bmp':'fa-file-image',
+    'doc':'fa-file-word','docx':'fa-file-word',
+    'xls':'fa-file-excel','xlsx':'fa-file-excel','csv':'fa-file-excel',
+    'ppt':'fa-file-powerpoint','pptx':'fa-file-powerpoint',
+    'zip':'fa-file-archive','rar':'fa-file-archive','7z':'fa-file-archive','tar':'fa-file-archive','gz':'fa-file-archive',
+    'mp4':'fa-file-video','mov':'fa-file-video','avi':'fa-file-video','mkv':'fa-file-video',
+    'mp3':'fa-file-audio','wav':'fa-file-audio','flac':'fa-file-audio',
+    'txt':'fa-file-lines','md':'fa-file-lines',
+  };
+  return 'fas ' + (map[ext] || 'fa-file');
+}
+
+function fileExt(filename) {
+  var parts = String(filename).split('.');
+  return (parts.length > 1 ? parts.pop() : '').toLowerCase();
+}
+function fileFmt(filename) {
+  var ext = fileExt(filename);
+  var labels = {
+    'html':'HTML','htm':'HTML','css':'CSS','js':'JS',
+    'pdf':'PDF',
+    'png':'PNG','jpg':'JPG','jpeg':'JPG','gif':'GIF','svg':'SVG','webp':'WEBP','bmp':'BMP',
+    'doc':'Word','docx':'Word',
+    'xls':'Excel','xlsx':'Excel','csv':'Excel',
+    'ppt':'PPT','pptx':'PPT',
+    'zip':'ZIP','rar':'RAR','7z':'7Z','tar':'TAR','gz':'GZ',
+    'mp4':'MP4','mov':'MOV','avi':'AVI','mkv':'MKV',
+    'mp3':'MP3','wav':'WAV','flac':'FLAC',
+    'txt':'TXT','md':'Markdown'
+  };
+  return labels[ext] || (ext ? ext.toUpperCase() : 'FILE');
+}
+function fmtColor(filename) {
+  var ext = fileExt(filename);
+  var map = {
+    'html':'#e6783c','htm':'#e6783c','css':'#2965f1','js':'#c79f00',
+    'pdf':'#c0392b',
+    'png':'#16a34a','jpg':'#16a34a','jpeg':'#16a34a','gif':'#16a34a','svg':'#16a34a','webp':'#16a34a','bmp':'#16a34a',
+    'doc':'#2563eb','docx':'#2563eb',
+    'xls':'#1d7d3f','xlsx':'#1d7d3f','csv':'#1d7d3f',
+    'ppt':'#d35400','pptx':'#d35400',
+    'zip':'#6b7280','rar':'#6b7280','7z':'#6b7280','tar':'#6b7280','gz':'#6b7280',
+    'mp4':'#7c3aed','mov':'#7c3aed','avi':'#7c3aed','mkv':'#7c3aed',
+    'mp3':'#db2777','wav':'#db2777','flac':'#db2777',
+    'txt':'#64748b','md':'#374151'
+  };
+  return map[ext] || '#888780';
+}
+
+function catColor(catId) {
+  var colors = {
+    'product':'#236b6f','product-pelvic':'#236b6f','product-lactation':'#e6783c',
+    'product-pump':'#534AB7','product-sterilizer':'#087f79','product-warmer':'#a76508',
+    'product-muscle':'#6366f1','product-sinus':'#0891b2','market':'#245f93',
+    'tech':'#a76508','review':'#a83b35','history':'#62707c','feishu':'#087f79',
+    'other':'#888780'
+  };
+  return colors[catId] || '#888780';
+}
+
+function getFilteredFiles() {
+  var all = getAllFiles();
+  var filtered = all;
+
+  if (S.showFav) {
+    filtered = filtered.filter(function(f) { return S.favorites.indexOf(f.filename) >= 0; });
+  } else if (S.showRecent) {
+    filtered = S.recent.map(function(fn) { return all.find(function(f) { return f.filename === fn; }); }).filter(Boolean);
+  } else if (S.cat !== 'all') {
+    filtered = filtered.filter(function(f) { return getFileCat(f.filename) === S.cat; });
+  }
+
+  if (S.search) {
+    var q = S.search.toLowerCase();
+    filtered = filtered.filter(function(f) {
+      if (f.title.toLowerCase().indexOf(q) >= 0) return true;
+      if (f.filename.toLowerCase().indexOf(q) >= 0) return true;
+      if (catName(getFileCat(f.filename)).toLowerCase().indexOf(q) >= 0) return true;
+      var tags = S.fileTags[f.filename] || [];
+      for (var i=0; i<tags.length; i++) { if (tags[i].toLowerCase().indexOf(q) >= 0) return true; }
+      return false;
+    });
+  }
+
+  filtered.sort(function(a,b) {
+    switch(S.sort) {
+      case 'date-desc': return b.mtime - a.mtime;
+      case 'date-asc': return a.mtime - b.mtime;
+      case 'name-asc': return a.title.localeCompare(b.title, 'zh');
+      case 'name-desc': return b.title.localeCompare(a.title, 'zh');
+      case 'size-desc': return b.size - a.size;
+      case 'size-asc': return a.size - b.size;
+    }
+    return 0;
+  });
+  return filtered;
+}
+
+// ===== RENDER SIDEBAR =====
+function renderSidebar() {
+  if (!S.viewUnlocked) return;
+  var sb = document.getElementById('sidebar');
+  var all = getAllFiles();
+  var html = '';
+
+  html += '<div class="sidebar-section">';
+  html += '<div class="sidebar-label">浏览</div>';
+  html += '<div class="nav-item' + (S.cat==='all' && !S.showFav && !S.showRecent ? ' active' : '') + '" onclick="selectCat(\'all\')">';
+  html += '<i class="fas fa-folder-open"></i> 全部文件 <span class="count">'+all.length+'</span></div>';
+  html += '<div class="nav-item' + (S.showFav ? ' active' : '') + '" onclick="showFavorites()">';
+  html += '<i class="fas fa-star"></i> 收藏 <span class="count">'+S.favorites.length+'</span></div>';
+  html += '<div class="nav-item' + (S.showRecent ? ' active' : '') + '" onclick="showRecent()">';
+  html += '<i class="fas fa-clock-rotate-left"></i> 最近访问 <span class="count">'+S.recent.length+'</span></div>';
+  html += '</div>';
+
+  // Category tree
+  html += '<div class="sidebar-section">';
+  html += '<div class="sidebar-label">分类目录</div>';
+
+  getTree().forEach(function(cat) {
+    if (cat.children) {
+      var isExp = S.expanded[cat.id] !== false;
+      var childCount = cat.children.reduce(function(acc, c) {
+        return acc + all.filter(function(f) { return getFileCat(f.filename) === c.id; }).length;
+      }, 0);
+      var catFiles = all.filter(function(f) { return getFileCat(f.filename) === cat.id; }).length;
+      var totalCount = childCount + catFiles;
+
+      html += '<div class="nav-item" onclick="toggleCat(\''+cat.id+'\')">';
+      html += '<i class="fas fa-chevron-right tree-chevron'+(isExp?' open':'')+'"></i>';
+      html += '<i class="'+(cat.icon||'fas fa-folder')+'"></i> '+esc(cat.name);
+      html += '<span class="count">'+totalCount+'</span></div>';
+
+      if (isExp) {
+        html += '<div class="nav-children">';
+        // Parent category files
+        if (catFiles > 0) {
+          html += '<div class="nav-child'+(S.cat===cat.id?' active':'')+'" onclick="event.stopPropagation();selectCat(\''+cat.id+'\')">';
+          html += '<i class="fas fa-dot-circle"></i> 未归类 <span class="count">'+catFiles+'</span></div>';
+        }
+        cat.children.forEach(function(child) {
+          var count = all.filter(function(f) { return getFileCat(f.filename) === child.id; }).length;
+          if (count === 0) return;
+          html += '<div class="nav-child'+(S.cat===child.id?' active':'')+'" onclick="event.stopPropagation();selectCat(\''+child.id+'\')">';
+          html += '<i class="'+(child.icon||'fas fa-file')+'"></i> '+esc(child.name)+' <span class="count">'+count+'</span></div>';
+        });
+        html += '</div>';
+      }
+    } else {
+      var count = all.filter(function(f) { return getFileCat(f.filename) === cat.id; }).length;
+      if (count === 0 && cat.id === 'other') return;
+      html += '<div class="nav-item'+(S.cat===cat.id?' active':'')+'" onclick="selectCat(\''+cat.id+'\')">';
+      html += '<i class="'+(cat.icon||'fas fa-folder')+'"></i> '+esc(cat.name)+' <span class="count">'+count+'</span></div>';
+    }
+  });
+
+  html += '</div>';
+
+  // Tags section
+  if (S.allTags.length > 0) {
+    html += '<div class="sidebar-section">';
+    html += '<div class="sidebar-label">标签</div>';
+    S.allTags.slice(0, 15).forEach(function(tag) {
+      html += '<div class="nav-item" onclick="searchTag(\''+esc(tag)+'\')" style="font-size:12px">';
+      html += '<i class="fas fa-tag" style="font-size:10px"></i> #'+esc(tag)+'</div>';
+    });
+    html += '</div>';
+  }
+
+  // Add category button (admin only)
+  if (S.isAdmin) {
+    html += '<div class="sidebar-add" onclick="addCategoryModal()">';
+    html += '<i class="fas fa-plus"></i> 新增分类</div>';
+  }
+
+  sb.innerHTML = html;
+}
+
+function toggleSidebar() {
+  var s = document.getElementById('sidebar');
+  var b = document.getElementById('sidebarBackdrop');
+  var open = s.classList.toggle('show');
+  b.classList.toggle('show', open);
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('show');
+  document.getElementById('sidebarBackdrop').classList.remove('show');
+}
+
+function toggleCat(id) {
+  S.expanded[id] = S.expanded[id] === false ? true : false;
+  renderSidebar();
+}
+
+function selectCat(id) {
+  S.cat = id; S.showFav = false; S.showRecent = false;
+  renderSidebar(); renderMain();
+  closeSidebar(); // 移动端点选分类后收起抽屉
+}
+
+function showFavorites() {
+  S.showFav = true; S.showRecent = false; S.cat = 'all';
+  renderSidebar(); renderMain();
+  closeSidebar();
+}
+
+function showRecent() {
+  S.showRecent = true; S.showFav = false; S.cat = 'all';
+  renderSidebar(); renderMain();
+  closeSidebar();
+}
+
+function searchTag(tag) {
+  document.getElementById('searchInput').value = tag;
+  S.search = tag;
+  renderMain();
+  closeSidebar();
+}
+
+// ===== RENDER MAIN =====
+function renderMain() {
+  if (!S.viewUnlocked) return;
+  var main = document.getElementById('main');
+  var files = getFilteredFiles();
+  var title = '';
+
+  if (S.showFav) title = '收藏夹';
+  else if (S.showRecent) title = '最近访问';
+  else if (S.cat === 'all') title = '全部文件';
+  else title = catName(S.cat);
+
+  var html = '';
+  html += '<div class="main-header">';
+  html += '<div class="main-title">'+esc(title)+' <span style="font-size:14px;color:var(--light);font-weight:400">('+files.length+')</span></div>';
+  html += '<div class="main-tools">';
+  html += '<select class="sort-select" id="sortSelect">';
+  html += '<option value="date-desc"'+(S.sort==='date-desc'?' selected':'')+'>最新优先</option>';
+  html += '<option value="date-asc"'+(S.sort==='date-asc'?' selected':'')+'>最早优先</option>';
+  html += '<option value="name-asc"'+(S.sort==='name-asc'?' selected':'')+'>名称 A-Z</option>';
+  html += '<option value="name-desc"'+(S.sort==='name-desc'?' selected':'')+'>名称 Z-A</option>';
+  html += '<option value="size-desc"'+(S.sort==='size-desc'?' selected':'')+'>文件最大</option>';
+  html += '<option value="size-asc"'+(S.sort==='size-asc'?' selected':'')+'>文件最小</option>';
+  html += '</select>';
+  html += '<button class="view-btn'+(S.gridView?' active':'')+'" onclick="setView(true)" title="卡片视图"><i class="fas fa-grip"></i></button>';
+  html += '<button class="view-btn'+(!S.gridView?' active':'')+'" onclick="setView(false)" title="列表视图"><i class="fas fa-list"></i></button>';
+  html += '</div></div>';
+
+  if (files.length === 0) {
+    html += '<div class="empty-state"><i class="fas fa-folder-open"></i><p>没有找到匹配的文件</p></div>';
+  } else if (S.gridView) {
+    html += '<div class="file-grid">';
+    files.forEach(function(f) {
+      var cat = getFileCat(f.filename);
+      var color = catColor(cat);
+      var tags = S.fileTags[f.filename] || [];
+      var isFav = S.favorites.indexOf(f.filename) >= 0;
+
+      html += '<div class="file-card" onclick="openFile(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')">';
+      html += '<div class="file-card-top">';
+      html += '<div class="file-card-icon" style="background:'+color+'15"><i class="'+fileIcon(f.filename)+'" style="color:'+color+'"></i></div>';
+      html += '<div class="file-card-body">';
+      html += '<div class="file-card-title">'+esc(f.title)+'</div>';
+      html += '<div class="file-card-cat"><i class="'+catIcon(cat)+'"></i> '+esc(catName(cat))+'</div>';
+      html += '<div style="margin-top:6px"><span class="fmt-badge" style="background:'+fmtColor(f.filename)+'1a;color:'+fmtColor(f.filename)+'">'+fileFmt(f.filename)+'</span></div>';
+      html += '</div>';
+      html += '<button class="fav-btn'+(isFav?' active':'')+'" onclick="event.stopPropagation();toggleFav(\''+esc(f.filename)+'\')"><i class="fas fa-star"></i></button>';
+      html += '</div>';
+
+      if (tags.length > 0) {
+        html += '<div class="file-card-tags">';
+        tags.slice(0,4).forEach(function(t) { html += '<span class="file-tag">'+esc(t)+'</span>'; });
+        html += '</div>';
+      }
+
+      html += '<div class="file-card-footer">';
+      html += '<div class="left"><span><i class="far fa-calendar"></i> '+fmtDate(f.mtime)+'</span><span><i class="fas fa-weight-hanging"></i> '+fmtSize(f.size)+'</span></div>';
+      html += '<span style="color:var(--accent);font-weight:600">打开 <i class="fas fa-arrow-right"></i></span>';
+      html += '</div></div>';
+    });
+    html += '</div>';
+  } else {
+    html += '<div class="file-list">';
+    files.forEach(function(f) {
+      var cat = getFileCat(f.filename);
+      var color = catColor(cat);
+      var isFav = S.favorites.indexOf(f.filename) >= 0;
+      html += '<div class="list-item" onclick="openFile(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')">';
+      html += '<div class="li-icon" style="background:'+color+'15"><i class="'+fileIcon(f.filename)+'" style="color:'+color+'"></i></div>';
+      html += '<span class="li-title">'+esc(f.title)+'</span>';
+      html += '<span class="li-cat">'+esc(catName(cat))+'</span>';
+      html += '<span class="li-fmt"><span class="fmt-badge" style="background:'+fmtColor(f.filename)+'1a;color:'+fmtColor(f.filename)+'">'+fileFmt(f.filename)+'</span></span>';
+      html += '<span class="li-date">'+fmtDate(f.mtime)+'</span>';
+      html += '<span class="li-size">'+fmtSize(f.size)+'</span>';
+      html += '<button class="fav-btn'+(isFav?' active':'')+'" style="width:24px;height:24px" onclick="event.stopPropagation();toggleFav(\''+esc(f.filename)+'\')"><i class="fas fa-star"></i></button>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  main.innerHTML = html;
+
+  document.getElementById('sortSelect').onchange = function(e) {
+    S.sort = e.target.value; renderMain();
+  };
+}
+
+function setView(grid) { S.gridView = grid; renderMain(); }
+
+// ===== FILE OPERATIONS =====
+function openFile(filename, title) {
+  // Add to recent
+  S.recent = [filename].concat(S.recent.filter(function(f) { return f !== filename; })).slice(0, 20);
+  Save();
+
+  var file = getAllFiles().find(function(f) { return f.filename === filename; });
+  if (!file) return;
+
+  // HTML / Markdown：新标签页打开，但走沙箱查看页 viewer.html
+  // （iframe 带 sandbox 且无 allow-same-origin → 报告脚本运行在「不透明源」，读不到同域 localStorage/cookie，杜绝 XSS）
+  var ext = fileExt(filename);
+  if (ext === 'md' || ext === 'html' || ext === 'htm') {
+    var vurl = 'viewer.html?f=' + encodeURIComponent(filename) + '&title=' + encodeURIComponent(title || filename);
+    window.open(vurl, '_blank');
+    renderSidebar();
+    return;
+  }
+
+  // 其余所有格式（PDF / Word / Excel / PPT / 图片等）统一在新标签页打开
+  if (file.isUploaded && file.data) {
+    // Open from base64
+    var parts = file.data.split(',');
+    var mime = parts[0].match(/:(.*?);/)[1];
+    var bstr = atob(parts[1]);
+    var n = bstr.length;
+    var u8 = new Uint8Array(n);
+    while (n--) u8[n] = bstr.charCodeAt(n);
+    var blob = new Blob([u8], {type: mime});
+    var url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+  } else {
+    var url = 'reports/' + encodeURIComponent(filename);
+    window.open(url, '_blank');
+  }
+  renderSidebar();
+}
+
+// ===== MARKDOWN 预览（已迁移至 viewer.html 沙箱查看页） =====
+
+function toggleFav(filename) {
+  var idx = S.favorites.indexOf(filename);
+  if (idx >= 0) { S.favorites.splice(idx, 1); toast('已取消收藏'); }
+  else { S.favorites.push(filename); toast('已收藏'); }
+  Save(); renderSidebar(); renderMain();
+}
+
+// ===== SEARCH =====
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  S.search = e.target.value; renderMain();
+});
+
+// ===== HEADER BUTTONS =====
+document.getElementById('favBtn').addEventListener('click', function() {
+  S.showFav = !S.showFav; S.showRecent = false;
+  this.classList.toggle('active', S.showFav);
+  document.getElementById('recentBtn').classList.remove('active');
+  renderSidebar(); renderMain();
+});
+
+document.getElementById('recentBtn').addEventListener('click', function() {
+  S.showRecent = !S.showRecent; S.showFav = false;
+  this.classList.toggle('active', S.showRecent);
+  document.getElementById('favBtn').classList.remove('active');
+  renderSidebar(); renderMain();
+});
+
+document.getElementById('adminBtn').addEventListener('click', function() {
+  if (!S.viewUnlocked) { showViewerLock(); var v=document.getElementById('viewPwdInput'); if(v) v.focus(); return; }
+  if (S.isAdmin) { showAdminPanel(); }
+  else { document.getElementById('adminLogin').classList.add('show'); document.getElementById('adminPwdInput').focus(); }
+});
+
+// ===== ADMIN LOGIN（服务端验证，网页不含密码）=====
+// 向服务端发起登录，成功后返回签名令牌（不含明文密码），本地仅保存令牌。
+function doLogin(pwd) {
+  return fetch(UPLOAD_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ op: 'login', password: pwd })
+  }).then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); });
+}
+
+document.getElementById('adminLoginBtn').addEventListener('click', function() {
+  var pwd = document.getElementById('adminPwdInput').value;
+  if (!pwd) { document.getElementById('adminError').textContent = '请输入密码'; return; }
+  doLogin(pwd).then(function(resp) {
+    if (resp.ok && resp.j.token) {
+      S.adminToken = resp.j.token;
+      S.isAdmin = true;
+      loadMeta(); // 登录后刷新云端分类/标签(若其他设备改过)
+      loadTrashItems(function(items){ ADMIN_FILES.deleted = items || []; if (typeof renderAdminFiles === 'function') renderAdminFiles(); }); // 登录后立即拉回收站并刷新(若已打开文件管理)
+      try { localStorage.setItem('kb_admin_token', S.adminToken); } catch(e) {}
+      document.getElementById('adminLogin').classList.remove('show');
+      document.getElementById('adminPwdInput').value = '';
+      document.getElementById('adminError').textContent = '';
+      showAdminPanel();
+    } else {
+      document.getElementById('adminError').textContent = (resp.j && resp.j.error) || '密码错误，请重试';
+    }
+  }).catch(function(e) {
+    document.getElementById('adminError').textContent = '无法连接服务端，请稍后重试';
+  });
+});
+
+document.getElementById('adminPwdInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('adminLoginBtn').click();
+});
+
+// ===== ADMIN PANEL =====
+function showAdminPanel() {
+  var panel = document.getElementById('adminPanel');
+  var main = document.getElementById('main');
+  var sidebar = document.getElementById('sidebar');
+  var layout = document.querySelector('.layout');
+
+  main.style.display = 'none';
+  sidebar.style.display = 'none';
+  layout.style.display = 'none';
+  panel.style.display = 'block';
+
+  panel.innerHTML = `
+    <div class="admin-bar">
+      <div class="admin-header">
+        <h2 style="font-size:20px;font-weight:700"><i class="fas fa-gear"></i> 管理后台</h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-sm btn-ghost" onclick="exitAdmin()"><i class="fas fa-arrow-left"></i> 返回</button>
+        </div>
+      </div>
+      <div class="admin-tabs">
+        <div class="admin-tab active" onclick="switchAdminTab('upload',this)">文件上传</div>
+        <div class="admin-tab" onclick="switchAdminTab('files',this)">文件管理</div>
+        <div class="admin-tab" onclick="switchAdminTab('cats',this)">分类管理</div>
+        <div class="admin-tab" onclick="switchAdminTab('tags',this)">标签管理</div>
+        <div class="admin-tab" onclick="switchAdminTab('settings',this)">设置</div>
+      </div>
+    </div>
+    <div id="adminContent"></div>
+  `;
+  renderAdminUpload();
+}
+
+function exitAdmin() {
+  document.getElementById('adminPanel').style.display = 'none';
+  document.querySelector('.layout').style.display = '';
+  document.getElementById('main').style.display = '';
+  document.getElementById('sidebar').style.display = '';
+  renderSidebar(); renderMain();
+}
+
+function switchAdminTab(tab, el) {
+  document.querySelectorAll('.admin-tab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  if (tab === 'upload') renderAdminUpload();
+  else if (tab === 'files') renderAdminFiles();
+  else if (tab === 'cats') renderAdminCats();
+  else if (tab === 'tags') renderAdminTags();
+  else if (tab === 'settings') renderAdminSettings();
+}
+
+function renderAdminUpload() {
+  var c = document.getElementById('adminContent');
+  c.innerHTML = `
+    <div style="background:var(--accent-light);border:1px solid #cfe8e3;border-radius:12px;padding:18px;margin-bottom:18px">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:6px">📤 上传文件到知识库</h3>
+      <p style="font-size:13px;color:var(--muted);line-height:1.9">
+        ① 点击下方「选择文件」按钮，或直接把文件拖到下方虚线框　② <b>必须选择归属分类（不选将无法上传）</b>　③ 自动上传到服务器<br>
+        支持 <b>所有文件类型</b>（可一次选多个）。<br>
+        上传成功后文件会出现在对应分类，刷新页面约 1 分钟即可见。
+      </p>
+    </div>
+    <button class="btn btn-primary" id="uploadPickBtn" style="margin-bottom:14px"><i class="fas fa-folder-open"></i> 选择文件上传</button>
+    <div class="upload-zone" id="uploadZone">
+      <i class="fas fa-cloud-arrow-up"></i>
+      <p style="font-weight:600">点击选择文件，或拖拽到此处</p>
+      <p class="hint">支持所有文件类型（可多选）</p>
+    </div>
+    <input type="file" id="fileInput" multiple style="display:none">
+    <div id="uploadCatSelect" style="margin:16px 0 12px">
+      <label style="font-size:12px;color:var(--muted)">上传到分类:</label>
+      <div class="cat-select-wrap" style="margin-top:4px">
+        <div class="cat-select-display placeholder" id="uploadCatDisplay">— 请选择分类文件夹 —</div>
+        <select id="uploadCat" class="cat-select-real"></select>
+      </div>
+      <div id="uploadNewCatRow" style="display:none;margin-top:8px">
+        <input type="text" id="uploadNewCatName" placeholder="新分类名称（如：渠道复盘）" style="width:100%;padding:8px;box-sizing:border-box;border:1px solid var(--line);border-radius:var(--radius)">
+        <select id="uploadNewCatParent" style="width:100%;margin-top:6px;padding:8px;box-sizing:border-box;border:1px solid var(--line);border-radius:var(--radius)">
+          <option value="">无（顶级分类）</option>
+        </select>
+        <button class="btn btn-sm btn-primary" id="uploadNewCatBtn" style="margin-top:6px;width:100%"><i class="fas fa-plus"></i> 创建并使用此分类</button>
+      </div>
+    </div>
+    <div id="uploadResult"></div>
+  `;
+
+  // Populate category select (第一项为占位「请选择」, 默认强制不选; 一级分类可选; 末尾提供「新建分类」)
+  var sel = document.getElementById('uploadCat');
+  sel.innerHTML = uploadCatOptions('');
+  // 仅当用户正停留在某个具体分类页时才预选该分类; 否则留空以强制其主动选择
+  var cur = (S.cat && S.cat !== 'all' && S.cat !== 'other') ? S.cat : '';
+  var exists = false;
+  getTree().forEach(function(c){
+    if (c.id === cur) exists = true;
+    if (c.children) c.children.forEach(function(ch){ if (ch.id === cur) exists = true; });
+  });
+  if (cur && exists) sel.value = cur;
+  // 选中「新建分类」时展开输入行(并回到占位, 避免误选后直接上传); 同时更新自定义显示路径
+  sel.onchange = function() {
+    var row = document.getElementById('uploadNewCatRow');
+    if (this.value === '__new_cat__') {
+      row.style.display = 'block';
+      var inp = document.getElementById('uploadNewCatName'); if (inp) inp.focus();
+      this.value = '';
+    } else {
+      row.style.display = 'none';
+    }
+    updateCatSelectDisplay(this, 'uploadCatDisplay');
+  };
+  updateCatSelectDisplay(sel, 'uploadCatDisplay');
+  document.getElementById('uploadNewCatBtn').onclick = createUploadCat;
+  // 新建分类的父分类下拉: 列出所有顶级分类(含内置一级与自定义顶级)
+  var psel = document.getElementById('uploadNewCatParent');
+  var parentOpts = '<option value="">无（顶级分类）</option>';
+  getTree().forEach(function(cat) {
+    if (cat.id === 'other' || cat.parentId) return;
+    parentOpts += '<option value="'+cat.id+'">'+esc(cat.name)+'</option>';
+  });
+  psel.innerHTML = parentOpts;
+
+  var zone = document.getElementById('uploadZone');
+  var input = document.getElementById('fileInput');
+
+  document.getElementById('uploadPickBtn').onclick = function() { input.click(); };
+  zone.onclick = function() { input.click(); };
+
+  zone.ondragover = function(e) { e.preventDefault(); this.classList.add('dragover'); };
+  zone.ondragleave = function() { this.classList.remove('dragover'); };
+  zone.ondrop = function(e) {
+    e.preventDefault(); this.classList.remove('dragover');
+    handleUpload(e.dataTransfer.files);
+  };
+  input.onchange = function() { handleUpload(this.files); };
+}
+
+// 上传分类下拉选项: 一级分类只作 optgroup 标签(避免与子项重复), 二级只用简短名; 末尾提供「新建分类」
+function uploadCatOptions(cur) {
+  var opts = '<option value="" disabled'+(cur?'':' selected')+'>— 请选择分类文件夹 —</option>';
+  getTree().forEach(function(cat) {
+    if (cat.children) {
+      opts += '<optgroup label="'+esc(cat.name)+'">';
+      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'"'+(cur===ch.id?' selected':'')+'>'+esc(ch.name)+'</option>'; });
+      opts += '</optgroup>';
+    } else {
+      opts += '<option value="'+cat.id+'"'+(cur===cat.id?' selected':'')+'>'+esc(cat.name)+'</option>';
+    }
+  });
+  opts += '<option value="__new_cat__">＋ 新建分类…</option>';
+  return opts;
+}
+
+// 自定义下拉显示层: 根据 select.value 渲染完整路径(一级 - 二级)或占位
+function updateCatSelectDisplay(sel, displayId) {
+  var disp = document.getElementById(displayId);
+  if (!disp) return;
+  var v = sel.value;
+  var label = '';
+  if (!v || v === '__new_cat__') {
+    disp.textContent = '— 请选择分类文件夹 —';
+    disp.classList.add('placeholder');
+    return;
+  }
+  disp.classList.remove('placeholder');
+  // 找一级分类(若 v 是二级)
+  var tree = getTree();
+  for (var i=0;i<tree.length;i++) {
+    var cat = tree[i];
+    if (cat.id === v) { label = cat.name; break; }
+    if (cat.children) {
+      var ch = cat.children.find(function(c){ return c.id===v; });
+      if (ch) { label = cat.name + ' - ' + ch.name; break; }
+    }
+  }
+  disp.textContent = label || v;
+}
+
+// 上传弹窗内联新建分类: 可选择挂到某个一级分类下(成为二级), 创建后自动选中该分类
+function createUploadCat() {
+  var inp = document.getElementById('uploadNewCatName');
+  var name = inp.value.trim();
+  if (!name) { toast('请输入新分类名称'); inp.focus(); return; }
+  var parent = document.getElementById('uploadNewCatParent').value;
+  var id = makeCatId(name);
+  var allIds = [];
+  getTree().forEach(function(c){ allIds.push(c.id); if (c.children) c.children.forEach(function(ch){ allIds.push(ch.id); }); });
+  if (allIds.indexOf(id) >= 0) { toast('该名称对应的分类已存在：' + id + '，请换一个名称'); return; }
+  S.customCats.push({id:id, name:name, icon:'fas fa-folder', parentId:parent||null, updatedAt:Date.now()});
+  Save();
+  var sel = document.getElementById('uploadCat');
+  sel.innerHTML = uploadCatOptions(id);
+  sel.value = id;
+  document.getElementById('uploadNewCatRow').style.display = 'none';
+  inp.value = '';
+  var pName = parent ? (getTree().find(function(c){ return c.id===parent; }) || {}).name : '';
+  toast('分类已创建并选中：' + (pName ? pName+' - ' : '') + name + (S.adminToken ? '' : '（仅本机可见，登录后台后同步云端）'));
+}
+
+function handleUpload(fileList) {
+  var cat = document.getElementById('uploadCat').value;
+  var result = document.getElementById('uploadResult');
+
+  // 强制先选分类: 没选则拦截上传并提示
+  if (!cat || cat === '__new_cat__') {
+    result.innerHTML = '<p style="color:var(--danger)">⚠ 请先在上方「上传到分类」中选择一个文件夹，否则无法上传。</p>';
+    toast('请先选择分类文件夹', false);
+    return;
+  }
+
+  // 接受所有文件类型(不再按后缀过滤)。兜底:过滤掉空名文件。
+  var files = Array.from(fileList).filter(function(f) {
+    return f && f.name && f.name.length > 0;
+  });
+  var bad = [];
+
+  if (files.length === 0) {
+    result.innerHTML = '<p style="color:var(--danger)">没有选择任何文件</p>';
+    return;
+  }
+  if (!UPLOAD_API) {
+    result.innerHTML = '<p style="color:var(--danger)">上传功能未配置：缺少服务端地址（UPLOAD_API）</p>';
+    return;
+  }
+  if (!S.adminToken) {
+    result.innerHTML = '<p style="color:var(--danger)">未登录或登录已过期，请先在右上角登录后台</p>';
+    return;
+  }
+
+  // 客户端大小前置检查：避免大文件触发 API 网关/云函数超时，导致 cryptic 的 Failed to fetch
+  // (腾讯云 API 网关默认请求体约 6MB、云函数默认超时 3s；base64 会膨胀 33%，故保守阈值 4MB)
+  var MAX_CLIENT_BYTES = 4 * 1024 * 1024;
+  var tooBig = files.filter(function (f) { return f.size > MAX_CLIENT_BYTES; });
+  if (tooBig.length) {
+    var names = tooBig.map(function (f) {
+      return esc(f.name) + ' (' + (f.size / 1024 / 1024).toFixed(1) + 'MB)';
+    }).join('、');
+    result.innerHTML = '<p style="color:var(--danger)">⚠ 以下文件过大，当前服务器配置无法接收（约 4MB 以内）：<br>' + names + '</p>'
+      + '<p style="font-size:12px;color:var(--muted);margin-top:6px">处理办法：① 压缩/拆分该文件后重试；② 或联系管理员在腾讯云控制台调高「API 网关请求体大小」与「云函数超时时间」。</p>';
+    return;
+  }
+
+  result.innerHTML = '<p style="color:var(--muted)">正在上传 ' + files.length + ' 个文件到服务器...</p>';
+  var done = 0, ok = 0, fail = [];
+  var uploadedEntries = []; // 收集本次成功上传的文件元数据, 用于本地兜底(即使 manifest 读取失败也能立即/刷新后可见)
+
+  var MAX_UPLOAD_ATTEMPT = 2; // v2.3.1: 网络错误自动重试 1 次(应对偶发网关/云函数超时 Failed to fetch)
+  files.forEach(function(file) {
+    uploadOneFile(file, cat, S.adminToken, 1, MAX_UPLOAD_ATTEMPT).then(function(resp) {
+      done++;
+      if (resp.ok) {
+        ok++;
+        var upName = safeNameOf(file.name);
+        uploadedEntries.push({
+          name: upName,
+          title: upName.replace(/\.[^.]+$/, ''),
+          size: file.size,
+          mtime: Math.floor(Date.now() / 1000),
+          category: cat
+        });
+      } else {
+        var errMsg = (resp.j && resp.j.error) ? resp.j.error : '失败';
+        if (resp._netErr) errMsg += '（已自动重试仍失败：疑似网络/服务端超时，可稍后重试；或请管理员在腾讯云调高云函数超时时间）';
+        fail.push(file.name + ' (' + errMsg + ')');
+      }
+      if (done === files.length) finishUpload(result, ok, fail, bad, uploadedEntries);
+    });
+  });
+}
+
+// 单文件上传(含网络错误自动重试)；返回 Promise<{ok, j, _netErr?}>
+function uploadOneFile(file, cat, token, attempt, maxAttempt) {
+  return new Promise(function(resolve) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var dataUrl = e.target.result;
+      var base64 = dataUrl.split(',')[1] || '';
+      fetch(UPLOAD_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+        body: JSON.stringify({ op: 'upload', filename: file.name, content: base64, category: cat })
+      })
+      .then(function(r) { return r.json().then(function(j) { return { ok: r.ok, j: j }; }); })
+      .then(function(resp) { resolve(resp); })
+      .catch(function(err) {
+        if (attempt < maxAttempt) {
+          setTimeout(function() { resolve(uploadOneFile(file, cat, token, attempt + 1, maxAttempt)); }, 500 * attempt);
+        } else {
+          var msg = (err && err.message) ? err.message : '无法连接服务端';
+          resolve({ ok: false, j: { error: '网络错误：' + msg }, _netErr: true });
+        }
+      });
+    };
+    reader.onerror = function() { resolve({ ok: false, j: { error: '读取本地文件失败' } }); };
+    reader.readAsDataURL(file);
+  });
+}
+
+function finishUpload(result, ok, fail, bad, uploadedEntries) {
+  var html = '';
+  if (ok > 0) html += '<p style="color:var(--accent)">✓ 成功上传 ' + ok + ' 个文件到服务器</p>';
+  fail.forEach(function(n) { html += '<p style="color:var(--danger)">✗ ' + esc(n) + '</p>'; });
+  bad.forEach(function(f) { html += '<p style="color:var(--warning)">⚠ ' + esc(f.name) + ' - 不支持的格式</p>'; });
+  html += '<p style="font-size:12px;color:var(--muted);margin-top:8px">文件已保存到 GitHub 仓库，列表将立即刷新。</p>';
+  result.innerHTML = html;
+  // 本地兜底: 把本次成功上传写入 localStorage, 即使 manifest 读取失败(如 raw 被墙), 当前浏览器也能立即显示并在刷新后保留
+  if (uploadedEntries && uploadedEntries.length) {
+    var names = {};
+    (S.uploaded || []).forEach(function(u) { names[u.name] = true; });
+    uploadedEntries.forEach(function(u) { if (!names[u.name]) { S.uploaded.push(u); names[u.name] = true; } });
+    Save();
+  }
+  renderSidebar();
+  toast('上传完成');
+  // 立即重新拉取 manifest(优先 raw, 失败经 SCF 中继), 上传的文件立刻可见
+  refreshManifest(function() { renderSidebar(); renderMain(); });
+}
+
+// 文件管理：合并「在线」与「已删除」到一个列表，带筛选标签 + 已删除状态标注。
+// 物理仍走 trash/（不公开），公开首页/侧栏只读 manifest 不受影响。
+var ADMIN_FILES = { active: [], deleted: [] };
+var adminFilesFilter = 'all'; // all | online | deleted
+
+function renderAdminFiles() {
+  var c = document.getElementById('adminContent');
+  // 在线文件来自本地(manifest+兜底)，立即渲染，不被 SCF 请求阻塞(否则要等 2~4s 才显示)
+  ADMIN_FILES.active = getAllFiles();
+  paintAdminFiles();
+  // 异步拉回收站(带缓存+超时兜底)，回来再补一次；绝不拖慢在线列表
+  loadTrashItems(function(items) {
+    ADMIN_FILES.deleted = items || [];
+    paintAdminFiles();
+  });
+}
+
+// 回收站列表：带 60s 缓存 + 5s 超时兜底，永不阻塞在线文件渲染
+// 关键: 401/失败绝不写缓存(否则会污染 60s, 导致重新登录后仍显示空), 仅成功(已授权)才缓存
+// _trashState: init|loading|ok|unauthorized|error —— 用于「已删除」tab 透明展示加载/登录状态, 不再静默显示 0
+var _trashCache = { ts: 0, items: [], authorized: false };
+var _trashState = 'init';
+var _trashError = '';
+// 回收站加载: 失败会显示具体原因(401/超时/网络/服务端错误), 并提供「重试」与「登录」两个出口, 不再无声失败
+function loadTrashItems(cb) {
+  // 未登录: 直接走「需登录」, 避免带 undefined token 的请求在某些浏览器被网络层拒绝(status 0)而误报「加载失败」
+  if (!S.adminToken) { _trashState = 'unauthorized'; _trashError = ''; if (cb) cb([]); return; }
+  var now = Date.now();
+  if (_trashCache.ts && now - _trashCache.ts < 60000 && _trashCache.authorized) { _trashState = 'ok'; if (cb) cb(_trashCache.items); return; }
+  _trashState = 'loading'; if (cb) paintAdminFiles(); // 立即显示「加载中」, 重试也有即时反馈
+  var settled = false;
+  var timer = setTimeout(function() {
+    if (settled) return; settled = true;
+    _trashState = _trashCache.authorized ? 'ok' : 'error';
+    if (!_trashCache.authorized) _trashError = '加载超时（8 秒内服务端未响应，通常是云函数超时或网络较慢；可在腾讯云控制台把函数「超时时间」调到 60s）';
+    if (cb) cb(_trashCache.authorized ? _trashCache.items : []);
+  }, 8000);
+  adminApi('listtrash', {}).then(function(resp) {
+    if (settled) return; settled = true; clearTimeout(timer);
+    if (resp.status === 401) { onTokenExpired(); _trashState = 'unauthorized'; _trashError = ''; _trashCache = { ts: 0, items: [], authorized: false }; if (cb) cb([]); return; }
+    if (resp.ok && resp.j && resp.j.ok) {
+      var items = resp.j.items || [];
+      _trashCache = { ts: Date.now(), items: items, authorized: true };
+      _trashState = 'ok'; _trashError = ''; if (cb) cb(items);
+    } else {
+      _trashState = 'error'; _trashCache.authorized = false; // 其他错误(网络/5xx): 不污染时间缓存
+      _trashError = '服务端返回错误（HTTP ' + (resp.status || '?') + '）：' + ((resp.j && resp.j.error) || '未知错误');
+      if (cb) cb([]);
+    }
+  }).catch(function() {
+    if (settled) return; settled = true; clearTimeout(timer);
+    _trashState = 'error';
+    _trashError = '网络错误：无法连接服务端（请检查网络 / 浏览器扩展是否拦截了该请求，或确认函数 URL 可达）';
+    if (cb) cb([]);
+  });
+}
+// 重试回收站: 立即给「加载中」反馈, 再重新拉取(清空旧错误)
+function retryTrash() {
+  _trashState = 'loading'; _trashError = '';
+  paintAdminFiles();
+  loadTrashItems(function(items) { ADMIN_FILES.deleted = items || []; paintAdminFiles(); });
+}
+
+// 重建回收站索引: 调 SCF 完整扫描 trash/meta 补全真实文件名/分类/大小(需先把云函数超时调到 60s, 否则可能 3s 掐断)
+function rebuildTrashIndex() {
+  if (!S.adminToken) { openTrashLogin(); return; }
+  _trashState = 'loading'; _trashError = ''; paintAdminFiles();
+  adminApi('rebuildTrashIndex', {}).then(function(resp) {
+    if (resp.status === 401) { onTokenExpired(); _trashState = 'unauthorized'; paintAdminFiles(); return; }
+    if (resp.ok && resp.j && resp.j.ok) {
+      var items = resp.j.items || [];
+      _trashCache = { ts: Date.now(), items: items, authorized: true };
+      _trashState = 'ok'; ADMIN_FILES.deleted = items; paintAdminFiles();
+      if (typeof toast === 'function') toast('回收站索引已重建，已补全文件名', 'success');
+    } else {
+      _trashState = 'error'; _trashError = (resp.j && resp.j.error) || '重建失败'; paintAdminFiles();
+    }
+  }).catch(function() {
+    _trashState = 'error'; _trashError = '重建失败：网络错误，请确认函数 URL 可达'; paintAdminFiles();
+  });
+}
+
+function paintAdminFiles() {
+  var c = document.getElementById('adminContent');
+  if (!c) return;
+  // 默认按「最新修改时间」倒序: 最新上传/更新的文件排在最上面
+  var active = (ADMIN_FILES.active || []).slice().sort(function(a,b){ return (b.mtime||0) - (a.mtime||0); });
+  var deleted = (ADMIN_FILES.deleted || []).slice().sort(function(a,b){ return (Date.parse(b.deletedAt)||0) - (Date.parse(a.deletedAt)||0); });
+  var filter = adminFilesFilter;
+
+  var tabs = [
+    { key: 'all', label: '全部', count: active.length + deleted.length },
+    { key: 'online', label: '在线', count: active.length },
+    { key: 'deleted', label: '已删除', count: _trashState === 'unauthorized' ? '🔒' : deleted.length }
+  ];
+  var tabHtml = tabs.map(function(t) {
+    var on = filter === t.key;
+    return '<div class="af-filter' + (on ? ' active' : '') + '" onclick="setAdminFilesFilter(\'' + t.key + '\')">' + t.label + ' <span class="af-count">' + t.count + '</span></div>';
+  }).join('');
+
+  var bar = '<div class="af-bar">' +
+    '<div class="af-filters">' + tabHtml + '</div>' +
+    '<div class="af-bar-actions">' +
+    (filter === 'deleted' && _trashState === 'ok' ? '<button class="btn btn-sm btn-ghost" onclick="rebuildTrashIndex()" title="补全被回收文件的真实文件名/分类/大小（需先把云函数超时调到 60s）"><i class="fas fa-sync"></i> 重建索引</button>' : '') +
+    (deleted.length ? '<button class="btn btn-sm btn-danger" onclick="purgeAllTrash()"><i class="fas fa-trash"></i> 清空回收站</button>' : '') +
+    '</div></div>';
+
+  var rows = '';
+  if (filter !== 'deleted') {
+    active.forEach(function(f) {
+      var cat = getFileCat(f.filename);
+      rows += '<tr>';
+      rows += '<td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(f.title)+'</td>';
+      rows += '<td><span class="af-badge online">在线</span></td>';
+      rows += '<td>'+esc(catName(cat))+'</td>';
+      rows += '<td><span class="fmt-badge" style="background:'+fmtColor(f.filename)+'1a;color:'+fmtColor(f.filename)+'">'+fileFmt(f.filename)+'</span></td>';
+      rows += '<td>'+fmtSize(f.size)+'</td>';
+      rows += '<td>'+fmtDate(f.mtime)+'</td>';
+      rows += '<td><div class="actions">';
+      rows += '<button class="act-btn" title="打开" onclick="openFile(\''+esc(f.filename)+'\',\''+esc(f.title)+'\')"><i class="fas fa-external-link-alt"></i></button>';
+      rows += '<button class="act-btn" title="移动分类" onclick="moveFileModal(\''+esc(f.filename)+'\')"><i class="fas fa-folder-tree"></i></button>';
+      rows += '<button class="act-btn" title="编辑标签" onclick="editTagsModal(\''+esc(f.filename)+'\')"><i class="fas fa-tag"></i></button>';
+      rows += '<button class="act-btn danger" title="删除" onclick="deleteFile(\''+esc(f.filename)+'\')"><i class="fas fa-trash"></i></button>';
+      rows += '</div></td>';
+      rows += '</tr>';
+    });
+  }
+  if (filter !== 'online') {
+    if (filter === 'deleted' && _trashState !== 'ok') {
+      if (_trashState === 'unauthorized') {
+        rows += '<tr><td colspan="7" style="text-align:center;padding:28px"><div style="color:var(--muted);margin-bottom:10px">🔒 回收站需登录后台才能查看</div><button class="btn btn-sm btn-primary" onclick="openTrashLogin()">登录查看已删除文件</button></td></tr>';
+      } else if (_trashState === 'error') {
+        rows += '<tr><td colspan="7" style="text-align:center;padding:28px">';
+        rows += '<div style="color:var(--danger);margin-bottom:8px">⚠️ 回收站加载失败</div>';
+        rows += '<div style="font-size:12px;color:var(--muted);max-width:460px;margin:0 auto 12px;line-height:1.5">' + esc(_trashError || '未知错误') + '</div>';
+        rows += '<div style="display:flex;gap:8px;justify-content:center">';
+        rows += '<button class="btn btn-sm btn-primary" onclick="retryTrash()">重试</button>';
+        rows += '<button class="btn btn-sm btn-ghost" onclick="rebuildTrashIndex()" title="完整扫描回收站补全文件名（需先把云函数超时调到 60s）"><i class="fas fa-sync"></i> 重建索引</button>';
+        rows += '<button class="btn btn-sm btn-ghost" onclick="openTrashLogin()">登录 / 重新登录</button>';
+        rows += '</div></td></tr>';
+      } else {
+        rows += '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">⟳ 回收站加载中…</td></tr>';
+      }
+    } else {
+      deleted.forEach(function(it) {
+        var dt = it.deletedAt ? new Date(it.deletedAt).toLocaleString('zh-CN') : '';
+        rows += '<tr class="af-del-row">';
+        rows += '<td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span style="text-decoration:line-through">'+esc(it.title || it.originalFilename)+'</span></td>';
+        rows += '<td><span class="af-badge deleted">已删除</span></td>';
+        rows += '<td>'+esc(catName(it.category || 'other'))+'</td>';
+        rows += '<td><span class="fmt-badge" style="background:'+fmtColor(it.originalFilename)+'1a;color:'+fmtColor(it.originalFilename)+'">'+fileFmt(it.originalFilename)+'</span></td>';
+        rows += '<td>'+fmtSize(it.size)+'</td>';
+        rows += '<td>'+dt+'</td>';
+        rows += '<td><div class="actions">';
+        rows += '<button class="act-btn" title="恢复" onclick="restoreFile(\''+esc(it.entryId)+'\')"><i class="fas fa-undo"></i></button>';
+        rows += '<button class="act-btn danger" title="彻底删除" onclick="purgeFile(\''+esc(it.entryId)+'\')"><i class="fas fa-times"></i></button>';
+        rows += '</div></td>';
+        rows += '</tr>';
+      });
+    }
+  }
+
+  var table = '<table class="admin-table"><thead><tr><th>文件名</th><th>状态</th><th>分类</th><th>格式</th><th>大小</th><th>日期</th><th>操作</th></tr></thead><tbody>' +
+    (rows || '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:24px">该分类下暂无文件</td></tr>') +
+    '</tbody></table>';
+
+  var hint = '<p style="font-size:12px;color:var(--muted);margin:0 0 12px">已删除的文件在此标注「已删除」并保留于回收站（不对外公开），可随时恢复或彻底清除。</p>';
+  c.innerHTML = hint + bar + table;
+}
+
+function setAdminFilesFilter(f) {
+  adminFilesFilter = f;
+  paintAdminFiles();
+}
+
+function renderAdminCats() {
+  var c = document.getElementById('adminContent');
+  var html = '<div style="margin-bottom:16px"><button class="btn btn-sm btn-primary" onclick="addCategoryModal()"><i class="fas fa-plus"></i> 新增分类</button></div>';
+  html += '<div class="cat-editor">';
+
+  getTree().forEach(function(cat) {
+    html += '<div class="cat-row">';
+    html += '<i class="'+(cat.icon||'fas fa-folder')+'" style="color:'+catColor(cat.id)+'"></i>';
+    html += '<span class="cat-name">'+esc(cat.name)+'</span>';
+    if (cat.id !== 'other') {
+      html += '<button class="act-btn" title="上移" onclick="moveCatOrder(\''+cat.id+'\',-1)"><i class="fas fa-arrow-up"></i></button>';
+      html += '<button class="act-btn" title="下移" onclick="moveCatOrder(\''+cat.id+'\',1)"><i class="fas fa-arrow-down"></i></button>';
+      html += '<button class="act-btn" title="编辑" onclick="editCategoryModal(\''+cat.id+'\')"><i class="fas fa-edit"></i></button>';
+      html += '<button class="act-btn danger" title="删除" onclick="deleteCategory(\''+cat.id+'\')"><i class="fas fa-trash"></i></button>';
+    }
+    html += '</div>';
+    if (cat.children) {
+      cat.children.forEach(function(ch) {
+        html += '<div class="cat-row" style="margin-left:20px">';
+        html += '<i class="'+(ch.icon||'fas fa-file')+'" style="color:'+catColor(ch.id)+'"></i>';
+        html += '<span class="cat-name">'+esc(ch.name)+'</span>';
+        html += '<button class="act-btn" title="上移" onclick="moveCatOrder(\''+ch.id+'\',-1)"><i class="fas fa-arrow-up"></i></button>';
+        html += '<button class="act-btn" title="下移" onclick="moveCatOrder(\''+ch.id+'\',1)"><i class="fas fa-arrow-down"></i></button>';
+        html += '<button class="act-btn" title="编辑" onclick="editCategoryModal(\''+ch.id+'\')"><i class="fas fa-edit"></i></button>';
+        html += '<button class="act-btn danger" title="删除" onclick="deleteCategory(\''+ch.id+'\')"><i class="fas fa-trash"></i></button>';
+        html += '</div>';
+      });
+    }
+  });
+  html += '</div>';
+  c.innerHTML = html;
+}
+
+function renderAdminTags() {
+  var c = document.getElementById('adminContent');
+  var html = '<p style="font-size:13px;color:var(--muted);margin-bottom:8px">所有标签 (点击移除)</p>';
+  html += '<div class="tag-editor">';
+  if (S.allTags.length === 0) {
+    html += '<span style="color:var(--light)">暂无标签，请在文件管理中为文件添加标签</span>';
+  }
+  S.allTags.forEach(function(tag) {
+    html += '<span class="tag-chip">#'+esc(tag)+' <span class="remove" onclick="removeTag(\''+esc(tag)+'\')"><i class="fas fa-times"></i></span></span>';
+  });
+  html += '</div>';
+  html += '<div class="tag-input-row"><input type="text" id="newTagInput" placeholder="输入新标签..." onkeydown="if(event.key===\'Enter\')addTag()"><button class="btn btn-sm btn-primary" onclick="addTag()">添加</button></div>';
+  c.innerHTML = html;
+}
+
+function renderAdminSettings() {
+  var c = document.getElementById('adminContent');
+  c.innerHTML = `
+    <div style="max-width:400px">
+      <h3 style="font-size:14px;margin-bottom:8px">管理密码</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">管理密码在服务端（腾讯云函数环境变量 <code>ADMIN_PASSWORD</code>）配置，不存储于网页，无法在此页面修改。如需更换，请在腾讯云控制台修改该环境变量后重新部署函数。</p>
+      <button class="btn btn-sm btn-ghost" onclick="logoutAdmin()"><i class="fas fa-sign-out-alt"></i> 退出登录</button>
+      <hr style="margin:24px 0;border:none;border-top:1px solid var(--line)">
+      <h3 style="font-size:14px;margin-bottom:8px">数据管理</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">导出所有数据（收藏、标签、上传文件等）</p>
+      <button class="btn btn-sm btn-ghost" onclick="exportData()"><i class="fas fa-download"></i> 导出数据</button>
+      <hr style="margin:24px 0;border:none;border-top:1px solid var(--line)">
+      <h3 style="font-size:14px;margin-bottom:8px;color:var(--danger)">重置</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px">清除所有本地数据（不影响服务器上的文件）</p>
+      <button class="btn btn-sm" style="background:#fee;color:var(--danger)" onclick="resetData()"><i class="fas fa-trash"></i> 清除所有数据</button>
+    </div>
+  `;
+}
+
+function logoutAdmin() {
+  try {
+    localStorage.removeItem('kb_admin_token');
+    localStorage.removeItem('kb_view_unlocked');
+    sessionStorage.removeItem('kb_admin_token');
+    sessionStorage.removeItem('kb_view_unlocked');
+  } catch(e) {}
+  S.adminToken = '';
+  S.isAdmin = false;
+  S.viewUnlocked = false;
+  location.reload();
+}
+
+function exportData() {
+  var data = { favorites: S.favorites, recent: S.recent, fileTags: S.fileTags, allTags: S.allTags, customCats: S.customCats, fileCats: S.fileCats };
+  var blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'kb_export.json'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function resetData() {
+  if (!confirm('确定要清除所有本地数据吗？此操作不可撤销。')) return;
+  localStorage.removeItem('kb_favorites');
+  localStorage.removeItem('kb_recent');
+  localStorage.removeItem('kb_fileTags');
+  localStorage.removeItem('kb_allTags');
+  localStorage.removeItem('kb_deletedTags');
+  localStorage.removeItem('kb_customCats');
+  localStorage.removeItem('kb_catOrder');
+  localStorage.removeItem('kb_catOrderUpdatedAt');
+  localStorage.removeItem('kb_deletedCats');
+  localStorage.removeItem('kb_uploaded');
+  localStorage.removeItem('kb_fileCats');
+  location.reload();
+}
+
+// ===== MODAL FUNCTIONS =====
+function addCategoryModal() {
+  showModal('新增分类', `
+    <input type="text" id="catNameInput" placeholder="分类名称" autofocus>
+    <select id="catParentInput">
+      <option value="">无（顶级分类）</option>
+    </select>
+  `, [
+    {text:'取消', cls:'btn-ghost', action:'closeModal()'},
+    {text:'创建', cls:'btn-primary', action:'addCategory()'}
+  ]);
+  // populate parent options
+  var sel = document.getElementById('catParentInput');
+  getTree().forEach(function(cat) {
+    if (cat.id === 'other') return;
+    sel.innerHTML += '<option value="'+cat.id+'">'+esc(cat.name)+'</option>';
+  });
+}
+
+function slugifyCat(s) {
+  return String(s || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+// ID 留空且名称无法转英文(如纯中文)时自动生成合法 ID: 优先取名称里的英文/数字部分作前缀, 否则用 c-<随机后缀>
+function autoCatId(name) {
+  var ascii = String(name || '').replace(/[\u4e00-\u9fa5]/g, ' ');
+  var prefix = slugifyCat(ascii) || 'c';
+  return prefix + '-' + Date.now().toString(36).slice(-4) + Math.random().toString(36).slice(2, 6);
+}
+
+// 生成唯一合法分类ID: 名称能转英文用 slug, 否则(如纯中文)用 autoCatId; 杜绝 cat_<时间戳> 这类孤儿 id
+function makeCatId(name) {
+  var id = slugifyCat(name);
+  if (!id) id = autoCatId(name);
+  return id;
+}
+
+function addCategory() {
+  var name = document.getElementById('catNameInput').value.trim();
+  if (!name) { toast('请输入分类名称'); return; }
+  // ID 完全自动生成: 名称能转英文用 slug, 否则(如纯中文)用 autoCatId; 杜绝 cat_<时间戳> 这类孤儿 id
+  var id = makeCatId(name);
+  // 重复校验
+  var allIds = [];
+  getTree().forEach(function(c){ allIds.push(c.id); if (c.children) c.children.forEach(function(ch){ allIds.push(ch.id); }); });
+  if (allIds.indexOf(id) >= 0) { toast('分类ID已存在：' + id); return; }
+  var parent = document.getElementById('catParentInput').value;
+  S.customCats.push({id:id, name:name, icon:'fas fa-folder', parentId:parent||null, updatedAt:Date.now()});
+  Save(); closeModal(); renderAdminCats(); renderSidebar();
+  if (S.adminToken) {
+    toast('分类已创建：' + name + ' (' + id + ')');
+  } else {
+    toast('分类已创建（仅本机可见，登录后台后会同步到云端）：' + name, false);
+  }
+}
+
+function editCategoryModal(catId) {
+  // 先在顶级分类中查找; 找不到再查二级分类(children) —— 二级分类不在顶级列表, 原逻辑提前 return 导致编辑没反应
+  var cat = getTree().find(function(c){return c.id===catId});
+  if (!cat) {
+    getTree().forEach(function(c) {
+      if (c.children) {
+        var ch = c.children.find(function(ch){return ch.id===catId});
+        if (ch) cat = ch;
+      }
+    });
+  }
+  if (!cat) return;
+
+  showModal('编辑分类', `
+    <input type="text" id="editCatName" value="${esc(cat.name)}">
+    <input type="text" id="editCatIcon" value="${cat.icon||'fas fa-folder'}" placeholder="Font Awesome 图标类名">
+  `, [
+    {text:'取消', cls:'btn-ghost', action:'closeModal()'},
+    {text:'保存', cls:'btn-primary', action:'saveCategoryEdit(\''+catId+'\')'}
+  ]);
+}
+
+function saveCategoryEdit(catId) {
+  var name = document.getElementById('editCatName').value.trim();
+  var icon = document.getElementById('editCatIcon').value.trim();
+  if (!name) { toast('请输入名称'); return; }
+  // Find and update in customCats or TREE
+  var custom = S.customCats.find(function(c){return c.id===catId});
+  if (custom) {
+    custom.name = name; custom.icon = icon; custom.updatedAt = Date.now();
+  } else {
+    // 内置分类: 以同 id 的 override 存入 customCats(含父分类 id), getTree 会用其覆盖内置分类的名字/图标
+    var parentId = null;
+    getTree().forEach(function(c) {
+      if (c.children && c.children.find(function(ch){ return ch.id === catId; })) parentId = c.id;
+    });
+    S.customCats.push({id:catId, name:name, icon:icon||'fas fa-folder', parentId:parentId, updatedAt:Date.now()});
+  }
+  Save(); closeModal(); renderAdminCats(); renderSidebar();
+  toast('分类已更新');
+}
+
+function deleteCategory(catId) {
+  var tree = getTree();
+  var cat = null;
+  var childIds = [];
+  tree.forEach(function(c){
+    if (c.id === catId) { cat = c; if (c.children) c.children.forEach(function(ch){ childIds.push(ch.id); }); }
+  });
+  var delName = cat ? cat.name : catId;
+  // 检查该分类(一级含其下所有二级)是否有文件: 有文件则禁止删除, 提示先移动
+  var checkIds = [catId].concat(childIds);
+  var files = getAllFiles().filter(function(f){ return checkIds.indexOf(getFileCat(f.filename)) >= 0; });
+  if (files.length > 0) {
+    toast('「' + delName + '」下还有 ' + files.length + ' 个文件，请先将这些文件移动到其他分类再删除', false);
+    return;
+  }
+  if (!confirm('确定删除分类「' + delName + '」？' + (childIds.length ? '（将同时删除其下 ' + childIds.length + ' 个二级分类）' : ''))) return;
+  // 自定义分类: 从 customCats 移除(含同名 override); 内置分类: 记录到 deletedCats 隐藏
+  var delIds = [catId].concat(childIds);
+  S.customCats = S.customCats.filter(function(c){ return delIds.indexOf(c.id) < 0; });
+  if (!S.deletedCats) S.deletedCats = [];
+  delIds.forEach(function(id){ if (S.deletedCats.indexOf(id) < 0) S.deletedCats.push(id); });
+  // 清理排序记录与文件归类(该分类文件已确认不存在, 仅清理残留映射)
+  S.catOrder = (S.catOrder || []).filter(function(id){ return delIds.indexOf(id) < 0; });
+  S.catOrderUpdatedAt = Date.now();
+  Object.keys(S.fileCats).forEach(function(fn) {
+    if (delIds.indexOf(S.fileCats[fn]) >= 0) delete S.fileCats[fn];
+  });
+  Save(); renderAdminCats(); renderSidebar(); renderMain();
+  toast('分类已删除');
+}
+
+function moveFileModal(filename) {
+  var opts = '';
+  getTree().forEach(function(cat) {
+    if (cat.children) {
+      opts += '<optgroup label="'+esc(cat.name)+'">';
+      cat.children.forEach(function(ch) { opts += '<option value="'+ch.id+'"'+(getFileCat(filename)===ch.id?' selected':'')+'>'+esc(ch.name)+'</option>'; });
+      opts += '</optgroup>';
+    } else {
+      opts += '<option value="'+cat.id+'"'+(getFileCat(filename)===cat.id?' selected':'')+'>'+esc(cat.name)+'</option>';
+    }
+  });
+  var selVal = getFileCat(filename) || '';
+  showModal('移动文件', `
+    <p style="font-size:13px;margin-bottom:8px">${esc(filename)}</p>
+    <div class="cat-select-wrap">
+      <div class="cat-select-display placeholder" id="moveCatDisplay">— 请选择分类文件夹 —</div>
+      <select id="moveCatSelect" class="cat-select-real">${opts}</select>
+    </div>
+  `, [
+    {text:'取消', cls:'btn-ghost', action:'closeModal()'},
+    {text:'移动', cls:'btn-primary', action:'moveFile(\''+esc(filename)+'\')'}
+  ]);
+  // 初始化显示 + change 同步
+  var ms = document.getElementById('moveCatSelect');
+  if (ms) {
+    ms.onchange = function() { updateCatSelectDisplay(this, 'moveCatDisplay'); };
+    updateCatSelectDisplay(ms, 'moveCatDisplay');
+  }
+}
+
+function moveFile(filename) {
+  var cat = document.getElementById('moveCatSelect').value;
+  if (!cat) { toast('请先选择目标分类'); return; }
+  // 校验目标分类真实存在(防止写入孤儿 id)
+  var exists = false;
+  getTree().forEach(function(c){ if (c.id === cat) exists = true; if (c.children) c.children.forEach(function(ch){ if (ch.id === cat) exists = true; }); });
+  if (!exists) { toast('目标分类无效，请重新选择'); return; }
+  // 1) 本地立即生效(覆盖层), 保证界面即时反馈
+  S.fileCats[filename] = cat;
+  Save(); closeModal(); renderAdminFiles(); renderMain(); renderSidebar();
+  toast('已移动到: ' + catName(cat));
+  // 2) 持久化到云端(管理员令牌下写 manifest.category, 权威源; 其他登录用户/刷新都一致)
+  if (!S.adminToken) { toast('未登录，仅本机生效（请先在后台登录再移动以同步云端）'); return; }
+  adminApi('move', { filename: filename, targetCat: cat }).then(function (resp) {
+    if (!resp.ok || !resp.j || !resp.j.ok) {
+      toast('云端同步失败，仅本机生效：' + ((resp.j && resp.j.error) || '未知错误'));
+    } else {
+      // 云端已更新 manifest.category, 重拉使 FILES 权威分类生效(主页/侧栏计数等)
+      refreshManifest(function () { renderAdminFiles(); renderMain(); renderSidebar(); });
+      toast('已移动到「' + catName(cat) + '」并已同步到云端');
+    }
+  }).catch(function () { toast('云端同步失败，仅本机生效：网络错误'); });
+}
+
+function editTagsModal(filename) {
+  var tags = S.fileTags[filename] || [];
+  var tagHtml = tags.map(function(t) {
+    return '<span class="tag-chip" id="tag_'+esc(t)+'">#'+esc(t)+' <span class="remove" onclick="removeFileTag(\''+esc(filename)+'\',\''+esc(t)+'\')"><i class="fas fa-times"></i></span></span>';
+  }).join('');
+  showModal('编辑标签', `
+    <p style="font-size:13px;margin-bottom:8px">${esc(filename)}</p>
+    <div class="tag-editor" id="fileTagEditor">${tagHtml || '<span style="color:var(--light)">暂无标签</span>'}</div>
+    <div class="tag-input-row">
+      <input type="text" id="newFileTag" placeholder="输入标签后回车..." onkeydown="if(event.key===\'Enter\')addFileTag('${esc(filename)}')">
+      <button class="btn btn-sm btn-primary" onclick="addFileTag('${esc(filename)}')">添加</button>
+    </div>
+  `, [
+    {text:'完成', cls:'btn-primary', action:'closeModal()'}
+  ]);
+}
+
+function addFileTag(filename) {
+  var tag = document.getElementById('newFileTag').value.trim();
+  if (!tag) return;
+  if (!S.fileTags[filename]) S.fileTags[filename] = [];
+  if (S.fileTags[filename].indexOf(tag) >= 0) { toast('标签已存在'); return; }
+  S.fileTags[filename].push(tag);
+  if (S.allTags.indexOf(tag) < 0) S.allTags.push(tag);
+  Save();
+  document.getElementById('newFileTag').value = '';
+  editTagsModal(filename);
+  renderSidebar(); renderMain();
+}
+
+function removeFileTag(filename, tag) {
+  S.fileTags[filename] = (S.fileTags[filename]||[]).filter(function(t){return t!==tag});
+  Save(); editTagsModal(filename); renderSidebar(); renderMain();
+}
+
+function deleteFile(filename) {
+  if (!confirm('确定删除文件「'+filename+'」？\n删除后将在「文件管理」中标注为「已删除」，可随时恢复。')) return;
+  if (!S.adminToken) { toast('请先登录后台'); return; }
+  adminApi('delete', { filename: filename }).then(function(resp) {
+    if (!resp.ok || !resp.j.ok) { toast('删除失败：' + (resp.j.error || '未知错误')); return; }
+    // 清除本地跟踪, 立即从界面消失
+    S.uploaded = S.uploaded.filter(function(f){return f.name !== filename});
+    S.favorites = S.favorites.filter(function(f){return f !== filename});
+    S.recent = S.recent.filter(function(f){return f !== filename});
+    delete S.fileTags[filename];
+    delete S.fileCats[filename];
+    Save();
+    // 同步即时从首页/列表移除(不依赖异步拉取), 之后 refreshManifest 用权威数据再渲染一次
+    FILES = FILES.filter(function(f){ return f.filename !== filename; });
+    renderMain();
+    refreshManifest(function() { renderAdminFiles(); renderSidebar(); renderMain(); });
+    toast('已删除，可在「文件管理 - 已删除」中恢复');
+  }).catch(function() {
+    toast('删除失败：网络错误，请确认函数 URL 可达');
+  });
+}
+
+// 统一的后台 API 调用(携带管理员令牌)
+// 后台令牌 24h 过期: 过期时 adminApi 会收到 401, 统一提示重新登录(避免静默失败让用户误以为"没有已删除文件")
+var _tokenExpiredNotified = 0;
+function onTokenExpired() {
+  var now = Date.now();
+  if (now - _tokenExpiredNotified < 8000) return; // 防抖: 同一会话多次操作不刷屏
+  _tokenExpiredNotified = now;
+  if (typeof toast === 'function') toast('后台登录已过期，请重新登录', 'error');
+  var box = document.getElementById('adminLogin');
+  if (box && !box.classList.contains('show')) box.classList.add('show');
+}
+// 「已删除」tab 内的一键登录: 弹出登录框并强制置顶(避免被后台面板遮挡)
+function openTrashLogin() {
+  var box = document.getElementById('adminLogin');
+  if (box) { box.classList.add('show'); box.style.zIndex = 99999; var i = document.getElementById('adminPwdInput'); if (i) i.focus(); }
+}
+function adminApi(op, body) {
+  return fetch(UPLOAD_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-admin-token': S.adminToken },
+    body: JSON.stringify(Object.assign({ op: op }, body || {}))
+  }).then(function(r) {
+    return r.json().then(function(j) {
+      if (r.status === 401) onTokenExpired(); // 令牌失效: 弹登录框 + 提示
+      return { ok: r.ok, status: r.status, j: j };
+    }).catch(function() { return { ok: r.ok, status: r.status, j: {} }; });
+  }).catch(function() { return { ok: false, status: 0, j: {} }; });
+}
+
+// 重新拉取 manifest(优先 raw, 失败经 SCF 中继), 用于上传/删除/恢复后即时刷新列表
+function refreshManifest(cb) {
+  fetchRawTimeout(rawManifestUrl() + '?t=' + Date.now(), 6000).then(function(r) { return r.json(); }).then(function(d) {
+    if (Array.isArray(d) && d.length) { FILES = d; pruneGhostUploads(); if (cb) cb(); return; }
+    fetchManifestViaSCF(function(m) { if (m) FILES = m; pruneGhostUploads(); if (cb) cb(); });
+  }).catch(function() {
+    fetchManifestViaSCF(function(m) { if (m) FILES = m; pruneGhostUploads(); if (cb) cb(); });
+  });
+}
+
+// 经腾讯云 SCF 中继读取 manifest(国内稳定), 回调传入数组或 null
+function fetchManifestViaSCF(cb) {
+  try {
+    fetch(UPLOAD_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ op: 'getmanifest' }) })
+      .then(function(r) { return r.json(); }).then(function(j) {
+        if (j && j.ok && Array.isArray(j.data)) cb(j.data); else cb(null);
+      }).catch(function() { cb(null); });
+  } catch (e) { cb(null); }
+}
+// 经 SCF 中继读取 meta.json, 回调传入对象或 null
+function fetchMetaViaSCF(cb) {
+  try {
+    fetch(UPLOAD_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ op: 'getmeta' }) })
+      .then(function(r) { return r.json(); }).then(function(j) {
+        if (j && j.ok && j.data) cb(j.data); else cb(null);
+      }).catch(function() { cb(null); });
+  } catch (e) { cb(null); }
+}
+
+function renderAdminTrash() {
+  var c = document.getElementById('adminContent');
+  c.innerHTML = '<div style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">' +
+    '<span style="font-size:13px;color:var(--muted)">已删除的文件会暂存在这里，可恢复或彻底清除（回收站不对外公开）。</span>' +
+    '<button class="btn btn-sm btn-danger" onclick="purgeAllTrash()"><i class="fas fa-trash"></i> 清空回收站</button></div>' +
+    '<div id="trashList">正在加载回收站…</div>';
+  adminApi('listtrash', {}).then(function(resp) {
+    var box = document.getElementById('trashList');
+    if (!box) return;
+    if (!resp.ok || !resp.j.ok) { box.innerHTML = '<p style="color:var(--danger)">加载失败：' + (resp.j.error || '未知错误') + '</p>'; return; }
+    var items = resp.j.items || [];
+    if (items.length === 0) { box.innerHTML = '<p style="color:var(--muted)">回收站为空。</p>'; return; }
+    var html = '<table class="admin-table"><thead><tr><th>原文件名</th><th>删除时间</th><th>操作</th></tr></thead><tbody>';
+    items.forEach(function(it) {
+      var dt = it.deletedAt ? new Date(it.deletedAt).toLocaleString('zh-CN') : '';
+      html += '<tr>';
+      html += '<td style="max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(it.originalFilename) + '</td>';
+      html += '<td>' + dt + '</td>';
+      html += '<td><div class="actions">';
+      html += '<button class="act-btn" title="恢复" onclick="restoreFile(\'' + esc(it.entryId) + '\')"><i class="fas fa-undo"></i></button>';
+      html += '<button class="act-btn danger" title="彻底删除" onclick="purgeFile(\'' + esc(it.entryId) + '\')"><i class="fas fa-times"></i></button>';
+      html += '</div></td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    box.innerHTML = html;
+  }).catch(function() {
+    var box = document.getElementById('trashList');
+    if (box) box.innerHTML = '<p style="color:var(--danger)">加载失败：网络错误，请确认函数 URL 可达</p>';
+  });
+}
+
+function restoreFile(entryId) {
+  if (!confirm('确定恢复该文件？将重新出现在文件列表中。')) return;
+  adminApi('restore', { entryId: entryId }).then(function(resp) {
+    if (!resp.ok || !resp.j.ok) { toast('恢复失败：' + (resp.j.error || '未知错误')); return; }
+    refreshManifest(function() { renderAdminFiles(); renderSidebar(); renderMain(); });
+    toast('已恢复');
+  }).catch(function() { toast('恢复失败：网络错误'); });
+}
+
+function purgeFile(entryId) {
+  if (!confirm('彻底删除后无法恢复，确定？')) return;
+  adminApi('purge', { entryId: entryId }).then(function(resp) {
+    if (!resp.ok || !resp.j.ok) { toast('删除失败：' + (resp.j.error || '未知错误')); return; }
+    renderAdminFiles();
+    toast('已彻底删除');
+  }).catch(function() { toast('删除失败：网络错误'); });
+}
+
+function purgeAllTrash() {
+  if (!confirm('将清空回收站中所有文件，且无法恢复，确定？')) return;
+  adminApi('purgeall', {}).then(function(resp) {
+    if (!resp.ok || !resp.j.ok) { toast('清空失败：' + (resp.j.error || '未知错误')); return; }
+    renderAdminFiles();
+    toast('回收站已清空');
+  }).catch(function() { toast('清空失败：网络错误'); });
+}
+
+function addTag() {
+  try {
+    var tag = document.getElementById('newTagInput').value.trim();
+    if (!tag) { toast('请输入标签名称'); return; }
+    if (S.allTags.indexOf(tag) >= 0) { toast('标签已存在'); return; }
+    S.allTags.push(tag);
+    // 从已删除列表中移除(重新添加先前删除过的标签)
+    S.deletedTags = (S.deletedTags || []).filter(function(t) { return t !== tag; });
+    Save();
+    renderAdminTags(); renderSidebar();
+    toast('标签已添加');
+  } catch(e) { toast('添加标签出错: ' + e.message); console.error('[addTag]', e); }
+}
+
+function removeTag(tag) {
+  S.allTags = S.allTags.filter(function(t){return t!==tag});
+  // 记录已删除标签, 防止刷新时从云端复活
+  if ((S.deletedTags || []).indexOf(tag) < 0) {
+    S.deletedTags = (S.deletedTags || []).concat([tag]);
+  }
+  Object.keys(S.fileTags).forEach(function(fn) {
+    S.fileTags[fn] = (S.fileTags[fn] || []).filter(function(t){return t!==tag});
+  });
+  Save(); renderAdminTags(); renderSidebar();
+  toast('标签已移除');
+}
+
+// ===== MODAL =====
+function showModal(title, body, footer) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  var f = document.getElementById('modalFooter');
+  f.innerHTML = '';
+  footer.forEach(function(btn) {
+    f.innerHTML += '<button class="btn btn-sm '+btn.cls+'" onclick="'+btn.action+'">'+btn.text+'</button>';
+  });
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeModal();
+    document.getElementById('adminLogin').classList.remove('show');
+  }
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
+
+// ===== VIEWER GATE（查看密码：防止外人直接访问全部文件）=====
+function isViewUnlocked() {
+  try {
+    if (sessionStorage.getItem('kb_view_unlocked') === '1') return true;
+    if (localStorage.getItem('kb_view_unlocked') === '1') return true;
+  } catch(e) {}
+  return false;
+}
+S.viewUnlocked = isViewUnlocked();
+S.isAdmin = !!S.adminToken; // 记住本设备时令牌仍在，视为已登录（上传若 401 会提示重新登录）
+loadMeta(); // 启动即从云端加载分类/标签(云端为权威源, 换设备/清缓存不丢)
+
+function showViewerLock() {
+  var lock = document.getElementById('viewerLock');
+  if (!lock) return;
+  lock.classList.add('show');
+  var layout = document.querySelector('.layout');
+  if (layout) layout.style.display = 'none';
+  setTimeout(function(){ var i=document.getElementById('viewPwdInput'); if(i) i.focus(); }, 50);
+}
+function hideViewerLock() {
+  var lock = document.getElementById('viewerLock');
+  if (lock) lock.classList.remove('show');
+  var layout = document.querySelector('.layout');
+  if (layout) layout.style.display = '';
+}
+function tryUnlock(pwd, remember) {
+  doLogin(pwd).then(function(resp) {
+    if (resp.ok && resp.j.token) {
+      S.adminToken = resp.j.token;
+      S.viewUnlocked = true;
+      S.isAdmin = true; // 查看密码=管理密码，解锁后后台亦可直接进入
+      loadMeta(); // 解锁后刷新云端分类/标签
+      try {
+        sessionStorage.setItem('kb_admin_token', S.adminToken);
+        sessionStorage.setItem('kb_view_unlocked','1');
+        if (remember) { localStorage.setItem('kb_admin_token', S.adminToken); localStorage.setItem('kb_view_unlocked','1'); }
+      } catch(e) {}
+      document.getElementById('viewErr').textContent = '';
+      document.getElementById('viewPwdInput').value = '';
+      hideViewerLock();
+      renderSidebar(); renderMain();
+    } else {
+      document.getElementById('viewErr').textContent = (resp.j && resp.j.error) || '密码错误，请重试';
+    }
+  }).catch(function(e) {
+    document.getElementById('viewErr').textContent = '无法连接服务端，请稍后重试';
+  });
+}
+
+document.getElementById('viewUnlockBtn').addEventListener('click', function() {
+  tryUnlock(document.getElementById('viewPwdInput').value, document.getElementById('viewRemember').checked);
+});
+document.getElementById('viewPwdInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('viewUnlockBtn').click();
+});
+
+// ===== INIT =====
+if (S.viewUnlocked) { renderSidebar(); renderMain(); }
+else { showViewerLock(); }
+
+</script>
+</body>
+</html>
