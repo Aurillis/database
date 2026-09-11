@@ -47,6 +47,13 @@
           "icon": "fas fa-folder",
           "parentId": "c-0z5spblc",
           "updatedAt": 1788774414815
+        },
+        {
+          "id": "c-fburpmwm",
+          "name": "品牌营销",
+          "icon": "fas fa-folder",
+          "parentId": "c-0z5spblc",
+          "updatedAt": 1789120959939
         }
       ]
     },
@@ -56,6 +63,13 @@
       "icon": "fas fa-folder",
       "parentId": "c-0z5spblc",
       "updatedAt": 1788774414815
+    },
+    {
+      "id": "c-fburpmwm",
+      "name": "品牌营销",
+      "icon": "fas fa-folder",
+      "parentId": "c-0z5spblc",
+      "updatedAt": 1789120959939
     }
   ],
   "fileCats": {
