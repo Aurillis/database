@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="WICTmT09c10ISqihIV9GaE">
+<head data-page-node-id="xA6DhOYb7rtT8e6Khpq8wR">
+<meta charset="UTF-8" data-page-node-id="P5oHdgnVJji2uiLhD1T0xT">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="HsZMijhDLUXm7YJ1iSTkFR">
+<title>Perifit 品牌亚马逊外流量渠道分析报告</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --brand:#e11d74; --brand2:#8b5cf6; --line:#e5e7eb;
+    --ig:#e1306c; --tt:#111827; --yt:#ef4444; --fb:#1877f2; --gg:#f59e0b; --x:#64748b;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:32px 20px;}
+  .wrap{max-width:1180px;margin:0 auto;}
+  header.hero{background:linear-gradient(135deg,#111827 0%,#3b0764 55%,#e11d74 100%);color:#fff;border-radius:16px;padding:36px 40px;margin-bottom:24px;}
+  header.hero h1{font-size:26px;font-weight:700;letter-spacing:.5px;}
+  header.hero p{margin-top:10px;font-size:14px;opacity:.85;line-height:1.7;}
+  .tags{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;}
+  .tag{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);padding:4px 12px;border-radius:99px;font-size:12px;}
+  h2.sec{font-size:18px;margin:34px 0 14px;padding-left:12px;border-left:4px solid var(--brand);font-weight:700;}
+  .note{font-size:12.5px;color:var(--muted);margin:-6px 0 14px 16px;}
+  .grid{display:grid;gap:16px;}
+  .grid.c4{grid-template-columns:repeat(4,1fr);}
+  .grid.c3{grid-template-columns:repeat(3,1fr);}
+  .grid.c2{grid-template-columns:repeat(2,1fr);}
+  @media(max-width:900px){.grid.c4,.grid.c3,.grid.c2{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;}
+  .kpi .lab{font-size:12.5px;color:var(--muted);}
+  .kpi .val{font-size:26px;font-weight:800;margin-top:6px;}
+  .kpi .sub{font-size:12px;color:var(--muted);margin-top:4px;}
+  .kpi .accent{color:var(--brand);}
+  .chart{width:100%;height:360px;}
+  .chart.sm{height:300px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;}
+  th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;}
+  th{background:#f9fafb;color:#374151;font-weight:600;white-space:nowrap;}
+  td:first-child{font-weight:600;}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;}
+  .badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11.5px;font-weight:600;}
+  .b-green{background:#dcfce7;color:#15803d;}
+  .b-amber{background:#fef3c7;color:#b45309;}
+  .b-gray{background:#f1f5f9;color:#64748b;}
+  .b-pink{background:#fce7f3;color:#be185d;}
+  ul.insight{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  ul.insight li{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:13.5px;line-height:1.75;}
+  ul.insight b{color:var(--brand);}
+  .src{font-size:11px;color:#9ca3af;margin-top:8px;}
+  footer{margin-top:36px;font-size:12px;color:#9ca3af;text-align:center;line-height:1.8;}
+</style>
+</head>
+<body data-page-node-id="6rbd1rk2pxzIMbwFAly8mt">
+<div class="wrap" data-page-node-id="Ue8SejSn1G3OPA3XaK2PLq">
+
+<header class="hero" data-page-node-id="6Unh0MAG1tu6iFRM0PJ8gr">
+  <h1 data-page-node-id="vTecv8yFRUuU8E9OSP6n8D">Perifit 品牌亚马逊外流量渠道全景分析</h1>
+  <p data-page-node-id="6BPVLHqcMX2Abb2dhsCsYb">Perifit（法国 femtech 品牌，母公司 X6 INNOVATIONS SAS，2016 年创立于巴黎）以"游戏化凯格尔训练器 + App"切入盆底肌修复赛道，是亚马逊该品类头部品牌。本报告调研其独立站与 Instagram / TikTok / YouTube / Facebook / Google（搜索）五大亚马逊外流量渠道的关键指标。</p>
+  <div class="tags" data-page-node-id="jGjXnjj14GjQ6WECsHX18m">
+    <span class="tag" data-page-node-id="pWXA7WfLlnkp6GzVaJvDaH">独立站 perifit.co（Shopify 多区域）✅ 存在</span>
+    <span class="tag" data-page-node-id="TY8os8CvJbghtsZItZQCH9">月访问 ~160 万</span>
+    <span class="tag" data-page-node-id="g8RGlFdm3Sm2u6D8Yt9ydz">Instagram 9.7 万粉</span>
+    <span class="tag" data-page-node-id="sxlmDGIDJqF044pqI2QXvL">TikTok 4.5M 播放</span>
+    <span class="tag" data-page-node-id="rFFPzUDVbzMP0jItLD1FqF">Facebook 4 万赞 · Meta 广告主</span>
+    <span class="tag" data-page-node-id="kpLyU9CxA3OFUEckIptTsJ">自然搜索占比 ~50%</span>
+  </div>
+</header>
+
+<!-- ============ 核心结论 KPI ============ -->
+<h2 class="sec" data-page-node-id="KzrMH5t2UJ4lY77P5FG4e3">一、核心指标速览</h2>
+<p class="note" data-page-node-id="3OTmP2h1IcNDb0DKNBEBb8">数据采集时间：2026 年 9 月，来源包括 BrandSearch、TechList、GridinSoft、AdMake、品牌官网及公开数据。</p>
+<div class="grid c4" data-page-node-id="8fdFvXMFgmGQA6abECNiAD">
+  <div class="card kpi" data-page-node-id="hzf4oiGC6eFeggE6Tvd4rQ"><div class="lab" data-page-node-id="mrErDvneB8IJSJMaeofZSf">独立站月访问量</div><div class="val accent" data-page-node-id="VBoGUOzgCyPBy5yMavItjd">~160 万</div><div class="sub" data-page-node-id="LEDfUpZv6bWdyycNVqemRm">2025-12，环比 +46%；Q4 从 30.5 万 → 111 万 → 160 万</div></div>
+  <div class="card kpi" data-page-node-id="yZ4vubFhJKaPjeuNCCAR87"><div class="lab" data-page-node-id="5C2lMpBpsm6YCz3JyrFCAW">社媒粉丝总量（IG+FB+TT+YT）</div><div class="val" data-page-node-id="zv938ov41Ck0Pb5sOv6LYp">~15.1 万</div><div class="sub" data-page-node-id="5usjmWQ9MtnMIDspnhgq5n">IG 97.3K / FB 40K / TikTok 13.1K / YouTube 1.2K</div></div>
+  <div class="card kpi" data-page-node-id="TmxihEDv4eFwewIyKlwlMF"><div class="lab" data-page-node-id="BD9gklEPCKFpKQlNIv743d">Meta 在投广告</div><div class="val" data-page-node-id="hAjW8RV93XCA10yuZTZWTk">269 条</div><div class="sub" data-page-node-id="uZBFI5SMC4Xfdnu2LKNFBw">FB/IG/Messenger 同步投放，最长跑 138 天，累计创意 8.3K</div></div>
+  <div class="card kpi" data-page-node-id="8GxRnZiXxy1pPIvNIGiyZL"><div class="lab" data-page-node-id="JqreSx3JqXYRrcSvTTuCSD">独立站年营收（估算）</div><div class="val" data-page-node-id="qiKWb6Z0SupbKRNNeP3dPW">~$800 万</div><div class="sub" data-page-node-id="VIvdoT1Xs1Qo46RZa3DleJ">TechList 2026 估算；累计用户 75 万+</div></div>
+</div>
+
+<!-- ============ 独立站 ============ -->
+<h2 class="sec" data-page-node-id="hIhpyRjB01ysaP6xRdnWFf">二、独立站 perifit.co —— 确认存在，且是核心流量承接池</h2>
+<div class="grid c2" data-page-node-id="M5M8ON4zpPr5T4e38QusHq">
+  <div class="card" data-page-node-id="7pU1IQ7ig5Qc4bFLnTtzmq">
+    <div class="lab" style="font-size:13px;color:var(--muted);margin-bottom:8px;" data-page-node-id="G674PtdO4H1wgQZgnPRNn8">月访问量走势（2025 Q4，万次）</div>
+    <div id="chartTraffic" class="chart sm" data-page-node-id="M43gM0JSWRXTWkrJLoCEED"></div>
+    <div class="src" data-page-node-id="Q82WDmQME8Uqakd7jy0EkI">来源：TechList.ai 对 perifit.co 的监测快照（2025-10 ~ 2025-12）</div>
+  </div>
+  <div class="card" data-page-node-id="cWXWnBhHVDypmhhSwXEtU2">
+    <div class="lab" style="font-size:13px;color:var(--muted);margin-bottom:8px;" data-page-node-id="o6vPghXZGatgRE63m4NmIu">独立站流量来源结构（估算）</div>
+    <div id="chartChannel" class="chart sm" data-page-node-id="6JtFLxVSlqtklLcdBxS0gL"></div>
+    <div class="src" data-page-node-id="UqxUW33wKEJRGeVfqaCqbk">来源：TechList.ai；其余渠道（社媒/引荐/邮件）合计约 11%</div>
+  </div>
+</div>
+<div class="grid c3" style="margin-top:16px;" data-page-node-id="kkeuel0g5XqJWm29cc2a9R">
+  <div class="card kpi" data-page-node-id="5KPUvJAnryen99dhjrK3Yp"><div class="lab" data-page-node-id="GTb586a3sH85mNEfkBpL4X">站点形态</div><div class="val" style="font-size:18px;" data-page-node-id="AABQZXK11uAvm6NnHz1Ba8">Shopify 多区域</div><div class="sub" data-page-node-id="fQKNhJ7O4N4PncGCc9MNvo">perifit.co 主站 + uk/eu/au/ca/fr 子站，全球分仓发货（美/加/澳/法）</div></div>
+  <div class="card kpi" data-page-node-id="TipSfLQViIJcXThD0mBiDo"><div class="lab" data-page-node-id="9m7UH2AesEVve5fXlfcTN8">品牌词月搜索量</div><div class="val" style="font-size:18px;" data-page-node-id="GXtge2rW28uGKsZd9ee4qx">8,390 次</div><div class="sub" data-page-node-id="rZRre7eO8PsWTqDMSbGACI">"perifit" 品牌词；"kegel exercises" 品类词 44K/月</div></div>
+  <div class="card kpi" data-page-node-id="LtfyKFx8xrF7IXPikjUEw6"><div class="lab" data-page-node-id="0aHSbcExs54R7OGqCjQy2E">SEO 权重与口碑</div><div class="val" style="font-size:18px;" data-page-node-id="sFFqOxThliDEVSPeieB8Z6">DA 44 · 9,319 外链域</div><div class="sub" data-page-node-id="NkFhadyVRQez9S4XvSl4Hm">Trustpilot 4.6/5（727 条评论）</div></div>
+</div>
+
+<!-- ============ 社媒矩阵 ============ -->
+<h2 class="sec" data-page-node-id="sRw1gkTY8YmmBl5vfcSyhj">三、社媒矩阵总览 —— 粉丝量与内容资产对比</h2>
+<div class="card" data-page-node-id="3bkZHOg1dics9tcsI4to9r">
+  <div id="chartFollowers" class="chart" data-page-node-id="m4ah8kyeYWBFCPJtescjBg"></div>
+</div>
+
+<!-- ============ 分渠道明细 ============ -->
+<h2 class="sec" data-page-node-id="qLIjpy91ZaCRSaUZZPkf6N">四、分渠道关键指标明细</h2>
+<table data-page-node-id="wG2WkS2ktoDJ2IudADXtJK">
+  <tr data-page-node-id="uglltVjDdLvPAkitVSdr0F">
+    <th data-page-node-id="giB6s3IwUdoZqFIYcIMz25">渠道</th><th data-page-node-id="UP8xsaaVTjDRhRmTVeLFHq">账号</th><th data-page-node-id="UJYotztKdNoAGD7nUQSOfB">粉丝/规模</th><th data-page-node-id="P2rhXX9ohWDkRUjUgAIqR0">内容量 &amp; 发帖频率</th><th data-page-node-id="SB5iC22NAGeHIv15tCzV3c">互动数据</th><th data-page-node-id="wqZhwDUurkSGS5Vzg3bgL7">流量规模</th><th data-page-node-id="jHVOEqFzDa9nrfjMlb7ZYs">定位评估</th>
+  </tr>
+  <tr data-page-node-id="1xkBdrfibEqlLMaRoOhiai">
+    <td data-page-node-id="sgf7MYx1Dn9iymXwH94lEJ"><span class="dot" style="background:var(--ig)" data-page-node-id="oFJ3fiJJaiuyyocaZDhcO2"></span>Instagram</td>
+    <td data-page-node-id="6r72T3ln9fwSKy6KWg9wi0">@perifit.co</td>
+    <td data-page-node-id="1wqmogfdVLbtV4SLsuBngL"><b data-page-node-id="EJpmaR86bDAZ1Mhp4sETYF">97.3K</b> 粉丝</td>
+    <td data-page-node-id="M9wmbEUWh4K8yhfhWMtjcu">累计 312 帖；近期约 2–3 帖/月</td>
+    <td data-page-node-id="EH1WLJEy1jzkrekwD1c9rI">近 10 帖获 66.9K 赞 + 975 评论；热门帖 2.1K–3.6K 赞，头部帖 66.9K 赞</td>
+    <td data-page-node-id="syXEyhIcdMLIjRcKVtva2M">单帖曝光中位数数千至数万级</td>
+    <td data-page-node-id="9PvHQXQGgk7Eglucx6vtP1"><span class="badge b-pink" data-page-node-id="fXp9TAnHGS6eTsPBDljKWz">核心阵地</span> 品牌内容 + KOL/医生背书（Dr. Arumala 等）</td>
+  </tr>
+  <tr data-page-node-id="ZGMcnjnjiTfklBThRnPe7x">
+    <td data-page-node-id="PU2EEC34OprcJFAjAgmd1B"><span class="dot" style="background:var(--tt)" data-page-node-id="pBYFFCaFzuwbo7PJvY8KG7"></span>TikTok</td>
+    <td data-page-node-id="KMMA6YvgEb1zBjrX21HNaG">@perifit（FR 站追踪）</td>
+    <td data-page-node-id="fEG23mfc2CoyCjnA9OjsF0"><b data-page-node-id="jWFyYZKJEJOIBSVtHDG9Ou">13.1K</b> 粉丝（近月 +0.9%）</td>
+    <td data-page-node-id="1CfZwRk0dIutP20uVvA0Jc">308 条视频；高频更新（近半年持续发布）</td>
+    <td data-page-node-id="n81AmHxcdtM4oHUo0CcDMD">累计 115K 获赞</td>
+    <td data-page-node-id="BFU9AiQraLC8OWcQvZiNJH">累计播放 <b data-page-node-id="0Vcd2xA78fiyyTEMTzoIA0">4.5M</b>，单条均值 ~1.5 万</td>
+    <td data-page-node-id="t1BswXMYZtM89OTsaLIoqB"><span class="badge b-green" data-page-node-id="I9MJDVw1LIRcLFKmef35Ra">高增长杠杆</span> 走 momtok / 女性健康话题流，靠内容出圈而非粉丝沉淀</td>
+  </tr>
+  <tr data-page-node-id="St9JSVJ9jmJGSTl8F4uGQ1">
+    <td data-page-node-id="YfFhJPSvjiC1Srx7oMEidB"><span class="dot" style="background:var(--yt)" data-page-node-id="3h3zxatrnCtELw1gwTEdCo"></span>YouTube</td>
+    <td data-page-node-id="HUauITPa4WLAPAfXJUbf3m">Perifit（@perifit_co）</td>
+    <td data-page-node-id="xnXm0b7xUsBSnV0z3JSJSu"><b data-page-node-id="QHWa4529X3UsvXTb1NAhnA">~1.3K</b> 订阅</td>
+    <td data-page-node-id="1GXiOxZROguSTm20eUslt0">37 条视频，10 年累计（≈4 条/年）</td>
+    <td data-page-node-id="VC8ul1F8CLPnUl5WvnopDV">—</td>
+    <td data-page-node-id="gGkFFo6pqiSo4UPBiFGmcM">累计观看 <b data-page-node-id="1Y5ig5PkZT5JG84tCv6ogT">58.3 万</b>，单条均值 ~1.6 万</td>
+    <td data-page-node-id="RTrHmUzkXCqXEwhjLxRBCD"><span class="badge b-amber" data-page-node-id="eDDXerlT0Ngx6s9MHBAMCH">长尾资产</span> 教程/功效证明类内容，单条长尾流量可观但运营投入极低</td>
+  </tr>
+  <tr data-page-node-id="eziZD5xSVLub64EoHaIyZb">
+    <td data-page-node-id="wMvXlTlVLR0XWi1FiDQhCR"><span class="dot" style="background:var(--fb)" data-page-node-id="guyEtFr4tXFKjexYjUyCiD"></span>Facebook</td>
+    <td data-page-node-id="LPReZrQY3oanH0UXrYIeCX">Perifit 主页</td>
+    <td data-page-node-id="A4XKHc0oCBFzAMetrnoET6"><b data-page-node-id="4tkftrR3UqE6LGcPVBw0T9">40K</b> 主页赞</td>
+    <td data-page-node-id="h313A7ZN2KmzWWkCgEUCE8">以付费投放为主，非内容运营阵地</td>
+    <td data-page-node-id="aoL6ur6VwhCHuf7qBggcG5">—</td>
+    <td data-page-node-id="ryMn4AL7LVxzl29z3r7uvl">269 条在投广告覆盖 FB/IG/Messenger/Audience Network</td>
+    <td data-page-node-id="HfpL0wQgR7d1HAFAIkmSXD"><span class="badge b-pink" data-page-node-id="mmbJC7h3FqxlC3WBwbHfg8">付费发动机</span> Meta 广告主，累计 8.3K 条创意，多语言素材（英/法/德/意/西）</td>
+  </tr>
+  <tr data-page-node-id="Age7hKDyaXgBOiD4EEnQGE">
+    <td data-page-node-id="c3JMEbI7O8mNKNBIQ6Sggc"><span class="dot" style="background:var(--gg)" data-page-node-id="xAIpYWcfcUd32lsojgXZHV"></span>Google 搜索</td>
+    <td data-page-node-id="5rJj1opFsLsrpCe93Q3HC4">perifit.co（SEO）</td>
+    <td data-page-node-id="HbQGvby6Loo1f5PdkjRzVX"><b data-page-node-id="AkVdWpgOO8DlX8LAAyFXNt">~50%</b> 站点流量来自自然搜索</td>
+    <td data-page-node-id="wcr8HkSUcE3SBs48G2UZc1">内容型 SEO 页面长期沉淀</td>
+    <td data-page-node-id="stvm8izFIDzncqTRdPhK6d">—</td>
+    <td data-page-node-id="3P66tDHTjFwXk9OVjS50l6">品牌词 8,390/月；品类词 "kegel exercises" 44K/月</td>
+    <td data-page-node-id="U5GumNsWhQ3eQWVKluYnQE"><span class="badge b-green" data-page-node-id="V2SFfSYjL4aqY5T0WCh67C">最大免费渠道</span> Google Ads 在投为 0，付费搜索依赖极低</td>
+  </tr>
+  <tr data-page-node-id="DieNpCGBupZzoLsHFoRxdr">
+    <td data-page-node-id="ebHSjH1FDBX8zGbhG9vxr6"><span class="dot" style="background:var(--x)" data-page-node-id="GcCRHUH5GnGkUGvD5bHHHx"></span>X (Twitter)</td>
+    <td data-page-node-id="Z4UpoKifpaiAYjRLEQhXJC">@perifitapp</td>
+    <td data-page-node-id="geGqY5AzmRWTAt0f0Jpy2K">524 粉丝</td>
+    <td data-page-node-id="dWucDUUGirqBHpPzYlSOCJ">98 帖（2016 年起）</td>
+    <td data-page-node-id="F1H4JeoUe89geXRarVVgl0">—</td>
+    <td data-page-node-id="1c6YnsOlB17RX06XtU6SZd">边缘渠道</td>
+    <td data-page-node-id="pLj6DxAByZSlxAgZVjNl7Y"><span class="badge b-gray" data-page-node-id="8iZ0pCnRAQsYEfO8QyE2tG">边缘</span> 仅作官方信息存在</td>
+  </tr>
+</table>
+
+<!-- ============ 互动对比 ============ -->
+<h2 class="sec" data-page-node-id="QhRMeoDHfKLe0Z77wtAXlE">五、互动数据可视化对比</h2>
+<div class="grid c2" data-page-node-id="1Ms55FaH6L36kcJ9bQ8fby">
+  <div class="card" data-page-node-id="yKk7vfkoHU2K9DSTcohcfN">
+    <div style="font-size:13px;color:var(--muted);margin-bottom:8px;" data-page-node-id="PLbFC3SJ7VH8M2GV9P6gNl">各渠道单条内容平均互动/观看（对数感受参考）</div>
+    <div id="chartEngage" class="chart sm" data-page-node-id="bV0gDOWTSTBobPEqRoVbJE"></div>
+  </div>
+  <div class="card" data-page-node-id="waMTImUFRTwRyDPnmk7CqX">
+    <div style="font-size:13px;color:var(--muted);margin-bottom:8px;" data-page-node-id="KsN54aOB4VIuAMSrAxNZOz">Meta 付费广告素材构成（在投 269 条）</div>
+    <div id="chartAds" class="chart sm" data-page-node-id="oRg0OHC1xobOYUjrg5P4Jd"></div>
+  </div>
+</div>
+
+<!-- ============ 洞察 ============ -->
+<h2 class="sec" data-page-node-id="xkZXzFzm2srqVsOxlYerig">六、结论与策略洞察</h2>
+<ul class="insight" data-page-node-id="ymjUURwn0Kp04k0msMVa4F">
+  <li data-page-node-id="fHgieGcy0UZMvus234SUun"><b data-page-node-id="XIIRzREMEN1BzRQuqZn8pg">① 独立站确实存在且体量可观：</b>perifit.co 为 Shopify 多区域独立站，月访问约 160 万、年营收估算 $8M、累计用户 75 万+，与亚马逊店铺并行构成"双主渠道"，独立站承担品牌溢价（定价高于亚马逊）与首购复购全链路。</li>
+  <li data-page-node-id="knqQfkHLXCbXY50FScsgHI"><b data-page-node-id="XQfwqAxUNcFcjIfkS5ea1k">② "付费 + 自然"双轮驱动的 Meta 投放：</b>Facebook 本身粉丝仅 4 万，但通过 269 条在投广告（FB/IG/Messenger 全覆盖、65% 动态商品广告）实现规模化获客，最长广告连续投放 138 天，说明有稳定跑通的爆款素材与 ROI 模型。</li>
+  <li data-page-node-id="8VbAQXaucCZc85IifyJZzf"><b data-page-node-id="lkPHmJLO2VEhT8y86TklAe">③ Instagram 是内容主阵地，TikTok 是出圈杠杆：</b>IG 97.3K 粉丝承担品牌人设与专业背书（医生/盆底专家出镜）；TikTok 粉丝虽仅 13.1K，但 308 条视频撬动 4.5M 播放，"轻粉丝、重播放"是典型的内容驱动型打法。</li>
+  <li data-page-node-id="EVjTdx8onC9Sm6hM4aIH3x"><b data-page-node-id="mxDqQTmyYpD4KhDf8YhGVN">④ 搜索流量是最大免费护城河：</b>自然搜索贡献约 50% 站点流量，品牌词月搜 8,390 次，且 Google Ads 在投为 0 —— 意味着品牌已通过 SEO + 口碑（Trustpilot 4.6、9,319 外链域）实现"零竞价拦截"的自有流量闭环。</li>
+  <li data-page-node-id="SaqBGQbCGDZUhNHLVwuVgY"><b data-page-node-id="5oSRY4emwH3Al4tHGfsPgU">⑤ YouTube 属长尾补位：</b>订阅仅 1.3K 但累计 58 万播放，单条视频平均 1.6 万观看，内容以产品教程与功效证明为主，低成本维持"搜索品牌词后的第二信任触点"。</li>
+  <li data-page-node-id="PucxRIyKfsQph6cLo3CKk9"><b data-page-node-id="lBQgyaTYlCyYbcHLmw8jrw">⑥ 对同类卖家的启示：</b>Perifit 的亚马逊外流量模型 = <b data-page-node-id="1e62W13DQ5cs90MAZ8jmkh">Meta 付费拉新（269 条广告）+ IG 品牌内容沉淀 + TikTok 话题出圈 + SEO 品类词占位</b>，最终汇入独立站完成高毛利转化；社媒粉丝量并非核心指标，"内容播放量 × 广告素材迭代速度 × 自然搜索占比"才是其流量护城河。</li>
+</ul>
+
+<footer data-page-node-id="WOZA8vfMwKTz1TnY4G1Yuc">
+  数据来源：Perifit 官网（perifit.co 及各区域子站）、BrandSearch、TechList.ai、GridinSoft、AdMakeAI、RocketReach、SimilarWeb 公开页 · 采集时间 2026-09-07<br data-page-node-id="oD9GpA8yljC9bL9lzIjI2P">
+  注：社媒粉丝数为第三方追踪快照，各平台实时数据存在小幅波动；营收与月访问为第三方估算值，仅供参考。
+</footer>
+
+</div>
+
+<script>
+const ink='#1f2937', muted='#6b7280';
+const axis={axisLabel:{color:muted,fontSize:11},axisLine:{lineStyle:{color:'#e5e7eb'}},axisTick:{show:false}};
+
+// 1. 独立站月访问趋势
+const c1=echarts.init(document.getElementById('chartTraffic'));
+c1.setOption({
+  grid:{left:50,right:20,top:30,bottom:30},
+  tooltip:{trigger:'axis'},
+  xAxis:{type:'category',data:['2025-10','2025-11','2025-12'],...axis},
+  yAxis:{type:'value',name:'万次',nameTextStyle:{color:muted},...axis,splitLine:{lineStyle:{color:'#f3f4f6'}}},
+  series:[{
+    type:'line',data:[30.5,111,160],smooth:true,
+    symbol:'circle',symbolSize:10,
+    lineStyle:{width:3,color:'#e11d74'},
+    itemStyle:{color:'#e11d74'},
+    areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(225,29,116,.25)'},{offset:1,color:'rgba(225,29,116,.02)'}]}},
+    label:{show:true,color:ink,fontWeight:700,formatter:'{c} 万'}
+  }]
+});
+
+// 2. 流量来源结构
+const c2=echarts.init(document.getElementById('chartChannel'));
+c2.setOption({
+  tooltip:{trigger:'item',formatter:'{b}: {c}%'},
+  legend:{bottom:0,textStyle:{color:muted,fontSize:11}},
+  series:[{
+    type:'pie',radius:['42%','68%'],center:['50%','45%'],
+    label:{formatter:'{b}\n{c}%',color:ink,fontSize:11},
+    data:[
+      {value:50,name:'自然搜索',itemStyle:{color:'#f59e0b'}},
+      {value:39,name:'直接访问',itemStyle:{color:'#8b5cf6'}},
+      {value:11,name:'社媒/引荐/邮件等',itemStyle:{color:'#e1306c'}}
+    ]
+  }]
+});
+
+// 3. 粉丝量对比
+const c3=echarts.init(document.getElementById('chartFollowers'));
+c3.setOption({
+  grid:{left:70,right:60,top:20,bottom:30},
+  tooltip:{trigger:'axis',formatter:'{b}<br/>粉丝/规模：{c} K'},
+  xAxis:{type:'value',...axis,splitLine:{lineStyle:{color:'#f3f4f6'}}},
+  yAxis:{type:'category',data:['YouTube 订阅','TikTok 粉丝','Facebook 主页赞','Instagram 粉丝','品牌词月搜索(0.1K)','站点月访问(0.1K)'],...axis},
+  series:[{
+    type:'bar',barWidth:20,
+    data:[
+      {value:1.3,itemStyle:{color:'#ef4444'}},
+      {value:13.1,itemStyle:{color:'#111827'}},
+      {value:40,itemStyle:{color:'#1877f2'}},
+      {value:97.3,itemStyle:{color:'#e1306c'}},
+      {value:83.9,itemStyle:{color:'#f59e0b'}},
+      {value:1600,itemStyle:{color:'#8b5cf6'}}
+    ],
+    label:{show:true,position:'right',color:ink,fontWeight:700,fontSize:12,
+      formatter:p=>['1.3K 订阅','13.1K 粉丝','40K 赞','97.3K 粉丝','8,390 次/月','160 万次/月'][p.dataIndex]}
+  }]
+});
+
+// 4. 单条内容平均互动
+const c4=echarts.init(document.getElementById('chartEngage'));
+c4.setOption({
+  grid:{left:55,right:20,top:20,bottom:60},
+  tooltip:{trigger:'axis'},
+  xAxis:{type:'category',data:['Instagram\n(赞/帖·头部)','TikTok\n(播放/条)','YouTube\n(播放/条)'],...axis,axisLabel:{color:muted,fontSize:11,interval:0}},
+  yAxis:{type:'log',logBase:10,name:'次(对数)',nameTextStyle:{color:muted},...axis,splitLine:{lineStyle:{color:'#f3f4f6'}}},
+  series:[{
+    type:'bar',barWidth:40,
+    data:[
+      {value:6690,itemStyle:{color:'#e1306c'},label:{show:true,position:'top',color:ink,fontWeight:700,formatter:'6.7K 赞(头部帖)'}},
+      {value:14600,itemStyle:{color:'#111827'},label:{show:true,position:'top',color:ink,fontWeight:700,formatter:'1.5万 播放'}},
+      {value:15800,itemStyle:{color:'#ef4444'},label:{show:true,position:'top',color:ink,fontWeight:700,formatter:'1.6万 播放'}}
+    ]
+  }]
+});
+
+// 5. Meta 广告素材构成
+const c5=echarts.init(document.getElementById('chartAds'));
+c5.setOption({
+  tooltip:{trigger:'item',formatter:'{b}: {c}%'},
+  legend:{bottom:0,textStyle:{color:muted,fontSize:11}},
+  series:[{
+    type:'pie',radius:['42%','68%'],center:['50%','45%'],
+    label:{formatter:'{b}\n{c}%',color:ink,fontSize:11},
+    data:[
+      {value:65,name:'动态商品广告 (DPA)',itemStyle:{color:'#8b5cf6'}},
+      {value:22,name:'视频广告',itemStyle:{color:'#1877f2'}},
+      {value:12,name:'图片广告',itemStyle:{color:'#e1306c'}},
+      {value:1,name:'轮播等其他',itemStyle:{color:'#9ca3af'}}
+    ]
+  }]
+});
+
+window.addEventListener('resize',()=>[c1,c2,c3,c4,c5].forEach(c=>c.resize()));
+</script>
+</body>
+</html>
