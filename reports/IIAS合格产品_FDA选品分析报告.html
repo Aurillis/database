@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="T7j2uUrH0viwiW123Yyer3">
+<head data-page-node-id="SHbPJTyXI88ShlPS2Xtrt8">
+<meta charset="UTF-8" data-page-node-id="4iLMhsmfAcBFyYA2qtaWaA">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="uELg5yeT6dGzMxJ3AHEn6A">
+<title>SIGIS IIAS 合格产品类目分析与 FDA Ⅰ/Ⅱ 类选品报告</title>
+<style>
+  :root {
+    --ink:#1a2332; --ink-2:#3d4a5d; --sub:#6b7a8d; --line:#e3e8ef; --line-2:#eef2f7;
+    --bg:#f4f6fa; --card:#ffffff;
+    --primary:#17346b; --primary-2:#1d4ed8; --primary-soft:#eaf0fb;
+    --green:#0e7355; --green-bg:#e9f7f1;
+    --blue:#1d4ed8; --blue-bg:#eaf0fb;
+    --amber:#9a5b00; --amber-bg:#fdf5e6;
+    --red:#a93226; --red-bg:#fdeeec;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif; color:var(--ink);
+         background:var(--bg); line-height:1.7; font-size:14px; padding-bottom:40px; }
+  .wrap { max-width:1100px; margin:0 auto; padding:0 20px; }
+
+  /* ===== 页眉 ===== */
+  .cover { background:linear-gradient(135deg,#12294f 0%,#1d3f7d 60%,#24509b 100%); color:#fff;
+           padding:44px 0 38px; margin-bottom:28px; }
+  .cover-tag { display:inline-block; font-size:12px; letter-spacing:2px; border:1px solid rgba(255,255,255,.45);
+               border-radius:3px; padding:3px 12px; margin-bottom:16px; opacity:.92; }
+  .cover h1 { font-size:27px; font-weight:700; letter-spacing:.5px; line-height:1.4; margin-bottom:10px; }
+  .cover h1 span { color:#9fc0ff; }
+  .cover .sub { font-size:13.5px; color:#c6d6f2; max-width:820px; }
+  .cover .meta-row { display:flex; gap:26px; flex-wrap:wrap; margin-top:20px; padding-top:16px;
+                     border-top:1px solid rgba(255,255,255,.22); font-size:12.5px; color:#dce6f8; }
+  .cover .meta-row b { color:#fff; font-weight:600; }
+
+  /* ===== 摘要 ===== */
+  .summary { background:var(--card); border:1px solid var(--line); border-left:5px solid var(--primary);
+             border-radius:8px; padding:20px 24px; margin:0 0 26px; box-shadow:0 1px 3px rgba(23,52,107,.06); }
+  .summary h2 { font-size:15px; color:var(--primary); margin-bottom:10px; letter-spacing:1px; }
+  .summary ul { padding-left:20px; }
+  .summary li { margin:5px 0; color:var(--ink-2); }
+  .summary li b { color:var(--ink); }
+
+  /* ===== KPI ===== */
+  .kpi { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:0 0 30px; }
+  .kpi .box { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px 18px 14px;
+              box-shadow:0 1px 3px rgba(23,52,107,.05); position:relative; overflow:hidden; }
+  .kpi .box::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--primary-2); opacity:.85; }
+  .kpi .v { font-size:26px; font-weight:700; color:var(--primary); line-height:1.2; }
+  .kpi .v small { font-size:14px; font-weight:600; color:var(--sub); }
+  .kpi .l { font-size:12.5px; color:var(--sub); margin-top:3px; }
+
+  /* ===== 章节 ===== */
+  .sec { margin:36px 0 0; }
+  .sec-head { display:flex; align-items:baseline; gap:12px; border-bottom:2px solid var(--primary);
+              padding-bottom:8px; margin-bottom:16px; }
+  .sec-head .no { font-size:22px; font-weight:800; color:var(--primary-2); font-family:Georgia,serif; }
+  .sec-head h2 { font-size:19px; font-weight:700; color:var(--primary); letter-spacing:.5px; }
+  .sec-head .hint { margin-left:auto; font-size:12px; color:var(--sub); }
+  h3.sub-h { font-size:15.5px; font-weight:700; color:var(--ink); margin:20px 0 10px; padding-left:10px;
+             border-left:3px solid var(--primary-2); }
+
+  /* ===== 卡片 ===== */
+  .card { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:18px 22px;
+          margin:0 0 18px; box-shadow:0 1px 3px rgba(23,52,107,.05); }
+  .card ul { padding-left:20px; }
+  .card li { margin:6px 0; color:var(--ink-2); }
+  .card li b { color:var(--ink); }
+
+  /* ===== 表格 ===== */
+  .tbl-wrap { background:var(--card); border:1px solid var(--line); border-radius:8px;
+              box-shadow:0 1px 3px rgba(23,52,107,.05); overflow-x:auto; margin:0 0 18px; }
+  table { width:100%; border-collapse:collapse; font-size:13.2px; }
+  thead th { background:var(--primary); color:#fff; padding:10px 12px; text-align:left; font-weight:600;
+             letter-spacing:.4px; white-space:nowrap; }
+  tbody td { border-top:1px solid var(--line-2); padding:9px 12px; vertical-align:top; color:var(--ink-2); }
+  tbody tr:nth-child(even) td { background:#f8fafd; }
+  tbody tr:hover td { background:var(--primary-soft); }
+  td b { color:var(--ink); }
+  .num { text-align:center; color:var(--sub); font-weight:700; font-family:Georgia,serif; }
+  .small { font-size:11.5px; color:var(--sub); display:block; margin-top:2px; line-height:1.55; }
+  .tag { display:inline-block; padding:1px 10px; border-radius:11px; font-size:11.5px; font-weight:700;
+         white-space:nowrap; letter-spacing:.3px; }
+  .tag.c1 { background:var(--green-bg); color:var(--green); }
+  .tag.c2 { background:var(--blue-bg); color:var(--blue); }
+  .tag.warn { background:var(--amber-bg); color:var(--amber); }
+  .tag.bad { background:var(--red-bg); color:var(--red); }
+
+  /* ===== 提示块 ===== */
+  .note { background:var(--amber-bg); border:1px solid #ecd9b0; border-left:4px solid #d99a2b;
+          border-radius:8px; padding:14px 18px; font-size:13px; color:#6e4f13; margin:22px 0 8px; }
+  .note b { color:var(--amber); }
+
+  /* ===== 页脚 ===== */
+  .footer { margin-top:36px; padding-top:14px; border-top:1px solid var(--line);
+            display:flex; justify-content:space-between; font-size:11.5px; color:var(--sub); }
+
+  @media (max-width:860px){ .kpi { grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .kpi { grid-template-columns:1fr; } }
+  @media print { body { background:#fff; } .cover { margin-bottom:20px; } }
+</style>
+</head>
+<body data-page-node-id="cceFThNBpUde1PZb5juleL">
+
+<div class="cover" data-page-node-id="AJCRvD9jQBFg2QrhHgNZ0o">
+  <div class="wrap" data-page-node-id="0mTpifMUxJA9CkckQvZJYt">
+    <div class="cover-tag" data-page-node-id="P698mon89txcY3argv7DGo">FSA / HSA 渠道选品研究</div>
+    <h1 data-page-node-id="AnHCd8jgliwX4UfCCm1zAz">SIGIS IIAS 合格产品类目分析<br data-page-node-id="Wo7eENNTVrWe1cbT7zADgd">与 <span data-page-node-id="pqZSWXfAts6IpoWHzreqWL">FDA Ⅰ/Ⅱ 类器械选品</span>报告</h1>
+    <div class="sub" data-page-node-id="3i04kmNXDIaYqp30HGCmld">依据 SIGIS《Eligible Product List Criteria》最新标准（2025-07-22 更新版），系统梳理 IIAS 合格产品类目体系与合规陷阱，联动 Amazon FSA Store 808 个在售商品实据，筛选 20 个"渠道可自动核销 + FDA Ⅰ/Ⅱ 类合规 + 工艺轻实现"的器械选品。</div>
+    <div class="meta-row" data-page-node-id="oQRDVn36TfQWCFmfWq8yOL">
+      <span data-page-node-id="ZsKJdnFPcSFELe5NFrXhcl"><b data-page-node-id="rMhg4Sqcw5xsCMhIj21cyy">判定依据</b>：SIGIS EPL Criteria（IRC 213(d) / 105(b) / 125）</span>
+      <span data-page-node-id="g6VbhFRPC4DJqIDQA0ocK9"><b data-page-node-id="PpmZqYW1oeBtceb378aHBS">联动数据</b>：Amazon FSA Store 在售商品 808 个</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" data-page-node-id="NXUetyH5IQvPLhWm5eF3gH">
+
+<div class="summary" data-page-node-id="Z6WIubuKt57Zkt9UJ41rtG">
+  <h2 data-page-node-id="jZd74t6uU3eSRhecoQLJ8q">摘 要</h2>
+  <ul data-page-node-id="4MfySYNHKDVv1OV97BVjM9">
+    <li data-page-node-id="THqE6dUsTChDHNeKnWqGzS"><b data-page-node-id="OnDaat6JJKWub73Qr4wG85">IIAS 资格 ≠ FDA 分类</b>：IIAS（SIGIS EPL）管"钱能不能刷"（FSA/HSA 借记卡收银台自动核销），FDA Ⅰ/Ⅱ 类管"产品能不能卖"，渠道选品两者必须同时满足。</li>
+    <li data-page-node-id="FdwqyaTYZ9AT6aithUwBJU">SIGIS EPL 将产品分为三级：<b data-page-node-id="mljPK23zAEvf3U3WP3Ynkv">Eligible（设备耗材 52 类 + OTC 药品约 40 类，自动合格）→ Dual-purpose 双效（须 LOMN 医疗必需证明）→ Ineligible 完全不合格</b>；三大合规陷阱（双效、补充剂、一般健康类）必须规避。</li>
+    <li data-page-node-id="RM8ivd0nWBrSOa3MMVo3O8">按"IIAS 自动合格 + FDA Ⅰ/Ⅱ 类 + 工艺轻实现（零开模）"三重标准筛选出 <b data-page-node-id="voTEbVugaRYqkhBwSYA2rG">Ⅰ 类 10 个 + Ⅱ 类 10 个共 20 个入选品</b>；其中约 70% 与 FSA Store 选品重叠，另识别出吸奶器、TENS、避孕套等 IIAS 体系独有品类。</li>
+  </ul>
+</div>
+
+<div class="kpi" data-page-node-id="BAJeHcJR9DlMFkgA3nFLPX">
+  <div class="box" data-page-node-id="Y9MjG0tIcH41WfXmwONADX"><div class="v" data-page-node-id="Vr1fHMWxpUO5GlgPGCWTvH">3 级</div><div class="l" data-page-node-id="vEQyAyk8nQXbLUnGg9Dq73">EPL 合格性状态体系</div></div>
+  <div class="box" data-page-node-id="m3d1jDVFcXHBa9OTBAAtnk"><div class="v" data-page-node-id="cf3cLqd2x5ffBE7bnArRe7">52</div><div class="l" data-page-node-id="K4WoRUrH5emG20mg6KPJ7m">Eligible 设备/耗材类目</div></div>
+  <div class="box" data-page-node-id="Jeb6bibC3nRobUI6w7HDQI"><div class="v" data-page-node-id="JZPVTqA49ZOQMAIHH3M85Y">10 <small data-page-node-id="DhTxHhqY5GMCmxSDJkiFq6">+</small> 10</div><div class="l" data-page-node-id="eKo4Rx0uJF0LHACjpkjl4E">入选品：Ⅰ 类 10 个 / Ⅱ 类 10 个</div></div>
+  <div class="box" data-page-node-id="cJhuGjWd6wFfRn7so69YAH"><div class="v" data-page-node-id="UaHobl6uidLxvgfnB1isJq">0 <small data-page-node-id="yFfGIwomQo42MsJp3RFiwg">开模</small></div><div class="l" data-page-node-id="yPXnq4L89wTFwKvSKnUZW6">全部入选品无需开模级投入</div></div>
+</div>
+
+<div class="sec" data-page-node-id="XhXP80xqL29rGPkNlEHWDk">
+  <div class="sec-head" data-page-node-id="GwofIFs2w7AC4DvVkvmeQG"><span class="no" data-page-node-id="XInGu6OkLQmrrPALQtLvfC">01</span><h2 data-page-node-id="tvNUPUw8ABtN53wLTFmItz">先厘清：IIAS 资格 ≠ FDA 分类</h2><span class="hint" data-page-node-id="RwJi1OWWvDy3bo8rHGKO9S">两个独立监管维度</span></div>
+  <div class="card" data-page-node-id="16mCSY0UjD8Djx291g1faN">
+  <ul data-page-node-id="TLiH1Hhgpi9DIYezcmXfTC">
+    <li data-page-node-id="JTdqfS5ksc0sA2zYqTPFAT"><b data-page-node-id="OOcaCicoM6W9fSIICY5ugT">IIAS（SIGIS EPL）</b>管的是"钱能不能刷"——依据 IRS Code 213(d)/105(b)/125 判定产品是否为合格医疗费用，决定 FSA/HSA 借记卡能否在收银台自动核销。</li>
+    <li data-page-node-id="rGcwJoNyYDI8Gr1C2IXeCr"><b data-page-node-id="PlKVjlicCF2uGb9PzROWAZ">FDA Ⅰ/Ⅱ 类</b>管的是"产品能不能卖"——器械的安全性与有效性监管路径（注册列名 / 510(k)）。</li>
+    <li data-page-node-id="dHv4peAWE68C7udhaxdkE3">做 FSA/HSA 渠道选品，两者必须<b data-page-node-id="9epC1L8FAIjLjeHBlHCfk5">同时满足</b>：FDA 合规是入场券，IIAS/EPL 合格是渠道转化器（EPL 上的商品刷卡即过，无需 LOMN 医疗必需证明）。</li>
+    <li data-page-node-id="ez3zR1U2GWpJ5P54paCdv6">EPL 由 SIGIS List Committee 每月审查（每月 15 日更新）；自有品牌（Private Label）可按《Private Label Eligibility Criteria》单独提交。</li>
+  </ul>
+  </div>
+</div>
+
+<div class="sec" data-page-node-id="QZgB0ruOlP8ZHzgbZkzywR">
+  <div class="sec-head" data-page-node-id="eE82NwROlMQhVosxWvnyWj"><span class="no" data-page-node-id="IQqR2wHGhVSiCDDC7Hf8yH">02</span><h2 data-page-node-id="gHApWtIMm3hpI9fzwQ7QQp">IIAS 合格产品类目归纳</h2><span class="hint" data-page-node-id="Ap0BYGcDP9NyAnjPnaDltr">Eligible: Devices and Supplies，52 类</span></div>
+  <div class="tbl-wrap" data-page-node-id="GT4i2zo2s233hB78WBk5jB">
+  <table data-page-node-id="3BG1IbOU1iB6W9bjpIZRwv">
+  <thead data-page-node-id="KldTKSTYrr9bqgoouY7oDR"><tr data-page-node-id="mocX9dRNCjJiMYEODpVqVd"><th style="width:36px" data-page-node-id="xJYVqRb9WeH27JNxJJTvhB">#</th><th style="width:200px" data-page-node-id="fYJL2TfvOuWiXDtKOU6Sui">类目（Category）</th><th data-page-node-id="ViI2dVaqG6R1DwXhZyX1tG">代表产品 / 示例</th><th style="width:130px" data-page-node-id="BiBWP4cyhFKRrxpKXcujxb">典型 FDA 归属</th></tr></thead>
+  <tbody data-page-node-id="FMv0KeCTTwaDA85OxaDJsC">
+  <tr data-page-node-id="UrSalBKvPcDf7CbGyjlJR1"><td class="num" data-page-node-id="NWUGz1UY5Y5uO1NRIvM966">1</td><td data-page-node-id="TRbUwN9BuHDLUL4o6QYhx0"><b data-page-node-id="xEKiGIK2VqSVwLdG3A6ozB">Diagnostic Products 诊断产品</b></td><td data-page-node-id="wAD63D1YpoK9SWgkkeuMyr">体温计、血压计、胆固醇/UTI 检测</td><td data-page-node-id="LzsMpGPCkxWPY8ffJcNh1T"><span class="tag c2" data-page-node-id="gs3BMpXCF4FIkoMDs8axFl">Ⅱ类</span></td></tr>
+  <tr data-page-node-id="Y2s6ObxqDEYCsBcTS5LPFl"><td class="num" data-page-node-id="3PCifE7AMAAIaPX7HfcuWf">2</td><td data-page-node-id="i3L9izGqd16uho7jJYYxBc"><b data-page-node-id="wJpXTUVZdwkeK5CGz2skHd">Diabetes Care 糖尿病护理</b></td><td data-page-node-id="eHdKueByWFND7gvpUvlnzq">血糖仪、试纸、采血针、胰岛素注射器</td><td data-page-node-id="PUhRIvDqi5Tf0zlNDEqvb0"><span class="tag c2" data-page-node-id="M26PQjttDCAsEY99hyW96P">Ⅱ类</span></td></tr>
+  <tr data-page-node-id="9BNO5YuAUqA2DrRL07Pj3O"><td class="num" data-page-node-id="FYogm2EzflkXhB3zI3xH9t">3</td><td data-page-node-id="9pE1wDi9hNOHmFlM7ScrDF"><b data-page-node-id="B6uFEBeFHTdwPWe4C47Ssh">Family Planning 家庭计划</b></td><td data-page-node-id="meNhtglugx9R21Sq92dDKa">孕检、排卵、生育检测套件</td><td data-page-node-id="2yHHbO5TGgEEJrmkS2Z8iY"><span class="tag c2" data-page-node-id="hgvCgnmZVnAsyRnWKUpBky">Ⅱ类</span></td></tr>
+  <tr data-page-node-id="MhJAlLrQkMfZN4gB8dK7je"><td class="num" data-page-node-id="pMKlqRVSuZJWjCHljnAyzd">4</td><td data-page-node-id="xDrZe7Wi5dO4fT7K7MauUN"><b data-page-node-id="l0AWHl2DwdEljfjG3NNdb3">OTC Hearing Aids 及配件</b></td><td data-page-node-id="rkn7xCrYNB9QV5ecTLnKAJ">OTC 助听器、专用电池配件</td><td data-page-node-id="QlpDLcGYfYSI4kQDBr6siu"><span class="tag c2" data-page-node-id="5gd98AkMJGlQ5DFJOCZQ5F">Ⅱ类</span></td></tr>
+  <tr data-page-node-id="2W9PnFHB02EzHfC6s6wYHJ"><td class="num" data-page-node-id="ZnJqrEaKUAnpqvDEPtZ8S2">5</td><td data-page-node-id="A1iBKAvGwmYpbNd2BlIHQf"><b data-page-node-id="wV5ds3dtBWGbZHroxX5gVd">TENS 经皮神经电刺激</b></td><td data-page-node-id="KHUEYPHKtggPf8YWe9boDB">TENS 仪、电极片</td><td data-page-node-id="MpxfeKlkVKxOEYq4VaKb0E"><span class="tag c2" data-page-node-id="LdgyN9CBAxQAGVmLVm1Y9V">Ⅱ类</span></td></tr>
+  <tr data-page-node-id="o9aWCq82BPHKBjZSbAfAoH"><td class="num" data-page-node-id="bDVyc3DQetXDrY0LSAF2Lc">6</td><td data-page-node-id="F9AlDtAqsMTTCdqdkz597E"><b data-page-node-id="RSDddQctcwceppKCkwlbD6">Breast Pumps 吸奶器及哺乳用品</b></td><td data-page-node-id="G4DS0xI5bjQDo7eyqEVH2D">电动/手动吸奶器、储奶袋</td><td data-page-node-id="VNmwWEByjKW2djZMYpUBDz"><span class="tag c2" data-page-node-id="ABssvi31plRwx9eprFLLQv">Ⅱ类（豁免）</span></td></tr>
+  <tr data-page-node-id="I8CQkTbQ6lBnYyseAH9voU"><td class="num" data-page-node-id="1fh4SNcs2QLkQCOpHQ7Uv9">7</td><td data-page-node-id="1sOzqedxdAAWCcItBGuom8"><b data-page-node-id="ouC3HHHkmVRyemB78eiOEq">Contraceptives 避孕（非药物）</b></td><td data-page-node-id="nnCSipr107AcuooImvJW3m">避孕套</td><td data-page-node-id="n60DQh66Bve31gAPgN0aXj"><span class="tag c2" data-page-node-id="UxBhijBTYVC1AWUAJ3GYQY">Ⅱ类</span></td></tr>
+  <tr data-page-node-id="lMv3ZXgbNkXRj3i1Wd8fg9"><td class="num" data-page-node-id="AXr8pTfkBBq7aghQ4z7qwu">8</td><td data-page-node-id="RQ0sppDL3gPnFn1ejQiOGt"><b data-page-node-id="c6BAASQP4yHmznu30WbZAc">Nasal Strips &amp; Snore Relief 止鼾</b></td><td data-page-node-id="XVemeqnaQ9k24Hgb1emehh">止鼾鼻贴、止鼾口腔矫治器、鼻扩张器</td><td data-page-node-id="8YjwsG5sYcNCbZoFgCIarC"><span class="tag c1" data-page-node-id="jXBBtms5KZZ4gFIU6osIZd">Ⅰ/Ⅱ类</span></td></tr>
+  <tr data-page-node-id="ZUsyQN8kh1H5kDYYJeeIKW"><td class="num" data-page-node-id="bPy9zbhiq5KL8Emvaj5Uf9">9</td><td data-page-node-id="Dis1HROXOYgoRRD6TXnTJq"><b data-page-node-id="HmfeZJEzP663SSW6wLRptD">Mouth Guards 护齿</b></td><td data-page-node-id="ApeEEI00RJFLE95IbV1vED">夜磨牙护齿、运动护齿（医疗目的）</td><td data-page-node-id="GGxIPGdnpLkR28oQKhH1C2"><span class="tag c1" data-page-node-id="VclIF7ZurwKZdVYeMz5tIB">Ⅰ/Ⅱ类</span></td></tr>
+  <tr data-page-node-id="CtDhaRxum3SY3rsX3pZdKZ"><td class="num" data-page-node-id="XHdIKBv07aF52K5v8TnSVs">10</td><td data-page-node-id="bARHUGEvHjLBHTuQ7R005q"><b data-page-node-id="Li78bXfCm1g2GjmeqyI5Uh">Nasal Moisturizer &amp; Wash 鼻腔冲洗</b></td><td data-page-node-id="cLIo98gYah8HBXpyFniX6e">洗鼻壶、洗鼻挤压瓶</td><td data-page-node-id="WppSMHQE4Q9N3wAffZaA95"><span class="tag c2" data-page-node-id="DAC9vGVdsuNMlzBeAgZ4LK">Ⅱ类（豁免）</span></td></tr>
+  <tr data-page-node-id="Els9qdXBv1sPDWQgJH6XCm"><td class="num" data-page-node-id="mOJvPmV9GJYwWEIYHpbZOR">11</td><td data-page-node-id="q8FM6t2KySjgTt7unBolEm"><b data-page-node-id="oAqQGQDdBP6CFNL0oZCyDG">Health Supports 医疗支撑</b></td><td data-page-node-id="ACiBvfrElB9FmgHI4TcjHm">护腰、护腕、护膝、护踝（非运动防护）</td><td data-page-node-id="q4sDCOT7iOmaSEtMYXv9Hl"><span class="tag c1" data-page-node-id="UXhTgc5ZtWqQ0rxLAxowms">Ⅰ类豁免</span></td></tr>
+  <tr data-page-node-id="Kg8w4wQqhdehNDMlbhnq1A"><td class="num" data-page-node-id="PKHom9WdwD8XC6jtEtvELb">12</td><td data-page-node-id="oLpCnSGimRGPHFkxseOilK"><b data-page-node-id="2Q8Y5yibKrhA82zrhWXnCM">Compression Hosiery 医疗压缩袜</b></td><td data-page-node-id="ksuKCsggvEHfJqTxkhkGos">20-30 / 30-40 mmHg 梯度压缩袜</td><td data-page-node-id="DYkQ6TCoKD9TmfAdF9FeUh"><span class="tag c1" data-page-node-id="mFWapUM3PTcxlQENjUw9Fa">Ⅰ类</span></td></tr>
+  <tr data-page-node-id="57ELlRqUrjXW6ZitAWlpcx"><td class="num" data-page-node-id="NjVcLQnddnBBzVZMXfq7Tw">13</td><td data-page-node-id="8E57mI9i7uUkg50cttpkVT"><b data-page-node-id="L95Mo7lsQyBnFBOdi088PA">Hot &amp; Cold Therapy 冷热理疗</b></td><td data-page-node-id="blGstotckGp398f7wwt0d2">冰袋、加热垫、冷热敷带</td><td data-page-node-id="LZOSkqwCuUraOjfE3fEUdH"><span class="tag c1" data-page-node-id="ugyFhHKUNBdGXfHn7TdC9N">Ⅰ/Ⅱ类</span></td></tr>
+  <tr data-page-node-id="vNIiAFuEIyiuiXsgEAvY3d"><td class="num" data-page-node-id="2OvcpblXy8z0FCKhhMWccQ">14</td><td data-page-node-id="e80CPTWnOVDFuC7t87J7Bc"><b data-page-node-id="KBkGGG6AM9ECAnz4ARJtSC">Eye Compresses 眼部冷热敷</b></td><td data-page-node-id="21mENLedonzlRkYIDAYYHP">干眼热敷眼罩、偏头痛冷敷</td><td data-page-node-id="AsmAGpLENTnhbAB3xswI9z"><span class="tag c1" data-page-node-id="oAPO7tW0i5wegDJ61eN7c2">Ⅰ类</span></td></tr>
+  <tr data-page-node-id="QLldsNoBB0i6hyGUjKSM3d"><td class="num" data-page-node-id="dJbCNxYf5m8p2ubGiHdifM">15</td><td data-page-node-id="0E8O3iNtS1tnIkIbBxvGAZ"><b data-page-node-id="NG8qcFOxRrSvnRbLDbJABe">Reading Glasses 老花镜及配件</b></td><td data-page-node-id="HNmLAFAPkERmAurznEHlOj">老花镜、眼镜修理工具</td><td data-page-node-id="MLUgORs2nl9HVQJ4xPWoFr"><span class="tag c1" data-page-node-id="tySr5zFJvNPqUf8PFk4gov">Ⅰ类豁免</span></td></tr>
+  <tr data-page-node-id="K7XccGhQ8DvGuV167EPc0i"><td class="num" data-page-node-id="Io2WqaUCn7ymv7b42O5C1q">16</td><td data-page-node-id="o6bR3jKV03Nz8bbUvGv0zI"><b data-page-node-id="9zK3649F83tgZQih3JYLSj">First Aid Dressings 急救敷料</b></td><td data-page-node-id="sCGfWL28fZekGd4HYfB2GC">创可贴、纱布垫、敷料贴</td><td data-page-node-id="CafLcIpZ9NHd6HISOHaWmZ"><span class="tag c1" data-page-node-id="F7AhNkZjZ45reDlvKXLvVz">Ⅰ类豁免</span></td></tr>
+  <tr data-page-node-id="scdIQs12HykysG8cLhAIQq"><td class="num" data-page-node-id="YgkO44Kwem7hmZlFk5ad7L">17</td><td data-page-node-id="z3mE1LxKa5QHgqOZjl2j1q"><b data-page-node-id="ypkCHv4S2lICClfQUuoJLE">Foot Care Treatments 足部治疗</b></td><td data-page-node-id="i2wuSBSjcOq2ssRiA5KJpu">鸡眼垫、矫形鞋垫（治疗目的）</td><td data-page-node-id="ARFab3kashBg5CAu8okbDq"><span class="tag c1" data-page-node-id="Pb3qWsdUsYdDpI7iN3S1MM">Ⅰ类豁免</span></td></tr>
+  <tr data-page-node-id="LUE8maJn1lFP32KqUFvXTy"><td class="num" data-page-node-id="ulqdv89j2UQmcF4eqxMFFN">18</td><td data-page-node-id="jccHXDlFTziQrnsLMfjCJR"><b data-page-node-id="9xqjJJ781ASxIOZGRJW8WS">Durable Medical Equipment 家用医疗设备</b></td><td data-page-node-id="6Fd3opMDMBzbrTclVDiXcI">轮椅、拐杖、扶手、便桶椅</td><td data-page-node-id="mzFvACG4nfGtkWONMaAxgE"><span class="tag c1" data-page-node-id="8V7fbYYrlLLtjJzp4rS21S">Ⅰ类豁免</span></td></tr>
+  <tr data-page-node-id="AbIY4DPEs203DqMQ87ZUWW"><td class="num" data-page-node-id="k9F4TkUvvzY09l7F1zmRai">19</td><td data-page-node-id="Dxei164Y2hcFACP0yIQWrP"><b data-page-node-id="B8QacbIC2vEMgirWPt8NR9">Menstrual/Postpartum 经期与产后</b></td><td data-page-node-id="4pe2AlqIcCYCUgzll8AC5x">月经杯、经期内裤、卫生巾、产后恢复带</td><td data-page-node-id="hv9CZLIasPehGxCmi20ttX"><span class="tag c1" data-page-node-id="TW8am2uTNAfr0V18l2IZui">Ⅰ类/非器械</span></td></tr>
+  <tr data-page-node-id="8EjjH5WUZcZ0zXpU3FWMUa"><td class="num" data-page-node-id="Vq0TwGh7V6YYrYjKZZT8wH">20</td><td data-page-node-id="xwH4Nwr7z6QyPVQTXTLFEg"><b data-page-node-id="MQH3ujRYmx6l6Fl4P4erS8">Diagnostic Trackers 医疗追踪器</b></td><td data-page-node-id="9y0kkkgPHlYJX8Uc2rH3p9">Evie Ring 等医疗级监测指环</td><td data-page-node-id="46DCabIkbZfik7NNdcDEB5"><span class="tag c2" data-page-node-id="QfDmMrVdhnMHUA1bByP3gD">Ⅱ类</span></td></tr>
+  <tr data-page-node-id="PC8x5cNJnMcWCCxv9zASv4"><td class="num" data-page-node-id="eeHd4DMporkG1C9UETNVFN">21</td><td data-page-node-id="3OP21tGE32Z98f7F5SdCMg"><b data-page-node-id="NkYP8PaPUXdOLetjD0Y0fF">其余耗材/用品类</b></td><td data-page-node-id="qRXWsbByoasl3nS3AEauqV">Acupressure 防恶心腕带、Cotton Balls 无菌棉、Dental Repair 临时补牙、Denture 清洁、Ear Care 耳冲洗、Incontinence 失禁防护、Face Mask（CDC 标准）、ABHR 洗手液、Head Lice 虱梳、Sun Protection SPF15+、Wart Remover 冷冻祛疣、Therapeutic Massage 治疗按摩等</td><td data-page-node-id="0dg9isaIltSrFmrSPxGiLY"><span class="tag warn" data-page-node-id="cLNBW0s2QjBRr943v6nC4C">混合</span></td></tr>
+  </tbody>
+  </table>
+  </div>
+  <p class="small" style="margin:-8px 0 0 4px;" data-page-node-id="kEY2sIObp5iYsYoCLbfKcs">另有大类 <b data-page-node-id="JFVGUec5Jn92kykGnh2dtu">OTC Medicines and Drugs（约 40 小类，Tylenol/Claritin/Monistat 等）</b>亦列入 EPL，但走 OTC 专论路径、不属于器械 Ⅰ/Ⅱ 类，本次不纳入选品。</p>
+</div>
+
+<div class="sec" data-page-node-id="Ll7uF9njsSAOd9ZTLwfSUs">
+  <div class="sec-head" data-page-node-id="EqhIwyJb8L6wbgGDMTFpoA"><span class="no" data-page-node-id="RvIIAJRjgp3dDERt5hLh9e">03</span><h2 data-page-node-id="i7VxXRoXICtK16xA77fVXi">IIAS 三大"合规陷阱"</h2><span class="hint" data-page-node-id="FxP1hl2cCfdfcI5TGm8j1K">选品必须规避</span></div>
+  <div class="tbl-wrap" data-page-node-id="NmHeC5eol8V8h1ABd7mBcA">
+  <table data-page-node-id="0vG2Au8cSDI3bNTv6CxRzn">
+  <thead data-page-node-id="TVLlDFeSLnhOZbdQltFO5W"><tr data-page-node-id="6Hso3EBcRqusWTtuBgCj4T"><th style="width:250px" data-page-node-id="Huv1OoiYof8EXf15Mo0hvQ">陷阱</th><th data-page-node-id="LeS5JDUCmWZDxg0OSP47Oz">说明</th><th style="width:250px" data-page-node-id="WariUmIskscgCCrgeoSrKJ">对选品的影响</th></tr></thead>
+  <tbody data-page-node-id="8XvctpYKCPt2fwBFyCymyf">
+  <tr data-page-node-id="aCaNaAJF6TJZAuLQZsmGR1"><td data-page-node-id="ouXWIinteE4CMmKD2YPCIk"><b data-page-node-id="ZwG6XXiJkiw0COsdBBFNzu">① Dual-purpose 双重目的</b></td><td data-page-node-id="d43VO7qufaW3PD7yi105YT">兼具医疗与日用/美容目的的产品不进 EPL，用户须凭 LOMN（医疗必需证明）人工报销，转化率大打折扣。</td><td data-page-node-id="6sXGuPpDSwCDsaHn2coPgW">无矫正度蓝光镜、≤20-30 mmHg 日用压缩袜、舒适型鞋垫、通用耳塞、运动护具（性能增强）、健身手环均属此类。</td></tr>
+  <tr data-page-node-id="jtvxdFPd5UtlRir2fg2wA0"><td data-page-node-id="MTky7QyRdv1oSFnKpGBrGn"><b data-page-node-id="EzJvx2zSZwdYqU6mwOyFQK">② 膳食补充剂默认不合格</b></td><td data-page-node-id="cfu5qtQpJITxtCZI4AtuAc">除葡萄糖胺/软骨素、纤维缓泻剂（Metamucil 型）、产前维生素三个特例外，一切补充剂均为双效。</td><td data-page-node-id="Cgy2cbh2n53kuHbrtJ7uiw">不能靠补充剂蹭 IIAS 渠道，器械是更干净的路径。</td></tr>
+  <tr data-page-node-id="9IAScWo63EjJYmcpy69pNZ"><td data-page-node-id="zbmdCawVnOB38NOxKQGe4c"><b data-page-node-id="VsjSCxALnS25cnNx28rWMU">③ 一般健康/美容/卫生 = 完全不合格</b></td><td data-page-node-id="Q08bPAVSl3bEEPwaOqBJOw">牙膏牙刷、洗发水、除臭剂、化妆品等按 IRS Pub 502 永久不合格。</td><td data-page-node-id="mkh2Q2CIM8K0GH3Bl04G0v">不存在"包装成医疗品"的擦边空间，宣称必须落在具体医疗状况上。</td></tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="sec" data-page-node-id="A2NVeRhdHry5GIUCQ7GNwa">
+  <div class="sec-head" data-page-node-id="yMue5OfvRQQgO9RUvdU9Tn"><span class="no" data-page-node-id="Ez1klBKrT1rvqMktYwU754">04</span><h2 data-page-node-id="GZtiM5PaM47D4jgnFaztVc">入选的 20 个选品</h2><span class="hint" data-page-node-id="BYglwUBXlqRe4GmKA8QDSs">Ⅱ 类豁免 → Ⅱ 类 510(k)，工艺全部可快速落地</span></div>
+  <div class="card" style="margin-bottom:18px;" data-page-node-id="CDRfi59Ge4AOQUZZncJk3P">
+    <ul style="margin:0;" data-page-node-id="krYb8wwI5lcziaf0M5pwPA">
+      <li data-page-node-id="4xvovk8t2vgGMjESORgC3j"><b data-page-node-id="VqIH0IVUxiADKQRNB6Hser">筛选口径</b>：① 在 SIGIS EPL 的 Devices &amp; Supplies 类目内（刷卡自动核销）；② FDA Ⅰ 类或 Ⅱ 类器械；③ 缝制 / 裁切 / 灌装 / 片材热塑 / 标准模组组装等工艺，无需自建开模产线；④ 有真实在售对标品验证需求。</li>
+    </ul>
+  </div>
+
+  <h3 class="sub-h" data-page-node-id="H3gCUr49faosXCNWjkELrW">Ⅰ 类（FDA Class I，510(k) 豁免）—— 10 个</h3>
+  <div class="tbl-wrap" data-page-node-id="kphBIz9N2WnSvp6DuCynFg">
+  <table data-page-node-id="KFdDTUP095dFj4yEdpx9OX">
+  <thead data-page-node-id="i0XVWq5RE2qPv2pHDdeNpW"><tr data-page-node-id="QXZCQZoiTUtzW83OKfRYjD"><th style="width:36px" data-page-node-id="ec6SSUt8ZjfIFlCG3M6cRX">#</th><th style="width:210px" data-page-node-id="Jfo4GfpZ3L2SSiIb2wUFl3">产品名称</th><th style="width:150px" data-page-node-id="wwYwAItGq0XZT5M4y5WSWD">IIAS EPL 类目</th><th style="width:84px" data-page-node-id="i5zFkZSwMxYO4yxHAt1CRX">FDA 分类</th><th data-page-node-id="ifEoSjCaopjQlEArIQGk6x">入选理由</th></tr></thead>
+  <tbody data-page-node-id="S5KEJ6Y9ZaSF3EdErSUkS9">
+  <tr data-page-node-id="6gAyz8JUwc2OY03wlLmFVy"><td class="num" data-page-node-id="oGXIrTNY0zWLfHoIeniwgh">1</td><td data-page-node-id="bokgF1HY1F1Klvm8yLzvB7"><b data-page-node-id="UV8vs6hEd8SDvDllJIZoPi">老花镜（含修理工具包）</b><span class="small" data-page-node-id="nLLXFr7B1fMozSqiNIq9Ps">对标：Gaoye / CCVOO（FSA 店在售）</span></td><td data-page-node-id="EcGLJpeVTkEKIEey9aVuf2">Reading Glasses, Accessories</td><td data-page-node-id="R1X15FI6gpBReGaDj1O2Ul"><span class="tag c1" data-page-node-id="IR1G8CP8NZGhveW5gDmAAG">Ⅰ类</span></td><td data-page-node-id="dxZmYoA2OwnGHiPJ4U3sje">21 CFR 886.5943 Ⅰ类豁免：注册列名 + ANSI Z80 落球测试即可；镜片镜架标准件组装，零开模；⚠️ 注意"无矫正度蓝光镜"在 IIAS 属双效不合格——必须带度数、落 Reading Glasses 类目。</td></tr>
+  <tr data-page-node-id="HZxXv6A0cVvCsmUb8qFQkY"><td class="num" data-page-node-id="jU87S8LG1k0MA1DafcCmG5">2</td><td data-page-node-id="ME2gN4SqFDipPDhe8eCUk0"><b data-page-node-id="EyXTrGB8fZJP4yOrPNvrOm">护腰支撑带（腰骶支具）</b><span class="small" data-page-node-id="c6YLI6O0Fj6LgVPeP7JRex">对标：Sparthos / FEATOL</span></td><td data-page-node-id="484afMi3jNMByLdaytpFox">Health Supports</td><td data-page-node-id="NM4CKPOd9los84r5COWz1i"><span class="tag c1" data-page-node-id="kzD7IMA8rIJOJtFt7lLtDT">Ⅰ类</span></td><td data-page-node-id="vn8Q3FwWX1uLzlffDzG4XC">890.3475 Ⅰ类豁免；织带裁切+缝制+插入支撑条；IIAS 视角"医疗支撑"自动合格（区别于运动防护款——营销文案必须坐实在医疗状况如坐骨神经痛，避开 athletic 措辞）。</td></tr>
+  <tr data-page-node-id="3vozi13JxwMUGNjhWH39kj"><td class="num" data-page-node-id="Q3sWwNipeWSxVg1uTTPLG1">3</td><td data-page-node-id="wAoS3x1Y9sDIdaL6AED3CV"><b data-page-node-id="6TdFiFupGWuRi3AWvQ527R">护膝/护踝支具</b><span class="small" data-page-node-id="HknFPEpj9iCqwACzYHnAbN">对标：DR.BRACE / Bodyprox</span></td><td data-page-node-id="Y0x2CiA5CEq3W1DUljWipn">Health Supports</td><td data-page-node-id="X2wZP2ZbrLRjmFh5DtCDt5"><span class="tag c1" data-page-node-id="7fg5UvWENCH8rLUlv7Hu8I">Ⅰ类</span></td><td data-page-node-id="k4kbK4hxpgxpECUoYKUvhD">Ⅰ类豁免；布艺+标准金属条+硅胶垫组合；同一供应链可覆盖护膝/护踝/护肘多 SKU，支具矩阵边际成本递减。</td></tr>
+  <tr data-page-node-id="fu7Y9njLJhM6xw6cBNE4TB"><td class="num" data-page-node-id="WvDHeoWVZwhASaH1CUrJWc">4</td><td data-page-node-id="uGYpXFBa5wmp9g5qP3y5Ac"><b data-page-node-id="Boz8NA0oigWzFnGnV1TDWu">护腕管综合征支撑带</b><span class="small" data-page-node-id="5tKumwAVAq9Yp0rdjwnY1Y">医疗支撑类目内</span></td><td data-page-node-id="2o9O0jankciGU7FHFavbiB">Health Supports</td><td data-page-node-id="twcU9HTpOx2oDM2PZ7bGiw"><span class="tag c1" data-page-node-id="BrQk3omlsezpvF19P5q3IR">Ⅰ类</span></td><td data-page-node-id="GDJK6NSwJTcQsPDrt7AgA8">Ⅰ类豁免；织带+硬质托板缝制；腕管综合征是 EPL 明确医疗状况，IIAS 宣称路径清晰；办公人群与孕期人群（水肿）双客群。</td></tr>
+  <tr data-page-node-id="yG8247OPAGQCQ558u3qTrZ"><td class="num" data-page-node-id="GhAVOts2Ln71KznYk1gvWJ">5</td><td data-page-node-id="vOAoOMHrVRjDBWddVRsRIA"><b data-page-node-id="48VoU0tMUuvdX9bTdAE1RO">医疗级梯度压缩袜 20-30 / 30-40 mmHg</b><span class="small" data-page-node-id="h8Owm11KOFPrvivPE8155g">对标：JOBST / Truform</span></td><td data-page-node-id="H63pDJmoD5hGAhOqCIk0kR">Compression Hosiery</td><td data-page-node-id="2hqowDan2brqZ3oMEqUdOK"><span class="tag c1" data-page-node-id="7jume64j3tGNSKwJSGHY06">Ⅰ类</span></td><td data-page-node-id="oTggrGBJsosBG0IKPkM7e5">OTC 梯度袜 Ⅰ类豁免；针织代工成熟；⚠️ IIAS 只认 20-30 及以上医疗级——日用低压款（20-30 以下）为双效不合格，压力值就是 EPL 资格与产品溢价的分水岭。</td></tr>
+  <tr data-page-node-id="rxBb01AjZAK0IiMA1PBIIi"><td class="num" data-page-node-id="N5ePNwGdaii2ExBrygIHLr">6</td><td data-page-node-id="WrALjjee8AYHO66IeUmnUr"><b data-page-node-id="qIo3NThyNpaICHb1vBIS3S">可重复使用凝胶冷热敷袋（绑带款）</b><span class="small" data-page-node-id="EtRET2n3aE90GWiHMh95iF">对标：REVIX / Roscoe</span></td><td data-page-node-id="1EVYtyNiWPb4EFvjhdhCWy">Hot &amp; Cold Therapy</td><td data-page-node-id="SJETsAJf04qP5CZN7IbDYF"><span class="tag c1" data-page-node-id="heKMDxnXII8Nu2Y7WYnvbP">Ⅰ类</span></td><td data-page-node-id="soaG2cNEHOryyhMkxP74jm">Ⅰ类；凝胶灌装+高频封边+尼龙绑带；宣称限定疼痛/肿胀缓解即落 IIAS 合格类目，设备投入全场最低。</td></tr>
+  <tr data-page-node-id="4XANiJmcJOpQeyhIgeJgmt"><td class="num" data-page-node-id="HUJjLFoHyT98P0nhqk3bn9">7</td><td data-page-node-id="5uGyb7YanqnEu9u4rieRI3"><b data-page-node-id="B8UR7JPfs3neMexvm4cJb8">干眼热敷眼罩 / 眼部冷敷</b><span class="small" data-page-node-id="VEPABlkPhFQirTzT4Sg62o">对标：Bruder 型微波热敷眼罩</span></td><td data-page-node-id="Es5YD63EPSmn7pTJ7t1VpC">Eye Compresses</td><td data-page-node-id="SZkf2gggU9iXR8RSfW4Hrb"><span class="tag c1" data-page-node-id="iP10eqvEFUam6COot7PfDk">Ⅰ类</span></td><td data-page-node-id="n12zsehYvEZ9x2vrEoyauV">Ⅰ类；布套+凝胶珠/亚麻籽填充，微波加热即用；干眼症与偏头痛是 EPL 列名的目标状况，客单低但复购与组合率高。</td></tr>
+  <tr data-page-node-id="RS9TYGkDpgYler0oKjjPPX"><td class="num" data-page-node-id="boiNpS5Bm98XZVhPW8gvjH">8</td><td data-page-node-id="3VxpxLLzaoMXkKD2EdIxVn"><b data-page-node-id="E7SbOygEGNu7yCisdXIdlI">治疗用矫形鞋垫（跖筋膜炎/扁平足）</b><span class="small" data-page-node-id="jnvqKVxKPyy739iFIcFIAa">对标：PowerStep / WalkHero</span></td><td data-page-node-id="QxweCIP0EXAJAiEIo8eZBF">Foot Care Treatments</td><td data-page-node-id="X7vULDZBT1ywHLSEFmO7Mn"><span class="tag c1" data-page-node-id="PDUCBQTkbSeP5FwcV37MWO">Ⅰ类</span></td><td data-page-node-id="G2jXqWtVwooDogqeazHKy3">Ⅰ类豁免；EVA 发泡+TPU 壳标准裁切；⚠️ IIAS 区分"治疗鞋垫（合格）"与"舒适鞋垫（双效）"——Listing 必须绑定跖筋膜炎等具体状况。</td></tr>
+  <tr data-page-node-id="7UOevhbZCzWca7XbFZCDCH"><td class="num" data-page-node-id="G8mCEroFFsXB5gg5JCdEQs">9</td><td data-page-node-id="GXVvNu4cGD2fZ75igCVWWx"><b data-page-node-id="eU83Fnzfo738iv6TDx8chC">急救敷料 / 创可贴 / 纱布垫</b><span class="small" data-page-node-id="JU5xzsSXc5hQKaVqYmcugq">对标：CURAD / BAND-AID（FSA 店在售）</span></td><td data-page-node-id="2mH0LdMZ8SFppHyz9ExMak">First Aid Dressings &amp; Supplies</td><td data-page-node-id="ogQh9wsiLEES1Kk457uZbn"><span class="tag c1" data-page-node-id="mT2knQBarmW2sNS7wBH6ih">Ⅰ类</span></td><td data-page-node-id="0DFwB6e9bY9YZsjdFIuaBn">Ⅰ类豁免；无纺布+PU 膜分切+灭菌包装；IIAS 全自动合格 + 急救包（制造商套件规则：内含物均合格则整包合格）可做组合装拉客单。</td></tr>
+  <tr data-page-node-id="rsqwaYtp1lebVhcI7FC0Qs"><td class="num" data-page-node-id="3Fo9H6QcALzU9teMFdDvPX">10</td><td data-page-node-id="2WID0nOcFJquBVc7rBrdAW"><b data-page-node-id="yGdmDsPtJc0HJxcXjFynbe">手杖 / 助行器 / 浴室扶手</b><span class="small" data-page-node-id="ypjMAXvbIBlIO1e5CbQ5Wj">家用医疗设备类目内</span></td><td data-page-node-id="Oxip40bvjCYyxwS2gamwcB">Durable Medical Equipment / Home Health Care</td><td data-page-node-id="HuQFEGlBBWcCVodE7N0DrS"><span class="tag c1" data-page-node-id="OnANKvocTR8cQR2aOjq7OD">Ⅰ类</span></td><td data-page-node-id="6HLeO9S4p5YvpxDoM49SHK">助行器 890.3775 等为 Ⅰ类豁免；铝管切割+焊接+胶套，代工成熟；银发客群 IIAS 支付属性最强（余额常年充裕），客单 $30-120。</td></tr>
+  </tbody>
+  </table>
+  </div>
+
+  <h3 class="sub-h" data-page-node-id="340DUGEPmh61AcLw5dKI9y">Ⅱ 类（FDA Class II，含豁免形态）—— 10 个</h3>
+  <div class="tbl-wrap" data-page-node-id="7xpnNcvbAoNh7oAvb95foP">
+  <table data-page-node-id="BGRFFPMr9Sg9zuqYC18LsU">
+  <thead data-page-node-id="PHg262m9T9DxxDwr2u2GsW"><tr data-page-node-id="v6btVQwWzBzsnC0gR2S2UR"><th style="width:36px" data-page-node-id="6JB7NlDoCHGxzHTBgIAcJT">#</th><th style="width:210px" data-page-node-id="wmssdz5dbxYpXY5gB5rYkm">产品名称</th><th style="width:150px" data-page-node-id="R2Rhj3onukJAfQSpLgYGHy">IIAS EPL 类目</th><th style="width:84px" data-page-node-id="6qncEyi7WDFIi9JBFQnUUb">FDA 分类</th><th data-page-node-id="YgLWU6SXobzejtvQXShwhm">入选理由</th></tr></thead>
+  <tbody data-page-node-id="TzxNtL3PptCrXkMFGAaSKq">
+  <tr data-page-node-id="Pp1hjqVUSgzxoKNgZlffdO"><td class="num" data-page-node-id="jncfz3hrLxxmNxnU6MA6OE">11</td><td data-page-node-id="gGzJHjRiSQXLZE3N0CLwIx"><b data-page-node-id="dmirAWFO8q72CFOZ80iCmp">上臂式电子血压计</b><span class="small" data-page-node-id="y4ERZNKqL514CGYsNeuf00">对标：Oklar（FDA Cleared）/ iHealth / Alcedo</span></td><td data-page-node-id="vqfQAhtiKfJclBBGJPF3Se">Diagnostic Products</td><td data-page-node-id="zV92YKEVIrg3MZMzYME4W8"><span class="tag c2" data-page-node-id="9jOENb1unPzSKe7AT2cHht">Ⅱ类</span></td><td data-page-node-id="VHyOHyCGk4uq7zBFxjNWge">870.1130 Ⅱ类需 510(k)——门槛即壁垒，过滤铺货型卖家；压力传感+气泵模组白牌成熟，可借方案商 predicate；FSA 店热卖位常驻，$30-50 客单毛利健康。</td></tr>
+  <tr data-page-node-id="G0cvN1QgPuZRza51lf3846"><td class="num" data-page-node-id="By51vgLVtcI6Ka2zq9IpmF">12</td><td data-page-node-id="ZNd0QLTk7lsibEHHK59O04"><b data-page-node-id="u66QnBUX43MCNmQ5qgWh2g">体温计系列（额温枪 / 耳温枪 / 电子口腔体温计）</b><span class="small" data-page-node-id="o7I0m0ZeoAoctyjtxajESD">对标：iHealth PT3 / Braun ThermoScan / Boncare</span></td><td data-page-node-id="GPT5jjI5fUz0H2uKdraIHP">Diagnostic Products</td><td data-page-node-id="Q99f7aqQ3yk5nNWmZgTQt3"><span class="tag c2" data-page-node-id="hfzqr1CuBKoXiSo9XmnA6i">Ⅱ类</span></td><td data-page-node-id="YpCt70ODfGgk1QUwZlqXpt">880.2910 Ⅱ类 510(k)；红外/NTC 方案商持证可贴牌，一次合规覆盖三条产品线；电子口腔体温计是全表 510(k) 门槛最低的入门品。</td></tr>
+  <tr data-page-node-id="hlzkEaRoOwZ3SvzLPwXDB7"><td class="num" data-page-node-id="HUM4SWInHvMu3Z1s3jzRW7">13</td><td data-page-node-id="sbQ28mQeb2cunpK49ZVRCU"><b data-page-node-id="eu4MnaMovnYLiDP5UOEQom">OTC 助听器</b><span class="small" data-page-node-id="2T6Nr55T4wwPjPcziCpbfa">对标：Audien Atom / ELEHEAR（FSA 店在售）</span></td><td data-page-node-id="teiOGyZ0em2BrAuUfksnTp">OTC Hearing Aids（+配件类目）</td><td data-page-node-id="ZQ4AjVrk7qJPBriTZwj7S3"><span class="tag c2" data-page-node-id="ItbRSBrtmSj8rWj5VQvJ29">Ⅱ类</span></td><td data-page-node-id="UfPNrbF5BXGLbzgD0ABgQO">2022 OTC 规则后 18+ 轻中度听损直售，510(k) predicate 密集；DSP+授话器模组组装；IIAS 有专属类目+电池配件类目，可做"主机+配件+电池"三层利润。⚠️ 声学合规投入较高，建议二阶段进入。</td></tr>
+  <tr data-page-node-id="cx28BunaifxaBr8vCxnfX1"><td class="num" data-page-node-id="R69IMdS2JY6sDZMFzAVC32">14</td><td data-page-node-id="0s55o6iznxpJpgS9fZBFfQ"><b data-page-node-id="kp0dNONKaXIgxObnEdg6yr">家用血糖仪套装（仪+试纸+采血针）</b><span class="small" data-page-node-id="avpzG1CxwW7h0AWGDmkSxP">对标：Metene TD-4116 / Glucoracy</span></td><td data-page-node-id="hXgh36kolxXv95P1fHG0Gv">Diabetes Care</td><td data-page-node-id="9yxtPScOjvFSy617usyvYI"><span class="tag c2" data-page-node-id="d1feGwR2ml6zD7q0Dh3ZDL">Ⅱ类</span></td><td data-page-node-id="7qHFzEOAygejcVUF5vGDUM">862.1345 Ⅱ类 510(k) + CLIA 豁免；试纸复购模型最优；方案商提供整套注册文档，落地周期可控；糖尿病人群 FSA/HSA 余额消耗主力，IIAS 自动核销体验极佳。</td></tr>
+  <tr data-page-node-id="lNP3wK4tUdB4E9TQtLICvB"><td class="num" data-page-node-id="rmN8SBgRAuRHe786cc2AQ5">15</td><td data-page-node-id="twrK9C3dZsOwuBRAlGUHSn"><b data-page-node-id="qSoFQFH54rW8RBFEt1Jxr6">孕检 / 排卵检测试纸</b><span class="small" data-page-node-id="UwOdmg6bWTAcOoPx2axSF6">对标：easy@Home（Premom App）/ Clearblue</span></td><td data-page-node-id="d6UtlYRJ8OmJT4V6mH1iL0">Family Planning</td><td data-page-node-id="IURzYKi5d5BYkGeOxlnbQ7"><span class="tag c2" data-page-node-id="hygT7gSmDExrS7auSwID2J">Ⅱ类</span></td><td data-page-node-id="O08lmxfNin9yvmy2EKVAcA">hCG/LH 家用检测 Ⅱ类 510(k)；侧向层析产线全球成熟，无开模；散装 20-50 条复购模型已被 FSA 店验证；App 绑定提升留存。</td></tr>
+  <tr data-page-node-id="M999R8KYJ8tJ7ipw6njono"><td class="num" data-page-node-id="hZbdej7YFT3tQLvTToYNYi">16</td><td data-page-node-id="RBMzQRdHylWg5oCQMIIOXv"><b data-page-node-id="WhgSZODiLbJTLkwHej3OI8">UTI / 阴道 pH 检测试纸</b><span class="small" data-page-node-id="LjtckVQkpJq8nyELQkXoZq">对标：AZO / Pelvana</span></td><td data-page-node-id="b8Gt9EEEoCIOKVmQ9TRFBV">Diagnostic Products</td><td data-page-node-id="RFyVAfmWsgwBveGAiwgY7Q"><span class="tag c2" data-page-node-id="25Jf7HqyESPKAakk0Guq1t">Ⅱ类</span></td><td data-page-node-id="ouceAY9xGauY9CWWGnP7OW">白细胞/亚硝酸盐/pH 检测 Ⅱ类 510(k)；与孕检共线，边际扩展成本近零；"Test Before You Treat"自助诊断趋势，AZO 单品牌主导留有替代空间。</td></tr>
+  <tr data-page-node-id="A9ofYT0jFKRrjBZUGiBiXX"><td class="num" data-page-node-id="kXU87GL7ttcUPeMOrz782N">17</td><td data-page-node-id="3MRJFsk2SL03izEH7DV6AA"><b data-page-node-id="zg26DUmdHbCI6JNF7nAbPg">止鼾口腔矫治器（热塑自定型）</b><span class="small" data-page-node-id="duLejBECTJECQhj4R23sOG">对标：Somnofit-S / QUIETLAB / ZQuiet</span></td><td data-page-node-id="2kceflrINpXgp4ZcBwTaTC">Nasal Strips &amp; Snore Relief</td><td data-page-node-id="GQ6vX6bTyeebndLCmhpHuO"><span class="tag c2" data-page-node-id="XGeGnAS2GfJAuaml12t9vX">Ⅱ类</span></td><td data-page-node-id="GdYAjR0fPM6THT9GZYEmtd">止鼾口内装置 Ⅱ类 510(k)，但 boil-and-bite EVA 片材热塑成型工艺极简、无电子件；FSA 店头部品牌均持证证明 predicate 通道顺畅；同一条产线可延展夜磨牙护齿。</td></tr>
+  <tr data-page-node-id="3HqPyTTFq1WUu2zctkZpQd"><td class="num" data-page-node-id="e679EgmEsQqOqTxt4ihljy">18</td><td data-page-node-id="EiECFh3jbnGA4cWPN1kgDQ"><b data-page-node-id="PRiLGcMxrq0KSGyigYM3iC">TENS 经皮神经电刺激仪（含电极片耗材）</b><span class="small" data-page-node-id="yjAtwbX8OJQiD31RMzLML9">物理治疗类 TENS 单元</span></td><td data-page-node-id="0RGxZx93XBD3thaidyeEuL">TENS（专属类目）</td><td data-page-node-id="R6J3Kiny3mSByZgvNESytE"><span class="tag c2" data-page-node-id="nCFfVihsisVAZmxc51FRdp">Ⅱ类</span></td><td data-page-node-id="HnBkDnObBkWbicBzhmrqZH">Ⅱ类 510(k)；EMS/TENS 主板模组采购现成，整机是"主板+电极+织带"组装；电极片即耗材复购；慢性疼痛人群与 IIAS 支付场景高度契合。⚠️ 宣称限于疼痛缓解，避免治疗痊愈类表述。</td></tr>
+  <tr data-page-node-id="qxRw111ErFfCshv5Pr5Vud"><td class="num" data-page-node-id="Zmo9bhWfKln2NaH8X02Keh">19</td><td data-page-node-id="zKD9erNbGWtgAtf30vNEZD"><b data-page-node-id="stjgwllDgXZnV0D2yueHMx">电动 / 手动吸奶器（含配件）</b><span class="small" data-page-node-id="NAs9bsJyyEfX07SknLPaUq">双边电动吸奶器形态</span></td><td data-page-node-id="14BWZUaNm3ov0vEInYu6Kp">Breast Pumps and Breast-Feeding Supplies</td><td data-page-node-id="HlyNiC0CdF2rZwrHuMicHd"><span class="tag c2" data-page-node-id="JnzGywAe5fFn500t9HO3RE">Ⅱ类（豁免）</span></td><td data-page-node-id="2hwEcRfUCpaLla3FipmRHq">2021 年 FDA 最终规则将吸奶器重分类为 Ⅱ类 510(k) 豁免——"Ⅱ类身份、注册列名门槛"；泵体模组+奶瓶标准件组装；ACA 强制保险覆盖吸奶器，FSA/HSA 报销是标配动作，IIAS 类目专属且竞争格局清晰。</td></tr>
+  <tr data-page-node-id="gj4hR3bMBQRme6s8PYMcD9"><td class="num" data-page-node-id="mNiFEfAr0TjikLhOechFVi">20</td><td data-page-node-id="Zdbz74mgp72IkypVPWtB1p"><b data-page-node-id="lwUsXjJXvP4CLLajuEuOLC">避孕套（乳胶/聚氨酯）</b><span class="small" data-page-node-id="FHhfKvZ5eHz8tnwvqwqOPA">latex / polyurethane 产线形态</span></td><td data-page-node-id="mWFiuHn02PJHJcWBw56oDy">Contraceptives（非药物）</td><td data-page-node-id="iTCziZ03v9Mn8AkIthyAN2"><span class="tag c2" data-page-node-id="2lU1xsjBf21wAXnwrmcqA3">Ⅱ类</span></td><td data-page-node-id="bpA05hq5DZpC5rI6NZkvTX">884.5380 Ⅱ类 510(k)，需 ISO 4074 性能测试（爆破/泄漏电子检测）——门槛真实但产线浸渍成型全球极度成熟；IIAS 明确合格且无药物类目纠缠；品牌溢价高、快消复购。</td></tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="sec" data-page-node-id="36U5UucrtJIu1iRRcYeD8F">
+  <div class="sec-head" data-page-node-id="GbBju9Cf5ybOYASKIXl6rc"><span class="no" data-page-node-id="pBNjjinVA3feGGn88kEv8K">05</span><h2 data-page-node-id="zpFezA7nplk7NknKELj2bX">与 Amazon FSA Store 选品的对照结论</h2><span class="hint" data-page-node-id="2yWPFfrh0tdnHcqJaufDHJ">两套体系的协同与差异</span></div>
+  <div class="card" data-page-node-id="akkj17zwTN0KD2XaQdAAsW">
+  <ul data-page-node-id="lPIWc94Bz3XHqkgpANHV5B">
+    <li data-page-node-id="L6sGEOd687uUOngZdugDUq"><b data-page-node-id="0X5ACIMPDAT0HwCDK8f4HO">重叠核心盘（约占 70%）</b>：老花镜、支具、压缩袜、冷热敷、鞋垫、敷料、血压计、体温计、助听器、血糖仪、检测试纸、止鼾矫治器——两个体系（FSA 商店上架 + IIAS 自动核销）均合格，是 FSA/HSA 渠道的主战场。</li>
+    <li data-page-node-id="jID17Wg7EQTBlji2XL5mvE"><b data-page-node-id="uxvdoNso6JMHgjc6VVzmA0">IIAS 报告新增的独有品</b>：吸奶器（Ⅱ类豁免）、TENS、避孕套、护腕支撑、助行器/扶手、干眼热敷眼罩——EPL 设备类目比 Amazon FSA 商店招商面更宽。</li>
+    <li data-page-node-id="h1CkCmRpX3hyNnCw1Jpv9A"><b data-page-node-id="mPosSmjdnBeerRFo9xUFKL">关键差异认知</b>：Amazon FSA Store 按类目招商即可；IIAS 是收银台自动核销体系——品牌商需通过零售商/分销商把 SKU 报入 EPL（Missing Product Form / Private Label 提交流程），否则用户只能走 LOMN 人工报销，转化率断崖。</li>
+    <li data-page-node-id="uFTnRRpho52ppvjZs1SOZc"><b data-page-node-id="z7wkns2q74gCwstUATTgtV">推荐优先级</b>：Ⅰ类 10 品可 3-6 个月快速组线（支具+冷热理疗+老花镜"疼痛与视力管理"组合）；Ⅱ类按"豁免优先"排序——吸奶器 → 电热理疗 → 体温计 → 止鼾牙套 → 血压计/血糖仪/TENS → 助听器/避孕套。</li>
+  </ul>
+  </div>
+  <div class="note" data-page-node-id="X5AD3KtK3AOjyOMxy2DM5a">
+    <b data-page-node-id="oiZzYsOGUMVlbgwrEcivoA">合规提示</b>：① FDA 分类与 IIAS 资格相互独立，须分别核查（FDA Product Classification Database + SIGIS EPL 月度清单）；② 宣称措辞直接决定 EPL 归属——绑定具体医疗状况为合格，落入一般健康/美容/运动防护即为双效或不合格；③ Ⅱ类 510(k) 品类上市前须完成企业注册、器械列名、QSR（21 CFR 820）与 UDI；④ 吸奶器、电热垫等豁免品仍须满足 510(k) 豁免限制（禁止宣称豁免未覆盖的适应症）；⑤ SIGIS EPL 每月更新，选品决策前应复核当月清单。
+  </div>
+</div>
+
+<div class="footer" data-page-node-id="XtoaBBYyNespwl5FeWeL3W">
+  <span data-page-node-id="pukL6RP7mRS7qKM9FdAr65">SIGIS IIAS 合格产品类目分析与 FDA Ⅰ/Ⅱ 类选品报告</span>
+  <span data-page-node-id="ul7bh21EXjgh42tmGuZNlH">内部资料 · 仅供管理层审阅</span>
+</div>
+
+</div>
+</body>
+</html>
