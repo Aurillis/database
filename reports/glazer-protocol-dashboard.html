@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glazer Protocol：从盆底肌电评估到欧律生二代产品闭环</title>
+<style>
+  :root{
+    --bg:#FBFAF7;
+    --bg-2:#F5F3EE;
+    --card:#FFFFFF;
+    --ink:#2B2A33;
+    --ink-soft:#5E5C6B;
+    --ink-faint:#8A8896;
+    --line:#E8E4DB;
+    --line-soft:#F0EDE6;
+    --purple:#7B6BD4;
+    --purple-deep:#5A4BBE;
+    --purple-soft:#EDE9F8;
+    --lavender:#E9E4F7;
+    --fog-pink:#F7E8EE;
+    --light-blue:#E5EFF6;
+    --peacock:#2FA98C;
+    --peacock-soft:#E2F1EC;
+    --amber:#C99A3A;
+    --maxw:1280px;
+    --nav-h:62px;
+    --radius:18px;
+    --shadow:0 1px 2px rgba(40,38,55,.04), 0 8px 24px rgba(40,38,55,.05);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;
+    font-size:18px;line-height:1.75;-webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:.2px;color:var(--ink);}
+  p{margin:0 0 14px;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:50;
+    background:rgba(251,250,247,.92);backdrop-filter:saturate(140%) blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{max-width:var(--maxw);margin:0 auto;padding:0 22px;height:100%;display:flex;align-items:center;gap:18px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;white-space:nowrap;}
+  .brand .mark{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--purple),var(--purple-deep));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;}
+  .brand small{font-weight:600;color:var(--ink-soft);font-size:12px;}
+  .nav-links{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none;}
+  .nav-links::-webkit-scrollbar{display:none;}
+  .nav-links a{
+    padding:7px 11px;border-radius:9px;font-size:13.5px;color:var(--ink-soft);white-space:nowrap;font-weight:600;transition:.18s;
+  }
+  .nav-links a:hover{background:var(--purple-soft);color:var(--purple-deep);}
+  .nav-links a.active{background:var(--purple);color:#fff;}
+
+  /* ---------- HERO ---------- */
+  header.hero{padding:calc(var(--nav-h) + 56px) 0 40px;}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--purple-deep);background:var(--purple-soft);padding:6px 14px;border-radius:999px;letter-spacing:.5px;}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:46px;align-items:center;margin-top:26px;}
+  .hero h1{font-size:34px;line-height:1.4;margin:18px 0 8px;}
+  .hero .sub{color:var(--ink-soft);font-size:18px;margin-bottom:26px;}
+  .statement{font-size:21px;line-height:1.65;font-weight:700;margin:0 0 18px;color:var(--ink);}
+  .statement .accent{color:var(--purple-deep);}
+  .loop-stmt{font-size:18.5px;line-height:1.7;color:var(--ink);margin:0 0 18px;font-weight:600;}
+  .loop-stmt b{color:var(--purple-deep);}
+  .tag-stmt{
+    display:inline-block;background:var(--peacock-soft);color:#1d7d66;border:1px solid #bfe3d6;
+    font-size:17px;font-weight:800;padding:12px 18px;border-radius:14px;
+  }
+  /* waveform card */
+  .wave-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 22px 16px;}
+  .wave-card h4{font-size:15px;color:var(--ink-soft);margin-bottom:4px;font-weight:700;}
+  .wave-card .cap{font-size:12.5px;color:var(--ink-faint);margin-bottom:10px;}
+  .wave-card svg{width:100%;height:auto;display:block;}
+  .wave-zones{display:flex;justify-content:space-between;margin-top:10px;gap:4px;}
+  .wave-zones span{font-size:11.5px;color:var(--ink-soft);text-align:center;flex:1;font-weight:600;}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:54px 0;border-top:1px solid var(--line-soft);scroll-margin-top:calc(var(--nav-h) + 14px);}
+  .sec-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:30px;}
+  .sec-num{flex:none;width:46px;height:46px;border-radius:13px;background:var(--purple-soft);color:var(--purple-deep);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;}
+  .sec-head h2{font-size:27px;line-height:1.3;}
+  .sec-head .lead{color:var(--ink-soft);font-size:16px;margin-top:6px;max-width:760px;}
+
+  .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+  .card .ctag{font-size:12.5px;font-weight:800;letter-spacing:.4px;padding:4px 10px;border-radius:999px;display:inline-block;margin-bottom:12px;}
+  .card h3{font-size:20px;margin-bottom:10px;}
+  .card p{font-size:15.5px;color:var(--ink-soft);margin:0;}
+  .card.lav{background:linear-gradient(180deg,#fff, #FBF9FF);}
+  .card.lav .ctag{background:var(--lavender);color:var(--purple-deep);}
+  .card.blue .ctag{background:var(--light-blue);color:#2c6c93;}
+  .card.pink .ctag{background:var(--fog-pink);color:#a8526e;}
+
+  .callout{margin-top:26px;background:var(--peacock-soft);border:1px solid #cfe7df;border-left:4px solid var(--peacock);border-radius:14px;padding:18px 22px;font-size:16.5px;color:#1d6d59;font-weight:700;}
+  .callout.amber{background:#FBF3E3;border-color:#ecd9a8;border-left-color:var(--amber);color:#8a6516;}
+
+  .note{font-size:14px;color:var(--ink-faint);line-height:1.7;margin-top:14px;}
+  .note b{color:var(--ink-soft);}
+
+  /* five questions */
+  .qgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+  .qcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 18px;box-shadow:var(--shadow);}
+  .qcard .qn{font-size:13px;font-weight:800;color:var(--purple);margin-bottom:10px;}
+  .qcard .qt{font-size:16.5px;font-weight:700;line-height:1.55;}
+  .qcard .qd{font-size:13px;color:var(--ink-faint);margin-top:10px;}
+
+  /* timeline */
+  .timeline{position:relative;margin:10px 0 0;padding-left:8px;}
+  .tl-item{position:relative;padding:0 0 26px 56px;border-left:2px solid var(--line);}
+  .tl-item:last-child{border-left-color:transparent;padding-bottom:0;}
+  .tl-dot{position:absolute;left:-13px;top:2px;width:24px;height:24px;border-radius:50%;background:var(--purple);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;border:3px solid var(--bg);}
+  .tl-phase{font-size:12.5px;font-weight:800;color:var(--purple-deep);letter-spacing:.4px;}
+  .tl-title{font-size:20px;font-weight:800;margin:3px 0 10px;}
+  .tl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 26px;margin-top:6px;}
+  .tl-field{font-size:14.5px;}
+  .tl-field .k{font-weight:700;color:var(--ink-soft);}
+  .tl-field .v{color:var(--ink);}
+  .tl-plain{margin-top:10px;background:var(--bg-2);border-radius:12px;padding:12px 16px;font-size:15.5px;color:var(--ink);font-weight:600;}
+
+  /* tables */
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:var(--shadow);}
+  table{border-collapse:collapse;width:100%;font-size:15px;min-width:680px;}
+  thead th{background:var(--purple-soft);color:var(--purple-deep);text-align:left;padding:14px 16px;font-weight:800;font-size:14px;border-bottom:1px solid var(--line);}
+  tbody td{padding:13px 16px;border-bottom:1px solid var(--line-soft);color:var(--ink);vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(even){background:#FCFBF9;}
+  td .num{font-weight:800;color:var(--purple-deep);font-variant-numeric:tabular-nums;}
+
+  /* loop diagram */
+  .loop{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:8px 0 6px;}
+  .loop .node{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);flex:1;min-width:150px;text-align:center;}
+  .loop .node .n-i{font-size:12px;font-weight:800;color:var(--purple);}
+  .loop .node .n-t{font-size:16.5px;font-weight:800;margin-top:4px;}
+  .loop .node .n-d{font-size:12.5px;color:var(--ink-faint);margin-top:6px;line-height:1.5;}
+  .loop .arrow{font-size:22px;color:var(--purple);flex:none;}
+  .loop .node.back{background:var(--purple-soft);border-color:#d9d0f3;}
+
+  /* radar */
+  .radar-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;}
+  .radar-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+  .legend{display:flex;gap:18px;margin-top:8px;font-size:13.5px;font-weight:700;}
+  .legend i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px;}
+  .profile-list{list-style:none;padding:0;margin:0;}
+  .profile-list li{padding:16px 0;border-bottom:1px solid var(--line-soft);}
+  .profile-list li:last-child{border-bottom:none;}
+  .profile-list .pn{font-size:17.5px;font-weight:800;display:flex;align-items:center;gap:10px;}
+  .chip{font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;}
+  .chip.h{background:var(--peacock-soft);color:#1d7d66;}
+  .chip.l{background:var(--fog-pink);color:#a8526e;}
+  .chip.m{background:var(--lavender);color:var(--purple-deep);}
+  .profile-list .pd{font-size:15px;color:var(--ink-soft);margin-top:6px;}
+
+  /* compare table badge */
+  .badge{display:inline-block;font-size:12px;font-weight:800;padding:3px 9px;border-radius:8px;}
+  .badge.s{background:var(--peacock-soft);color:#1d7d66;}
+  .badge.w{background:var(--fog-pink);color:#a8526e;}
+
+  /* priority table */
+  .prio{display:inline-block;font-size:12.5px;font-weight:800;padding:4px 11px;border-radius:8px;}
+  .prio.p0{background:#3a2f7a;color:#fff;}
+  .prio.p1{background:var(--purple);color:#fff;}
+  .prio.p2{background:var(--light-blue);color:#2c6c93;}
+  .prio.p3{background:var(--bg-2);color:var(--ink-soft);}
+
+  /* conclusion */
+  .concl{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px 34px;box-shadow:var(--shadow);}
+  .concl .c-item{font-size:18.5px;line-height:1.7;margin:0 0 16px;font-weight:600;}
+  .concl .c-item .hl{color:var(--purple-deep);font-weight:800;}
+  .sources{margin-top:24px;}
+  .sources h4{font-size:15px;color:var(--ink-soft);margin-bottom:10px;}
+  .sources ol{margin:0;padding-left:22px;color:var(--ink-soft);font-size:14px;line-height:1.9;}
+  .sources ol li{margin-bottom:6px;}
+  .disclaimer{margin-top:22px;background:#FBF3E3;border:1px solid #ecd9a8;border-radius:14px;padding:16px 20px;font-size:13.5px;color:#8a6516;line-height:1.7;}
+
+  /* glossary term */
+  .glossary{color:var(--purple-deep);font-weight:700;border-bottom:1.5px dotted var(--purple);cursor:help;background:none;border-top:none;border-left:none;border-right:none;padding:0;font-size:inherit;font-family:inherit;}
+  #tip{position:fixed;z-index:80;max-width:300px;background:#2B2A33;color:#fff;font-size:13.5px;line-height:1.55;padding:11px 14px;border-radius:11px;box-shadow:0 10px 30px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:opacity .14s;font-weight:400;}
+  #tip.show{opacity:1;}
+  #tip b{color:#cdbff7;}
+
+  footer{padding:40px 0 60px;color:var(--ink-faint);font-size:13px;text-align:center;border-top:1px solid var(--line-soft);}
+
+  @media(max-width:980px){
+    .hero-grid{grid-template-columns:1fr;gap:30px;}
+    .cards-3{grid-template-columns:1fr;}
+    .qgrid{grid-template-columns:1fr 1fr;}
+    .radar-grid{grid-template-columns:1fr;}
+    .tl-grid{grid-template-columns:1fr;}
+  }
+  @media(max-width:560px){
+    body{font-size:16.5px;}
+    .wrap{padding:0 18px;}
+    .hero h1{font-size:27px;}
+    .statement{font-size:18px;}
+    .qgrid{grid-template-columns:1fr;}
+    .loop .node{min-width:120px;}
+    section{padding:40px 0;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand"><span class="mark">A</span><span>欧律生 Aurillis<br><small>Glazer Protocol 内部看板</small></span></div>
+    <div class="nav-links" id="navlinks">
+      <a href="#m1">1 · Glazer是什么</a>
+      <a href="#m2">2 · 测量什么</a>
+      <a href="#m3">3 · 五阶段测试</a>
+      <a href="#m4">4 · 关键参数</a>
+      <a href="#m5">5 · 参考值</a>
+      <a href="#m6">6 · 如何解释</a>
+      <a href="#m7">7 · 不能诊断</a>
+      <a href="#m8">8 · 产品化路径</a>
+      <a href="#m9">9 · 用户画像</a>
+      <a href="#m10">10 · 与Perifit</a>
+      <a href="#m11">11 · 开发优先级</a>
+      <a href="#m12">12 · 结论与来源</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">内部战略宣讲 · 产品经理培训 · 二代产品定义基础</span>
+    <div class="hero-grid">
+      <div>
+        <h1>Glazer Protocol：从盆底肌电评估到欧律生二代产品闭环</h1>
+        <div class="sub">不是给盆底肌打一个游戏分，而是看清它究竟哪里需要改善。</div>
+
+        <p class="statement">Glazer Protocol 不是一张测完就能诊断疾病的<span class="accent">国际统一评分表</span>，而是一套相对标准化的<span class="accent">盆底表面肌电测试流程</span>。</p>
+
+        <p class="loop-stmt">欧律生真正需要建立的是：<br>
+          <b>标准化评估</b> → <b>识别主要功能短板</b> → <b>匹配训练方案</b> → <b>阶段性复测</b> → <b>判断具体改善了什么</b>。</p>
+
+        <span class="tag-stmt">先保证数据有效，再解释结果；先识别功能短板，再推荐训练。</span>
+      </div>
+
+      <div class="wave-card">
+        <h4>盆底肌电波形 · 五阶段示意</h4>
+        <div class="cap">抽象示意：横轴为时间，纵轴为肌电振幅（μV）。非真实测量曲线。</div>
+        <svg viewBox="0 0 600 230" role="img" aria-label="盆底肌电五阶段波形示意">
+          <defs>
+            <linearGradient id="wfill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7B6BD4" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#7B6BD4" stop-opacity="0.02"/>
+            </linearGradient>
+          </defs>
+          <!-- baseline -->
+          <line x1="0" y1="200" x2="600" y2="200" stroke="#E3DFD6" stroke-width="1.5"/>
+          <!-- area -->
+          <path d="M0,200 L60,200 L80,70 L110,200 L140,200 L160,75 L190,200 L220,200 L240,110 L360,110 L380,200 L420,200 L440,140 L540,150 L560,200 L600,200 L600,200 L0,200 Z" fill="url(#wfill)"/>
+          <!-- trace -->
+          <path id="wtrace" d="M0,200 L60,200 L80,70 L110,200 L140,200 L160,75 L190,200 L220,200 L240,110 L360,110 L380,200 L420,200 L440,140 L540,150 L560,200 L600,200" fill="none" stroke="#7B6BD4" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- stage separators (subtle) -->
+          <line x1="220" y1="40" x2="220" y2="215" stroke="#EDE9F8" stroke-width="2" stroke-dasharray="3 4"/>
+          <line x1="420" y1="40" x2="420" y2="215" stroke="#EDE9F8" stroke-width="2" stroke-dasharray="3 4"/>
+          <text x="120" y="34" fill="#5A4BBE" font-size="11" font-weight="700">快速启动</text>
+          <text x="290" y="34" fill="#5A4BBE" font-size="11" font-weight="700">持续保持</text>
+          <text x="480" y="34" fill="#5A4BBE" font-size="11" font-weight="700">耐力</text>
+        </svg>
+        <div class="wave-zones">
+          <span>放松</span><span>快速启动</span><span>持续保持</span><span>耐力</span><span>恢复</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- MODULE 1 -->
+<section id="m1">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">1</div>
+      <div><h2>Glazer 是什么</h2>
+      <div class="lead">先分清三件事：一套测试流程、一种采集技术、以及它和临床诊断的关系。三者不能混为一谈。</div></div>
+    </div>
+
+    <div class="cards-3">
+      <div class="card lav">
+        <span class="ctag">协议 / PROTOCOL</span>
+        <h3>Glazer Protocol</h3>
+        <p>一套规定「什么时候放松、什么时候收缩、持续多久、采集哪些参数」的<strong>标准化盆底表面肌电评估流程</strong>。它给出的是测量方法，而不是一张自带诊断结论的评分表。</p>
+      </div>
+      <div class="card blue">
+        <span class="ctag">技术 / sEMG</span>
+        <h3>Surface EMG（sEMG）</h3>
+        <p><strong>Surface Electromyography</strong>，表面肌电。通过阴道表面电极记录盆底肌激活时产生的电信号，反映肌肉的募集数量、放电频率与激活时序。</p>
+      </div>
+      <div class="card pink">
+        <span class="ctag">临床 / DIAGNOSIS</span>
+        <h3>临床诊断</h3>
+        <p>需要结合症状、病史、体格检查以及其他专业检查。Glazer 与 sEMG 只能提供<strong>盆底肌功能信息</strong>，不能单独替代临床诊断。</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      sEMG 测量的是<strong>肌肉电活动</strong>，不直接等于真实肌力、阴道压力或疾病严重程度。
+    </div>
+
+    <div class="note">
+      <b>历史背景：</b>1999 年，Howard I. Glazer、L. Romanzi 与 M. Polaneczky 在 <i>The Journal of Reproductive Medicine</i> 发表盆底表面肌电的可靠性及临床预测效度研究（57 名 19–69 岁女性），认为盆底 sEMG 可作为<strong>功能评估和生物反馈训练工具之一</strong>。该研究证明其具有良好的重测可靠性（P&lt;.001）与对尿失禁等临床状态的预测效度（P&lt;.05）。
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 2 -->
+<section id="m2">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">2</div>
+      <div><h2>它到底测量什么</h2>
+      <div class="lead">把抽象的「肌力」拆成五个可观察的能力问题。这五个问题，正好对应后面五阶段测试。</div></div>
+    </div>
+
+    <div class="qgrid">
+      <div class="qcard">
+        <div class="qn">问题 01</div>
+        <div class="qt">放松时，盆底肌能不能真正安静下来？</div>
+        <div class="qd">对应：静息基线 / 高张力识别</div>
+      </div>
+      <div class="qcard">
+        <div class="qn">问题 02</div>
+        <div class="qt">需要快速收缩时，能不能迅速启动？</div>
+        <div class="qd">对应：快速收缩 / 启动速度</div>
+      </div>
+      <div class="qcard">
+        <div class="qn">问题 03</div>
+        <div class="qt">需要持续用力时，能不能稳定保持？</div>
+        <div class="qd">对应：持续收缩 / 维持稳定</div>
+      </div>
+      <div class="qcard">
+        <div class="qn">问题 04</div>
+        <div class="qt">长时间用力时，会不会很快疲劳？</div>
+        <div class="qd">对应：耐力收缩 / 衰减斜率</div>
+      </div>
+      <div class="qcard">
+        <div class="qn">问题 05</div>
+        <div class="qt">训练完成后，能不能重新放松？</div>
+        <div class="qd">对应：后静息 / 放松质量</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      它不是只测「夹得多强」，而是同时观察<strong>收缩与放松、启动与维持、表现与恢复</strong>。
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 3 -->
+<section id="m3">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">3</div>
+      <div><h2>五阶段测试流程</h2>
+      <div class="lead">一条连续的标准化流程：前静息 → 快速收缩 → 持续收缩 → 耐力收缩 → 后静息。每一段回答模块二里的一个问题。</div></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot">1</div>
+        <div class="tl-phase">STAGE 1 · 训练前静息 / PRE-BASELINE REST</div>
+        <div class="tl-title">放松能力</div>
+        <div class="tl-grid">
+          <div class="tl-field"><span class="k">动作：</span><span class="v">完全放松</span></div>
+          <div class="tl-field"><span class="k">时间：</span><span class="v">60 秒</span></div>
+          <div class="tl-field"><span class="k">观察：</span><span class="v">平均肌电振幅、信号波动、基线稳定性</span></div>
+          <div class="tl-field"><span class="k">数据形态：</span><span class="v">低平、平稳的基线</span></div>
+        </div>
+        <div class="tl-plain">通俗解释：不工作时，盆底肌能不能安静下来？</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot">2</div>
+        <div class="tl-phase">STAGE 2 · 快速收缩 / PHASIC CONTRACTION</div>
+        <div class="tl-title">快速启动</div>
+        <div class="tl-grid">
+          <div class="tl-field"><span class="k">动作：</span><span class="v">快速收缩 2 秒，然后放松 2 秒</span></div>
+          <div class="tl-field"><span class="k">次数：</span><span class="v">5 次</span></div>
+          <div class="tl-field"><span class="k">观察：</span><span class="v">峰值、启动速度、放松速度、重复一致性</span></div>
+          <div class="tl-field"><span class="k">数据形态：</span><span class="v">5 个尖锐脉冲，高度与间隔应较一致</span></div>
+        </div>
+        <div class="tl-plain">通俗解释：需要马上夹紧时，能不能迅速启动并迅速松开？</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot">3</div>
+        <div class="tl-phase">STAGE 3 · 持续收缩 / TONIC CONTRACTION</div>
+        <div class="tl-title">持续保持</div>
+        <div class="tl-grid">
+          <div class="tl-field"><span class="k">动作：</span><span class="v">持续收缩 10 秒，然后放松 10 秒</span></div>
+          <div class="tl-field"><span class="k">次数：</span><span class="v">5 次</span></div>
+          <div class="tl-field"><span class="k">观察：</span><span class="v">平均激活水平、维持稳定性、后几次是否下降</span></div>
+          <div class="tl-field"><span class="k">数据形态：</span><span class="v">5 段较平稳的高位平台</span></div>
+        </div>
+        <div class="tl-plain">通俗解释：需要持续用力时，能不能稳定保持？</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot">4</div>
+        <div class="tl-phase">STAGE 4 · 耐力收缩 / ENDURANCE CONTRACTION</div>
+        <div class="tl-title">耐力</div>
+        <div class="tl-grid">
+          <div class="tl-field"><span class="k">动作：</span><span class="v">单次长时等长收缩（如持续至疲劳）</span></div>
+          <div class="tl-field"><span class="k">时间：</span><span class="v">通常 30–60 秒量级</span></div>
+          <div class="tl-field"><span class="k">观察：</span><span class="v">耐力收缩均值、下降斜率、疲劳出现时点</span></div>
+          <div class="tl-field"><span class="k">数据形态：</span><span class="v">高位平台随时间缓慢衰减</span></div>
+        </div>
+        <div class="tl-plain">通俗解释：长时间保持时，会不会很快掉力？</div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot">5</div>
+        <div class="tl-phase">STAGE 5 · 后静息 / POST-BASELINE REST</div>
+        <div class="tl-title">恢复</div>
+        <div class="tl-grid">
+          <div class="tl-field"><span class="k">动作：</span><span class="v">完全放松</span></div>
+          <div class="tl-field"><span class="k">时间：</span><span class="v">60 秒</span></div>
+          <div class="tl-field"><span class="k">观察：</span><span class="v">平均肌电振幅、是否回落到前静息水平、放松时间</span></div>
+          <div class="tl-field"><span class="k">数据形态：</span><span class="v">应回到与前静息相近的低位</span></div>
+        </div>
+        <div class="tl-plain">通俗解释：训练完成后，能不能重新放松？</div>
+      </div>
+    </div>
+
+    <div class="note"><b>说明：</b>各阶段具体时长与重复次数在不同设备、研究与临床机构间存在细微差异；上表为常见方案示例。欧律生二代产品定义时应<strong>先固定一套自己的标准协议</strong>，再谈参考值。</div>
+  </div>
+</section>
+
+<!-- MODULE 4 -->
+<section id="m4">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">4</div>
+      <div><h2>关键参数</h2>
+      <div class="lead">标准化评估采集的不只是一个数字，而是一组可解释的参数。下表把参数、含义与反映的肌肉能力对应起来。</div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>参数</th><th>含义</th><th>反映的肌肉能力</th><th>主要观察阶段</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>平均肌电振幅<br><span class="num">μV</span></td><td>某段信号的平均电信号强度</td><td>整体激活水平</td><td>各阶段</td></tr>
+          <tr><td>静息基线振幅<br><span class="num">μV</span></td><td>完全放松时的平均振幅</td><td>静息张力是否过高（能否放松）</td><td>前 / 后静息</td></tr>
+          <tr><td>快速收缩峰值<br><span class="num">μV</span></td><td>每次快速收缩达到的最高振幅</td><td>快肌（Ⅱ型纤维）反应能力</td><td>快速收缩</td></tr>
+          <tr><td>持续收缩均值<br><span class="num">μV</span></td><td>5 次 10 秒收缩的平均振幅</td><td>慢肌（Ⅰ型纤维）募集与稳定</td><td>持续收缩</td></tr>
+          <tr><td>耐力收缩均值<br><span class="num">μV</span></td><td>长时等长收缩的平均振幅</td><td>持续收缩 / 抗疲劳能力</td><td>耐力收缩</td></tr>
+          <tr><td>变异系数<br><span class="num">CV</span></td><td>信号波动程度（标准差 / 均值）</td><td>收缩的稳定性、一致性</td><td>持续 / 耐力</td></tr>
+          <tr><td>启动 / 上升时间<br><span class="num">ms</span></td><td>从放松到峰值所需时间</td><td>反应速度（能否迅速启动）</td><td>快速收缩</td></tr>
+          <tr><td>放松 / 下降时间<br><span class="num">ms</span></td><td>从峰值回到基线所需时间</td><td>放松质量（能否迅速松开）</td><td>快速 / 后静息</td></tr>
+          <tr><td>重复一致性</td><td>多次收缩间峰值的接近程度</td><td>动作控制的可重复性</td><td>快速 / 持续</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><b>术语：</b><button class="glossary" data-def="Surface Electromyography，表面肌电。通过阴道表面电极记录盆底肌激活时的电信号，反映肌肉募集与激活时序。">sEMG</button> 记录的是电活动；<button class="glossary" data-def="Oxford 分级是医生用手指评估盆底肌收缩力量的 0–5 分主观分级，与 sEMG 电活动并非同一维度，不能直接相互替代。">Oxford 分级</button> 是手法肌力评估，二者不等价。</div>
+  </div>
+</section>
+
+<!-- MODULE 5 -->
+<section id="m5">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">5</div>
+      <div><h2>参考值</h2>
+      <div class="lead">参考值必须来自特定人群，不能跨人群直接套用。下表为一项已发表的标准化研究样本，仅供产品参考值体系起点。</div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>测试阶段</th><th>平均振幅均值 (μV)</th><th>标准差 SD (μV)</th><th>读图提示</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>前静息 Pre-baseline</td><td class="num">6.26</td><td>3.33</td><td>过高 → 放松困难 / 高张力</td></tr>
+          <tr><td>快速收缩 Phasic</td><td class="num">49.76</td><td>26.44</td><td>过低 → 启动弱 / 快肌不足</td></tr>
+          <tr><td>持续收缩 Tonic</td><td class="num">37.05</td><td>25.99</td><td>平台不稳 → 维持能力差</td></tr>
+          <tr><td>耐力收缩 Endurance</td><td class="num">16.10</td><td>6.68</td><td>衰减快 → 易疲劳</td></tr>
+          <tr><td>后静息 Post-baseline</td><td class="num">6.93</td><td>3.99</td><td>未回落 → 放松质量差</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout amber">
+      <strong>使用参考值的三个前提：</strong>① 数据来自 96 名健康、年轻、未育女性（22–27 岁）样本，不能代表产后、围绝经期或已有症状人群；② 不同设备、电极与人群给出的静息参考值存在差异（部分文献与临床设备给出约 2–4 μV 的静息范围）；③ 应用于欧律生产品前，<strong>必须以自有目标人群复测校准</strong>，建立自己的参考区间。
+    </div>
+    <div class="note">资料来源：Oleksy Ł 等，<i>Normative values for Glazer Protocol in the evaluation of pelvic floor muscle bioelectrical activity</i>, Medicine (Baltimore), 2020;99(5):e19060（开放获取，PMC7004594）。</div>
+  </div>
+</section>
+
+<!-- MODULE 6 -->
+<section id="m6">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">6</div>
+      <div><h2>如何解释</h2>
+      <div class="lead">解释顺序很重要：先验证数据有效，再对比参考值，最后识别短板、分型并匹配方案。切忌「拿到数就下结论」。</div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>步骤</th><th>做什么</th><th>常见陷阱</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>1 · 数据有效性</b></td><td>检查信号质量、基线稳定、是否有伪差（如腹压、体位、电极接触不良）</td><td>把伪差当成真实肌电，导致误判</td></tr>
+          <tr><td><b>2 · 分相段对比</b></td><td>把五个阶段分别对照参考区间，而非只看一个总分</td><td>用一个「总分」掩盖某一阶段的明显短板</td></tr>
+          <tr><td><b>3 · 识别短板</b></td><td>定位偏离最大的阶段（放松 / 启动 / 维持 / 耐力 / 恢复）</td><td>平均化后看不出结构问题</td></tr>
+          <tr><td><b>4 · 功能分型</b></td><td>区分高张力型、低张力型、混合型，或单一能力弱</td><td>把所有人都套同一套训练</td></tr>
+          <tr><td><b>5 · 匹配方案</b></td><td>针对短板给训练（放松训练 / 快肌 / 慢肌 / 耐力 / 生物反馈）</td><td>方案与短板不匹配</td></tr>
+          <tr><td><b>6 · 阶段性复测</b></td><td>同一协议、同一设备复测，看差值与画像位移</td><td>单次测量即下定论</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">典型模式举例：<strong>前静息明显偏高</strong> → 高张力 / 放松困难；<strong>后静息未回落到前静息水平</strong> → 放松质量差；<strong>快速收缩峰值低且不一致</strong> → 启动能力差。但这些只是「方向提示」，需结合分型与复测确认。</div>
+  </div>
+</section>
+
+<!-- MODULE 7 -->
+<section id="m7">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">7</div>
+      <div><h2>不能诊断什么</h2>
+      <div class="lead">边界比能力更重要。清楚 Glazer / sEMG 不能替代什么，才能避免产品与合规风险。</div></div>
+    </div>
+
+    <div class="cards-3">
+      <div class="card">
+        <span class="ctag" style="background:var(--fog-pink);color:#a8526e;">边界 01</span>
+        <h3>不能单独诊断疾病</h3>
+        <p>不能单独诊断尿失禁、器官脱垂、盆底痛、性功能障碍等疾病。它提供的是<strong>功能层面的线索</strong>。</p>
+      </div>
+      <div class="card">
+        <span class="ctag" style="background:var(--fog-pink);color:#a8526e;">边界 02</span>
+        <h3>不等于真实肌力 / 压力</h3>
+        <p>sEMG 是电活动，不等于真实肌力、阴道压力或收缩力量。与<button class="glossary" data-def="Perineometry，阴道压力测定。通过压力传感器测量盆底收缩产生的阴道内压力，与 sEMG 测量电活动是不同维度。">perineometry（压力测定）</button> 不是同一指标。</p>
+      </div>
+      <div class="card">
+        <span class="ctag" style="background:var(--fog-pink);color:#a8526e;">边界 03</span>
+        <h3>不等同于手法分级</h3>
+        <p>不能替代 Oxford 手法肌力分级，也不能替代医生的病史采集、体格检查与其他专业检查。</p>
+      </div>
+      <div class="card">
+        <span class="ctag" style="background:var(--fog-pink);color:#a8526e;">边界 04</span>
+        <h3>参考值有人群局限</h3>
+        <p>已发表参考值多来自特定人群，跨人群、跨设备直接套用会产生误导。</p>
+      </div>
+      <div class="card">
+        <span class="ctag" style="background:var(--fog-pink);color:#a8526e;">边界 05</span>
+        <h3>单次测量不能定论</h3>
+        <p>单次结果受状态、操作、伪差影响，需结合复测与趋势判断。</p>
+      </div>
+      <div class="card">
+        <span class="ctag" style="background:var(--fog-pink);color:#a8526e;">边界 06</span>
+        <h3>不能替代医生判断</h3>
+        <p>任何产品输出都应是<strong>辅助信息</strong>，最终诊断与处置应由具备资质的医疗人员做出。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 8 -->
+<section id="m8">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">8</div>
+      <div><h2>产品化路径</h2>
+      <div class="lead">欧律生二代盆底康复产品的内核，不是「再做一个评分游戏」，而是把 Glazer 范式闭环成可家用、可追踪的产品。</div></div>
+    </div>
+
+    <div class="loop">
+      <div class="node"><div class="n-i">STEP 1</div><div class="n-t">标准化评估</div><div class="n-d">家用 sEMG 采集设备 + App 引导，跑通固定五阶段协议</div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="n-i">STEP 2</div><div class="n-t">识别功能短板</div><div class="n-d">五阶段分相段分析 + 用户功能画像，定位偏离最大的阶段</div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="n-i">STEP 3</div><div class="n-t">匹配训练方案</div><div class="n-d">针对短板给个性化 Kegel / 生物反馈 / 可选 EMS</div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="n-i">STEP 4</div><div class="n-t">阶段性复测</div><div class="n-d">同一协议、同一设备复测，追踪趋势与差值</div></div>
+      <div class="arrow">→</div>
+      <div class="node"><div class="n-i">STEP 5</div><div class="n-t">判断改善</div><div class="n-d">看具体改善了什么（哪个阶段、多少 μV、画像位移）</div></div>
+    </div>
+    <div class="loop" style="margin-top:12px;">
+      <div class="node back" style="flex:1 1 100%;"><div class="n-t">闭环回到 STEP 1</div><div class="n-d">复测结果重新进入评估 → 短板识别 → 方案调整，形成「评估—训练—复测—再评估」的持续闭环。这正是欧律生二代相对单次评分产品的核心差异。</div></div>
+    </div>
+
+    <div class="callout">产品定位一句话：<strong>用标准化 sEMG 评估把「哪里需要改善」说清楚，用闭环复测把「改善了多少」证明出来。</strong></div>
+  </div>
+</section>
+
+<!-- MODULE 9 -->
+<section id="m9">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">9</div>
+      <div><h2>用户功能画像</h2>
+      <div class="lead">把五阶段能力抽象为五维画像，便于产品经理、研发与运营统一语言，也便于向用户与医生解释。</div></div>
+    </div>
+
+    <div class="radar-grid">
+      <div class="radar-card">
+        <svg id="radar" viewBox="0 0 420 380" role="img" aria-label="用户功能画像雷达图"></svg>
+        <div class="legend">
+          <span><i style="background:#7B6BD4;"></i>健康参考（示意）</span>
+          <span><i style="background:#E89BB4;"></i>示例用户 · 混合型（示意）</span>
+        </div>
+      </div>
+      <div>
+        <ul class="profile-list">
+          <li>
+            <div class="pn">高张力型 <span class="chip h">放松弱</span></div>
+            <div class="pd">前 / 后静息偏高，放松困难。训练重点应是放松与下行控制，而非一味「加紧」。</div>
+          </li>
+          <li>
+            <div class="pn">低张力型 <span class="chip l">整体弱</span></div>
+            <div class="pd">各阶段振幅普遍偏低，收缩力量不足。训练重点是逐步提升募集与维持。</div>
+          </li>
+          <li>
+            <div class="pn">快速启动弱 <span class="chip m">启动差</span></div>
+            <div class="pd">快速收缩峰值低、上升慢。对应快肌（Ⅱ型纤维）训练。</div>
+          </li>
+          <li>
+            <div class="pn">耐力不足 <span class="chip m">易疲劳</span></div>
+            <div class="pd">持续 / 耐力段衰减快。对应慢肌（Ⅰ型纤维）与抗疲劳训练。</div>
+          </li>
+          <li>
+            <div class="pn">混合型 <span class="chip m">组合短板</span></div>
+            <div class="pd">同时出现两类以上短板（如放松差 + 耐力不足），需组合方案与分阶段优先级。</div>
+          </li>
+        </ul>
+        <div class="note" style="margin-top:14px;"><b>注：</b>雷达图中的数值为<strong>示意画像</strong>，仅用于演示产品如何呈现分维度能力，并非真实测量或医学结论。欧律生二代应在自有人群中定义画像维度与阈值。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODULE 10 -->
+<section id="m10">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">10</div>
+      <div><h2>与 Perifit 的区别</h2>
+      <div class="lead">Perifit 是消费级「训练工具」的代表，Glazer 是「评估流程」的代表。二者不在同一层面，应互补而非直接替代。</div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>维度</th><th>Glazer / sEMG（评估范式）</th><th>Perifit（消费级产品代表）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>传感原理</td><td>表面肌电 sEMG（采集肌肉<strong>电信号</strong>）</td><td>阴道<strong>压力传感</strong> perineometry（采集收缩产生的阴道内压力）</td></tr>
+          <tr><td>测量对象</td><td>肌肉电活动、激活与放松模式</td><td>阴道内压力 / 力量曲线</td></tr>
+          <tr><td>是否标准化五阶段</td><td><span class="badge s">是</span> 固定 Glazer 五阶段协议</td><td><span class="badge w">否</span> 以游戏化训练为主，无统一评估协议</td></tr>
+          <tr><td>主要输出</td><td>分相段参数 + 可解释评估报告</td><td>游戏得分 / 力量曲线 / 训练进度</td></tr>
+          <tr><td>强项</td><td>识别收缩 / 放松、启动 / 维持、疲劳的<strong>结构模式</strong></td><td>训练依从性高、趣味化、上手快</td></tr>
+          <tr><td>局限</td><td>需专业解读、易受伪差影响</td><td>不直接反映电活动，评估维度有限</td></tr>
+          <tr><td>与欧律生的关系</td><td>二代产品的<strong>评估内核</strong></td><td>可借鉴其<strong>依从性 / 游戏化</strong>设计，用于训练层</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">结论：欧律生应把 <strong>sEMG + Glazer 范式</strong> 作为评估底座，同时向 Perifit 学习「让用户愿意坚持训练」的产品体验。评估做深、训练做轻，是更稳的产品定义。</div>
+  </div>
+</section>
+
+<!-- MODULE 11 -->
+<section id="m11">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">11</div>
+      <div><h2>产品开发优先级</h2>
+      <div class="lead">按「数据有效是前提、闭环是差异化」的原则排序。P0 不做扎实，后面都是空中楼阁。</div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>优先级</th><th>模块</th><th>说明 / 判断标准</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="prio p0">P0</span></td><td>家用 sEMG 采集有效性</td><td>信号质量、伪差抑制、体位与电极接触引导。数据无效，一切解释归零。</td></tr>
+          <tr><td><span class="prio p0">P0</span></td><td>五阶段分相段参数引擎 + 参考值体系</td><td>核心算法：跑通固定协议、计算各阶段参数、建立自有参考区间。</td></tr>
+          <tr><td><span class="prio p1">P1</span></td><td>用户功能画像 + 短板识别</td><td>把参数翻译成「哪类用户、哪段短板」，是欧律生相对评分产品的差异点。</td></tr>
+          <tr><td><span class="prio p1">P1</span></td><td>个性化训练方案匹配</td><td>闭环关键：评估→方案→训练。方案与短板必须对应。</td></tr>
+          <tr><td><span class="prio p2">P2</span></td><td>阶段性复测趋势追踪</td><td>留存与证据：同一协议复测，呈现差值与画像位移。</td></tr>
+          <tr><td><span class="prio p2">P2</span></td><td>报告可解释性（用户版 / 医生版）</td><td>给用户看「改善了多少」，给医生看「结构化参数」，建立信任。</td></tr>
+          <tr><td><span class="prio p3">P3</span></td><td>游戏化 / 社区（借鉴 Perifit）</td><td>提升依从性，但属于体验层，不决定产品是否成立。</td></tr>
+          <tr><td><span class="prio p3">P3</span></td><td>与 EMS / 物理反馈整合</td><td>硬件扩张方向，待评估内核验证后再考虑。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note"><b>排序逻辑：</b>先做「测得准」（P0），再做「说得清、练得对」（P1），然后做「看得见进步、信得过」（P2），最后做「愿意坚持、能扩展」（P3）。</div>
+  </div>
+</section>
+
+<!-- MODULE 12 -->
+<section id="m12">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-num">12</div>
+      <div><h2>核心结论与资料来源</h2>
+      <div class="lead">把首屏三句话收束为一页结论，并列出可追溯的资料来源。</div></div>
+    </div>
+
+    <div class="concl">
+      <p class="c-item">1 · Glazer Protocol 不是一张测完就能诊断疾病的<span class="hl">国际统一评分表</span>，而是一套相对标准化的<span class="hl">盆底表面肌电测试流程</span>。</p>
+      <p class="c-item">2 · 欧律生真正需要建立的是：<span class="hl">标准化评估 → 识别主要功能短板 → 匹配训练方案 → 阶段性复测 → 判断具体改善了什么</span>。</p>
+      <p class="c-item">3 · <span class="hl">先保证数据有效，再解释结果；先识别功能短板，再推荐训练。</span></p>
+
+      <div class="sources">
+        <h4>资料来源</h4>
+        <ol>
+          <li>Glazer HI, Romanzi L, Polaneczky M. <i>Pelvic floor muscle surface electromyography. Reliability and clinical predictive validity.</i> J Reprod Med. 1999;44(9):779–782.</li>
+          <li>Oleksy Ł, Mika A, et al. <i>Normative values for Glazer Protocol in the evaluation of pelvic floor muscle bioelectrical activity.</i> Medicine (Baltimore). 2020;99(5):e19060.（开放获取，PMCID: PMC7004594）</li>
+          <li>中国盆底功能障碍性疾病诊断及康复治疗相关专家共识（将 sEMG / Glazer 范式列为盆底功能客观评估方法之一）。</li>
+          <li>Perifit（X6 Innovations）等消费级盆底生物反馈产品公开资料：采用阴道压力传感（perineometry）与游戏化训练，与 sEMG 评估范式互补。</li>
+        </ol>
+      </div>
+
+      <div class="disclaimer">
+        <strong>内部使用声明：</strong>本看板为欧律生 Aurillis 内部战略宣讲与产品经理培训材料，<strong>非临床指南、非医疗器械说明书</strong>。文中参考值来自特定研究样本，存在人群与设备局限性；雷达图中的用户画像为<strong>示意演示</strong>，并非真实测量或医学结论。任何对外产品表述须符合相应法规与合规要求，最终诊断与处置应由具备资质的医疗人员做出。
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  欧律生 Aurillis · Glazer Protocol 内部可视化看板 · 仅供内部培训与产品讨论使用
+</footer>
+
+<div id="tip"></div>
+
+<script>
+(function(){
+  // ---- Glossary tooltip ----
+  var tip = document.getElementById('tip');
+  var terms = document.querySelectorAll('.glossary');
+  function showTip(el){
+    var def = el.getAttribute('data-def') || '';
+    tip.innerHTML = '<b>术语</b><br>' + def;
+    var r = el.getBoundingClientRect();
+    tip.classList.add('show');
+    var tw = tip.offsetWidth, th = tip.offsetHeight;
+    var left = r.left + r.width/2 - tw/2;
+    var top = r.top - th - 10;
+    if(top < 8){ top = r.bottom + 10; }
+    if(left < 8){ left = 8; }
+    if(left + tw > window.innerWidth - 8){ left = window.innerWidth - tw - 8; }
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+  function hideTip(){ tip.classList.remove('show'); }
+  terms.forEach(function(t){
+    t.addEventListener('mouseenter', function(){ showTip(t); });
+    t.addEventListener('mouseleave', function(){ hideTip(); });
+    t.addEventListener('focus', function(){ showTip(t); });
+    t.addEventListener('blur', function(){ hideTip(); });
+    t.addEventListener('click', function(e){ e.preventDefault(); tip.classList.contains('show') ? hideTip() : showTip(t); });
+  });
+  document.addEventListener('click', function(e){ if(!e.target.classList.contains('glossary')) hideTip(); });
+
+  // ---- Active nav highlight ----
+  var links = Array.prototype.slice.call(document.querySelectorAll('#navlinks a'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          var id = '#' + en.target.id;
+          links.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === id); });
+        }
+      });
+    }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
+    sections.forEach(function(s){ if(s) obs.observe(s); });
+  }
+
+  // ---- Radar chart ----
+  function drawRadar(){
+    var svg = document.getElementById('radar');
+    if(!svg) return;
+    var NS='http://www.w3.org/2000/svg';
+    var cx=210, cy=190, R=130;
+    var axes=['放松','快速启动','持续保持','耐力','恢复'];
+    var ref=[88,82,85,86,84];          // 健康参考（示意）
+    var user=[55,70,58,48,66];         // 示例用户·混合型（示意）
+    function pt(val,i){
+      var ang = -Math.PI/2 + i*(2*Math.PI/axes.length);
+      var r = R * val/100;
+      return [cx + r*Math.cos(ang), cy + r*Math.sin(ang)];
+    }
+    function el(name,attrs){ var e=document.createElementNS(NS,name); for(var k in attrs) e.setAttribute(k,attrs[k]); return e; }
+    // grid rings
+    [25,50,75,100].forEach(function(g){
+      var pts=[]; for(var i=0;i<axes.length;i++){ var p=pt(g,i); pts.push(p[0]+','+p[1]); }
+      svg.appendChild(el('polygon',{points:pts.join(' '),fill:'none',stroke:'#ECE8E0','stroke-width':1}));
+    });
+    // axes + labels
+    axes.forEach(function(name,i){
+      var p=pt(100,i);
+      svg.appendChild(el('line',{x1:cx,y1:cy,x2:p[0],y2:p[1],stroke:'#ECE8E0','stroke-width':1}));
+      var lp=pt(118,i);
+      var t=el('text',{x:lp[0],y:lp[1],'font-size':14,'font-weight':700,fill:'#5E5C6B','text-anchor':'middle','dominant-baseline':'middle'});
+      t.textContent=name; svg.appendChild(t);
+    });
+    // series polygon
+    function series(data,stroke,fill){
+      var pts=[]; for(var i=0;i<data.length;i++){ var p=pt(data[i],i); pts.push(p[0]+','+p[1]); }
+      svg.appendChild(el('polygon',{points:pts.join(' '),fill:fill,stroke:stroke,'stroke-width':2.5,'stroke-linejoin':'round'}));
+      for(var i=0;i<data.length;i++){ var p=pt(data[i],i); svg.appendChild(el('circle',{cx:p[0],cy:p[1],r:3.5,fill:stroke})); }
+    }
+    series(ref,'#7B6BD4','rgba(123,107,212,0.14)');
+    series(user,'#E89BB4','rgba(232,155,180,0.18)');
+  }
+  drawRadar();
+
+  // ---- Hero waveform draw animation ----
+  var wtrace=document.getElementById('wtrace');
+  if(wtrace){
+    try{
+      var len=wtrace.getTotalLength();
+      wtrace.style.strokeDasharray=len; wtrace.style.strokeDashoffset=len;
+      wtrace.style.transition='stroke-dashoffset 1.6s ease';
+      requestAnimationFrame(function(){ wtrace.style.strokeDashoffset=0; });
+    }catch(e){}
+  }
+})();
+</script>
+</body>
+</html>
