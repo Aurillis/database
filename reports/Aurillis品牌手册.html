@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aurillis · 品牌战略简报 | Brand Strategy Brief</title>
+<style>
+  /* ========== Base ========== */
+  *,*::before,*::after{box-sizing:border-box}
+  :root{
+    --bg:#FBF8F4;          /* 暖白 */
+    --bg-soft:#F4EFE7;     /* 浅米色 */
+    --bg-deep:#1F1D1B;     /* 深灰 */
+    --ink:#1A1814;         /* 主文字 */
+    --ink-soft:#5A554E;    /* 副文字 */
+    --ink-mute:#9A938A;    /* 三级文字 */
+    --line:rgba(26,24,20,.10);
+    --line-soft:rgba(26,24,20,.06);
+    --gold:#B89B6E;        /* 柔和金 */
+    --gold-soft:#DCC9A8;
+    --mauve:#7B6E84;       /* 雾紫 */
+    --tech:#6E8AAE;        /* 低饱和科技蓝 */
+    --rose:#C9A6A0;        /* 暖肤色 */
+    --radius:14px;
+    --radius-lg:22px;
+    --shadow:0 1px 0 rgba(0,0,0,.02), 0 24px 60px -32px rgba(26,24,20,.18);
+    --serif: "Cormorant Garamond","Source Han Serif SC","Noto Serif SC","Songti SC", Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text","PingFang SC","Hiragino Sans GB","Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{line-height:1.6;font-size:15px;letter-spacing:.01em}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  ::selection{background:var(--gold-soft);color:var(--ink)}
+
+  /* ========== Layout ========== */
+  .container{max-width:1200px;margin:0 auto;padding:0 32px}
+  @media (max-width:720px){.container{padding:0 20px}}
+
+  /* ========== Top Nav ========== */
+  .topnav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(251,248,244,.82);
+    backdrop-filter:saturate(140%) blur(14px);
+    -webkit-backdrop-filter:saturate(140%) blur(14px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .topnav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand-mark{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:20px;letter-spacing:.12em}
+  .brand-mark .dot{width:8px;height:8px;border-radius:50%;background:var(--gold)}
+  .nav-links{display:flex;gap:28px;font-size:13px;color:var(--ink-soft)}
+  .nav-links a{transition:color .2s}
+  .nav-links a:hover{color:var(--ink)}
+  @media (max-width:860px){.nav-links{display:none}}
+
+  /* ========== Section base ========== */
+  section{padding:120px 0;position:relative}
+  @media (max-width:720px){section{padding:80px 0}}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--ink-mute);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--gold)}
+  .h-title{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(36px,4.6vw,64px);
+    line-height:1.05;
+    letter-spacing:-.01em;
+    margin:0 0 14px;
+  }
+  .h-sub{color:var(--ink-soft);font-size:16px;max-width:680px;margin:0}
+  .en-title{
+    font-family:var(--serif);font-style:italic;font-weight:400;
+    color:var(--ink-mute);font-size:15px;letter-spacing:.04em;margin-bottom:6px
+  }
+  .section-head{margin-bottom:64px}
+  .section-head.center{text-align:center;margin-left:auto;margin-right:auto}
+  .section-head.center .eyebrow{margin-left:auto;margin-right:auto}
+
+  /* ========== Hero ========== */
+  .hero{
+    min-height:100vh;
+    display:flex;align-items:center;
+    padding:160px 0 120px;
+    background:
+      radial-gradient(1100px 700px at 80% 20%, #F2E7D6 0%, transparent 60%),
+      radial-gradient(900px 700px at 10% 80%, #E9E2EE 0%, transparent 55%),
+      linear-gradient(180deg, #FBF8F4 0%, #F6F0E5 100%);
+    overflow:hidden;position:relative;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      radial-gradient(circle at 70% 35%, rgba(184,155,110,.15), transparent 40%),
+      radial-gradient(circle at 25% 70%, rgba(110,138,174,.10), transparent 40%);
+    pointer-events:none;
+  }
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:center;position:relative}
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:40px}}
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(56px,8vw,108px);
+    line-height:.98;
+    letter-spacing:-.02em;
+    margin:0 0 24px;
+    color:var(--ink);
+    text-shadow:0 1px 0 rgba(255,255,255,.4);
+  }
+  .hero h1 .light{color:var(--ink-soft);font-style:italic;font-weight:400}
+  .hero h1 .dark{color:var(--ink);font-weight:600}
+  .hero h1 .accent{color:var(--ink);background:linear-gradient(90deg,var(--ink) 0%, #3A3328 100%);-webkit-background-clip:text;background-clip:text}
+  .hero .tagline{
+    color:var(--ink-soft);font-size:18px;max-width:520px;margin:0 0 36px
+  }
+  .hero .meta{
+    display:flex;flex-wrap:wrap;gap:18px;font-size:12px;color:var(--ink-mute);
+    letter-spacing:.18em;text-transform:uppercase;margin-top:48px;padding-top:32px;
+    border-top:1px solid var(--line-soft)
+  }
+  .hero-visual{
+    aspect-ratio:1/1;border-radius:50%;
+    background:
+      radial-gradient(circle at 50% 45%, #FFFFFF 0%, #F4E8D4 35%, #E2D2BE 70%, transparent 100%);
+    position:relative;
+    box-shadow: inset 0 0 80px rgba(184,155,110,.18), 0 40px 80px -40px rgba(26,24,20,.25);
+    opacity:.55;
+  }
+  .hero-visual::before,.hero-visual::after{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    border:1px solid rgba(184,155,110,.35);
+  }
+  .hero-visual::before{transform:scale(1.12);opacity:.4}
+  .hero-visual::after{transform:scale(1.28);opacity:.18;border-color:rgba(110,138,174,.35)}
+  .hero-visual .ring{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .hero-visual .ring svg{width:60%;height:60%;opacity:.7}
+  .hero-visual .center-text{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    flex-direction:column;text-align:center;padding:20px
+  }
+  .hero-visual .center-text .w{
+    font-family:var(--serif);font-size:34px;letter-spacing:.06em;line-height:1
+  }
+  .hero-visual .center-text .w .sub{
+    display:block;font-size:11px;letter-spacing:.36em;color:var(--ink-mute);margin-top:14px;text-transform:uppercase
+  }
+
+  .hero-statement{
+    margin-top:56px;padding:28px 32px;background:rgba(255,255,255,.55);
+    border:1px solid var(--line-soft);border-radius:var(--radius-lg);
+    backdrop-filter:blur(10px);max-width:780px;
+  }
+  .hero-statement p{margin:0;font-size:15px;color:var(--ink)}
+  .hero-statement p .accent{color:var(--gold);font-weight:600}
+
+  /* ========== Cards ========== */
+  .card{
+    background:#fff;border:1px solid var(--line-soft);
+    border-radius:var(--radius-lg);padding:36px;
+    box-shadow:var(--shadow);
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:0 1px 0 rgba(0,0,0,.02), 0 30px 70px -32px rgba(26,24,20,.22)}
+  .card .label{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+  .card h3{font-family:var(--serif);font-weight:500;font-size:24px;margin:0 0 8px;letter-spacing:-.005em}
+  .card .en{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:13px;margin-bottom:18px;letter-spacing:.04em}
+  .card p{margin:0;color:var(--ink-soft)}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  @media (max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+
+  /* ========== Why Section ========== */
+  .why-flow{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+    border:1px solid var(--line-soft);border-radius:var(--radius-lg);overflow:hidden;background:#fff
+  }
+  .why-step{padding:44px 36px;position:relative;border-right:1px solid var(--line-soft)}
+  .why-step:last-child{border-right:none}
+  @media (max-width:900px){.why-flow{grid-template-columns:1fr}.why-step{border-right:none;border-bottom:1px solid var(--line-soft)}.why-step:last-child{border-bottom:none}}
+  .why-step .num{font-family:var(--serif);font-size:48px;color:var(--gold);line-height:1;margin-bottom:20px}
+  .why-step h3{font-family:var(--serif);font-weight:500;font-size:22px;margin:0 0 6px}
+  .why-step .en{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:13px;margin-bottom:18px;letter-spacing:.04em}
+  .why-step p{margin:0;color:var(--ink-soft);font-size:14px}
+  .why-step ul{margin:18px 0 0;padding:0;list-style:none}
+  .why-step li{padding-left:16px;position:relative;color:var(--ink-soft);font-size:14px;margin-bottom:8px}
+  .why-step li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:1px;background:var(--gold)}
+
+  /* ========== Mission Section ========== */
+  .mv-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:0;border:1px solid var(--line-soft);border-radius:var(--radius-lg);overflow:hidden;background:#fff}
+  .mv-cell{padding:48px 40px;border-right:1px solid var(--line-soft)}
+  .mv-cell:last-child{border-right:none;background:var(--bg-soft)}
+  @media (max-width:900px){.mv-grid{grid-template-columns:1fr}.mv-cell{border-right:none;border-bottom:1px solid var(--line-soft)}.mv-cell:last-child{border-bottom:none}}
+  .mv-cell .label{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+  .mv-cell h3{font-family:var(--serif);font-weight:500;font-size:32px;line-height:1.15;margin:0 0 14px;letter-spacing:-.01em}
+  .mv-cell p{margin:0;color:var(--ink-soft);font-size:15px}
+  .mv-cell.dark{background:var(--bg-deep);color:#EFE9DD}
+  .mv-cell.dark p{color:#BDB5A9}
+  .mv-cell.dark .label{color:var(--gold-soft)}
+  .mv-cell.dark h3{color:#FFF}
+
+  /* ========== Core Values ========== */
+  .values-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  @media (max-width:720px){.values-grid{grid-template-columns:1fr}}
+  .value-card{position:relative;padding:40px;background:#fff;border:1px solid var(--line-soft);border-radius:var(--radius-lg);overflow:hidden}
+  .value-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+  .value-card.v2::before{background:var(--mauve)}
+  .value-card.v3::before{background:var(--tech)}
+  .value-card.v4::before{background:var(--rose)}
+  .value-card .idx{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:13px;margin-bottom:14px;letter-spacing:.04em}
+  .value-card h3{font-family:var(--serif);font-weight:500;font-size:24px;margin:0 0 6px}
+  .value-card .en{color:var(--ink-mute);font-size:13px;font-style:italic;letter-spacing:.04em;margin-bottom:18px}
+  .value-card p{color:var(--ink-soft);margin:0 0 14px;font-size:14px}
+  .value-card .req{margin-top:18px;padding-top:18px;border-top:1px solid var(--line-soft);font-size:13px;color:var(--ink)}
+  .value-card .req b{color:var(--gold)}
+
+  /* ========== Positioning ========== */
+  .positioning{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center}
+  @media (max-width:900px){.positioning{grid-template-columns:1fr}}
+  .pos-center{text-align:center}
+  .pos-center .name{font-family:var(--serif);font-size:clamp(48px,6vw,76px);line-height:1;letter-spacing:.02em;margin-bottom:8px}
+  .pos-center .sub{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:18px;margin-bottom:18px}
+  .pos-center .tag{font-size:13px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase}
+  .pos-orbit{
+    position:relative;width:100%;aspect-ratio:1/1;max-width:520px;margin:0 auto;
+    border-radius:50%;background:radial-gradient(circle at 50% 50%, #FFF 0%, #F4ECDC 70%, transparent 100%);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .pos-orbit::before{content:"";position:absolute;inset:18%;border:1px dashed rgba(184,155,110,.45);border-radius:50%}
+  .pos-orbit::after{content:"";position:absolute;inset:6%;border:1px solid rgba(184,155,110,.3);border-radius:50%}
+  .pos-core{
+    width:42%;aspect-ratio:1/1;border-radius:50%;background:#fff;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    box-shadow:0 30px 60px -30px rgba(26,24,20,.3);
+    z-index:2;border:1px solid var(--line-soft)
+  }
+  .pos-core .n{font-family:var(--serif);font-size:30px;letter-spacing:.04em}
+  .pos-core .e{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:12px;letter-spacing:.06em;margin-top:4px}
+  .pos-keyword{position:absolute;background:#fff;border:1px solid var(--line-soft);border-radius:999px;padding:10px 18px;font-size:13px;letter-spacing:.04em;box-shadow:0 8px 24px -12px rgba(26,24,20,.18);font-family:var(--serif)}
+  .pos-keyword.k1{top:6%;left:50%;transform:translateX(-50%)}
+  .pos-keyword.k2{top:50%;right:-2%;transform:translateY(-50%)}
+  .pos-keyword.k3{bottom:6%;left:50%;transform:translateX(-50%)}
+  .pos-keyword.k4{top:50%;left:-2%;transform:translateY(-50%)}
+  .pos-keyword.k5{top:18%;right:8%}
+  .pos-outcome{margin-top:24px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+  .pos-outcome span{padding:6px 14px;background:rgba(184,155,110,.12);border-radius:999px;font-size:12px;color:var(--ink-soft);letter-spacing:.04em}
+
+  .pos-list{display:flex;flex-direction:column;gap:14px}
+  .pos-list .row{display:flex;align-items:flex-start;gap:18px;padding:22px 0;border-bottom:1px solid var(--line-soft)}
+  .pos-list .row:last-child{border-bottom:none}
+  .pos-list .num{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:18px;min-width:36px}
+  .pos-list h4{margin:0 0 4px;font-family:var(--serif);font-weight:500;font-size:18px}
+  .pos-list p{margin:0;color:var(--ink-soft);font-size:14px}
+
+  /* ========== Four Systems ========== */
+  .systems-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  @media (max-width:860px){.systems-grid{grid-template-columns:1fr}}
+  .system-card{
+    padding:44px;background:#fff;border:1px solid var(--line-soft);border-radius:var(--radius-lg);
+    position:relative;overflow:hidden;min-height:380px;
+    display:flex;flex-direction:column;
+  }
+  .system-card::after{
+    content:"";position:absolute;right:-80px;top:-80px;width:240px;height:240px;border-radius:50%;
+    background:radial-gradient(circle, rgba(184,155,110,.15), transparent 70%);
+    pointer-events:none;
+  }
+  .system-card.s1::after{background:radial-gradient(circle, rgba(201,166,160,.25), transparent 70%)}
+  .system-card.s2::after{background:radial-gradient(circle, rgba(184,155,110,.25), transparent 70%)}
+  .system-card.s3::after{background:radial-gradient(circle, rgba(110,138,174,.20), transparent 70%)}
+  .system-card.s4::after{background:radial-gradient(circle, rgba(123,110,132,.18), transparent 70%)}
+  .system-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;position:relative;z-index:1}
+  .system-name{font-family:var(--serif);font-size:34px;letter-spacing:.02em;line-height:1}
+  .system-cn{color:var(--ink-soft);font-size:14px;margin-top:8px}
+  .system-en{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:14px;letter-spacing:.06em;text-align:right;line-height:1.4}
+  .system-tag{display:inline-block;padding:6px 14px;background:rgba(184,155,110,.12);border-radius:999px;font-size:12px;color:var(--ink-soft);letter-spacing:.04em;margin-bottom:24px;align-self:flex-start}
+  .system-card.s1 .system-tag{background:rgba(201,166,160,.18)}
+  .system-card.s2 .system-tag{background:rgba(184,155,110,.20)}
+  .system-card.s3 .system-tag{background:rgba(110,138,174,.18)}
+  .system-card.s4 .system-tag{background:rgba(123,110,132,.18)}
+  .system-block{margin-top:auto;position:relative;z-index:1}
+  .system-block .h{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .system-block .content{color:var(--ink-soft);font-size:14px;margin-bottom:18px}
+  .system-block .dir{display:flex;flex-wrap:wrap;gap:8px}
+  .system-block .dir span{padding:6px 12px;background:var(--bg-soft);border-radius:6px;font-size:12px;color:var(--ink)}
+
+  .systems-summary{
+    margin-top:40px;padding:32px 36px;background:var(--bg-deep);color:#EFE9DD;
+    border-radius:var(--radius-lg);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap
+  }
+  .systems-summary .label{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:8px}
+  .systems-summary p{margin:0;font-family:var(--serif);font-size:22px;line-height:1.4;max-width:680px}
+  .systems-summary .val{font-family:var(--serif);font-style:italic;color:var(--gold-soft);font-size:18px}
+
+  /* ========== Stage Priority ========== */
+  .priority{margin-top:32px;background:#fff;border:1px solid var(--line-soft);border-radius:var(--radius-lg);overflow:hidden}
+  .priority-head{display:flex;justify-content:space-between;align-items:flex-end;padding:32px 36px 24px;border-bottom:1px solid var(--line-soft);flex-wrap:wrap;gap:16px}
+  .priority-head .label{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .priority-head h3{font-family:var(--serif);font-weight:500;font-size:28px;margin:0;letter-spacing:-.005em}
+  .priority-head .en{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:14px;letter-spacing:.04em}
+  .priority-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+  @media (max-width:860px){.priority-grid{grid-template-columns:1fr}}
+  .priority-cell{padding:32px 36px;border-right:1px solid var(--line-soft);position:relative}
+  .priority-cell:last-child{border-right:none}
+  @media (max-width:860px){.priority-cell{border-right:none;border-bottom:1px solid var(--line-soft)}.priority-cell:last-child{border-bottom:none}}
+  .priority-cell .term{font-size:11px;letter-spacing:.24em;text-transform:uppercase;margin-bottom:14px}
+  .priority-cell.near .term{color:#B89B6E}
+  .priority-cell.mid .term{color:#7B6E84}
+  .priority-cell.long .term{color:#6E8AAE}
+  .priority-cell h4{font-family:var(--serif);font-weight:500;font-size:22px;margin:0 0 4px;line-height:1.2}
+  .priority-cell .en{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:13px;letter-spacing:.04em;margin-bottom:18px}
+  .priority-cell p{color:var(--ink-soft);font-size:14px;margin:0 0 16px;line-height:1.6}
+  .priority-systems{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .priority-systems span{padding:6px 12px;background:var(--bg-soft);border-radius:6px;font-size:12px;color:var(--ink);font-family:var(--serif);letter-spacing:.02em}
+
+  /* ========== Product Gate ========== */
+  .gate-wrap{display:grid;grid-template-columns:repeat(7,1fr);gap:0;border:1px solid var(--line-soft);border-radius:var(--radius-lg);overflow:hidden;background:#fff}
+  @media (max-width:900px){.gate-wrap{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.gate-wrap{grid-template-columns:1fr}}
+  .gate-step{padding:24px 18px;text-align:center;border-right:1px solid var(--line-soft);position:relative}
+  .gate-step:last-child{border-right:none}
+  @media (max-width:900px){.gate-step{border-right:none;border-bottom:1px solid var(--line-soft)}}
+  .gate-step .n{font-family:var(--serif);font-size:24px;color:var(--gold);line-height:1;margin-bottom:10px}
+  .gate-step h4{font-size:13px;font-weight:600;margin:0 0 6px;color:var(--ink)}
+  .gate-step p{margin:0;font-size:12px;color:var(--ink-soft);line-height:1.5}
+
+  .gate-rule{
+    margin-top:32px;padding:32px 36px;background:rgba(184,155,110,.08);
+    border:1px solid rgba(184,155,110,.3);border-radius:var(--radius-lg);
+    display:flex;gap:20px;align-items:flex-start;
+  }
+  .gate-rule .icon{
+    width:40px;height:40px;border-radius:50%;background:var(--gold);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600;flex-shrink:0
+  }
+  .gate-rule h4{font-family:var(--serif);font-weight:500;font-size:18px;margin:0 0 4px}
+  .gate-rule p{margin:0;color:var(--ink-soft);font-size:14px}
+  .gate-rule b{color:var(--gold)}
+
+  /* ========== Opportunity Mapping ========== */
+  .omap{
+    display:grid;grid-template-columns:1fr;gap:0;
+    border:1px solid var(--line-soft);border-radius:var(--radius-lg);overflow:hidden;background:#fff
+  }
+  .omap-row{
+    display:grid;grid-template-columns:60px 1fr 1.4fr;gap:24px;align-items:center;
+    padding:18px 28px;border-bottom:1px solid var(--line-soft);position:relative;
+  }
+  .omap-row:last-child{border-bottom:none}
+  @media (max-width:720px){.omap-row{grid-template-columns:40px 1fr;gap:14px}.omap-row .desc{display:none}}
+  .omap-row .n{
+    font-family:var(--serif);font-size:22px;color:var(--ink-mute);
+    display:flex;align-items:center;justify-content:center;height:38px;width:38px;
+    border:1px solid var(--line);border-radius:50%
+  }
+  .omap-row h4{margin:0 0 2px;font-family:var(--serif);font-weight:500;font-size:16px}
+  .omap-row .en{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:12px;letter-spacing:.04em}
+  .omap-row .desc{color:var(--ink-soft);font-size:14px}
+  .omap-row::after{
+    content:"";position:absolute;left:48px;top:100%;width:1px;height:18px;background:var(--line)
+  }
+  .omap-row:last-child::after{display:none}
+  @media (max-width:720px){.omap-row::after{left:34px}}
+
+  .omap-rule{
+    margin-top:32px;padding:24px 32px;background:var(--bg-deep);color:#EFE9DD;
+    border-radius:var(--radius-lg);font-family:var(--serif);font-size:20px;line-height:1.5;text-align:center
+  }
+  .omap-rule span{color:var(--gold-soft);font-style:italic}
+
+  /* ========== Benchmark ========== */
+  .bm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  @media (max-width:860px){.bm-grid{grid-template-columns:1fr}}
+  .bm-card{padding:36px;background:#fff;border:1px solid var(--line-soft);border-radius:var(--radius-lg)}
+  .bm-card .label{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+  .bm-card h3{font-family:var(--serif);font-weight:500;font-size:24px;margin:0 0 6px}
+  .bm-card .en{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:13px;margin-bottom:24px;letter-spacing:.04em}
+  .bm-tags{display:flex;flex-wrap:wrap;gap:10px}
+  .bm-tags span{
+    padding:10px 18px;background:var(--bg-soft);border-radius:8px;font-size:14px;
+    font-family:var(--serif);letter-spacing:.02em
+  }
+
+  .bm-matrix{
+    margin-top:24px;padding:36px;background:#fff;border:1px solid var(--line-soft);
+    border-radius:var(--radius-lg);position:relative;height:520px
+  }
+  .bm-matrix .axis-y,.bm-matrix .axis-x{position:absolute;color:var(--ink-mute);font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+  .bm-matrix .axis-y{left:8px;top:50%;transform:rotate(-90deg) translateX(50%);transform-origin:left top;white-space:nowrap}
+  .bm-matrix .axis-x{right:8px;bottom:6px}
+  .bm-matrix .quad{
+    position:absolute;left:60px;right:60px;top:60px;bottom:60px;
+    border-left:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .bm-matrix .quad::before{
+    content:"";position:absolute;left:0;right:0;top:50%;border-top:1px dashed var(--line-soft)
+  }
+  .bm-matrix .quad::after{
+    content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;border-left:1px dashed var(--line-soft)
+  }
+  .bm-matrix .dot{
+    position:absolute;width:62px;height:62px;border-radius:50%;
+    background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+    text-align:center;font-family:var(--serif);font-size:13px;color:var(--ink);
+    box-shadow:0 6px 20px -8px rgba(26,24,20,.15);transform:translate(-50%,-50%);
+  }
+  .bm-matrix .dot.a{top:22%;left:78%;background:linear-gradient(135deg,#fff,#F4ECDC)}
+  .bm-matrix .dot.b{top:28%;left:62%}
+  .bm-matrix .dot.c{top:40%;left:50%}
+  .bm-matrix .dot.d{top:55%;left:48%}
+  .bm-matrix .dot.e{top:68%;left:30%}
+  .bm-matrix .dot.f{top:80%;left:35%}
+  .bm-matrix .dot.g{top:60%;left:18%}
+  .bm-matrix .dot.h{top:32%;left:30%}
+  .bm-matrix .dot.i{top:50%;left:80%}
+  .bm-matrix .dot.j{top:75%;left:65%}
+  .bm-matrix .aurillis{position:absolute;width:78px;height:78px;border-radius:50%;background:var(--ink);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;letter-spacing:.06em;
+    top:32%;left:72%;transform:translate(-50%,-50%);box-shadow:0 20px 40px -12px rgba(26,24,20,.4);z-index:2
+  }
+  .bm-matrix .q-label{position:absolute;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute)}
+  .bm-matrix .q-label.q1{top:14%;right:0}
+  .bm-matrix .q-label.q2{top:14%;left:0}
+  .bm-matrix .q-label.q3{bottom:0;right:0}
+  .bm-matrix .q-label.q4{bottom:0;left:0}
+
+  /* ========== Go / No-Go ========== */
+  .gonogo{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media (max-width:860px){.gonogo{grid-template-columns:1fr}}
+  .gonogo-card{padding:40px;border-radius:var(--radius-lg);border:1px solid var(--line-soft);background:#fff}
+  .gonogo-card.go{background:linear-gradient(160deg, #FFF, #F4ECDC)}
+  .gonogo-card.nogo{background:linear-gradient(160deg, #FFF, #EFEAE2)}
+  .gonogo-card .label{font-size:11px;letter-spacing:.26em;text-transform:uppercase;margin-bottom:18px}
+  .gonogo-card.go .label{color:var(--gold)}
+  .gonogo-card.nogo .label{color:var(--ink-mute)}
+  .gonogo-card h3{font-family:var(--serif);font-weight:500;font-size:30px;margin:0 0 6px}
+  .gonogo-card .en{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:14px;margin-bottom:24px;letter-spacing:.04em}
+  .gonogo-card ul{list-style:none;margin:0;padding:0}
+  .gonogo-card li{
+    display:flex;align-items:flex-start;gap:14px;padding:14px 0;
+    border-bottom:1px solid var(--line-soft);font-size:14px;color:var(--ink-soft)
+  }
+  .gonogo-card li:last-child{border-bottom:none}
+  .gonogo-card .check{color:var(--gold);font-weight:600;flex-shrink:0;font-size:16px;line-height:1.4}
+  .gonogo-card .cross{color:var(--ink-mute);flex-shrink:0;font-size:16px;line-height:1.4}
+
+  .gonogo-takeaway{
+    margin-top:32px;padding:28px 32px;background:#fff;border:1px solid var(--line-soft);
+    border-radius:var(--radius-lg);font-size:14px;color:var(--ink-soft)
+  }
+  .gonogo-takeaway b{color:var(--ink)}
+
+  /* ========== Roadmap ========== */
+  .roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line-soft);border-radius:var(--radius-lg);overflow:hidden;background:#fff}
+  @media (max-width:860px){.roadmap{grid-template-columns:1fr}}
+  .rm-stage{padding:40px;border-right:1px solid var(--line-soft);position:relative}
+  .rm-stage:last-child{border-right:none;background:var(--bg-soft)}
+  @media (max-width:860px){.rm-stage{border-right:none;border-bottom:1px solid var(--line-soft)}}
+  .rm-stage .phase{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+  .rm-stage h3{font-family:var(--serif);font-weight:500;font-size:26px;margin:0 0 4px}
+  .rm-stage .years{font-family:var(--serif);font-style:italic;color:var(--ink-mute);font-size:14px;margin-bottom:24px;letter-spacing:.04em}
+  .rm-stage .goal{font-size:14px;color:var(--ink-soft);margin-bottom:24px;line-height:1.6}
+  .rm-stage .actions{margin-bottom:24px}
+  .rm-stage .actions h5{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-mute);margin:0 0 10px}
+  .rm-stage .actions li{padding-left:14px;position:relative;color:var(--ink-soft);font-size:13.5px;margin-bottom:6px;list-style:none}
+  .rm-stage .actions li::before{content:"—";position:absolute;left:0;color:var(--gold)}
+  .rm-stage .result{
+    padding-top:18px;border-top:1px solid var(--line-soft);
+    font-family:var(--serif);font-size:15px;color:var(--ink);font-style:italic
+  }
+  .rm-stage .result b{color:var(--gold);font-style:normal}
+  .rm-kpi{margin-top:18px;padding:14px 16px;background:rgba(184,155,110,.10);border-left:2px solid var(--gold);border-radius:0 6px 6px 0}
+  .rm-kpi .k{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+  .rm-kpi .v{font-size:13px;color:var(--ink);line-height:1.5}
+
+  /* ========== Closing ========== */
+  .closing{
+    padding:160px 0;background:
+      radial-gradient(800px 600px at 50% 30%, #F2E7D6 0%, transparent 60%),
+      linear-gradient(180deg, #1F1D1B 0%, #2A2724 100%);
+    color:#EFE9DD;text-align:center;position:relative;overflow:hidden;
+  }
+  .closing::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%, rgba(184,155,110,.2), transparent 50%)}
+  .closing .inner{position:relative;max-width:880px;margin:0 auto}
+  .closing .lead{font-size:11px;letter-spacing:.36em;color:var(--gold-soft);text-transform:uppercase;margin-bottom:32px}
+  .closing h2{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.4vw,56px);line-height:1.2;margin:0 0 24px;letter-spacing:-.01em}
+  .closing h2 em{font-style:italic;color:var(--gold-soft)}
+  .closing p{color:#BDB5A9;font-size:16px;line-height:1.8;max-width:680px;margin:0 auto 32px}
+  .closing .final{font-family:var(--serif);font-size:clamp(24px,3vw,38px);letter-spacing:.04em;color:var(--gold-soft);margin-top:48px}
+  .closing .final span{display:block;font-size:13px;letter-spacing:.4em;color:#9A938A;margin-top:18px;text-transform:uppercase}
+
+  /* ========== Footer ========== */
+  footer{padding:60px 0;border-top:1px solid var(--line-soft);background:var(--bg)}
+  .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .foot .meta{font-size:12px;color:var(--ink-mute);letter-spacing:.18em;text-transform:uppercase}
+  .foot .copy{font-size:12px;color:var(--ink-mute)}
+
+  /* ========== Helpers ========== */
+  .highlight{color:var(--gold);font-weight:500}
+  .quote{
+    margin:36px 0;padding:24px 32px;border-left:2px solid var(--gold);
+    font-family:var(--serif);font-size:20px;line-height:1.5;color:var(--ink);font-style:italic
+  }
+  .quote::after{content:'"';font-family:var(--serif);color:var(--gold)}
+  .quote::before{content:'"';font-family:var(--serif);color:var(--gold);margin-right:6px}
+
+  /* ========== Reveal animation ==========
+     Default state: visible. JS adds .reveal-pending to opt elements into the
+     fade-in motion, which only triggers if the observer runs. This way:
+     - No-JS / PDF export / pre-render: everything is fully visible.
+     - JS enabled: page is briefly in "pending" state, then animates in. */
+  .reveal-pending{opacity:0;transform:translateY(20px)}
+  .reveal{opacity:1;transform:none;transition:opacity .9s ease, transform .9s ease}
+  .reveal-pending.in{opacity:1;transform:none}
+
+  /* ========== Print / PDF export ==========
+     Force visibility for print regardless of animation state. */
+  @media print {
+    .reveal,.reveal-pending{opacity:1 !important;transform:none !important}
+    section{break-inside:avoid;page-break-inside:avoid}
+    .topnav{position:static !important}
+    body{background:#FBF8F4 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .hero,.closing{break-inside:avoid-page;page-break-inside:avoid}
+    .systems-grid,.values-grid,.gonogo,.roadmap,.gate-wrap,.omap,.bm-matrix,.bm-grid{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    .hero{min-height:auto;padding:80px 0}
+  }
+  @media screen and (prefers-reduced-motion: reduce){
+    .reveal-pending{opacity:1;transform:none}
+  }
+
+  /* ========== Brand summary block ========== */
+  .summary-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line-soft);border-radius:var(--radius-lg);overflow:hidden;background:#fff;margin-top:48px}
+  @media (max-width:860px){.summary-row{grid-template-columns:repeat(2,1fr)}}
+  .summary-cell{padding:28px;border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+  .summary-cell:nth-child(2n){border-right:none}
+  @media (min-width:861px){.summary-cell:nth-child(4n){border-right:none}}
+  .summary-cell .l{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:8px}
+  .summary-cell .v{font-family:var(--serif);font-size:18px;color:var(--ink);line-height:1.3}
+
+  /* ========== TOC ========== */
+  .toc{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line-soft);border-radius:var(--radius-lg);overflow:hidden;background:#fff;margin-bottom:60px}
+  @media (max-width:860px){.toc{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.toc{grid-template-columns:1fr}}
+  .toc a{padding:18px 20px;border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);font-size:13px;color:var(--ink-soft);transition:background .2s;display:block}
+  .toc a:hover{background:var(--bg-soft);color:var(--ink)}
+  .toc .n{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:12px;margin-right:8px;display:inline-block;min-width:24px}
+</style>
+</head>
+<body>
+
+<!-- ============ Top Nav ============ -->
+<nav class="topnav">
+  <div class="container topnav-inner">
+    <div class="brand-mark"><span class="dot"></span>Aurillis</div>
+    <div class="nav-links">
+      <a href="#why">Why</a>
+      <a href="#mission">Mission</a>
+      <a href="#values">Values</a>
+      <a href="#positioning">Positioning</a>
+      <a href="#systems">Systems</a>
+      <a href="#gate">Product Gate</a>
+      <a href="#opportunity">Opportunity</a>
+      <a href="#benchmark">Benchmark</a>
+      <a href="#gonogo">Go / No-Go</a>
+      <a href="#roadmap">Roadmap</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ Hero ============ -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="reveal">
+      <div class="eyebrow">Aurillis · Brand Strategy Brief</div>
+      <h1>
+        <span class="dark">Aurillis</span><br>
+        <span class="light">Women's Health</span><br>
+        <span class="accent">Technology</span>
+      </h1>
+      <p class="tagline">Technology for Women's Wellness. 科技服务女性健康，而不是制造焦虑。</p>
+      <p class="tagline" style="font-size:15px;color:var(--ink-mute);margin-bottom:0">从品牌信念到产品战略 · From Brand Belief to Product Strategy</p>
+
+      <div class="hero-statement">
+        <p><span class="accent">核心结论：</span>Aurillis 的本质，是一家围绕女性<span class="accent">身体健康阶段</span>建立产品矩阵的科技品牌。不是单品品牌，不是 OEM，也不是普通跨境电商公司。</p>
+      </div>
+
+      <div class="meta">
+        <span>Version 2.0</span>
+        <span>Internal Only</span>
+        <span>Strategic Brief</span>
+        <span>2026</span>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal">
+      <div class="ring">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="60" stroke="#B89B6E" stroke-width="0.6" stroke-dasharray="2 4" opacity=".5"/>
+          <circle cx="100" cy="100" r="78" stroke="#7B6E84" stroke-width="0.6" opacity=".4"/>
+          <path d="M 40 100 Q 70 60 100 100 T 160 100" stroke="#B89B6E" stroke-width="0.8" fill="none" opacity=".6"/>
+          <path d="M 100 40 Q 140 70 100 100 T 100 160" stroke="#6E8AAE" stroke-width="0.6" fill="none" opacity=".4"/>
+        </svg>
+      </div>
+      <div class="center-text">
+        <div class="w">Aurillis<span class="sub">Four Systems · One Body</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOC ============ -->
+<section style="padding:80px 0 0">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Contents · 目录</div>
+      <h2 class="h-title">品牌战略简报</h2>
+      <p class="h-sub">本文档将品牌手册浓缩为十二个核心板块，涵盖品牌初心、定位、产品矩阵、立项原则与十年路线图。</p>
+    </div>
+    <div class="toc">
+      <a href="#why"><span class="n">01</span>Why · 品牌初心</a>
+      <a href="#mission"><span class="n">02</span>Mission · 使命愿景</a>
+      <a href="#values"><span class="n">03</span>Values · 核心价值观</a>
+      <a href="#positioning"><span class="n">04</span>Positioning · 品牌定位</a>
+      <a href="#systems"><span class="n">05</span>Systems · 四大系统</a>
+      <a href="#gate"><span class="n">06</span>Product Gate · 立项原则</a>
+      <a href="#opportunity"><span class="n">07</span>Opportunity Map · 机会地图</a>
+      <a href="#benchmark"><span class="n">08</span>Benchmark · 对标品牌</a>
+      <a href="#gonogo"><span class="n">09</span>Go / No-Go · 选品原则</a>
+      <a href="#roadmap"><span class="n">10</span>Roadmap · 路线图</a>
+      <a href="#philosophy"><span class="n">11</span>Philosophy · 品牌哲学</a>
+      <a href="#closing"><span class="n">12</span>Closing · 收束</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 01 Why ============ -->
+<section id="why">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="en-title">Chapter 01 · Why Aurillis</div>
+      <div class="eyebrow">Section 01 · 品牌初心</div>
+      <h2 class="h-title">为什么创立 Aurillis</h2>
+      <p class="h-sub">不是为了销售更多女性产品，而是希望通过科技与设计，改善女性一生不同阶段身体健康所面临的问题。</p>
+    </div>
+
+    <div class="why-flow reveal">
+      <div class="why-step">
+        <div class="num">01</div>
+        <h3>Unmet Problems</h3>
+        <div class="en">真实存在的问题</div>
+        <p>女性一生经历周期、孕育、产后、衰老等多个阶段，但大量真实存在的身体不适，长期未被专业产品有效回应。</p>
+        <ul>
+          <li>需求长期存在</li>
+          <li>解决方案稀缺</li>
+          <li>情绪被消费，而非被关照</li>
+        </ul>
+      </div>
+      <div class="why-step">
+        <div class="num">02</div>
+        <h3>Responsible Technology</h3>
+        <div class="en">克制的科技</div>
+        <p>科技服务女性健康，而不是制造焦虑。我们相信真正优秀的产品，不是创造新需求，而是解决已经存在、却尚未被很好解决的问题。</p>
+        <ul>
+          <li>不创造新焦虑</li>
+          <li>不堆砌伪科技</li>
+          <li>不依赖营销概念</li>
+        </ul>
+      </div>
+      <div class="why-step">
+        <div class="num">03</div>
+        <h3>Long-term Wellness</h3>
+        <div class="en">长期主义的品牌</div>
+        <p>Aurillis 不做爆款逻辑，而是围绕女性身体健康阶段建立系统化的产品矩阵，陪伴用户十年、二十年、三十年。</p>
+        <ul>
+          <li>系统化产品矩阵</li>
+          <li>长期品牌资产</li>
+          <li>跨越生命阶段</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quote reveal">真正优秀的产品，不是创造新的需求，而是解决已经存在、却尚未被很好解决的问题。</div>
+  </div>
+</section>
+
+<!-- ============ 02 Mission ============ -->
+<section id="mission" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="en-title">Chapter 02 · Mission & Vision</div>
+      <div class="eyebrow">Section 02 · 使命与愿景</div>
+      <h2 class="h-title">Mission, Vision & Ambition</h2>
+      <p class="h-sub">Aurillis 的终局，是一家 Women's Health Technology Company，而不是 OEM，也不是普通跨境电商公司。</p>
+    </div>
+
+    <div class="mv-grid reveal">
+      <div class="mv-cell dark">
+        <div class="label">Mission · 品牌使命</div>
+        <h3>Empowering Every Stage of Women's Wellness.</h3>
+        <p>赋能女性每一个身体健康阶段。从青春期、孕产期到更年期的所有身体变化，Aurillis 都希望提供专业、克制、值得信赖的科技支持。</p>
+      </div>
+      <div class="mv-cell">
+        <div class="label">Vision · 品牌愿景</div>
+        <h3>成为全球最值得信赖的女性健康科技品牌。</h3>
+        <p>用长期主义建立用户信任，让 Aurillis 成为女性在不同人生阶段第一时间想到的健康伙伴。</p>
+      </div>
+      <div class="mv-cell">
+        <div class="label">Brand Ambition · 终局目标</div>
+        <h3>From Product Brand to Women's Health Technology Company.</h3>
+        <p>从产品品牌升级为女性健康科技公司。跨越单一品类、单一渠道、单一市场，形成系统化的全球品牌。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 Values ============ -->
+<section id="values">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="en-title">Chapter 03 · Core Values</div>
+      <div class="eyebrow">Section 03 · 核心价值观</div>
+      <h2 class="h-title">四条不可让步的战略准则</h2>
+      <p class="h-sub">价值观不是口号，而是产品立项、设计、定价与品牌沟通的判断依据。每一条都对应明确的开发要求。</p>
+    </div>
+
+    <div class="values-grid reveal">
+      <div class="value-card v1">
+        <div class="idx">Value · 01</div>
+        <h3>用户第一</h3>
+        <div class="en">User First</div>
+        <p>所有产品必须解决真实问题，而不是创造营销概念。我们不接受"为存在而存在"的产品。</p>
+        <div class="req"><b>对产品的要求：</b>每个 SKU 必须能清楚回答"它解决了哪个真实身体问题"。</div>
+      </div>
+      <div class="value-card v2">
+        <div class="idx">Value · 02</div>
+        <h3>长期主义</h3>
+        <div class="en">Long-termism</div>
+        <p>宁可放弃短期利润，也不破坏品牌价值。Aurillis 选择慢的路径，但每一步都要能沉淀为品牌资产。</p>
+        <div class="req"><b>对产品的要求：</b>拒绝高 GMV 但稀释品牌力的产品，优先选择能持续 3 年以上的 SKU。</div>
+      </div>
+      <div class="value-card v3">
+        <div class="idx">Value · 03</div>
+        <h3>科学可信</h3>
+        <div class="en">Scientific Credibility</div>
+        <p>所有功能必须有合理依据，拒绝伪科技。每一项技术宣称都要经得起专业用户的提问与审视。</p>
+        <div class="req"><b>对产品的要求：</b>技术原理、临床数据或文献支持必须可追溯，避免空洞的科技感包装。</div>
+      </div>
+      <div class="value-card v4">
+        <div class="idx">Value · 04</div>
+        <h3>极简设计</h3>
+        <div class="en">Minimalist Design</div>
+        <p>产品像 Apple 一样简单，像 Elvie 一样优雅，像 Therabody 一样专业。设计即品牌。</p>
+        <div class="req"><b>对产品的要求：</b>工业设计、使用体验、包装系统必须达到国际一线水准，视觉即价值。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 Positioning ============ -->
+<section id="positioning" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="en-title">Chapter 04 · Brand Positioning</div>
+      <div class="eyebrow">Section 04 · 品牌定位</div>
+      <h2 class="h-title">Aurillis = Women's Health Technology Brand</h2>
+      <p class="h-sub">女性健康科技品牌。我们以五个品牌关键词定义用户体验方向，再以可落地的产品体验目标支撑品牌承诺。</p>
+    </div>
+
+    <div class="positioning reveal">
+      <div>
+        <div class="pos-orbit">
+          <div class="pos-keyword k1">Recovery · 恢复</div>
+          <div class="pos-keyword k2">Comfort · 舒适</div>
+          <div class="pos-keyword k3">Wellness · 长期健康</div>
+          <div class="pos-keyword k4">Confidence · 自信</div>
+          <div class="pos-keyword k5">Technology · 科技</div>
+          <div class="pos-core">
+            <div>
+              <div class="n">Aurillis</div>
+              <div class="e">Women's Health Technology</div>
+            </div>
+          </div>
+        </div>
+        <div class="pos-outcome">
+          <span>帮助身体恢复</span>
+          <span>提供日常舒适</span>
+          <span>建立长期自信</span>
+          <span>陪伴长期健康</span>
+          <span>科技值得信赖</span>
+        </div>
+      </div>
+
+      <div class="pos-list">
+        <div class="row">
+          <div class="num">01</div>
+          <div>
+            <h4>Recovery · 恢复</h4>
+            <p>支持女性在周期、产后、久坐、衰老等不同阶段的生理恢复。</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="num">02</div>
+          <div>
+            <h4>Comfort · 舒适</h4>
+            <p>以人体工程学、材质与温度控制提供长时间使用的舒适体验。</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="num">03</div>
+          <div>
+            <h4>Confidence · 自信</h4>
+            <p>让女性在身体不适、形象焦虑、社会压力下，重新掌控自己的身体感受。</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="num">04</div>
+          <div>
+            <h4>Wellness · 长期健康</h4>
+            <p>不追求即时效果，专注于可持续、可被感知的身体状态改善。</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="num">05</div>
+          <div>
+            <h4>Technology · 科技</h4>
+            <p>以可解释的科学原理与高质量制造为基础，建立科技可信度。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 Four Systems ============ -->
+<section id="systems">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="en-title">Chapter 05 · Four Wellness Systems</div>
+      <div class="eyebrow">Section 05 · 四大身体健康系统</div>
+      <h2 class="h-title">Aurillis 不是按产品分类<br>而是按身体系统建立产品矩阵</h2>
+      <p class="h-sub">四大系统覆盖女性周期、乳房、盆底与全身恢复，构成 Aurillis 未来十年的产品生态骨架。</p>
+    </div>
+
+    <div class="systems-grid reveal">
+      <!-- Flow -->
+      <div class="system-card s1">
+        <div class="system-head">
+          <div>
+            <div class="system-name">Aurillis Flow</div>
+            <div class="system-cn">女性周期健康</div>
+          </div>
+          <div class="system-en">Cycle<br>Wellness</div>
+        </div>
+        <div class="system-tag">System · 01</div>
+        <div class="system-block">
+          <div class="h">User Problem · 用户问题</div>
+          <div class="content">经期不适、PMS 综合征、周期相关疼痛与情绪波动，普遍缺乏被认真对待的科技方案。</div>
+          <div class="h">Future Direction · 产品方向</div>
+          <div class="dir">
+            <span>经期护理</span>
+            <span>PMS 缓解</span>
+            <span>热疗</span>
+            <span>周期恢复</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloom -->
+      <div class="system-card s2">
+        <div class="system-head">
+          <div>
+            <div class="system-name">Aurillis Bloom</div>
+            <div class="system-cn">乳房健康</div>
+          </div>
+          <div class="system-en">Breast<br>Wellness</div>
+        </div>
+        <div class="system-tag">System · 02</div>
+        <div class="system-block">
+          <div class="h">User Problem · 用户问题</div>
+          <div class="content">哺乳期胀痛、乳腺不适、产后乳房恢复、胸部循环问题被严重忽视。</div>
+          <div class="h">Future Direction · 产品方向</div>
+          <div class="dir">
+            <span>哺乳护理</span>
+            <span>冷热敷</span>
+            <span>乳房按摩</span>
+            <span>Breast Recovery</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Core -->
+      <div class="system-card s3">
+        <div class="system-head">
+          <div>
+            <div class="system-name">Aurillis Core</div>
+            <div class="system-cn">盆底健康</div>
+          </div>
+          <div class="system-en">Pelvic<br>Wellness</div>
+        </div>
+        <div class="system-tag">System · 03</div>
+        <div class="system-block">
+          <div class="h">User Problem · 用户问题</div>
+          <div class="content">产后盆底松弛、漏尿、核心肌群弱化是中长期的隐性问题，FemTech 解决方案仍处早期。</div>
+          <div class="h">Future Direction · 产品方向</div>
+          <div class="dir">
+            <span>盆底训练</span>
+            <span>生物反馈</span>
+            <span>EMS</span>
+            <span>女性康复</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Restore -->
+      <div class="system-card s4">
+        <div class="system-head">
+          <div>
+            <div class="system-name">Aurillis Restore</div>
+            <div class="system-cn">全身恢复</div>
+          </div>
+          <div class="system-en">Whole Body<br>Recovery</div>
+        </div>
+        <div class="system-tag">System · 04</div>
+        <div class="system-block">
+          <div class="h">User Problem · 用户问题</div>
+          <div class="content">女性久坐、循环不畅、产后与高强度工作后的全身恢复，缺少专为女性身体设计的设备。</div>
+          <div class="h">Future Direction · 产品方向</div>
+          <div class="dir">
+            <span>恢复设备</span>
+            <span>红光恢复</span>
+            <span>循环改善</span>
+            <span>Lymphatic Recovery</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="systems-summary reveal">
+      <div>
+        <div class="label">Ecosystem Logic</div>
+        <p>让用户一眼看懂：Aurillis 未来做的不是单品，而是覆盖女性四大身体系统的<span style="color:var(--gold-soft)">产品生态</span>。</p>
+      </div>
+      <div class="val">Flow · Bloom · Core · Restore</div>
+    </div>
+
+    <!-- Stage Priority -->
+    <div class="priority reveal" style="margin-top:32px">
+      <div class="priority-head">
+        <div>
+          <div class="label">Stage Priority · 阶段优先级</div>
+          <h3>四大系统的开发节奏</h3>
+        </div>
+        <div class="en">Near-term · Mid-term · Long-term</div>
+      </div>
+      <div class="priority-grid">
+        <div class="priority-cell near">
+          <div class="term">Near-term · 近期</div>
+          <h4>现金流优先</h4>
+          <div class="en">Cash-flow Priority</div>
+          <p>优先切入已具备市场教育、用户接受度高的品类，快速建立现金流与品牌认知。</p>
+          <div class="priority-systems">
+            <span>Aurillis Flow</span>
+            <span>Aurillis Restore</span>
+          </div>
+        </div>
+        <div class="priority-cell mid">
+          <div class="term">Mid-term · 中期</div>
+          <h4>品牌壁垒</h4>
+          <div class="en">Brand Moat</div>
+          <p>在用户对品牌建立信任后，进入情感连接更强、复购更高的品类，沉淀品牌资产。</p>
+          <div class="priority-systems">
+            <span>Aurillis Bloom</span>
+          </div>
+        </div>
+        <div class="priority-cell long">
+          <div class="term">Long-term · 长期</div>
+          <h4>核心研发</h4>
+          <div class="en">Core R&amp;D</div>
+          <p>投入研发周期最长、技术门槛最高的品类，构建 Aurillis 的终极技术壁垒与品类定义权。</p>
+          <div class="priority-systems">
+            <span>Aurillis Core</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 Product Gate ============ -->
+<section id="gate" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="en-title">Chapter 06 · Product Development Principles</div>
+      <div class="eyebrow">Section 06 · 产品开发原则</div>
+      <h2 class="h-title">7-Step Product Gate<br>新品立项评估模型</h2>
+      <p class="h-sub">Aurillis 不是寻找爆款，而是寻找值得长期经营的产品。所有新品必须通过七道闸门。</p>
+    </div>
+
+    <div class="gate-wrap reveal">
+      <div class="gate-step"><div class="n">1</div><h4>System</h4><p>属于哪个 System？</p></div>
+      <div class="gate-step"><div class="n">2</div><h4>Problem</h4><p>是否解决真实问题？</p></div>
+      <div class="gate-step"><div class="n">3</div><h4>Education</h4><p>国际品牌是否完成教育？</p></div>
+      <div class="gate-step"><div class="n">4</div><h4>Monopoly</h4><p>中国品牌是否已价格垄断？</p></div>
+      <div class="gate-step"><div class="n">5</div><h4>Retention</h4><p>用户是否愿意持续使用？</p></div>
+      <div class="gate-step"><div class="n">6</div><h4>Aesthetic</h4><p>是否符合品牌审美？</p></div>
+      <div class="gate-step"><div class="n">7</div><h4>Matrix</h4><p>是否能形成产品矩阵？</p></div>
+    </div>
+
+    <div class="gate-rule reveal">
+      <div class="icon">!</div>
+      <div>
+        <h4>立项铁律</h4>
+        <p>任意两项回答 <b>No</b>，原则上<b>不立项</b>。七道闸门是 Aurillis 长期主义的执行机制。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 Opportunity Mapping ============ -->
+<section id="opportunity">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="en-title">Chapter 07 · Opportunity Mapping</div>
+      <div class="eyebrow">Section 07 · 产品机会地图</div>
+      <h2 class="h-title">没有机会地图，不得进入开发</h2>
+      <p class="h-sub">每一个产品在立项前，必须完成从身体系统到品牌价值的十步判断路径。</p>
+    </div>
+
+    <div class="omap reveal">
+      <div class="omap-row">
+        <div class="n">01</div>
+        <div><h4>Body System</h4><div class="en">身体系统</div></div>
+        <div class="desc">产品属于四大系统中的哪一个？决定品牌归属。</div>
+      </div>
+      <div class="omap-row">
+        <div class="n">02</div>
+        <div><h4>User Problem</h4><div class="en">用户问题</div></div>
+        <div class="desc">用户面临的具体身体不适是什么？是否真实存在？</div>
+      </div>
+      <div class="omap-row">
+        <div class="n">03</div>
+        <div><h4>Existing Solution</h4><div class="en">现有方案</div></div>
+        <div class="desc">目前市场上的解决方案是什么？有什么痛点未解决？</div>
+      </div>
+      <div class="omap-row">
+        <div class="n">04</div>
+        <div><h4>International Brands</h4><div class="en">国际品牌</div></div>
+        <div class="desc">海外品牌是否已经完成市场教育？是否值得对标？</div>
+      </div>
+      <div class="omap-row">
+        <div class="n">05</div>
+        <div><h4>Chinese Competition</h4><div class="en">中国竞争</div></div>
+        <div class="desc">中国品牌是否已经形成价格垄断？是否还有差异化空间？</div>
+      </div>
+      <div class="omap-row">
+        <div class="n">06</div>
+        <div><h4>Keyword Opportunity</h4><div class="en">搜索机会</div></div>
+        <div class="desc">品类关键词趋势、搜索热度、用户认知度是否支持长期增长？</div>
+      </div>
+      <div class="omap-row">
+        <div class="n">07</div>
+        <div><h4>OEM Difficulty</h4><div class="en">供应链难度</div></div>
+        <div class="desc">供应链复杂度是否足以建立壁垒？公模化风险有多大？</div>
+      </div>
+      <div class="omap-row">
+        <div class="n">08</div>
+        <div><h4>Regulation</h4><div class="en">合规风险</div></div>
+        <div class="desc">FDA / CE / NMPA / 医疗器械认证路径与时间是否可控？</div>
+      </div>
+      <div class="omap-row">
+        <div class="n">09</div>
+        <div><h4>Brand Value</h4><div class="en">品牌价值</div></div>
+        <div class="desc">产品是否能强化品牌资产？是否能为矩阵引流？</div>
+      </div>
+      <div class="omap-row">
+        <div class="n">10</div>
+        <div><h4>Aurillis Opportunity</h4><div class="en">最终机会</div></div>
+        <div class="desc">综合判断：Aurillis 在这一品类的真实机会点是什么？</div>
+      </div>
+    </div>
+
+    <div class="omap-rule reveal">
+      <span>No Opportunity Map · No Development.</span><br>
+      没有机会地图，不得进入开发。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 Benchmark ============ -->
+<section id="benchmark" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="en-title">Chapter 08 · Benchmark Brand System</div>
+      <div class="eyebrow">Section 08 · 对标品牌体系</div>
+      <h2 class="h-title">学习优秀品牌的成功逻辑<br>不复制它们的产品</h2>
+      <p class="h-sub">我们研究这些品牌为什么成功，而不是抄它们的产品。Brand Mentor 与 Product Mentor 共同构成 Aurillis 的学习坐标系。</p>
+    </div>
+
+    <div class="bm-grid reveal">
+      <div class="bm-card">
+        <div class="label">Mentor Type A</div>
+        <h3>品牌老师</h3>
+        <div class="en">Brand Mentors · 学习品牌经营逻辑</div>
+        <div class="bm-tags">
+          <span>Therabody</span>
+          <span>CurrentBody</span>
+          <span>Elvie</span>
+          <span>Frida</span>
+          <span>Apple</span>
+          <span>Dyson</span>
+        </div>
+      </div>
+      <div class="bm-card">
+        <div class="label">Mentor Type B</div>
+        <h3>产品老师</h3>
+        <div class="en">Product Mentors · 学习产品创新逻辑</div>
+        <div class="bm-tags">
+          <span>Perifit</span>
+          <span>NuFACE</span>
+          <span>HigherDOSE</span>
+          <span>Willow</span>
+          <span>Hyperice</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bm-matrix reveal">
+      <div class="axis-y">科技专业度与可信度 →</div>
+      <div class="axis-x">← 品牌审美与用户体验</div>
+      <div class="quad"></div>
+      <div class="dot a">Apple</div>
+      <div class="dot b">Dyson</div>
+      <div class="dot c">Elvie</div>
+      <div class="dot d">Therabody</div>
+      <div class="dot e">CurrentBody</div>
+      <div class="dot f">Frida</div>
+      <div class="dot g">Hyperice</div>
+      <div class="dot h">NuFACE</div>
+      <div class="dot i">Perifit</div>
+      <div class="dot j">HigherDOSE</div>
+      <div class="aurillis">Aurillis</div>
+      <div class="q-label q1">Tech Premium</div>
+      <div class="q-label q2">Lifestyle Premium</div>
+      <div class="q-label q3">Pure Function</div>
+      <div class="q-label q4">Mass Market</div>
+    </div>
+    <p style="margin:14px 4px 0;font-size:12px;letter-spacing:.06em;color:var(--ink-mute);font-style:italic">位置为战略参照，不代表定量排名。Positions are strategic reference, not quantitative ranking.</p>
+  </div>
+</section>
+
+<!-- ============ 09 Go / No-Go ============ -->
+<section id="gonogo">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="en-title">Chapter 09 · Market Entry Principles</div>
+      <div class="eyebrow">Section 09 · 选品原则</div>
+      <h2 class="h-title">Go / No-Go<br>市场进入决策表</h2>
+      <p class="h-sub">为什么有些品类可以做，有些品类坚决不进入？这不是能力问题，是战略选择问题。</p>
+    </div>
+
+    <div class="gonogo reveal">
+      <div class="gonogo-card go">
+        <div class="label">Aurillis Only Enters</div>
+        <h3>GO · 值得进入</h3>
+        <div class="en">Strategic Fit · 战略匹配</div>
+        <ul>
+          <li><span class="check">✓</span><span>海外品牌已完成市场教育，品类认知已被建立。</span></li>
+          <li><span class="check">✓</span><span>用户接受 50 – 150 美元价格带，存在品牌溢价空间。</span></li>
+          <li><span class="check">✓</span><span>中国品牌尚未形成价格垄断，仍有差异化空间。</span></li>
+          <li><span class="check">✓</span><span>用户高频或高价值需求，能够建立长期复购。</span></li>
+          <li><span class="check">✓</span><span>产品具备品牌升级空间，可以沉淀为品牌资产。</span></li>
+        </ul>
+      </div>
+      <div class="gonogo-card nogo">
+        <div class="label">Aurillis Never Enters</div>
+        <h3>NO-GO · 坚决不进入</h3>
+        <div class="en">Strategic Reject · 战略放弃</div>
+        <ul>
+          <li><span class="cross">×</span><span>完全依赖价格竞争，没有品牌立足点。</span></li>
+          <li><span class="cross">×</span><span>供应链完全透明，无法形成壁垒。</span></li>
+          <li><span class="cross">×</span><span>公模高度同质化，无法被用户识别。</span></li>
+          <li><span class="cross">×</span><span>无法形成品牌资产，沉淀不了长期价值。</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="gonogo-takeaway reveal">
+      <b>战略判断：</b>Aurillis 不与公模竞争，不打价格战，不做消耗品牌资产的生意。我们选择慢的、难的、但能持续积累的品类。
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 Roadmap ============ -->
+<section id="roadmap" style="background:var(--bg-soft)">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="en-title">Chapter 10 · Product Roadmap</div>
+      <div class="eyebrow">Section 10 · 产品路线图</div>
+      <h2 class="h-title">0 – 10 年品牌路线图</h2>
+      <p class="h-sub">从现金流产品到全球女性健康科技品牌，Aurillis 用三个阶段完成从 Product Brand 到 Women's Health Technology Company 的升级。</p>
+    </div>
+
+    <div class="roadmap reveal">
+      <div class="rm-stage">
+        <div class="phase">Phase 01</div>
+        <h3>建立根基</h3>
+        <div class="years">Year 0 – 3</div>
+        <div class="goal">用高价值产品建立现金流，同时搭建符合品牌定位的产品矩阵基础。</div>
+        <div class="actions">
+          <h5>Core Actions · 核心动作</h5>
+          <ul>
+            <li>建立现金流</li>
+            <li>寻找符合品牌定位的高价值产品</li>
+            <li>建立四大 System 产品框架</li>
+          </ul>
+        </div>
+        <div class="result"><b>关键成果：</b>品牌定位清晰，现金流健康，四大 System 全部启动。</div>
+        <div class="rm-kpi"><div class="k">Phase KPI · 阶段 KPI</div><div class="v">完成 3 – 5 个高价值 SKU，建立现金流，四大 System 初步成型。</div></div>
+      </div>
+
+      <div class="rm-stage">
+        <div class="phase">Phase 02</div>
+        <h3>建立能力</h3>
+        <div class="years">Year 3 – 5</div>
+        <div class="goal">从渠道与营销能力，走向真正的产品研发能力与品类话语权。</div>
+        <div class="actions">
+          <h5>Core Actions · 核心动作</h5>
+          <ul>
+            <li>建立研发能力</li>
+            <li>推出 Aurillis Core 系列</li>
+            <li>正式进入 FemTech 领域</li>
+          </ul>
+        </div>
+        <div class="result"><b>关键成果：</b>掌握核心技术，开始定义品类标准。</div>
+        <div class="rm-kpi"><div class="k">Phase KPI · 阶段 KPI</div><div class="v">推出 Core 系列，建立研发能力，进入 FemTech 领域。</div></div>
+      </div>
+
+      <div class="rm-stage">
+        <div class="phase">Phase 03</div>
+        <h3>建立平台</h3>
+        <div class="years">Year 5 – 10</div>
+        <div class="goal">从品牌升级为平台，承载女性一生的身体健康需求。</div>
+        <div class="actions">
+          <h5>Core Actions · 核心动作</h5>
+          <ul>
+            <li>建立 Aurillis Women's Health Platform</li>
+            <li>形成全球女性健康科技品牌</li>
+            <li>成为女性健康科技品类的全球定义者</li>
+          </ul>
+        </div>
+        <div class="result"><b>关键成果：</b>Aurillis = Women's Health Technology Company。</div>
+        <div class="rm-kpi"><div class="k">Phase KPI · 阶段 KPI</div><div class="v">建立 Aurillis Women's Health Platform，形成全球女性健康科技品牌。</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11 Philosophy ============ -->
+<section id="philosophy">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="en-title">Chapter 11 · Brand Philosophy</div>
+      <div class="eyebrow">Section 11 · 品牌哲学</div>
+      <h2 class="h-title">产品不是品牌，Logo 也不是品牌</h2>
+      <p class="h-sub">真正的品牌，是用户一次又一次愿意相信 Aurillis。</p>
+    </div>
+
+    <div class="quote reveal" style="font-size:22px">Aurillis 不只追求一款爆款产品，而是希望成为陪伴女性一生的健康科技品牌。</div>
+
+    <div class="summary-row reveal">
+      <div class="summary-cell"><div class="l">Belief · 信念</div><div class="v">科技服务女性健康，不制造焦虑</div></div>
+      <div class="summary-cell"><div class="l">Method · 方法</div><div class="v">按身体系统建立产品矩阵</div></div>
+      <div class="summary-cell"><div class="l">Pace · 节奏</div><div class="v">长期主义 · 宁可慢，不破坏品牌</div></div>
+      <div class="summary-cell"><div class="l">Goal · 终局</div><div class="v">Women's Health Technology Company</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12 Closing ============ -->
+<section id="closing" class="closing">
+  <div class="container inner reveal">
+    <div class="lead">Aurillis · Brand Philosophy</div>
+    <h2>产品不是品牌。<br>Logo 也不是品牌。<br><em>真正的品牌，是用户一次又一次愿意相信 Aurillis。</em></h2>
+    <p>Aurillis 不只追求一款爆款产品，而是希望成为陪伴女性一生的健康科技品牌。</p>
+    <div class="final">
+      Every Product.
+      <span>Every Stage. · Every Woman.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Footer ============ -->
+<footer>
+  <div class="container foot">
+    <div class="meta">Aurillis · Brand Strategy Brief · Version 2.0 · Internal Only</div>
+    <div class="copy">© 2026 Aurillis. Technology for Women's Wellness.</div>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll — opt-in pattern. Elements are visible by default;
+  // we only animate them in if JS runs and the browser supports IntersectionObserver.
+  (function(){
+    const supportsIO = 'IntersectionObserver' in window;
+    const targets = document.querySelectorAll('.reveal');
+    if (!supportsIO) return; // No JS animation, but content stays visible.
+    targets.forEach(el => el.classList.add('reveal-pending'));
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    targets.forEach(el => io.observe(el));
+  })();
+
+  // Smooth scroll for in-page anchors
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+</script>
+
+</body>
+</html>
