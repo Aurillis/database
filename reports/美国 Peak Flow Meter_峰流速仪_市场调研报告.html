@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美国 Peak Flow Meter（峰流速仪）市场调研报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#ffffff; --ink:#1e293b; --muted:#64748b;
+    --brand:#2563eb; --brand2:#0ea5e9; --accent:#10b981; --warn:#f59e0b;
+    --red:#ef4444; --line:#e2e8f0; --soft:#f8fafc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    color:var(--ink);background:#eef2f7;line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{color:var(--brand);text-decoration:none}
+  /* HERO */
+  .hero{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 55%,#0ea5e9 100%);
+    color:#fff;padding:54px 24px 60px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;
+    background:radial-gradient(circle,rgba(255,255,255,.12),transparent 70%);border-radius:50%}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+  .hero .tag{display:inline-block;background:rgba(255,255,255,.16);padding:5px 14px;
+    border-radius:999px;font-size:13px;letter-spacing:.5px;margin-bottom:16px}
+  .hero h1{font-size:34px;line-height:1.25;font-weight:800;margin-bottom:10px}
+  .hero p{font-size:15px;opacity:.9;max-width:760px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+  .kpi{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+    border-radius:14px;padding:18px}
+  .kpi .v{font-size:26px;font-weight:800;color:#fff}
+  .kpi .l{font-size:12.5px;opacity:.85;margin-top:4px}
+  /* NAV */
+  nav{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);
+    box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 20px}
+  nav a{white-space:nowrap;font-size:13.5px;color:var(--muted);padding:7px 12px;border-radius:8px}
+  nav a:hover{background:var(--soft);color:var(--brand)}
+  /* SECTIONS */
+  section{padding:40px 0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:26px;margin-bottom:22px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+  h2{font-size:23px;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+  h2 .n{background:var(--brand);color:#fff;width:30px;height:30px;border-radius:8px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto}
+  h3{font-size:17px;font-weight:700;margin:22px 0 8px;color:#0f172a}
+  p.lead{color:var(--muted);margin-bottom:14px;font-size:15px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:820px){.grid2,.grid3,.kpis{grid-template-columns:1fr}
+    .hero h1{font-size:26px}}
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--soft);font-weight:700;color:#0f172a}
+  tr:nth-child(even) td{background:#fbfdff}
+  .pill{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:999px;font-weight:600}
+  .pill.b{background:#dbeafe;color:#1d4ed8}
+  .pill.g{background:#d1fae5;color:#047857}
+  .pill.y{background:#fef3c7;color:#b45309}
+  .pill.r{background:#fee2e2;color:#b91c1c}
+  .callout{border-left:4px solid var(--brand);background:#f0f6ff;padding:14px 18px;
+    border-radius:0 10px 10px 0;margin:14px 0;font-size:14.5px}
+  .callout.warn{border-color:var(--warn);background:#fffbeb}
+  .chartbox{position:relative;height:340px;margin:8px 0}
+  .mini{font-size:12.5px;color:var(--muted)}
+  .prod{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .pcard{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}
+  .pcard .nm{font-weight:700;font-size:14.5px;margin-bottom:6px}
+  .pcard .mt{font-size:12.5px;color:var(--muted);margin-bottom:8px;min-height:34px}
+  .pcard .pr{font-size:20px;font-weight:800;color:#0f172a}
+  .pcard.feat{border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+  .note{font-size:12px;color:var(--muted);margin-top:6px}
+  ul.tight li{margin:5px 0 5px 18px;font-size:14.5px}
+  .src{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);margin-top:30px;padding-top:14px}
+  .footer{background:#0f172a;color:#cbd5e1;text-align:center;padding:26px 20px;font-size:13px}
+  .tagcloud span{display:inline-block;background:#eef2f7;border:1px solid var(--line);
+    border-radius:8px;padding:5px 11px;margin:4px;font-size:13px;color:#334155}
+  .big{font-size:15px}
+  .hl{background:#fef3c7;padding:1px 4px;border-radius:4px;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="tag">市场调研 · 美国站 · Amazon 品类扫描</div>
+    <h1>美国 Peak Flow Meter（峰流速仪）市场调研报告</h1>
+    <p>基于 Amazon 美国站 4 个目标链接（单品页 B09S3KJZZ7、Spirometers 畅销榜 8404651011、两类搜索词）与多份行业研究，梳理品类边界、市场规模、竞争格局、价格带与趋势机会。调研时间：2026-09-21。</p>
+    <div class="kpis">
+      <div class="kpi"><div class="v">≈US$3.0亿</div><div class="l">美国手持/数字峰流速仪市场（2024，手持口径）</div></div>
+      <div class="kpi"><div class="v">~4.5–8%</div><div class="l">年复合增长率 CAGR（不同口径）</div></div>
+      <div class="kpi"><div class="v">42%</div><div class="l">美国占全球峰流速仪份额（最大单一市场）</div></div>
+      <div class="kpi"><div class="v">#1 / 1K+月销</div><div class="l">锚点单品 Nascool 在 Flowmeters 类目地位</div></div>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <div class="wrap">
+    <a href="#s1">1 · 执行摘要</a>
+    <a href="#s2">2 · 品类边界</a>
+    <a href="#s3">3 · 市场规模</a>
+    <a href="#s4">4 · 竞争格局</a>
+    <a href="#s5">5 · Amazon 实况</a>
+    <a href="#s6">6 · 价格带</a>
+    <a href="#s7">7 · 形态与趋势</a>
+    <a href="#sReg">8 · 监管与合规</a>
+    <a href="#s9">9 · 消费者洞察</a>
+    <a href="#s10">10 · 机会建议</a>
+    <a href="#s11">11 · 数据源</a>
+  </div>
+</nav>
+
+<!-- 1. 执行摘要 -->
+<section id="s1"><div class="wrap">
+  <div class="card">
+    <h2><span class="n">1</span>执行摘要</h2>
+    <p class="lead">Peak Flow Meter（峰流速仪）是用于测量<strong>峰值呼气流速（PEF）</strong>与<strong>第一秒用力呼气量（FEV1）</strong>的便携式呼吸监测设备，主要服务哮喘、COPD 等慢性呼吸疾病患者的居家自我管理。美国是全球最大单一市场。</p>
+    <div class="callout" style="border-color:var(--accent);background:#ecfdf5">
+      <strong>术语备注 · COPD：</strong>Chronic Obstructive Pulmonary Disease 的缩写，即<strong>慢性阻塞性肺疾病</strong>（俗称"慢阻肺"），是一类以持续气流受限为特征的慢性呼吸道疾病，主要包括慢性支气管炎和肺气肿，常见诱因是长期吸烟、空气污染与职业粉尘暴露。患者常伴咳嗽、咳痰、进行性呼吸困难。峰流速仪可用于日常监测其呼气峰流速变化，帮助评估病情与用药效果——这也是家用峰流速仪的核心需求人群之一（与哮喘并列）。
+    </div>
+    <div class="grid2">
+      <div>
+        <h3>市场基本面</h3>
+        <ul class="tight">
+          <li><strong>需求驱动：</strong>美国哮喘患者约 2,500 万+、COPD 患者约 1,600 万，居家慢病监测渗透率持续提升。</li>
+          <li><strong>增长逻辑：</strong>远程治疗监测（RTM）医保报销落地、AIoT/App 数据化、后疫情居家诊疗习惯固化。</li>
+          <li><strong>品类升级：</strong>从机械式（看刻度）向数字式、蓝牙/App 智能式迁移，单价与毛利同步上移。</li>
+        </ul>
+      </div>
+      <div>
+        <h3>渠道与竞争要点</h3>
+        <ul class="tight">
+          <li><strong>Amazon 结构：</strong>狭义"Peak Flow Meter"搜索被大量<em>工业流量计</em>（水/油/气/超声波）污染；真正医用赛道要看 <span class="pill b">Spirometers 畅销榜</span> 与 <span class="pill b">Flowmeters</span> 子节点。</li>
+          <li><strong>头部品牌：</strong>Microlife、MIR、Omron、Philips Respironics、Vitalograph、Nascool、Sonmol 等；中国供应链（Sonmol、Nascool、GaleMed、Moffy）在平价数字款强势。</li>
+          <li><strong>价格带：</strong>$15 机械入门 → $30–60 数字主力 → $99–139 智能/蓝牙 → $1,500+ 专业台式。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>核心判断：</strong>Amazon 美国站医用峰流速仪仍处"结构性蓝海"——专业品牌（MIR $139、Microlife $51）占据高单价，而 <span class="hl">$30–45 的平价高精度数字款（Nascool、Sonmol）</span>正以"月销 1K+"快速抢占流量位，是性价比型品牌最值得切入的空档。
+    </div>
+  </div>
+</div></section>
+
+<!-- 2. 品类边界 -->
+<section id="s2"><div class="wrap">
+  <div class="card">
+    <h2><span class="n">2</span>品类定义与边界（关键预警）</h2>
+    <p class="lead">本调研的 4 个链接指向三个不同层级，务必区分，否则市场规模与"竞品数量"会被严重高估。</p>
+    <table>
+      <thead><tr><th>链接</th><th>实际指向</th><th>性质</th><th>对调研的意义</th></tr></thead>
+      <tbody>
+        <tr><td>B09S3KJZZ7</td><td>Nascool 数字峰流速仪（型号 SMPF-2S）</td><td>单品详情页</td><td>锚点竞品，<span class="pill g">#1 in Flowmeters</span>，月销 1K+</td></tr>
+        <tr><td>/bestsellers/industrial/<b>8404651011</b></td><td>Amazon「<b>Best Sellers in Spirometers</b>」</td><td>医用呼吸监测畅销榜</td><td>最干净的医用赛道榜单（含峰流速仪+肺活量训练器+耗材）</td></tr>
+        <tr><td>搜 "manual peak flow meter"（90 结果）</td><td>混合：医用 + 工业流量计</td><td>噪声搜索</td><td>约半数被水/油/气/超声波流量计占据</td></tr>
+        <tr><td>搜 "peak flow meter"（56 结果）</td><td>混合：医用 + 工业/ HVAC</td><td>噪声搜索</td><td>含风速仪、涡轮流量计等无关品</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn">
+      <strong>⚠ 搜索噪声：</strong>Amazon 的 "peak flow meter" 搜索会命中一切含 "flow meter" 的商品。例如 RAINPOINT 水表、CGOLDENWALL 超声波流量计、燃油涡轮流量计、HVAC 风速仪等均出现在结果页。若直接按搜索结果数判断"市场容量"会严重失真。<strong>医用峰流速仪的精准赛道应锁定 Spirometers（8404651011）与 Flowmeters 子节点，以及标题含 PEF/FEV1/Asthma 的 SKU。</strong>
+    </div>
+    <h3>品类内部细分</h3>
+    <div class="tagcloud">
+      <span>机械式 Mechanical</span><span>数字式 Digital</span><span>智能/蓝牙 Bluetooth+App</span>
+      <span>医用 PEF/FEV1</span><span>激励式肺活量训练器 Incentive Spirometer</span>
+      <span>耗材：咬嘴/涡轮片 Mouthpieces</span><span>专业台式 Spirometer</span>
+    </div>
+  </div>
+</div></section>
+
+<!-- 3. 市场规模 -->
+<section id="s3"><div class="wrap">
+  <div class="card">
+    <h2><span class="n">3</span>市场规模与增长</h2>
+    <p class="lead">不同研究机构对"峰流速仪"的口径差异较大（窄=纯 PEF 设备；宽=含数字/智能/肺改善设备）。下表并列呈现，供交叉验证。</p>
+    <table>
+      <thead><tr><th>研究机构</th><th>口径</th><th>美国 2024</th><th>CAGR</th><th>预测值</th></tr></thead>
+      <tbody>
+        <tr><td>QY Research</td><td>窄·纯 Peak Flow Meter 设备</td><td>≈US$2,650 万<span class="note">（全球 US$6,300 万 × 美国 42%）</span></td><td><b>8.0%</b></td><td>全球 2030 ≈ US$1.0 亿</td></tr>
+        <tr><td>Verified Market Reports（手持）</td><td>手持式 Handheld PFM</td><td><b>US$3.0 亿</b></td><td>~4.8%</td><td>2033 ≈ US$4.3 亿</td></tr>
+        <tr><td>Verified Market Reports（肺改善）</td><td>广义 Lung Improvement PFM</td><td>US$9.0 亿</td><td>~4.7%</td><td>2033 ≈ US$13 亿</td></tr>
+        <tr><td>DataString Consulting</td><td>广义 Peak Flow Meter</td><td>美/德为 Top 市场</td><td>4.3–6.3%</td><td>全球 2030 ≈ US$10.3 亿</td></tr>
+        <tr><td>WiseGuy（Digital PFM）</td><td>数字峰流速仪</td><td>北美 US$3.2 亿（2024）</td><td>—</td><td>北美 2035 ≈ US$6.0 亿</td></tr>
+      </tbody>
+    </table>
+    <div class="grid2">
+      <div>
+        <h3>美国手持峰流速仪市场（Verified，US$ 十亿）</h3>
+        <div class="chartbox"><canvas id="cMarket"></canvas></div>
+        <p class="mini">口径：Handheld Peak Flow Meter；美国 2024 = 0.30B → 2025 = 0.32B → 2033 = 0.43B，CAGR≈4.8%。</p>
+      </div>
+      <div>
+        <h3>全球份额：区域分布（QY Research）</h3>
+        <div class="chartbox"><canvas id="cRegion"></canvas></div>
+        <p class="mini">美国 ≈ 42%（最大），欧洲 ≈ 34%，其余亚太/其他 ≈ 24%。</p>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>取数建议：</strong>做商业测算时，建议以"<strong>美国手持/数字峰流速仪 ≈ US$3 亿（2024）</strong>"为基准盘，并按 5–8% CAGR 推演；若业务含 App/远程监测服务，可对标 Verified 的广义口径（US$9 亿）。
+    </div>
+  </div>
+</div></section>
+
+<!-- 4. 竞争格局 -->
+<section id="s4"><div class="wrap">
+  <div class="card">
+    <h2><span class="n">4</span>竞争格局与主要品牌</h2>
+    <p class="lead">全球峰流速仪玩家（QY Research）：Vyaire Medical、Microlife、Omron、Vitalograph、Pari、Trudell Medical、DeVilbiss、Rossmax、GaleMed、SHL Telemedicine、Spengler、Fyne Dynamics、GM Instruments 等。美国渠道呈现"专业高单价 + 中国供应链平价数字款"双轨格局。</p>
+    <table>
+      <thead><tr><th>品牌 / 阵营</th><th>代表产品</th><th>价位</th><th>定位</th><th>来源地</th></tr></thead>
+      <tbody>
+        <tr><td><b>Microlife</b></td><td>Deluxe Kit / PF100 数字峰流速仪</td><td>$51–$75</td><td><span class="pill b">数字中端·专业</span></td><td>瑞士</td></tr>
+        <tr><td><b>MIR（Medical International Research）</b></td><td>Smart One 口袋式数字 PEF/FEV1</td><td>$139</td><td><span class="pill y">智能高端</span></td><td>意大利</td></tr>
+        <tr><td><b>Omron</b></td><td>PFM20 / PeakAir</td><td>$25</td><td><span class="pill g">机械入门</span></td><td>日本</td></tr>
+        <tr><td><b>Philips Respironics</b></td><td>PersonalBest（色区机械）</td><td>$22</td><td><span class="pill g">机械入门</span></td><td>美国/荷兰</td></tr>
+        <tr><td><b>Vitalograph</b></td><td>ALPHA / asma-1</td><td>$60–$90</td><td><span class="pill b">专业电子</span></td><td>英国</td></tr>
+        <tr><td><b>Nascool</b> ★锚点</td><td>SMPF-2S 数字（手动记录）/ 蓝牙版</td><td>$30 / $56–$61</td><td><span class="pill b">平价数字主力</span></td><td>中国</td></tr>
+        <tr><td><b>Sonmol</b></td><td>数字 PEF/FEV1 色区指示</td><td>$39.99</td><td><span class="pill g">平价数字爆款</span></td><td>中国</td></tr>
+        <tr><td><b>CMI Health</b></td><td>SpiroLink</td><td>$99.99</td><td><span class="pill y">智能中高</span></td><td>美国</td></tr>
+        <tr><td><b>Monaghan / TruZone</b></td><td>机械便携</td><td>$30–$40</td><td><span class="pill g">机械便携</span></td><td>美国</td></tr>
+        <tr><td><b>Smart Asthma</b></td><td>Smart Peak Flow（手机外接）</td><td>$45–$58</td><td><span class="pill b">手机外接</span></td><td>英国</td></tr>
+      </tbody>
+    </table>
+    <div class="grid3">
+      <div class="pcard"><div class="nm">专业高单价阵营</div><div class="mt">MIR、Vitalograph、Microlife、CMI Health</div><div class="pr">$51–$139</div><p class="mini">卖点：临床级精度、App/蓝牙、ATS/ERS 标准、医保/处方场景。</p></div>
+      <div class="pcard feat"><div class="nm">中国供应链平价数字</div><div class="mt">Nascool、Sonmol、GaleMed、Moffy</div><div class="pr">$30–$45</div><p class="mini">卖点：高精度+数字显示+色区指示，价格仅为 MIR 的 1/3~1/4，正抢流量位。</p></div>
+      <div class="pcard"><div class="nm">机械入门阵营</div><div class="mt">Omron、Philips、Monaghan、Breath-O-Meter</div><div class="pr">$15–$32</div><p class="mini">卖点：无需电池、便宜、耐用；但无数据存储、无趋势。</p></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 5. Amazon 实况 -->
+<section id="s5"><div class="wrap">
+  <div class="card">
+    <h2><span class="n">5</span>Amazon 美国站点实况扫描</h2>
+
+    <h3>5.1 Spirometers 畅销榜（8404651011）Top 结构</h3>
+    <p class="lead">该榜前 30 名中，医用峰流速仪仅占一部分；榜单被<strong>激励式肺活量训练器</strong>与<strong>耗材（咬嘴/涡轮片）</strong>显著稀释。这说明"呼吸监测"类目在 Amazon 的流量大头其实是康复/训练器械与复购耗材。</p>
+    <table>
+      <thead><tr><th>排名</th><th>产品</th><th>类型</th><th>价格(参考)</th></tr></thead>
+      <tbody>
+        <tr><td>#1</td><td>Breathing Trainer 5000ML 激励式肺活量训练器</td><td>训练器</td><td>—</td></tr>
+        <tr><td>#2</td><td><b>Microlife Deluxe Kit 数字峰流速仪</b></td><td><span class="pill b">峰流速仪</span></td><td>$51.49</td></tr>
+        <tr><td>#3</td><td><b>MIR Smart One 口袋数字 PEF/FEV1</b></td><td><span class="pill y">智能峰流速仪</span></td><td>$139</td></tr>
+        <tr><td>#4</td><td><b>Bluetooth 智能峰流速仪（300 记录）</b></td><td><span class="pill y">智能峰流速仪</span></td><td>~$45</td></tr>
+        <tr><td>#5</td><td>SDI Diagnostics 咬嘴（耗材）</td><td>耗材</td><td>—</td></tr>
+        <tr><td>#7</td><td><b>CMI Health SpiroLink 峰流速仪</b></td><td><span class="pill b">峰流速仪</span></td><td>$99.99</td></tr>
+        <tr><td>#12</td><td><b>Sonmol 数字 PEF/FEV1 监测器</b></td><td><span class="pill g">数字峰流速仪</span></td><td>$39.99</td></tr>
+        <tr><td>#8,#9,#11,#13…</td><td>ndd/MIR/各品牌咬嘴·涡轮片</td><td>耗材</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <h3>5.2 锚点单品深度：Nascool SMPF-2S（B09S3KJZZ7）</h3>
+    <div class="grid2">
+      <div class="pcard feat">
+        <div class="nm">Nascool Peak Flow Meter（手动记录版）</div>
+        <div class="mt">成人/儿童通用 · 家用医疗 · PEF & FEV1 · LCD 屏 · 风险色区指示</div>
+        <div class="pr">≈ $29.99</div>
+        <ul class="tight">
+          <li>Best Sellers Rank：<b>#1 in Flowmeters</b>，Industrial & Scientific #4,007</li>
+          <li>评分 <b>4.3★</b>，近 30 天 <b>1K+ 购买</b></li>
+          <li>FSA/HSA 可用；型号 SMPF-2S；2022-02 上架</li>
+          <li>压差传感器，出厂免校准，符合 ATS/ERS/WRIGHT</li>
+          <li>无蓝牙，需手动在 App/纸质哮喘日记记录</li>
+        </ul>
+      </div>
+      <div>
+        <h3>它为什么能坐上 #1</h3>
+        <ul class="tight">
+          <li><strong>价格卡位精准：</strong>$30 区间拥有数字显示+FEV1+色区，直接碾压 $22–25 机械款，又远低于 $51+ 的 Microlife/MIR。</li>
+          <li><strong>合规背书：</strong>标称 ATS/ERS 标准 + FSA/HSA 资格，降低购买决策门槛。</li>
+          <li><strong>人群覆盖广：</strong>成人+6 岁以上儿童、哮喘/COPD/吸烟者/运动员，适用面大。</li>
+          <li><strong>缺憾即机会：</strong>无蓝牙自动同步——这正是 Sonmol/MIR/蓝牙版溢价的来源。</li>
+        </ul>
+        <div class="callout">同品牌还有 <b>蓝牙版（$55.99–$60.99）</b>，内置 300 条存储 + 绿背光 LCD + 自动哮喘日记，对标 MIR Smart One 但价格仅其 40%。</div>
+      </div>
+    </div>
+
+    <h3>5.3 搜索结果中的医用峰流速仪（已过滤工业噪声）</h3>
+    <div class="prod">
+      <div class="pcard"><div class="nm">Nascool（本锚点）</div><div class="mt">数字·手动记录·#1 Flowmeters</div><div class="pr">$29.99</div><p class="mini">4.3★ · 1K+/月</p></div>
+      <div class="pcard"><div class="nm">Sonmol 数字色区版</div><div class="mt">PEF/FEV1·红黄绿指示·App</div><div class="pr">$39.99</div><p class="mini">4.6★ · Best Seller</p></div>
+      <div class="pcard"><div class="nm">Bluetooth 智能款</div><div class="mt">PEF/FEV1·300 记录·APP 同步</div><div class="pr">~$45</div><p class="mini">100+/月</p></div>
+      <div class="pcard"><div class="nm">MIR Smart One</div><div class="mt">意大利·口袋式·App</div><div class="pr">$139</div><p class="mini">4.4★ · 582 评</p></div>
+      <div class="pcard"><div class="nm">Microlife Deluxe</div><div class="mt">数字·PEF/FEV1·儿童成人</div><div class="pr">$51.49</div><p class="mini">畅销榜 #2</p></div>
+      <div class="pcard"><div class="nm">Breath-O-Meter</div><div class="mt">机械白色·入门</div><div class="pr">~$16</div><p class="mini">4.3★ · Best Seller</p></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 6. 价格带 -->
+<section id="s6"><div class="wrap">
+  <div class="card">
+    <h2><span class="n">6</span>价格带分析（Amazon 医用峰流速仪）</h2>
+    <p class="lead">按观察到的在售医用 SKU 划分价格带（示意分布，非精确计数）。主力成交集中在 <strong>$30–$60</strong> 的数字/智能款。</p>
+    <div class="chartbox"><canvas id="cPrice"></canvas></div>
+    <table>
+      <thead><tr><th>价格带</th><th>典型产品</th><th>代表价</th><th>消费者诉求</th><th>竞争强度</th></tr></thead>
+      <tbody>
+        <tr><td>$15–$25</td><td>Omron PeakAir、Philips PersonalBest、Breath-O-Meter</td><td>$16–$25</td><td>最便宜、无需电池、耐用</td><td><span class="pill g">高</span></td></tr>
+        <tr><td>$26–$45</td><td><b>Nascool 手动版、Sonmol、蓝牙智能款</b></td><td>$30–$45</td><td>数字精度+色区+趋势，性价比首选</td><td><span class="pill y">极高（流量位争夺）</span></td></tr>
+        <tr><td>$46–$90</td><td>Microlife、Nascool 蓝牙版、Vitalograph、CMI Health</td><td>$51–$99</td><td>专业级、App/蓝牙、临床信任</td><td><span class="pill b">中</span></td></tr>
+        <tr><td>$91–$150</td><td>MIR Smart One、CONTEC SP70B</td><td>$99–$139</td><td>高端智能、品牌、医保场景</td><td><span class="pill b">中低</span></td></tr>
+        <tr><td>$1,500+</td><td>ndd EasyOne Air（专业台式）</td><td>$2,299</td><td>诊所/医院肺功能检测</td><td><span class="pill r">低（专业）</span></td></tr>
+      </tbody>
+    </table>
+    <div class="callout">价格与"智能程度"强相关：机械 &lt; 数字 &lt; 蓝牙/App &lt; 专业台式。<strong>数字平价款（$30–45）是 Amazon 上增速最快、最易被新品牌切入的空档。</strong></div>
+  </div>
+</div></section>
+
+<!-- 7. 形态与趋势 -->
+<section id="s7"><div class="wrap">
+  <div class="card">
+    <h2><span class="n">7</span>产品形态与技术趋势</h2>
+    <div class="grid2">
+      <div>
+        <h3>形态演进</h3>
+        <ul class="tight">
+          <li><b>机械式：</b>滑动刻度+色区，无需电源，最便宜；代表 Omron/Philips/Monaghan。</li>
+          <li><b>数字式：</b>LCD 直读 PEF/FEV1，免读数误差，部分带存储；代表 Nascool/Sonmol/Microlife。</li>
+          <li><b>智能式：</b>蓝牙/App 同步、趋势图、哮喘日记、红黄绿区自动判定；代表 MIR/CMI/Tenovi。</li>
+          <li><b>专业台式：</b>诊所级肺功能仪，高单价低频次；代表 ndd/Vyaire。</li>
+        </ul>
+      </div>
+      <div>
+        <h3>四大趋势</h3>
+        <ul class="tight">
+          <li><span class="pill b">RTM 报销落地</span> Tenovi 等已打通 CMS 远程治疗监测（RTM）CPT 编码，把"卖设备"变成"监测服务"，降低渠道与支付门槛。</li>
+          <li><span class="pill b">AIoT + App</span> 数据自动上传、趋势预测、可与电子病历（EHR）互通，契合美国价值医疗导向。</li>
+          <li><span class="pill b">居家慢病管理</span> CDC 哮喘控制项目、后疫情远程诊疗习惯，推动家用便携设备增长。</li>
+          <li><span class="pill b">合规升级</span> FDA 510(k)/Class II 认证、ATS/ERS 精度标准成为高端款护城河。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 8. 监管与合规 -->
+<section id="sReg"><div class="wrap">
+  <div class="card">
+    <h2><span class="n">8</span>监管与合规（FDA 510(k)）</h2>
+    <p class="lead">峰流速仪在美国属于 <strong>Class II 医疗器械</strong>，进入美国市场一般需完成 <strong>FDA 510(k) 上市前通告</strong>。下面给出法规归属与已获批的真实案例。</p>
+    <table>
+      <thead><tr><th>监管要素</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>产品代码 Product Code</td><td><b>BZH</b>（"Meter, Peak Flow, Spirometry"）</td></tr>
+        <tr><td>法规条款</td><td><b>21 CFR 868.1860</b></td></tr>
+        <tr><td>分类等级</td><td><b>Class II</b>（Special Controls 特殊控制）</td></tr>
+        <tr><td>上市路径</td><td><b>510(k)</b> — 实质等同（Substantial Equivalence）路径</td></tr>
+        <tr><td>是否需临床试验</td><td>通常<b>不需要</b>，凭工程/性能等效数据 + 对比已上市 predicate 设备</td></tr>
+      </tbody>
+    </table>
+    <h3>8.1 真实 510(k) 获批案例</h3>
+    <table>
+      <thead><tr><th>品牌 / 产品</th><th>510(k) 编号</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td><b>Nascool</b> SMPF-2S（蓝牙版，上海 Sonmol）</td><td><b>K203196</b></td><td>FDA Class II cleared；手动版同为 Class II</td></tr>
+        <tr><td>Microlife Digital Peak Flow Meter PF200B</td><td><b>K253180</b></td><td>2026-06-23 刚获批，说明该品类仍在持续审批</td></tr>
+        <tr><td>MIR Smart One</td><td>K181666</td><td>同时作为 Aluna 的 predicate 设备</td></tr>
+        <tr><td>Aluna（家用 FEV1/PEF）</td><td>K193311</td><td>BZH / Class II / OTC 家用</td></tr>
+        <tr><td>ASTECH Peak Flow Meter</td><td>K954277</td><td>1996 年；BZH 下累计 45+ 个 clearance</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warn"><strong>⚠ 细微差别：</strong>有评测称"纯机械刻度款可能被视为低风险、部分可豁免 510(k)"，但<strong>主流商用数字/电子/智能款（MIR、Microlife、Nascool、Aluna）全部持 510(k)</strong>。实操建议：数字、蓝牙、App 款基本<strong>必走 510(k)</strong>；纯机械款须先确认具体型号是否落入豁免清单，不要默认免审。</div>
+    <div class="callout"><strong>对锚点单品的意义：</strong>Nascool（B09S3KJZZ7）本身已 510(k) cleared（蓝牙版 K203196，手动版同为 Class II）。这正是它能在 Amazon 标注 "medical-grade"、走 FSA/HSA、打合规背书的底座——也是新进入者想切"医用级/可报销"定位时必须补齐的门槛与护城河。</div>
+  </div>
+</div></section>
+
+<!-- 9. 消费者洞察 -->
+<section id="s9"><div class="wrap">
+  <div class="card">
+    <h2><span class="n">9</span>消费者洞察</h2>
+    <div class="grid2">
+      <div>
+        <h3>用户说"喜欢"</h3>
+        <ul class="tight">
+          <li>读数快、便携、轻量，可日常携带</li>
+          <li>能在症状加重前发现呼吸变化</li>
+          <li>相比其他肺部工具便宜</li>
+          <li>数字款免手动记录、可分享给医生</li>
+          <li>色区指示降低解读门槛</li>
+        </ul>
+      </div>
+      <div>
+        <h3>用户说"吐槽"</h3>
+        <ul class="tight">
+          <li>操作手法不一致 → 读数波动</li>
+          <li>基础款屏幕小、对比度低</li>
+          <li>数字款需充电/换电池</li>
+          <li>部分 App 体验差或需依赖手机</li>
+          <li>数值需结合临床解读，非诊断工具</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">买单决策因素排序（来自评测与评论归纳）：<strong>价格可承受 → 免组装/即用 → 耐用 → 易读 → 能存数/可同步 → 合规背书</strong>。Nascool 正是靠"$30 + 数字 + 免校准 + FSA"命中前四项。</div>
+  </div>
+</div></section>
+
+<!-- 10. 机会建议 -->
+<section id="s10"><div class="wrap">
+  <div class="card">
+    <h2><span class="n">10</span>机会点与行动建议</h2>
+    <div class="grid3">
+      <div class="pcard"><div class="nm">① 切 $30–45 数字空档</div><div class="mt">对标 Nascool/Sonmol，做"高精度数字+色区+轻量"，用价格+评论数抢 Flowmeters #1 流量位。</div></div>
+      <div class="pcard"><div class="nm">② 加蓝牙/App 溢价</div><div class="mt">在平价数字款上升级蓝牙自动同步+哮喘日记，吃 $45–60 智能段的溢价，避开与 MIR $139 正面对抗。</div></div>
+      <div class="pcard"><div class="nm">③ 合规与 FSA/HSA</div><div class="mt">标 ATS/ERS、争取 FDA Class II 与 FSA/HSA 资格，显著降低转化门槛（Nascool 已验证有效）。</div></div>
+      <div class="pcard"><div class="nm">④ 耗材复购</div><div class="mt">绑咬嘴/涡轮片订阅或套装，复制畅销榜"耗材霸榜"逻辑，提升 LTV。</div></div>
+      <div class="pcard"><div class="nm">⑤ RTM 服务化</div><div class="mt">若面向 B 端/诊所，对接 CMS RTM 编码做远程监测服务，从一次性硬件转为持续收入。</div></div>
+      <div class="pcard"><div class="nm">⑥ 避坑</div><div class="mt">勿用泛"peak flow meter"词直接投流（工业流量计抢量）；精准词用 PEF/FEV1/Asthma/spirometer。</div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 11. 数据源 -->
+<section id="s11"><div class="wrap">
+  <div class="card">
+    <h2><span class="n">11</span>数据来源与方法论</h2>
+    <h3>一手（本次抓取）</h3>
+    <ul class="tight">
+      <li>Amazon 单品页 B09S3KJZZ7（Nascool SMPF-2S）商品信息、排名、评论。</li>
+      <li>Amazon Best Sellers: Spirometers（8404651011）榜单 Top 30。</li>
+      <li>Amazon 搜索 "manual peak flow meter"（90 结果）、"peak flow meter"（56 结果）。</li>
+    </ul>
+    <h3>二手（行业研究 / 评测）</h3>
+    <ul class="tight">
+      <li>QY Research《Global Peak Flow Meter Market Insights to 2030》（全球 $63M→$100M，CAGR 8%，美国 42%）。</li>
+      <li>Verified Market Reports《Handheld / Lung Improvement Peak Flow Meter Market》（美国 $0.3B–$0.9B，CAGR≈4.7%）。</li>
+      <li>DataString Consulting、WiseGuy Reports（数字峰流速仪北美 $320M→$600M）。</li>
+      <li>PMarketResearch（数字峰流速仪玩家与 RTM 报销动态，2024–2026）。</li>
+      <li>MedGrade 临床对比（Nascool vs MIR Smart One 评分与定价）、各品牌官网/评测站价格。</li>
+    </ul>
+    <div class="callout warn"><strong>口径与局限：</strong>① 市场规模因"窄/宽"口径差异可达数倍，报告中已并列呈现；② Amazon 价格为抓取时点参考价（部分搜索结果因站点定位显示为非美元币种，已按品牌官网/评测校正为 USD）；③ 销量"1K+/月"等为 Amazon 公开区间，非精确值；④ 榜单与排名随时变动，仅供时点快照。</div>
+    <p class="src">报告生成：Auto（WorkBuddy）· 调研日期 2026-09-21 · 仅供市场研究参考，不构成投资建议。医疗产品上市需遵守 FDA 等合规要求。</p>
+  </div>
+</div></section>
+
+<div class="footer">美国 Peak Flow Meter 市场调研报告 · 基于 Amazon 美国站 4 个目标链接 + 多份行业研究 · 2026-09-21</div>
+
+<script>
+const C = {blue:'#2563eb',sky:'#0ea5e9',green:'#10b981',amber:'#f59e0b',red:'#ef4444',slate:'#64748b',line:'#e2e8f0'};
+Chart.defaults.font.family = "-apple-system,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif";
+Chart.defaults.color = '#475569';
+
+// 3.1 Market growth (Verified handheld, US$ B)
+new Chart(document.getElementById('cMarket'),{
+  type:'line',
+  data:{labels:['2024','2025','2033'],
+    datasets:[{label:'美国手持峰流速仪市场 (US$ B)',data:[0.30,0.32,0.43],
+      borderColor:C.blue,backgroundColor:'rgba(37,99,235,.12)',fill:true,tension:.3,
+      pointRadius:6,pointBackgroundColor:C.blue,borderWidth:3}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'十亿美元 (US$ B)'}},x:{grid:{display:false}}}}
+});
+
+// 3.2 Region share (QY)
+new Chart(document.getElementById('cRegion'),{
+  type:'doughnut',
+  data:{labels:['美国 42%','欧洲 34%','亚太及其他 24%'],
+    datasets:[{data:[42,34,24],backgroundColor:[C.blue,C.sky,C.amber],borderWidth:2,borderColor:'#fff'}]},
+  options:{plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.label}}},cutout:'58%'}
+});
+
+// 6. Price band distribution (illustrative count of medical SKUs)
+new Chart(document.getElementById('cPrice'),{
+  type:'bar',
+  data:{labels:['$15–25\n机械','$26–45\n数字/智能','$46–90\n专业数字','$91–150\n高端智能','$1500+\n专业台式'],
+    datasets:[{label:'在售医用 SKU（示意）',data:[4,6,6,3,1],
+      backgroundColor:[C.green,C.blue,C.sky,C.amber,C.red],borderRadius:6}]},
+  options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,title:{display:true,text:'SKU 数量（示意）'}},x:{grid:{display:false},ticks:{font:{size:11}}}}}
+});
+</script>
+</body>
+</html>
