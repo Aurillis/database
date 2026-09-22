@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart EEG Headband 美国站市场调研报告</title>
+<style>
+  :root{
+    --teal:#0d9488; --teal-d:#0f766e; --teal-l:#ccfbf1;
+    --ink:#0f172a; --muted:#64748b; --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --amber:#f59e0b; --purple:#8b5cf6; --cyan:#0891b2; --red:#ef4444; --green:#16a34a;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.65;font-size:15px;}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 22px 80px;}
+  header.hero{background:linear-gradient(135deg,#0d9488,#0891b2);color:#fff;border-radius:18px;
+    padding:34px 36px;margin-bottom:26px;box-shadow:0 10px 30px rgba(13,148,136,.25);}
+  header.hero h1{margin:0 0 6px;font-size:27px;letter-spacing:.5px;}
+  header.hero .sub{opacity:.9;font-size:14px;}
+  .tag{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    padding:3px 11px;border-radius:20px;font-size:12px;margin-right:8px;margin-top:10px;}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:24px 26px;margin-bottom:20px;box-shadow:0 1px 3px rgba(15,23,42,.04);}
+  h2{font-size:19px;margin:0 0 14px;padding-left:12px;border-left:4px solid var(--teal);}
+  h3{font-size:15.5px;margin:18px 0 8px;color:var(--teal-d);}
+  p{margin:8px 0;}
+  .muted{color:var(--muted);font-size:13px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#f1f5f9;font-weight:600;color:#334155;}
+  tr:nth-child(even) td{background:#fafcff;}
+  .pos{color:var(--green);font-weight:600;}
+  .neg{color:var(--red);font-weight:600;}
+  .warn{color:var(--amber);font-weight:600;}
+  .verdict{display:flex;gap:16px;flex-wrap:wrap;margin:6px 0 4px;}
+  .vcard{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--line);
+    border-radius:12px;padding:16px 18px;}
+  .vcard .lab{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;}
+  .vcard .val{font-size:22px;font-weight:700;margin:4px 0;}
+  .traffic{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:middle;margin-right:7px;}
+  .t-red{background:var(--red);} .t-amber{background:var(--amber);} .t-green{background:var(--green);}
+  .callout{border-left:4px solid var(--amber);background:#fffbeb;padding:12px 16px;border-radius:0 10px 10px 0;margin:12px 0;font-size:14px;}
+  .callout.teal{border-color:var(--teal);background:#f0fdfa;}
+  .callout.red{border-color:var(--red);background:#fef2f2;}
+  .chart-box{width:100%;overflow-x:auto;}
+  svg{display:block;max-width:100%;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;margin:8px 0 2px;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  .score-row{display:flex;align-items:center;gap:12px;margin:9px 0;font-size:14px;}
+  .score-row .name{width:190px;flex-shrink:0;color:#334155;}
+  .bar{flex:1;height:14px;background:#eef2f7;border-radius:8px;overflow:hidden;}
+  .bar > i{display:block;height:100%;border-radius:8px;}
+  .score-row .num{width:42px;text-align:right;font-weight:600;color:#334155;flex-shrink:0;}
+  .foot{font-size:12px;color:var(--muted);margin-top:30px;border-top:1px solid var(--line);padding-top:14px;}
+  ul.tight{margin:8px 0;padding-left:20px;} ul.tight li{margin:5px 0;}
+  .pill{display:inline-block;padding:2px 9px;border-radius:12px;font-size:11.5px;font-weight:600;}
+  .pill.t{background:var(--teal-l);color:var(--teal-d);}
+  .pill.a{background:#fef3c7;color:#92400e;}
+  .pill.p{background:#ede9fe;color:#5b21b6;}
+  .pill.r{background:#fee2e2;color:#991b1b;}
+  .pill.c{background:#cffafe;color:#155e75;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Smart EEG Headband（智能 EEG 头带）美国站市场调研</h1>
+  <div class="sub">Amazon US · 消费级脑电/神经反馈头带品类 · 数据来源：卖家精灵（SellerSprite）美国站</div>
+  <div>
+    <span class="tag">数据截至 2026-09</span>
+    <span class="tag">覆盖 5 个核心 ASIN</span>
+    <span class="tag">含 27 个月销量趋势</span>
+  </div>
+</header>
+
+<!-- 执行摘要 -->
+<section>
+  <h2>一、执行摘要与结论</h2>
+  <div class="verdict">
+    <div class="vcard">
+      <div class="lab">市场体量</div>
+      <div class="val">≈ $1.5–2.5M<span style="font-size:13px;color:var(--muted)">/年 GMV</span></div>
+      <div class="muted">全品类月销仅数百台，属极细分利基</div>
+    </div>
+    <div class="vcard">
+      <div class="lab">流量可获取性</div>
+      <div class="val" style="color:var(--red)">品牌锁定</div>
+      <div class="muted">真实需求 ~3,900/月，但 83–100% 归于 Muse 自有词</div>
+    </div>
+    <div class="vcard">
+      <div class="lab">竞争格局</div>
+      <div class="val" style="color:var(--amber)">单寡头</div>
+      <div class="muted">Muse（InteraXon）占绝对主导</div>
+    </div>
+  </div>
+  <div class="callout red">
+    <strong>综合结论（ traffic <span class="traffic t-red"></span> 红 / 谨慎）：</strong>
+    这是一个<strong>真实需求存在但被品牌词锁定、由强资本寡头（Muse）主导、且专利与合规门槛高</strong>的极细分市场。
+    对新入场亚马逊卖家（尤其 FBM 测款阶段）而言，它不是理想的"测试品"——高客单（$189–$475）、需品牌与 PPC 投入、需干净 IP 与"健康而非医疗"定位，且单品月销天花板低。
+    建议定位为<strong>"观察学习 / 待差异化技术成熟后再切入"</strong>，而非现在直接进场。
+  </div>
+</section>
+
+<!-- 品类定义 -->
+<section>
+  <h2>二、品类定义与边界</h2>
+  <p>"Smart EEG Headband"指<strong>消费级、 wearable、带 EEG（脑电）传感器的头带设备</strong>，通过 Bluetooth 连接 App，实时反馈脑波（α/β/θ 等），用于冥想、专注训练、睡眠监测与"神经反馈（Neurofeedback）"。</p>
+  <ul class="tight">
+    <li><strong>核心形态：</strong>柔性头带 + 前额皮肤接触传感器（干电极 / 水凝胶电极）+ 手机 App + 订阅或买断内容。</li>
+    <li><strong>技术层级：</strong>基础款仅 EEG；进阶款叠加 fNIRS（Muse Athena，血氧/血流动力学）、心率/呼吸/HRV（Flowtime，多模态身体传感）。</li>
+    <li><strong>与医疗设备的界线：</strong>当前在售品均以"健康/冥想/放松" wellness 定位，<strong>不做疾病治疗宣称</strong>，因此多走一般消费品路径而非 FDA 医疗器械注册（详见第十一节）。</li>
+    <li><strong>边界排除：</strong>耳机式头带（kids headphones）、发带/头巾（hair curler/bandana）、非 EEG 的睡眠眼罩等，虽标题含 "headband" 但非本品类——卖家精灵模糊匹配会混入，本报告已人工剔除。</li>
+  </ul>
+</section>
+
+<!-- 搜索需求 -->
+<section>
+  <h2>三、搜索需求分析（多关键词核验 · 关键修正）</h2>
+  <p>上一版仅用 4 个字面词得出"需求≈0"，不够严谨。本次<strong>扩大至 14 个关键词</strong>，覆盖「品牌词 + 字面品类词 + 相邻概念词 + 干扰词」，重新核验。结论需<strong>分三块看</strong>：</p>
+
+  <h3>① 有真实收录量的词 —— 但全部是 Muse 品牌词（需求被锁定）</h3>
+  <table>
+    <tr><th>关键词</th><th>月搜索量</th><th>同比</th><th>购买量</th><th>ARA点击CR<br><span class="muted">(头部3 ASIN)</span></th><th>关联 ASIN / 性质</th></tr>
+    <tr>
+      <td><strong>muse headband</strong></td><td>1,638</td><td class="neg">-31.7%</td><td>30</td><td class="warn">83.2%</td>
+      <td>B0F4F15WDD(Athena) / B0DS2X453F(MUSE 2) / B0D3PY2W7N(SereniBrain) —— <strong>品类主入口词</strong></td>
+    </tr>
+    <tr>
+      <td><strong>muse s athena</strong></td><td>968</td><td class="pos">+1.0%</td><td>6</td><td class="warn">98.1%</td>
+      <td>B0F4F15WDD 独占 83% 点击 —— <strong>旗舰型号词</strong></td>
+    </tr>
+    <tr>
+      <td><strong>muse 2</strong></td><td>800</td><td class="neg">-5.1%</td><td>24</td><td class="warn">100%</td>
+      <td>B0DS2X453F 独占 87% 点击（含色卡尺品牌 COLOR MUSE 噪声）—— <strong>中端型号词</strong></td>
+    </tr>
+    <tr>
+      <td><strong>eeg device</strong></td><td>475</td><td class="pos">+9.95%</td><td>5</td><td class="warn">75.7%</td>
+      <td>B0D3PY2W7N / B0DS2X453F / 及 EKG 监护仪（KardiaMobile 等）—— <strong>泛品类词，且混入心电图设备</strong></td>
+    </tr>
+  </table>
+  <p class="muted">品牌词合计 ≈ <strong>3,900 次/月</strong>。但注意两件事：(a) 同比多数为<strong>负增长</strong>（muse headband -31.7%、muse 2 -5.1%），品类搜索需求整体在<strong>收缩</strong>；(b) ARA 点击集中度 75–100%——<strong>这些点击几乎全流向 Muse 自有 ASIN（及个别挑战者），新品牌无法自然截流</strong>。</p>
+
+  <h3>② 字面品类词 / 相邻概念词 —— 全部 0 收录（上一版判断成立）</h3>
+  <table>
+    <tr><th>关键词</th><th>月搜索量</th><th>结论</th></tr>
+    <tr><td>EEG headband</td><td class="neg">0</td><td rowspan="9">未进入卖家精灵 ABA 收录池（total=0）。说明用户<strong>不靠"品类描述词"找本品</strong>，而是直接搜品牌。</td></tr>
+    <tr><td>neurofeedback headband</td><td class="neg">0</td></tr>
+    <tr><td>brain sensing headband</td><td class="neg">0</td></tr>
+    <tr><td>biofeedback headband</td><td class="neg">0</td></tr>
+    <tr><td>brainwave headband</td><td class="neg">0</td></tr>
+    <tr><td>meditation headband</td><td class="neg">0</td></tr>
+    <tr><td>focus headband</td><td class="neg">0</td></tr>
+    <tr><td>meditation device</td><td class="neg">0</td></tr>
+    <tr><td>brain fitness</td><td class="neg">0</td></tr>
+  </table>
+
+  <h3>③ 必须排除的干扰词 —— "sleep headband" 看似 8,131/月，但是另一个市场</h3>
+  <table>
+    <tr><th>关键词</th><th>月搜索量</th><th>真实性质</th><th>对本品的启示</th></tr>
+    <tr>
+      <td>sleep headband</td><td>8,131</td>
+      <td>蓝牙<strong>音频</strong>睡眠耳机头带（MUSICOZY $15.19、Perytong、LC-dolida），均价 $15、avgRating 4.0、7,171 个商品</td>
+      <td class="neg"><strong>非 EEG 设备，是耳机品类</strong>。体量虽大但与本品无关，市场规模测算<strong>绝不能并入</strong>。仅说明"睡眠+头带"心智存在，可借鉴其流量逻辑但不可直接对打。</td>
+    </tr>
+  </table>
+
+  <div class="callout red">
+    <strong>修正后的核心判断：</strong>需求不是"≈0"，而是<strong>"真存在、但是是 Muse 的需求"</strong>。
+    <ul class="tight" style="margin-bottom:0">
+      <li>字面品类词确实 0 收录 → 新品牌<strong>没有品类自然流量</strong>可吃。</li>
+      <li>品牌词有 ~3,900/月 → 但 83–100% 点击锁定 Muse 自有链接，且同比在萎缩 → 新品牌即便投 PPC 也只是在给 Muse 抬轿，或抢极小的"平替"长尾。</li>
+      <li>因此<strong>流量可获取性比"纯 0 品类"更差</strong>：纯 0 品类至少能靠教育+内容做增量，而本品的存量需求已被寡头私有化。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 竞争格局 -->
+<section>
+  <h2>四、竞争格局（核心玩家）</h2>
+  <p>通过精准匹配（phrase match）"brain sensing headband / neurofeedback headband" 拉出的真实 EEG 头带共 5 个核心产品 + 数个官方保护壳配件。市场呈<strong>单寡头 + 少数挑战者</strong>结构：</p>
+  <table>
+    <tr>
+      <th>品牌 / 产品</th><th>ASIN</th><th>价格</th><th>评分(评分数)</th>
+      <th>近期月销(估)</th><th>BSR</th><th>类目节点</th><th>传感器</th><th>订阅</th><th>上市</th>
+    </tr>
+    <tr>
+      <td><strong>Muse S Athena</strong><br><span class="muted">3rd Gen 旗舰</span></td>
+      <td>B0F4F15WDD</td><td>$474.99</td><td>3.8★ (76)</td>
+      <td>~240/月</td><td>91,626</td><td>Health›Sound Therapy</td>
+      <td>EEG + fNIRS</td><td><span class="pill c">可选</span></td><td>2025-07</td>
+    </tr>
+    <tr>
+      <td><strong>Muse S (Gen 2)</strong></td>
+      <td>B09JBG8Z6G</td><td>$349.99</td><td>3.4★</td>
+      <td>未单列</td><td>代理链接</td><td>Health›Sound Therapy</td>
+      <td>EEG</td><td><span class="pill c">可选</span></td><td>~2025</td>
+    </tr>
+    <tr>
+      <td><strong>MUSE 2</strong><br><span class="muted">老链接(衰退)</span></td>
+      <td>B07HL2S9JQ</td><td>$249.99</td><td>3.9★ (727累计)</td>
+      <td>~30/月</td><td>82,625</td><td>Health›Sound Therapy</td>
+      <td>EEG</td><td><span class="pill c">可选</span></td><td>2018</td>
+    </tr>
+    <tr>
+      <td><strong>SereniBrain</strong></td>
+      <td>B0D3PY2W7N</td><td>$199.99<br><span class="muted">($20券)</span></td><td>4.0★ (110)</td>
+      <td>~120/月</td><td>88,466</td><td>Sports›Fitness Trackers</td>
+      <td>EEG(水凝胶)</td><td><span class="pill t">无</span></td><td>2024-05</td>
+    </tr>
+    <tr>
+      <td><strong>Flowtime</strong></td>
+      <td>B0824L385C</td><td>$189.00<br><span class="muted">($10券)</span></td><td>3.4★ (334累计)</td>
+      <td>~30–50/月</td><td>126,194</td><td>Sports›Fitness Trackers</td>
+      <td>EEG+HR/呼吸/HRV</td><td><span class="pill a">部分</span></td><td>2020</td>
+    </tr>
+  </table>
+  <div class="callout">
+    <strong>玩家画像：</strong>
+    <ul class="tight" style="margin-bottom:0">
+      <li><strong>Muse（InteraXon，加拿大 VC 背景）：</strong>品类定义者，全价格带覆盖（$249→$475），技术护城河（干电极 + fNIRS + 算法 + 订阅生态），是绝对寡头。老链接 Muse 2 在 2026 年销量崩塌，应是向新 ASIN 迁移所致。</li>
+      <li><strong>SereniBrain：</strong>唯一评分破 4.0 的挑战者，主打"无订阅费 + 水凝胶舒适电极"，是价格/模式差异化样本。</li>
+      <li><strong>Flowtime（Entertech）：</strong>多模态（脑波 + 身心数据），但评分偏低（3.4★），增长停滞。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 销量趋势 -->
+<section>
+  <h2>五、销量趋势与体量反推</h2>
+  <p class="muted">下图为单位月销估算（卖家精灵模型，含父子 ASIN 归属噪声，作方向性量级参考；Muse 家族因链接迁移，2026 数字有波动）。</p>
+  <div class="chart-box"><div id="salesChart"></div></div>
+  <div class="legend">
+    <span><i class="dot" style="background:#0d9488"></i>Muse S Athena (B0F4F15WDD)</span>
+    <span><i class="dot" style="background:#0891b2"></i>MUSE 2 老链接 (B07HL2S9JQ)</span>
+    <span><i class="dot" style="background:#f59e0b"></i>SereniBrain (B0D3PY2W7N)</span>
+    <span><i class="dot" style="background:#8b5cf6"></i>Flowtime (B0824L385C)</span>
+  </div>
+  <div class="callout teal">
+    <strong>体量反推：</strong>全品类月销总量约 <strong>500–700 台</strong>（Muse 家族 ~350–450 + SereniBrain ~120 + Flowtime ~40 + 长尾 ~20–30）。
+    按加权 ASP ≈ $250–$300 估算，<strong>年 GMV ≈ $1.5–2.5M</strong>。即便头部 Muse S Athena 单 ASIN 也仅 ~240 台/月——这是一个<strong>典型"小而贵"的利基</strong>，不是走量市场。
+  </div>
+  <p class="muted">趋势观察：SereniBrain 自 2024 年底起稳步爬升至 ~120–190/月，是唯一逆势上行的挑战者；Muse 老链接 2026 年因 ASIN 迁移出现断崖，新旗舰 Athena 接棒放量。</p>
+</section>
+
+<!-- 价格定位 -->
+<section>
+  <h2>六、价格带与定位</h2>
+  <div class="chart-box"><div id="priceChart"></div></div>
+  <p>价格阶梯清晰，呈<strong>三档结构</strong>：</p>
+  <ul class="tight">
+    <li><span class="pill t">入门/中端 $189–$200</span> Flowtime、SereniBrain（SereniBrain 以"无订阅 + 4.0★"卡位性价比）。</li>
+    <li><span class="pill c">中高 $249–$350</span> MUSE 2、Muse S Gen2（订阅可选，生态驱动）。</li>
+    <li><span class="pill p">旗舰 $475</span> Muse S Athena（EEG+fNIRS 技术溢价）。</li>
+  </ul>
+  <div class="callout">价位空白点：<strong>$99–$159 的"轻量入门无订阅"档几乎无人占据</strong>——但需警惕：该价位能否支撑硬件+App 成本、且不与"玩具感"挂钩，是关键疑问。</div>
+</section>
+
+<!-- 技术功能 -->
+<section>
+  <h2>七、技术与功能对比</h2>
+  <table>
+    <tr><th>维度</th><th>Muse S Athena</th><th>MUSE 2</th><th>SereniBrain</th><th>Flowtime</th></tr>
+    <tr><td>传感技术</td><td>EEG + fNIRS</td><td>EEG(干电极)</td><td>EEG(水凝胶)</td><td>EEG + 心率/呼吸/HRV</td></tr>
+    <tr><td>核心场景</td><td>睡眠 + 专注 + 恢复</td><td>冥想 + 专注</td><td>冥想/专注/助眠准备</td><td>冥想 + 身心数据</td></tr>
+    <tr><td>App 内容</td><td>500+ 冥想 + AI Coach(订阅)</td><td>核心免费 + 订阅增强</td><td>免费引导 + 实时反馈</td><td>课程(部分订阅)</td></tr>
+    <tr><td>差异化卖点</td><td>Deep Sleep Boost / fNIRS</td><td>品牌 + 声音反馈</td><td>无订阅 + 舒适电极</td><td>多模态身心报告</td></tr>
+    <tr><td>续航</td><td>10 小时</td><td>—</td><td>—</td><td>8 小时 / 待机50天</td></tr>
+    <tr><td>LQS(页面质量)</td><td>90</td><td>94</td><td>99</td><td>95</td></tr>
+  </table>
+  <p class="muted">技术护城河主要在<strong>传感器信号质量 + 算法/App 生态 + 数据积累</strong>，而非硬件本身。新进入者最难复制的是 Muse 多年沉淀的脑波算法与内容库。</p>
+</section>
+
+<!-- 类目归属 -->
+<section>
+  <h2>八、类目归属与 BSR 洞察（碎片市场）</h2>
+  <p>本品类<strong>没有统一的亚马逊节点</strong>，竞品分散在至少两个无关类目：</p>
+  <table>
+    <tr><th>类目节点</th><th>代表产品</th><th>含义</th></tr>
+    <tr><td>Health &amp; Household › Health Care › Alternative Medicine › <strong>Sound Therapy</strong></td>
+      <td>Muse 全系</td><td>被当作"声音/替代疗法"设备</td></tr>
+    <tr><td>Sports &amp; Outdoors › Exercise &amp; Fitness › Fitness Technology › <strong>Activity &amp; Fitness Trackers</strong></td>
+      <td>SereniBrain、Flowtime</td><td>被当作"健身追踪器"</td></tr>
+  </table>
+  <div class="callout">
+    <strong>战略含义：</strong>
+    <ul class="tight" style="margin-bottom:0">
+      <li>无独立 bestseller 榜单可"蹭"，自然排名需按各自节点分别经营。</li>
+      <li>竞品彼此不在同一 BSR 牌面直接厮杀，<strong>间接竞争弱</strong>，但也意味着品类缺乏平台流量汇聚。</li>
+      <li>新品上架时<strong>类目选择本身就是定位决策</strong>（放在 Sound Therapy 借 Muse 流量，还是 Fitness Trackers 借健康科技心智）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 合规风险 -->
+<section>
+  <h2>九、合规与风险</h2>
+  <table>
+    <tr><th>风险维度</th><th>等级</th><th>说明</th></tr>
+    <tr><td>FDA 医疗器械</td><td><span class="pill a">中</span></td>
+      <td>若仅做 wellness/冥想宣称 → 一般消费品；一旦宣称"治疗焦虑/ADHD/失眠/抑郁"等 → 触发 Class II 医疗器械 + 510(k)。"Neurofeedback"处于灰色地带，需谨慎措辞。</td></tr>
+    <tr><td>专利（IP）</td><td><span class="pill r">高</span></td>
+      <td>Muse/InteraXon 持有干电极 EEG 阵列与头带形态相关专利。新进入者<strong>极易踩雷</strong>，入场前必须做 FTO（自由实施）检索。</td></tr>
+    <tr><td>FCC（无线）</td><td><span class="pill a">中</span></td>
+      <td>含 Bluetooth 模块须 FCC Part 15 认证（SDOC 或 Certification）。</td></tr>
+    <tr><td>CPSC / 电池</td><td><span class="pill a">中</span></td>
+      <td>含锂电须 UN38.3 + 运输合规；一般消费品安全责任。</td></tr>
+    <tr><td>FTC 广告真实</td><td><span class="pill a">中</span></td>
+      <td>脑波/效果宣称须有据，避免虚假健康宣称。</td></tr>
+  </table>
+  <div class="callout red"><strong>对用户（FemTech/盆底肌背景、亚马逊新手）特别提示：</strong>本品类与您现有供应链（物理训练器、消费电子外观）有" wearable + App + 传感器"的共性，但<strong>EEG 信号与算法壁垒、Neurofeedback 合规灰区、Muse 专利墙</strong>使其难度远高于盆底肌物理训练器。不建议作为首个亚马逊测试品。</div>
+</section>
+
+<!-- 进入可行性评分 -->
+<section>
+  <h2>十、进入可行性评分卡</h2>
+  <p class="muted">评分 0–10（10=最有利）。综合加权偏低。</p>
+  <div class="score-row"><div class="name">市场需求规模</div><div class="bar"><i style="width:25%;background:var(--red)"></i></div><div class="num">2.5</div></div>
+  <div class="score-row"><div class="name">搜索流量可获取性</div><div class="bar"><i style="width:15%;background:var(--red)"></i></div><div class="num">1.5</div></div>
+  <div class="score-row"><div class="name">竞争格局友好度</div><div class="bar"><i style="width:30%;background:var(--amber)"></i></div><div class="num">3.0</div></div>
+  <div class="score-row"><div class="name">价格/利润空间</div><div class="bar"><i style="width:75%;background:var(--green)"></i></div><div class="num">7.5</div></div>
+  <div class="score-row"><div class="name">技术/供应链可行性</div><div class="bar"><i style="width:55%;background:var(--amber)"></i></div><div class="num">5.5</div></div>
+  <div class="score-row"><div class="name">合规/IP 安全度</div><div class="bar"><i style="width:30%;background:var(--amber)"></i></div><div class="num">3.0</div></div>
+  <div class="score-row"><div class="name">新卖家启动友好度</div><div class="bar"><i style="width:25%;background:var(--red)"></i></div><div class="num">2.5</div></div>
+  <div class="callout"><strong>加权综合 ≈ 3.3 / 10</strong> —— 偏"不推荐直接进场"。利润空间是唯一强项，但被需求规模、流量获取与 IP 风险三项拉低。</div>
+</section>
+
+<!-- 建议 -->
+<section>
+  <h2>十一、结论与行动建议</h2>
+  <h3>定位建议</h3>
+  <ul class="tight">
+    <li><strong>现阶段：观察学习，不重仓。</strong>把它作为"高端 wearable + App"的标杆研究样本，而非立即选品。</li>
+    <li>若坚持切入，优先选 <strong>$99–$159 无订阅入门档</strong> 或 <strong>"舒适电极 + 睡眠场景"差异化</strong>，避开与 Muse 正面拼算法生态。</li>
+    <li><strong>类目节点</strong>建议放 Fitness Trackers（与 SereniBrain 同场），借"脑健康科技"心智，而非 Sound Therapy（Muse 主场）。</li>
+  </ul>
+  <h3>前置必做（如决定进场）</h3>
+  <ul class="tight">
+    <li><strong>FTO 专利检索</strong>：确认干电极/头带形态不侵权 Muse 专利族。</li>
+    <li><strong>合规定位校准</strong>：锁定 wellness 措辞，避免 neurofeedback 医疗化宣称；完成 FCC + 电池运输合规。</li>
+    <li><strong>流量策略</strong>：放弃品类词自然流量幻想，准备 Muse 对比内容 + 品牌词 PPC 预算。</li>
+    <li><strong>差异化验证</strong>：用您现有"消费电子外观 + App"能力，验证能否在舒适性与价格上做出真实差异化（否则只是又一个 $189 红海陪跑）。</li>
+  </ul>
+  <div class="callout teal"><strong>一句话：</strong>品类有趣、利润可观，但"小、冷、垄断、有专利雷"——对亚马逊新手是<strong>高风险低确定性</strong>选项，建议列入观察池而非首发清单。</div>
+</section>
+
+<div class="foot">
+  数据来源：卖家精灵（SellerSprite）美国站 · keyword_research（14 词核验）/ product_research(phrase match) / asin_detail / asin_sales_trend。
+  数据截至 2026-09。销量与 GMV 为平台模型估算值，因 EEG 头带类目存在频繁 ASIN 迁移与父子归属噪声，仅作方向性量级参考，不构成精确财务预测。
+  需求核验说明：字面品类词（EEG headband / neurofeedback / brain sensing / biofeedback / brainwave / meditation headband / focus headband / meditation device / brain fitness）在卖家精灵 ABA 池均为 0 收录；真实收录量集中在品牌词 muse headband(1,638) / muse s athena(968) / muse 2(800) / eeg device(475)，合计 ≈3,900/月且 75–100% 点击锁定 Muse 自有 ASIN。
+  "sleep headband"(8,131/月) 实为蓝牙音频睡眠耳机市场（MUSICOZY 等 $15 均价），非 EEG 设备，已从本品市场规模中剔除。
+</div>
+
+</div>
+
+<script>
+const months = ["2024-07","2024-08","2024-09","2024-10","2024-11","2024-12",
+  "2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09",
+  "2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06",
+  "2026-07","2026-08","2026-09"];
+
+const series = [
+  {name:"Muse S Athena", color:"#0d9488", data:[null,null,null,null,null,null,null,null,null,null,null,null,0,6,61,100,140,168,188,206,209,62,207,208,93,216,240]},
+  {name:"MUSE 2 老链接", color:"#0891b2", data:[303,237,228,211,272,119,117,197,195,95,62,108,212,235,218,217,199,255,199,6,30,183,162,18,2,17,30]},
+  {name:"SereniBrain", color:"#f59e0b", data:[35,28,67,73,68,121,105,119,92,104,140,130,116,119,131,154,186,189,111,130,147,121,112,165,131,107,120]},
+  {name:"Flowtime", color:"#8b5cf6", data:[66,59,45,58,47,53,61,56,41,55,66,62,59,59,51,32,35,58,48,54,56,54,39,48,11,40,30]}
+];
+
+function renderLineChart(elId){
+  const W=920,H=400,padL=52,padR=18,padT=24,padB=54;
+  const n=months.length, ymax=350;
+  const x=i=> padL + (n===1?0:i*(W-padL-padR)/(n-1));
+  const y=v=> padT + (1 - v/ymax)*(H-padT-padB);
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,sans-serif">`;
+  // grid + y labels
+  for(let g=0;g<=ymax;g+=50){
+    const yy=y(g);
+    s+=`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" stroke="#e2e8f0" stroke-width="1"/>`;
+    s+=`<text x="${padL-8}" y="${yy+4}" text-anchor="end" font-size="11" fill="#64748b">${g}</text>`;
+  }
+  // x labels every 3
+  for(let i=0;i<n;i++){
+    if(i%3===0){
+      s+=`<text x="${x(i)}" y="${H-padB+18}" text-anchor="middle" font-size="10.5" fill="#64748b">${months[i]}</text>`;
+      s+=`<line x1="${x(i)}" y1="${padT}" x2="${x(i)}" y2="${H-padB}" stroke="#f1f5f9" stroke-width="1"/>`;
+    }
+  }
+  s+=`<text x="${padL-38}" y="${padT-8}" font-size="11" fill="#64748b">台/月</text>`;
+  // lines
+  series.forEach(se=>{
+    let d="", started=false;
+    se.data.forEach((v,i)=>{
+      if(v===null) return;
+      d += (started?" L":"M")+x(i)+" "+y(v); started=true;
+    });
+    s+=`<path d="${d}" fill="none" stroke="${se.color}" stroke-width="2.4" stroke-linejoin="round"/>`;
+    // points
+    se.data.forEach((v,i)=>{ if(v!==null) s+=`<circle cx="${x(i)}" cy="${y(v)}" r="2.6" fill="${se.color}"/>`; });
+  });
+  // frame
+  s+=`<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H-padB}" stroke="#94a3b8" stroke-width="1.2"/>`;
+  s+=`<line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#94a3b8" stroke-width="1.2"/>`;
+  s+=`</svg>`;
+  document.getElementById(elId).innerHTML=s;
+}
+
+const prices=[
+  {name:"Muse S Athena", price:474.99, color:"#0d9488"},
+  {name:"Muse S Gen2", price:349.99, color:"#0d9488"},
+  {name:"MUSE 2", price:249.99, color:"#0891b2"},
+  {name:"SereniBrain", price:199.99, color:"#f59e0b"},
+  {name:"Flowtime", price:189.00, color:"#8b5cf6"}
+];
+function renderPriceChart(elId){
+  const W=920, rowH=46, padL=130, padR=70, padT=10, padB=10;
+  const H=padT+padB+prices.length*rowH;
+  const maxP=500;
+  const bw=v=> (W-padL-padR)*(v/maxP);
+  let s=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,sans-serif">`;
+  prices.forEach((p,i)=>{
+    const yy=padT+i*rowH+rowH/2;
+    s+=`<text x="${padL-12}" y="${yy+4}" text-anchor="end" font-size="13" fill="#334155">${p.name}</text>`;
+    s+=`<rect x="${padL}" y="${yy-13}" width="${bw(p.price)}" height="26" rx="6" fill="${p.color}"/>`;
+    s+=`<text x="${padL+bw(p.price)+8}" y="${yy+4}" font-size="12.5" fill="#334155" font-weight="600">$${p.price.toFixed(2)}</text>`;
+  });
+  // axis ticks
+  for(let t=0;t<=maxP;t+=100){
+    const xx=padL+bw(t);
+    s+=`<line x1="${xx}" y1="${padT}" x2="${xx}" y2="${H-padB}" stroke="#f1f5f9" stroke-width="1"/>`;
+    s+=`<text x="${xx}" y="${H-padB+14}" text-anchor="middle" font-size="10.5" fill="#94a3b8">$${t}</text>`;
+  }
+  s+=`</svg>`;
+  document.getElementById(elId).innerHTML=s;
+}
+
+renderLineChart("salesChart");
+renderPriceChart("priceChart");
+</script>
+</body>
+</html>
