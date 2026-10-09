@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>依士文 DN01 盆底肌康复仪 · 产品介绍</title>
+<style>
+  :root{
+    --teal:#0F766E; --teal-l:#14B8A6; --teal-bg:#F0FDFA; --teal-bd:#99F6E4;
+    --ink:#1F2937; --ink2:#4B5563; --ink3:#6B7280;
+    --amber:#B45309; --amber-bg:#FFFBEB; --amber-bd:#FDE68A;
+    --red:#B91C1C; --red-bg:#FEF2F2; --red-bd:#FECACA;
+    --blue:#1D4ED8; --blue-bg:#EFF6FF; --blue-bd:#BFDBFE;
+    --line:#E5E7EB; --card:#FFFFFF; --bg:#F8FAF9;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;font-size:15px;}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 22px 60px;}
+  /* cover */
+  .cover{background:linear-gradient(135deg,#0F766E 0%,#115E59 55%,#134E4A 100%);color:#fff;border-radius:16px;padding:38px 36px 30px;margin-bottom:26px;box-shadow:0 8px 24px rgba(15,118,110,.22);}
+  .cover .kicker{font-size:13px;letter-spacing:3px;opacity:.85;margin-bottom:10px;}
+  .cover h1{font-size:34px;font-weight:800;letter-spacing:1px;margin-bottom:6px;}
+  .cover .sub{font-size:15px;opacity:.92;margin-bottom:18px;}
+  .cover .src{font-size:12.5px;opacity:.75;border-top:1px solid rgba(255,255,255,.25);padding-top:12px;margin-top:16px;}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;}
+  .badge{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);padding:4px 14px;border-radius:999px;font-size:13px;font-weight:600;}
+  /* cover with photo */
+  .cover-flex{display:flex;gap:28px;align-items:center;flex-wrap:wrap;}
+  .cover-flex .cl{flex:1;min-width:300px;}
+  .cover-photo{flex:0 0 250px;background:#fff;border-radius:12px;padding:9px;box-shadow:0 6px 18px rgba(0,0,0,.28);}
+  .cover-photo img{width:100%;display:block;border-radius:8px;}
+  .cover-photo .cap{font-size:11.5px;color:var(--ink3);text-align:center;padding-top:7px;line-height:1.5;}
+  @media(max-width:700px){.cover-photo{flex:0 0 200px;}}
+  /* nav */
+  .nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px;}
+  .nav a{text-decoration:none;color:var(--teal);background:var(--teal-bg);border:1px solid var(--teal-bd);padding:5px 13px;border-radius:999px;font-size:13px;font-weight:600;transition:.15s;}
+  .nav a:hover{background:var(--teal);color:#fff;}
+  /* section */
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin-bottom:22px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+  h2{font-size:21px;color:var(--teal);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--teal-bd);font-weight:800;}
+  h3{font-size:16px;color:#115E59;margin:18px 0 8px;font-weight:700;}
+  p{margin-bottom:10px;color:var(--ink2);}
+  ul,ol{margin:0 0 12px 22px;color:var(--ink2);}
+  li{margin-bottom:5px;}
+  /* tables */
+  table{width:100%;border-collapse:collapse;margin:12px 0 16px;font-size:14px;background:#fff;}
+  th{background:var(--teal);color:#fff;padding:9px 12px;text-align:left;font-weight:700;border:1px solid #0d5f58;}
+  td{padding:8px 12px;border:1px solid var(--line);color:var(--ink2);vertical-align:top;}
+  tr:nth-child(even) td{background:#FAFDFC;}
+  /* summary cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin:14px 0 6px;}
+  .sc{border:1px solid var(--teal-bd);background:var(--teal-bg);border-radius:10px;padding:12px 14px;}
+  .sc .k{font-size:12.5px;color:var(--ink3);margin-bottom:3px;}
+  .sc .v{font-size:16.5px;font-weight:800;color:#115E59;line-height:1.4;}
+  .sc .n{font-size:11.5px;color:var(--amber);margin-top:2px;}
+  /* callouts */
+  .note{border-left:4px solid var(--teal-l);background:var(--teal-bg);padding:10px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13.5px;color:var(--ink2);}
+  .warn{border-left:4px solid #D97706;background:var(--amber-bg);padding:10px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13.5px;color:var(--ink2);}
+  .danger{border-left:4px solid var(--red);background:var(--red-bg);padding:10px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13.5px;color:var(--ink2);}
+  .note b,.warn b,.danger b{color:var(--ink);}
+  /* steps */
+  .step{display:flex;gap:14px;margin-bottom:14px;}
+  .step .no{flex:0 0 34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .step .tx{flex:1;color:var(--ink2);}
+  .step .tx b{color:var(--ink);}
+  /* two col */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:760px){.two{grid-template-columns:1fr;}}
+  .pill{display:inline-block;background:var(--teal-bg);border:1px solid var(--teal-bd);color:#115E59;border-radius:6px;padding:1px 9px;font-size:12.5px;font-weight:700;margin-right:6px;}
+  .pill.r{background:var(--red-bg);border-color:var(--red-bd);color:var(--red);}
+  .pill.b{background:var(--blue-bg);border-color:var(--blue-bd);color:var(--blue);}
+  .pill.a{background:var(--amber-bg);border-color:var(--amber-bd);color:var(--amber);}
+  .tag-ems{background:#DBEAFE;color:#1D4ED8;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:700;}
+  .tag-tens{background:#FCE7F3;color:#9D174D;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:700;}
+  .foot{color:var(--ink3);font-size:12.5px;text-align:center;margin-top:10px;}
+  sup{color:var(--amber);font-weight:700;}
+  @media print{
+    body{background:#fff;}
+    .wrap{max-width:100%;padding:0;}
+    .nav{display:none;}
+    section{box-shadow:none;break-inside:avoid;}
+    .cover{border-radius:0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ═══════════ 封面 ═══════════ -->
+<div class="cover">
+  <div class="cover-flex">
+    <div class="cl">
+      <div class="kicker">FEMTECH · PELVIC FLOOR DEVICE</div>
+      <h1>DN01 盆底肌康复仪 · 产品介绍</h1>
+      <div class="sub">依士文双通道盆底肌电刺激治疗仪（EMS 训练 + TENS 镇痛）</div>
+      <div class="badges">
+        <span class="badge">🔀 双通道</span>
+        <span class="badge">📋 5 预设程序</span>
+        <span class="badge">⏱ 20 分钟固定疗程</span>
+        <span class="badge">🔋 满电续航 ≥8 小时</span>
+        <span class="badge">💧 IP22 · Type BF</span>
+        <span class="badge">📏 99mA 峰值输出</span>
+      </div>
+      <div class="src">📌 资料来源：官方说明书 I-DN01-EN Rev1.1 0524（19 页实物逐页核对）｜电池容量 700mAh 为工厂确认值<sup>※</sup></div>
+    </div>
+    <div class="cover-photo">
+      <img src="assets/DN01_产品实拍.jpg" alt="DN01 主机产品实拍">
+      <div class="cap">📸 主机实拍 · 屏幕当前显示 P3 混合性尿失禁程序（20Hz / 250μs / 20MIN）</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 导航 ═══════════ -->
+<nav class="nav">
+  <a href="#s1">① 一页摘要</a><a href="#s2">② 定位与适用</a><a href="#s3">③ 工作原理</a>
+  <a href="#s4">④ 技术规格</a><a href="#s5">⑤ 五大程序</a><a href="#s6">⑥ 电池充电</a>
+  <a href="#s7">⑦ 包装清单</a><a href="#s8">⑧ 使用流程</a><a href="#s9">⑨ 推荐用法</a>
+  <a href="#s10">⑩ 清洁维护</a><a href="#s11">⑪ 故障排除</a><a href="#s12">⑫ 安全须知</a>
+  <a href="#s13">⑬ 符号认证</a><a href="#apx">附录 术语表</a>
+</nav>
+
+<!-- ═══════════ ① 一页摘要 ═══════════ -->
+<section id="s1">
+  <h2>📊 一页式摘要（投屏用）</h2>
+  <div class="grid">
+    <div class="sc"><div class="k">产品类型</div><div class="v">双通道盆底肌<br>电刺激治疗仪</div></div>
+    <div class="sc"><div class="k">训练技术</div><div class="v">EMS × 4 + TENS × 1</div><div class="n">5 个预设程序</div></div>
+    <div class="sc"><div class="k">最大输出电流</div><div class="v">99 mA（峰值）</div><div class="n">@500Ω 负载</div></div>
+    <div class="sc"><div class="k">输出波形</div><div class="v">对称双相矩形波</div></div>
+    <div class="sc"><div class="k">频率范围</div><div class="v">10 – 75 Hz</div></div>
+    <div class="sc"><div class="k">脉宽范围</div><div class="v">100 – 300 μs</div></div>
+    <div class="sc"><div class="k">单次疗程</div><div class="v">20 分钟（固定）</div></div>
+    <div class="sc"><div class="k">电池</div><div class="v">3.7V 锂聚合物</div><div class="n">700mAh（工厂确认）</div></div>
+    <div class="sc"><div class="k">满电续航</div><div class="v">≥ 8 小时</div><div class="n">官方标注</div></div>
+    <div class="sc"><div class="k">充电规格</div><div class="v">DC 5V / 90mA</div><div class="n">充满约 8–11 小时（推算）</div></div>
+    <div class="sc"><div class="k">防护 / 安全</div><div class="v">IP22 · Type BF</div></div>
+    <div class="sc"><div class="k">使用寿命</div><div class="v">主机 5 年</div><div class="n">探头 / 贴片 2 年</div></div>
+  </div>
+  <div class="note">💡 <b>一句话介绍</b>：DN01 是一台双通道盆底肌康复仪——用阴道探头对盆底肌做电刺激训练（EMS），针对压力性、急迫性、混合性尿失禁各设专属程序，另设耐力训练与盆腔疼痛缓解（TENS）程序；单次 20 分钟、每周 3 次、4–6 周见效。</div>
+</section>
+
+<!-- ═══════════ ② 定位与适用 ═══════════ -->
+<section id="s2">
+  <h2>🎯 产品定位与适用范围</h2>
+  <h3>官方定位（说明书原文意译）</h3>
+  <p>「本设备设计用于刺激健康肌肉，以改善并促进肌肉表现。」—— DN01 是一款家用电刺激治疗仪，通过阴道探头把电脉冲传导至盆底肌，实现<span class="pill">被动肌肉收缩训练</span>。</p>
+  <h3>适用场景</h3>
+  <ul>
+    <li><b>尿失禁肌力康复</b>：压力性（P1）、急迫性（P2）、混合性（P3）三种尿失禁各对应专属 EMS 程序；</li>
+    <li><b>盆底耐力训练</b>：P4 耐力程序，可单/双通道；</li>
+    <li><b>慢性盆腔疼痛缓解</b>：P5 镇痛程序（TENS），可用体表贴片贴于下背部。</li>
+  </ul>
+  <div class="warn">⚠️ <b>技术边界</b>：DN01 属于<b>电极电流式</b>电刺激（EMS / TENS），与磁刺激（FMS / HIFEM，如体外磁刺激椅）是完全不同的两类技术，请勿混称。</div>
+</section>
+
+<!-- ═══════════ ③ 工作原理 ═══════════ -->
+<section id="s3">
+  <h2>⚙️ 工作原理：EMS 与 TENS 双技术</h2>
+  <div class="two">
+    <div>
+      <h3><span class="tag-ems">EMS</span> 电肌肉刺激（P1–P4）</h3>
+      <ul>
+        <li>人工激活肌肉：在选定区域<b>产生被动肌肉收缩</b>；</li>
+        <li>通过阴道探头直接控制盆底肌，帮助改善盆底肌表现；</li>
+        <li>感受调校：强度调至「感觉明显收紧、但几乎看不到动作」为宜。</li>
+      </ul>
+    </div>
+    <div>
+      <h3><span class="tag-tens">TENS</span> 经皮神经电刺激（P5）</h3>
+      <ul>
+        <li>低频（1–10Hz）长脉宽信号驱动运动神经，产生小幅重复收缩；</li>
+        <li>镇痛机理：持续温和的麻刺感缓解<b>慢性盆腔疼痛</b>；</li>
+        <li>效果逐步累积，通常约 <b>40 分钟</b>达到峰值；</li>
+        <li>不治疗病因——使用前应先获得专业诊断。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">📖 说明书将全部 5 个程序分为两组管理：P1–P4 为 <b>EMS PROGRAMS</b>（训练），P5 为 <b>TENS PROGRAMS</b>（镇痛），用法建议分别给出。</div>
+</section>
+
+<!-- ═══════════ ④ 技术规格 ═══════════ -->
+<section id="s4">
+  <h2>🔬 技术规格（说明书 P20 规格表 + 设备标签）</h2>
+  <table>
+    <tr><th style="width:32%">项目</th><th>参数</th></tr>
+    <tr><td><b>型号</b></td><td>依士文 DN01（设备原厂标识 Intrelief · WH）</td></tr>
+    <tr><td><b>通道数</b></td><td>双通道（CH1 / CH2，各接一根导线）</td></tr>
+    <tr><td><b>最大输出</b></td><td>99 mA 峰值（500Ω 负载）</td></tr>
+    <tr><td><b>输出波形</b></td><td>对称双相矩形波（Symmetrical Bi-phasic Rectangular）</td></tr>
+    <tr><td><b>脉冲频率</b></td><td>10 – 75 Hz（随程序预设）</td></tr>
+    <tr><td><b>脉冲宽度</b></td><td>100 – 300 μs（随程序预设）</td></tr>
+    <tr><td><b>预设程序</b></td><td>5 个（P1–P5，不可自定义参数）</td></tr>
+    <tr><td><b>治疗时间</b></td><td>20 分钟（固定，不可调）</td></tr>
+    <tr><td><b>电源</b></td><td>可充电锂电池 3.7V（锂离子聚合物）</td></tr>
+    <tr><td><b>充电规格</b></td><td>输入 DC 5V / 1A；充电电流 90mA</td></tr>
+    <tr><td><b>防护等级</b></td><td>IP22（防 ≥12.5mm 固体异物 + 垂直滴水）——<b>不可浸水</b></td></tr>
+    <tr><td><b>安全类型</b></td><td>Type BF（带隔离应用部分）</td></tr>
+    <tr><td><b>EMC</b></td><td>家用环境 Class B（说明书含 EMC 注意事项章节）</td></tr>
+    <tr><td><b>使用环境</b></td><td>+5℃ ~ +40℃ / 15–90% RH / 700–1060 hPa</td></tr>
+    <tr><td><b>储存运输</b></td><td>−25℃ ~ +60℃ / 15–90% RH / ≤1060 hPa</td></tr>
+    <tr><td><b>显示屏</b></td><td>LCD（背光，含电池符号、程序、强度显示）</td></tr>
+  </table>
+</section>
+
+<!-- ═══════════ ⑤ 五大程序 ═══════════ -->
+<section id="s5">
+  <h2>📋 五大预设程序（说明书 P17 程序表 · 原图核对）</h2>
+  <table>
+    <tr><th>程序</th><th>名称</th><th>用途</th><th>技术</th><th>频率</th><th>脉宽</th><th>时长</th><th>通道</th></tr>
+    <tr><td><b>P1</b></td><td>STRES</td><td>压力性尿失禁</td><td><span class="tag-ems">EMS</span></td><td>50 Hz</td><td>300 μs</td><td>20 min</td><td>CH1</td></tr>
+    <tr><td><b>P2</b></td><td>URGE</td><td>急迫性尿失禁</td><td><span class="tag-ems">EMS</span></td><td>10 Hz</td><td>200 μs</td><td>20 min</td><td>CH1</td></tr>
+    <tr><td><b>P3</b></td><td>MIXED</td><td>混合性尿失禁</td><td><span class="tag-ems">EMS</span></td><td>20 Hz</td><td>250 μs</td><td>20 min</td><td>CH1</td></tr>
+    <tr><td><b>P4</b></td><td>ENDUR</td><td>耐力训练</td><td><span class="tag-ems">EMS</span></td><td>35 Hz</td><td>250 μs</td><td>20 min</td><td>CH1 / CH1+CH2</td></tr>
+    <tr><td><b>P5</b></td><td>PAIN</td><td>慢性盆腔疼痛缓解</td><td><span class="tag-tens">TENS</span></td><td>75 Hz</td><td>100 μs</td><td>20 min</td><td>CH1 / CH1+CH2</td></tr>
+  </table>
+  <h3>各程序适用说明（逐条）</h3>
+  <div class="note">📖 <b>溯源说明</b>：说明书对 5 个程序<b>没有逐条写症状</b>——程序表（P17）只给名称和参数；P1–P4 共用一段「EMS PROGRAMS」总述（P18），仅 P5 有单独的原文描述。下表中标注 <b>〔原文〕</b> 的是说明书 P17–18 原文意译，标注 <b>〔通识〕</b> 的是按程序名与电刺激行业通识做的解释（说明书未展开），供理解参考。</div>
+  <table>
+    <tr><th>程序</th><th>适用说明</th><th>依据</th></tr>
+    <tr>
+      <td><b>P1</b> STRES</td>
+      <td><b>压力性尿失禁</b>——咳嗽、打喷嚏、大笑、运动、提重物时腹压升高导致的漏尿。用 50Hz 高频刺激让盆底快肌（Ⅱ类肌纤维）被动收缩，强化「憋得住」的快速收缩能力。〔通识〕</td>
+      <td>程序名 STRES=stress；频率—效果关系见说明书 P8「不同频率有不同效果」〔通识〕</td>
+    </tr>
+    <tr>
+      <td><b>P2</b> URGE</td>
+      <td><b>急迫性尿失禁</b>——一有尿意就憋不住、尿频尿急。用 10Hz 低频＋较长脉宽，说明书原文指出「低频（1–10Hz）配长脉冲有放松效果」，用于放松过度活跃的逼尿肌反射、抑制急迫感。〔通识，频率—放松关系为原文〕</td>
+      <td>程序名 URGE=urge；说明书 P8 原文「low frequencies (1–10 Hz) coupled with long impulse times…have a relaxing effect」〔原文〕</td>
+    </tr>
+    <tr>
+      <td><b>P3</b> MIXED</td>
+      <td><b>混合性尿失禁</b>——压力性＋急迫性症状同时存在（既漏尿又尿急）。20Hz 中频，兼顾两类症状的折中参数。〔通识〕</td>
+      <td>程序名 MIXED=mixed〔通识〕</td>
+    </tr>
+    <tr>
+      <td><b>P4</b> ENDUR</td>
+      <td><b>耐力训练（ENDUR=endurance）</b>——不是针对某一种症状的「治疗」程序，而是盆底肌的「体能强化」程序：用 35Hz 中高频持续刺激，让盆底肌像做力量训练一样反复被动收缩，目标是<b>提升肌力与维持训练成果</b>。适合两类场景：① P1–P3 症状缓解后的巩固/维持期；② 想进一步提升盆底功能的运动训练或康复恢复需求——后者与说明书原文「取决于运动训练或康复恢复需求（depending on the sports training or rehabilitation and recovery needs）」直接对应。〔通识＋原文〕</td>
+      <td>程序名 ENDUR；说明书 P18「EMS PROGRAMS / Recommended use」段〔原文〕</td>
+    </tr>
+    <tr>
+      <td><b>P5</b> PAIN</td>
+      <td><b>慢性盆腔疼痛缓解</b>——说明书原文（P18）：「PAIN 程序可用于缓解多种原因引起的慢性盆腔疼痛（The PAIN programme can be used to alleviate chronic pelvic pain from many causes）」。与所有 TENS 一样，<b>它不治疗潜在病因</b>，使用前应先取得专业诊断；作用是给出恒定的舒缓「刺麻」感、抑制痛觉传导。可用阴道探头或体表贴片（贴下背部比基尼线以下），每次至少 40 分钟、每周 2–3 次，强度在保持舒适的前提下尽量调高。〔原文〕</td>
+      <td>说明书 P18「TENS PROGRAMME」段，照片第 9 页原文核对〔原文〕</td>
+    </tr>
+  </table>
+  <h3>电极使用规则</h3>
+  <ul>
+    <li><b>阴道探头（标配）</b>：P1–P5 全部程序适用；P1–P3 说明书仅标注探头用法（单通道）；</li>
+    <li><b>体表贴片（50×50mm）</b>：说明书标注 <b>P4–P5</b> 可选（P5 可贴下背部内裤线以下）；<span style="color:var(--amber);font-weight:700;">※ 实测 P1–P3 插贴片亦可工作，说明书标注与实测存在差异；</span></li>
+    <li><b>双通道</b>：仅 P4–P5 支持同时接两组附件；P1–P3 固定单通道。</li>
+  </ul>
+  <h3>推荐使用节奏（说明书 P18）</h3>
+  <ul>
+    <li><b>EMS 训练</b>：每周 3 次，持续 <b>4–6 周</b>可见初期效果（依训练/康复需求调整）；</li>
+    <li><b>P5 镇痛</b>：贴片贴下背部，每次 <b>≥40 分钟</b>、每周 2–3 次，强度调至可耐受的高档位。</li>
+  </ul>
+</section>
+
+<!-- ═══════════ ⑥ 电池充电 ═══════════ -->
+<section id="s6">
+  <h2>🔋 电池与充电</h2>
+  <table>
+    <tr><th style="width:32%">项目</th><th>内容</th><th style="width:22%">出处</th></tr>
+    <tr><td><b>电池类型</b></td><td>3.7V 锂离子聚合物电池（内置可充电）</td><td>设备标签 / 说明书</td></tr>
+    <tr><td><b>电池容量</b></td><td><b>700 mAh</b></td><td>工厂确认<sup>※</sup>（说明书未标注）</td></tr>
+    <tr><td><b>满电续航</b></td><td><b>≥ 8 小时</b></td><td>说明书 P12</td></tr>
+    <tr><td><b>充电规格</b></td><td>DC 5V，充电电流 90mA</td><td>说明书 P13</td></tr>
+    <tr><td><b>充满耗时</b></td><td>按 700mAh ÷ 90mA ≈ 7.8h 恒流 + 恒压补电，<b>约 8–11 小时</b></td><td>推算值<sup>※</sup>（非官方）</td></tr>
+    <tr><td><b>维护充电</b></td><td>每 3 个月至少充电 1 次（保持电池寿命）</td><td>说明书 P13</td></tr>
+    <tr><td><b>充电时治疗</b></td><td><b>禁止</b>——充电期间不能进行治疗</td><td>说明书</td></tr>
+  </table>
+  <h3>充电状态指示（LCD 电池符号）</h3>
+  <ul>
+    <li>符号<b>闪烁</b> → 电量不足，需要充电；</li>
+    <li>电量条<b>从零到满循环滚动</b> → 正在充电；</li>
+    <li>电量条<b>停在满格不再滚动</b> → 充电完成（此时移除充电线与适配器）。</li>
+  </ul>
+  <div class="danger">🚫 <b>锂电安全（说明书 P13–14）</b>：勿短路电池；勿浸入水或海水中；勿置于热源、强阳光下、高温高压容器或微波炉内；勿暴露于 60℃ 以上环境——否则可能导致漏液、发热、爆炸或起火。</div>
+</section>
+
+<!-- ═══════════ ⑦ 包装清单 ═══════════ -->
+<section id="s7">
+  <h2>📦 包装清单与可替换配件（说明书 P3 / P23）</h2>
+  <div class="two">
+    <div>
+      <h3>标准包装内容</h3>
+      <table>
+        <tr><th>物品</th><th>数量</th><th>料号</th></tr>
+        <tr><td>主机（DN01）</td><td>×1</td><td>—</td></tr>
+        <tr><td>使用说明书</td><td>×1</td><td>—</td></tr>
+        <tr><td>阴道电极探头</td><td>×1</td><td>X-VPGP 或 VP01</td></tr>
+        <tr><td>连接导线</td><td>×2</td><td>L-DST-WH</td></tr>
+        <tr><td>USB 充电线</td><td>×1</td><td>L-CRGW-DST</td></tr>
+        <tr><td>体表电极贴片（50×50mm）</td><td>4 片装</td><td>50X50</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>可替换件（可向厂家/授权代理订购）</h3>
+      <ul>
+        <li>阴道电极探头（VP01 / X-VPGP）——寿命 2 年；</li>
+        <li>连接导线（L-DST-WH）×2；</li>
+        <li>USB 充电线（L-CRGW-DST）；</li>
+        <li>体表电极贴片 4 片装（50X50）。</li>
+      </ul>
+      <div class="note">🔌 充电方式：USB 线接<b>手机/平板充电器或 PC USB 口</b>（DC 5V）。注意充电电流仅 90mA，用大功率适配器也不会加快（主板限流）。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ⑧ 使用流程 ═══════════ -->
+<section id="s8">
+  <h2>🧭 使用流程（说明书 STEP 1–3）</h2>
+  <div class="step"><div class="no">1</div><div class="tx"><b>电池（STEP 1 · BATTERY）</b>：先确认电量——满电应至少可运行 8 小时；LCD 电池符号闪烁即需充电。充电完成后移除线缆再开始治疗。</div></div>
+  <div class="step"><div class="no">2</div><div class="tx"><b>导线（STEP 2 · LEADS）</b>：决定使用探头还是贴片，将导线插入对应通道插孔（每根导线接一个插口；P4–P5 可双通道）。</div></div>
+  <div class="step"><div class="no">3</div><div class="tx"><b>探头/贴片（STEP 3 · ELECTRODE PROBE/PADS）</b>：
+    <ul>
+      <li><b>探头（P1–P5）</b>：使用前先如厕 → 探头涂润滑剂（水性凝胶或水）→ 像使用卫生棉条一样垂直插入，至仅见手柄即可 → 探头法兰最宽处会自然垂直定位；金属部分即为导电面；靠近入口的组织更敏感，应避免刺激该区域；</li>
+      <li><b>贴片（P4–P5 可选）</b>：贴于肌肉丰满处（如需镇痛可贴下背部内裤线以下）；多片贴片间不得重叠；使用前清洁皮肤且勿涂抹护肤品。</li>
+    </ul>
+  </div></div>
+  <h3>操作要点</h3>
+  <ul>
+    <li>开机前确保主机处于关机状态再插入探头；</li>
+    <li>选择程序后<b>从 0 逐渐调高强度</b>，至「感觉平滑收紧、几乎无可见肌肉动作」；初次使用感觉偏弱属正常，治疗过程中会改善；</li>
+    <li><b>暂停</b>：强度大于 0 时按暂停键 → 强度立即归零、LCD 显示 M；再按恢复，并从暂停点继续计时；<b>暂停超过 5 分钟将自动关机</b>。</li>
+  </ul>
+</section>
+
+<!-- ═══════════ ⑨ 推荐用法 ═══════════ -->
+<section id="s9">
+  <h2>🗓️ 推荐使用方案</h2>
+  <table>
+    <tr><th style="width:22%">场景</th><th>方案</th></tr>
+    <tr><td><b>盆底肌训练</b><br>（P1–P4）</td><td>每周 3 次，持续 4–6 周为一个初期周期；每次设备自动运行 20 分钟；强度按「感觉明显收紧」原则自调；依运动训练或康复需求延长周期。</td></tr>
+    <tr><td><b>慢性盆腔疼痛</b><br>（P5 · TENS）</td><td>贴片贴于下背部（内裤线以下），每次 <b>≥40 分钟</b>、每周 2–3 次；强度调至可耐受的高档位以获得持续温和麻刺感；<b>镇痛不治病因，使用前应先明确诊断</b>。</td></tr>
+    <tr><td><b>长期维护</b></td><td>电池每 3 个月至少充一次电；探头每用必清洁；主配件寿命见⑩。</td></tr>
+  </table>
+  <div class="note">💡 说明书「通用建议」：强度以<b>贴片/探头下方有平滑的紧缩感、几乎看不到肌肉明显跳动</b>为最佳档位。</div>
+</section>
+
+<!-- ═══════════ ⑩ 清洁维护 ═══════════ -->
+<section id="s10">
+  <h2>🧼 清洁 · 维护 · 寿命（说明书 P22–23）</h2>
+  <table>
+    <tr><th style="width:24%">对象</th><th>要求</th></tr>
+    <tr><td><b>主机与导线</b></td><td>每周至少清洁一次：温水肥皂水擦拭或无酒精抗菌湿巾；<b>主机不可浸水</b>；除温水肥皂水外不得使用其他清洁剂。</td></tr>
+    <tr><td><b>阴道探头</b></td><td><b>每次使用后必须清洁</b>：温水肥皂水清洗 → 冲净晾干 → 放回收纳袋；<b>不可浸入任何液体</b>。</td></tr>
+    <tr><td><b>使用寿命</b></td><td>主机预期寿命 <b>5 年</b>；电极探头 / 贴片寿命 <b>2 年</b>（到期更换）。</td></tr>
+    <tr><td><b>维修原则</b></td><td>维护与维修仅由授权机构执行；<b>患者使用中不得进行任何维护操作</b>；厂家不对非授权维修结果负责；患者为预期操作者。</td></tr>
+  </table>
+</section>
+
+<!-- ═══════════ ⑪ 故障排除 ═══════════ -->
+<section id="s11">
+  <h2>🛠️ 故障排除（说明书 Troubleshooting 表）</h2>
+  <table>
+    <tr><th style="width:20%">现象</th><th style="width:40%">可能原因</th><th>处理方法</th></tr>
+    <tr><td><b>无输出 / 无显示</b></td><td>① 连接不良；② 主机故障；③ 电极/导线损坏</td><td>检查导线与插孔、电极与主机连接是否牢固；确认电极贴附良好；若仍无效联系当地代理。</td></tr>
+    <tr><td><b>低电量提示</b></td><td>电池耗尽</td><td>充电；无效则联系客服。</td></tr>
+    <tr><td><b>贴片不粘附</b></td><td>① 皮肤不洁（油脂/护肤品）；② 贴片老化；③ 贴片损坏</td><td>用湿的无尘布清洁贴片胶面；清洁皮肤后重贴（勿用护肤品/乳液）；仍不粘则更换贴片。</td></tr>
+    <tr><td><b>皮肤发红 / 不适感</b></td><td>① 电极位置不正确；② 贴片老化；③ 刺激过强；④ 电池耗尽；⑤ 对电极过敏</td><td>立即停止治疗，待皮肤恢复正常再继续；调整电极位置（避免重叠）；发红伴瘙痒或炎症持续，咨询医生。</td></tr>
+    <tr><td><b>刺激分布不均</b></td><td>电极相互重叠（电流分布不保证）</td><td>调整电极位置，确保互不重叠。</td></tr>
+  </table>
+</section>
+
+<!-- ═══════════ ⑫ 安全须知 ═══════════ -->
+<section id="s12">
+  <h2>🚨 安全须知（说明书 Precautions & Warnings 摘要）</h2>
+  <div class="danger"><b>⛔ 禁用 / 高危情形</b>
+    <ul>
+      <li>心脏起搏器植入者、心律失常等心脏疾病患者（可能干扰心电图等心脏监测设备）；</li>
+      <li>妊娠期（须经医生评估）；</li>
+      <li>与高频手术设备、短波/微波治疗设备同时使用；</li>
+      <li>禁止贴放/刺激部位：颈部（颈动脉窦区域）、口腔、眼部、心脏区域、头面部；</li>
+      <li>沐浴或泡澡时使用；</li>
+      <li>皮肤感觉障碍、近期受伤部位须经医生指导后使用；</li>
+      <li>不得使用尺寸小于 40×40mm 的电极。</li>
+    </ul>
+  </div>
+  <div class="warn"><b>⚠️ 一般警告</b>
+    <ul>
+      <li>含小零件，远离儿童；</li>
+      <li>远离微波炉、电视等强磁场源，远离火源、暖气、蒸汽（加湿器/水壶）；长期日晒/灰尘/棉絮会影响插接件与屏幕；</li>
+      <li>仅使用厂家推荐的电极与配件，使用其他厂家材料可能带来最小安全性的下降；</li>
+      <li>患者为预期操作者；治疗进行中不得维护设备。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════ ⑬ 符号认证 ═══════════ -->
+<section id="s13">
+  <h2>🏷️ 标识符号与合规信息（说明书 P14 / 设备标签）</h2>
+  <table>
+    <tr><th style="width:24%">符号 / 标识</th><th>含义</th></tr>
+    <tr><td><b>Type BF</b></td><td>BF 型设备：应用部分与设备电气隔离，提供防电击保护的特定程度。</td></tr>
+    <tr><td><b>IP22</b></td><td>防 ≥12.5mm 固体异物侵入 + 防垂直方向滴水（不可浸水、不可冲洗）。</td></tr>
+    <tr><td><b>书本符号</b></td><td>「请参阅使用说明书」。</td></tr>
+    <tr><td><b>WEEE</b></td><td>废弃电子电气设备，须按欧盟 2002/96/EC 指令分类回收，勿作生活垃圾丢弃。</td></tr>
+    <tr><td><b>EMC</b></td><td>说明书含电磁兼容（EMC）注意事项专章；射频设备（如手机）应保持说明书建议距离。</td></tr>
+    <tr><td><b>保修（Guarantee）</b></td><td>产品损坏系误用、事故等造成时，保修条款失效；细节见说明书保修章节。</td></tr>
+  </table>
+</section>
+
+<!-- ═══════════ 附录 ═══════════ -->
+<section id="apx">
+  <h2>📎 附录：中英术语对照表</h2>
+  <table>
+    <tr><th style="width:34%">英文原文</th><th>中文释义</th></tr>
+    <tr><td>TENS（Transcutaneous Electrical Nerve Stimulation）</td><td>经皮神经电刺激（镇痛用）</td></tr>
+    <tr><td>EMS（Electrical Muscle Stimulation）</td><td>电肌肉刺激（训练用）</td></tr>
+    <tr><td>STRES（Stress）</td><td>压力性（尿失禁）</td></tr>
+    <tr><td>URGE</td><td>急迫性（尿失禁）</td></tr>
+    <tr><td>MIXED</td><td>混合性（尿失禁）</td></tr>
+    <tr><td>ENDUR（Endurance）</td><td>耐力（训练）</td></tr>
+    <tr><td>PAIN</td><td>疼痛（缓解）</td></tr>
+    <tr><td>Pulse Rate / Pulse Width</td><td>脉冲频率（Hz）/ 脉冲宽度（μs）</td></tr>
+    <tr><td>Symmetrical Bi-phasic Rectangular</td><td>对称双相矩形波</td></tr>
+    <tr><td>Channel（CH1 / CH2）</td><td>通道（插口）</td></tr>
+    <tr><td>Electrode Probe / Pads</td><td>阴道电极探头 / 体表电极贴片</td></tr>
+    <tr><td>Type BF</td><td>BF 型防电击（隔离应用部分）设备</td></tr>
+    <tr><td>IP22</td><td>外壳防护等级（固体≥12.5mm / 滴水）</td></tr>
+    <tr><td>WEEE</td><td>废弃电子电气设备指令</td></tr>
+    <tr><td>EMC（IEC 60601 系列）</td><td>电磁兼容</td></tr>
+    <tr><td>Service Life</td><td>（预期）使用寿命</td></tr>
+    <tr><td>Guarantee</td><td>保修</td></tr>
+  </table>
+  <h3>数据口径说明</h3>
+  <ul>
+    <li>本报告全部参数取自官方说明书 <b>I-DN01-EN Rev1.1 0524</b>（19 页实物逐页核对）；</li>
+    <li><sup>※</sup> <b>700mAh 电池容量</b>为工厂确认值，说明书原文未标注；</li>
+    <li><sup>※</sup> <b>充满耗时 8–11 小时</b>为按「容量 ÷ 充电电流 ×1.3 恒压系数」的推算值，非官方标注；</li>
+    <li>设备原厂标识为 Intrelief；报告中厂商标识按保密约定使用「依士文」。</li>
+  </ul>
+  <div class="foot">— 依士文 DN01 产品介绍 · 依据官方说明书整理 —</div>
+</section>
+
+</div>
+</body>
+</html>
