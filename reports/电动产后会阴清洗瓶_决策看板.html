@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="电动产后会阴清洗瓶：市场机会与产品定义决策看板">
+  <title>电动产后会阴清洗瓶｜决策看板</title>
+  <style>
+    :root{--ink:#18333a;--deep:#113039;--teal:#16736f;--teal2:#2aa39c;--mint:#dff1eb;--paper:#fffefa;--sand:#f5f0e6;--coral:#ef8d70;--coral2:#f5b08e;--amber:#efbd59;--red:#a34d45;--muted:#6e7d80;--line:#dce4df;--blue:#467b98;--shadow:0 16px 40px rgba(19,54,61,.08)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--sand);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.66}a{color:inherit;text-decoration:none}
+    .wrap{width:min(1200px,calc(100% - 36px));margin:auto}
+    header{position:sticky;top:0;z-index:30;background:rgba(245,240,230,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(17,48,57,.08)}header .wrap{height:62px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{font-weight:900;white-space:nowrap}.brand:before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--coral);margin-right:9px}nav{display:flex;gap:15px;overflow:auto}nav a{color:var(--muted);font-size:12px;white-space:nowrap}nav a:hover{color:var(--teal)}
+    section, .hero{padding-top:30px;scroll-margin-top:78px}
+
+    /* HERO / 决策横幅 */
+    .hero{padding-bottom:8px}
+    .banner{display:grid;grid-template-columns:210px 1fr;gap:24px;background:linear-gradient(135deg,var(--deep),#17625f);color:#fff;border-radius:24px;padding:28px;box-shadow:var(--shadow)}
+    .banner .grade{display:grid;place-items:center;text-align:center;border:1px solid rgba(255,255,255,.22);border-radius:18px;color:#ffc0ac;font-weight:900;min-height:130px;padding:14px;font-size:20px;line-height:1.3}
+    .banner .grade small{display:block;font-size:11px;letter-spacing:.15em;color:#bad2d1;margin-bottom:6px}
+    .banner h1{margin:0 0 8px;font-size:clamp(22px,3vw,32px);line-height:1.2}
+    .banner h1 em{font-style:normal;color:var(--coral2)}
+    .banner p{margin:0;color:#cfe3e1;font-size:14px}
+    .banner .thesis{margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.18);font-size:13px;color:#e8f1ef}
+
+    /* KPI 看板 */
+    .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:13px;margin-top:18px}
+    .kpi{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 14px;border-top:4px solid var(--teal);box-shadow:var(--shadow)}
+    .kpi b{display:block;font:900 32px/1 Georgia,serif;color:var(--teal)}
+    .kpi span{display:block;margin-top:8px;font-size:11.5px;color:var(--muted)}
+    .kpi.coral{border-top-color:var(--coral)}.kpi.coral b{color:var(--coral)}
+    .kpi.amber{border-top-color:var(--amber)}.kpi.amber b{color:#b8821d}
+    .kpi.blue{border-top-color:var(--blue)}.kpi.blue b{color:var(--blue)}
+
+    /* 面板 */
+    .panel{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:24px;margin-top:20px;box-shadow:var(--shadow)}
+    .panel-head{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:13px;flex-wrap:wrap}
+    .panel-head .num{font:900 12px/1 Georgia,serif;color:var(--teal);background:var(--mint);padding:5px 9px;border-radius:8px;letter-spacing:.05em}
+    .panel-head h2{font-size:23px;margin:0;letter-spacing:-.02em}
+    .panel-head p{margin:0;color:var(--muted);font-size:13px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+
+    .status{font-size:11px;font-weight:900;letter-spacing:.06em;border-radius:999px;padding:5px 9px;display:inline-block;white-space:nowrap}
+    .yes{background:var(--mint);color:var(--teal)}.partial{background:#fff1cf;color:#8d6517}.no{background:#fae3dc;color:var(--red)}
+    .winner{color:var(--teal);font-weight:900}.risk{color:var(--red);font-weight:900}
+
+    .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px}
+    .card h3{margin:0 0 7px;font-size:16px}
+    .card p{margin:0;font-size:13px;color:var(--muted)}
+    .card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
+
+    /* 表格 */
+    .tbl{overflow:auto;border:1px solid var(--line);border-radius:16px}
+    .tbl table{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}
+    .tbl th,.tbl td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+    .tbl th{background:#edf3ef;color:var(--deep);font-size:12px;font-weight:900}
+    .tbl tr:last-child td{border-bottom:0}
+    .tbl td:first-child{font-weight:900}
+    .subhead{display:flex;justify-content:space-between;align-items:end;gap:24px;margin:24px 0 14px;padding-top:18px;border-top:1px solid var(--line);flex-wrap:wrap}
+    .subhead h3{margin:0;font-size:18px;line-height:1.25}
+    .subhead p{max-width:560px;margin:0;color:var(--muted);font-size:13px}
+
+    /* 04 手动 vs 电动：双栏对比卡 */
+    .vhead{display:grid;grid-template-columns:120px 1fr 1fr;gap:12px;margin:6px 0 14px;font-size:12px;font-weight:900;letter-spacing:.5px}
+    .vhead .vh-man{color:#5b6b69;text-align:center;padding:8px;border-radius:10px 10px 0 0;background:#eef2f1;border:1px solid var(--line);border-bottom:0}
+    .vhead .vh-ele{color:var(--teal);text-align:center;padding:8px;border-radius:10px 10px 0 0;background:rgba(17,156,151,.10);border:1px solid rgba(17,156,151,.35);border-bottom:0}
+    .versus{display:flex;flex-direction:column;gap:13px}
+    .vrow{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:14px;border-left:4px solid var(--teal)}
+    .vdim{display:flex;align-items:center;gap:8px;font-weight:900;color:var(--ink);font-size:14px;margin-bottom:10px}
+    .vdim .ic{display:inline-flex;width:22px;height:22px;border-radius:7px;background:rgba(17,156,151,.12);color:var(--teal);align-items:center;justify-content:center;font-size:12px;font-weight:900}
+    .vcols{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+    .vman,.vele{padding:11px 13px;border-radius:11px;font-size:12.5px;line-height:1.65}
+    .vman{background:#f1f5f4;border:1px solid var(--line);color:#37474a}
+    .vele{background:rgba(17,156,151,.09);border:1px solid rgba(17,156,151,.32);color:var(--ink)}
+    .vman b,.vele b{font-weight:900}
+    .vtip{margin-top:10px;font-size:11.5px;line-height:1.6;color:#6b5a2e;background:#fbf3e2;border-left:3px solid var(--amber,#e0a23b);padding:7px 11px;border-radius:0 9px 9px 0}
+    .vtip::before{content:"决策提示 · ";font-weight:900;color:var(--amber,#c98a1e)}
+    @media(max-width:680px){.vhead,.vcols{grid-template-columns:1fr}.vhead .vh-man,.vhead .vh-ele{display:none}}
+    .weak{background:#eef2f1;color:#6b7b79}
+    .match{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+    /* 需求验证矩阵结论框 */
+    .matrix-concl{margin-top:18px;padding:18px 20px;border-radius:16px;background:linear-gradient(100deg,rgba(17,156,151,.14),rgba(17,156,151,.05));border:1px solid rgba(17,156,151,.4)}
+    .matrix-concl b{color:var(--teal)}
+    .matrix-concl .tag{display:inline-block;font-weight:900;color:#fff;background:var(--teal);border-radius:8px;padding:3px 10px;font-size:12px;margin-right:8px}
+    /* 验证矩阵重点痛点：匹配度/驱动力列红色强调 */
+    .tbl td.hl-red{background:rgba(229,72,77,.10);box-shadow:inset 3px 0 0 #e5484d}
+    .tbl td.hl-red .match span{border-color:#e5484d}
+
+    /* 横向条形（场景分布） */
+    .bars-h{display:flex;flex-direction:column;gap:11px;margin:4px 0 6px}
+    .bar-h{display:grid;grid-template-columns:200px 1fr 58px;gap:12px;align-items:center;font-size:13px}
+    .bar-h .name{color:var(--ink);font-weight:700}
+    .bar-h .track{height:20px;background:#eef3f1;border-radius:999px;overflow:hidden}
+    .bar-h .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--teal),var(--teal2))}
+    .bar-h .fill.alt{background:linear-gradient(90deg,var(--coral),var(--coral2))}
+    .bar-h .fill.weak{background:linear-gradient(90deg,#9bb0ac,#c4d2ce)}
+    .bar-h .pct{text-align:right;font-weight:900;color:var(--deep);font:900 14px/1 Georgia,serif}
+
+    /* 时间轴 */
+    .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:6px}
+    .timeline .step{position:relative;padding:18px 16px 18px 22px;border-left:3px solid var(--teal)}
+    .timeline .step:first-child{border-radius:14px 0 0 14px}
+    .timeline .step:last-child{border-radius:0 14px 14px 0}
+    .timeline .step .dot{position:absolute;left:-9px;top:22px;width:14px;height:14px;border-radius:50%;background:var(--coral);border:3px solid var(--paper)}
+    .timeline .step h4{margin:0 0 5px;font-size:15px}
+    .timeline .step p{margin:0;font-size:12px;color:var(--muted)}
+
+    /* 销售柱状 */
+    .chart{background:var(--deep);color:#fff;border-radius:20px;padding:22px}
+    .chart h3{margin:0;font-size:19px}
+    .chart p{margin:4px 0 0;color:#bad2d1;font-size:12px}
+    .bars{height:230px;display:flex;gap:5px;align-items:end;margin-top:22px;border-bottom:1px solid rgba(255,255,255,.22)}
+    .bar{flex:1;min-width:12px;background:linear-gradient(#f6ab8f,#e9785f);border-radius:7px 7px 0 0;position:relative}
+    .bar:hover:after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);background:#fff;color:var(--deep);padding:5px 7px;border-radius:7px;font-size:10px;white-space:nowrap;z-index:3}
+    .bar i{position:absolute;bottom:-24px;left:50%;transform:translateX(-50%) rotate(-55deg);font-style:normal;font-size:8.5px;color:#b8d0cf;white-space:nowrap}
+
+    .deci{margin-top:16px;padding:20px;background:#e4f1ed;border:1px solid #bddbd2;border-radius:16px}
+    .deci strong{font-size:17px;color:var(--teal)}
+    .caveat{background:#fff3d7;border-left:6px solid var(--amber);padding:16px 18px;border-radius:14px;margin-top:14px;font-size:13px;color:#6b531a}
+    .quote{border-left:5px solid var(--coral);background:#fff8f3;border-radius:12px;padding:14px 16px;margin-top:12px;font-size:13.5px}
+    .quote span{display:block;margin-top:7px;color:var(--muted);font-size:11px}
+    .ladder{background:linear-gradient(135deg,#143944,#17625f);color:#fff;border-radius:18px;padding:20px;margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+    .ladder .step{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:15px;position:relative}
+    .ladder .step:not(:last-child):after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:#ffb59d;font-weight:900}
+    .ladder .step b{display:block;font-size:13px}
+    .ladder .step span{font-size:11px;color:#c3dcda}
+    .ladder .step.gap{border-style:dashed;border-color:#ffb59d}
+
+    .spec{display:grid;grid-template-columns:130px 1fr 150px;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+    .spec:last-child{border:0}
+    .spec b{font-weight:900}
+    .spec span{color:var(--muted)}
+    .spec em{font-style:normal;font-size:11px;font-weight:900;color:var(--teal)}
+
+    .gates{counter-reset:g;display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+    .gate{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px}
+    .gate:before{counter-increment:g;content:"0" counter(g);font:900 24px/1 Georgia,serif;color:var(--coral)}
+    .gate h3{font-size:16px;margin:12px 0 6px}
+    .gate p{font-size:12.5px;color:var(--muted);margin:0}
+
+    .sources{background:#eae8e1}.source-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .source{display:flex;justify-content:space-between;gap:16px;background:rgba(255,255,255,.78);border:1px solid transparent;border-radius:14px;padding:13px 15px;text-decoration:none}
+    .source:hover{border-color:var(--teal)}
+    .source b{font-size:12.5px}.source span{font-size:11px;color:var(--muted);white-space:nowrap}
+    .method{font-size:12px;color:var(--muted);margin:0 0 16px}
+    footer{padding:26px 0;color:var(--muted);font-size:11px}
+    .foot{display:flex;justify-content:space-between;gap:18px;border-top:1px solid var(--line);padding-top:16px;flex-wrap:wrap}
+
+    @media(max-width:980px){.kpis{grid-template-columns:repeat(3,1fr)}.grid4,.gates,.ladder,.timeline{grid-template-columns:1fr 1fr}.grid3{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.banner{grid-template-columns:1fr}.bar-h{grid-template-columns:130px 1fr 48px}.spec{grid-template-columns:110px 1fr}}
+    @media(max-width:620px){nav{display:none}.kpis{grid-template-columns:1fr 1fr}.grid3,.grid4,.ladder,.timeline,.source-list{grid-template-columns:1fr}.bar-h{grid-template-columns:96px 1fr 44px}.bar i{display:none}.foot{flex-direction:column}}
+    @media print{header{display:none}body{background:#fff}.panel,.chart,.banner,.gate,.card,.source,.kpi{-webkit-print-color-adjust:exact;print-color-adjust:exact;break-inside:avoid}.hero,section{padding-top:18px}}
+  </style>
+</head>
+<body>
+<header><div class="wrap"><div class="brand">ELECTRIC PERI / 决策看板</div><nav>
+  <a href="#verdict">摘要</a><a href="#kpis">指标</a><a href="#jobs">作用</a><a href="#scenario">场景</a><a href="#usemap">生命周期</a><a href="#compare">手动/电动</a><a href="#amazon">市场</a><a href="#voice">评论</a><a href="#definition">定义</a><a href="#rationale">结论</a><a href="#glossary">附录</a>
+</nav></div></header>
+<main class="wrap">
+
+  <!-- 决策横幅 -->
+  <section class="hero" id="verdict">
+    <div class="banner">
+      <div class="grade"><small>当前建议</small>开发＋小批量验证</div>
+      <div>
+        <h1>电动产后会阴清洗瓶：<em>市场机会与产品定义决策看板</em></h1>
+        <p>产后会阴清洁是明确存在的护理任务，手动会阴瓶说明“瓶式冲洗”已有一定产品认知；现有电动款的实际销售进一步提供了初步付费信号。建议进入产品开发与小批量验证，但不能把这些事实夸大成“大众电动升级和规模化销量已经被验证”。</p>
+        <div class="thesis"><strong>核心命题：</strong>以产后专用的一键持续柔和水流，升级现有瓶式冲洗体验。选择做，不是因为手动瓶无效、市场已教育成熟，而是底层任务真实、使用方式已有认知、市场出现实际付费，且现有电动产品仍有温和性、可靠性与产后适配不足。当前结论不等于直接大规模备货。</div>
+      </div>
+    </div>
+
+    <!-- KPI 看板 -->
+    <div class="kpis" id="kpis">
+      <div class="kpi"><b>408</b><span>Phanpy 2025-02 预测销量峰值（件）</span></div>
+      <div class="kpi coral"><b>$24.99</b><span>Phanpy 主要历史价格</span></div>
+      <div class="kpi blue"><b>22</b><span>2026-09 "electric peri" 相关 Listing</span></div>
+      <div class="kpi"><b>≈2,008</b><span>2026-09 相关 Listing 合计预测销量（件）</span></div>
+      <div class="kpi amber"><b>524</b><span>产后/分娩伤口护理评论（占 25.9%）</span></div>
+      <div class="kpi"><b>7–14</b><span>天 · 活跃使用窗口（高强度）</span></div>
+    </div>
+  </section>
+
+  <!-- 01 核心作用 -->
+  <section id="jobs"><div class="panel">
+    <div class="panel-head"><span class="num">01</span><h2>产品核心作用</h2><p>用户认为它能做什么，以及哪项任务真正决定产品定义。</p></div>
+    <div class="grid3">
+      <div class="card"><div class="top"><h3>① 替代擦拭</h3><span class="status yes">基础共识</span></div><p>顺产后厕纸擦拭撕裂/缝合处不可行，这个瓶子是“替代擦拭”的桥接工具。</p></div>
+      <div class="card"><div class="top"><h3>② 排尿中同步冲洗</h3><span class="status yes">最高赞洞察</span></div><p>不是尿完才冲，而是<strong>尿的同时冲</strong>，实时稀释尿液、绕开伤口灼烧。</p></div>
+      <div class="card"><div class="top"><h3>③ 清洁恶露及外阴</h3><span class="status partial">默认功能</span></div><p>产后恶露期用于外阴日常清洁与舒适护理；不把清洗瓶表述为能够预防感染。</p></div>
+    </div>
+    <div class="deci"><strong>关键点</strong>　三条作用里真正决定产品定义的是第②条——<strong>“坐在马桶上、单手、在排尿过程中持续出水”</strong>。这对容量、流量稳定性、单手可握性提出硬要求，也是电动“持续稳定出水”最能发力的地方。</div>
+  </div></section>
+
+  <!-- 02 场景地图 -->
+  <section id="scenario"><div class="panel">
+    <div class="panel-head"><span class="num">02</span><h2>使用人群与场景地图</h2><p>以实际使用情境为主轴，说明谁在用、评论信号与场景性质。条形为 Amazon 评论样本占比，非市场渗透率。</p></div>
+    <div class="bars-h">
+      <div class="bar-h"><span class="name">产后如厕</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="pct">25.9%</span></div>
+      <div class="bar-h"><span class="name">差旅/户外/露营</span><div class="track"><div class="fill alt" style="width:48%"></div></div><span class="pct">12.5%</span></div>
+      <div class="bar-h"><span class="name">非产科术后</span><div class="track"><div class="fill alt" style="width:12%"></div></div><span class="pct">3.2%</span></div>
+      <div class="bar-h"><span class="name">经期/日常卫生</span><div class="track"><div class="fill weak" style="width:8%"></div></div><span class="pct">2.0%</span></div>
+      <div class="bar-h"><span class="name">宗教净礼</span><div class="track"><div class="fill weak" style="width:7%"></div></div><span class="pct">1.9%</span></div>
+      <div class="bar-h"><span class="name">照护辅助(婴幼儿)</span><div class="track"><div class="fill weak" style="width:3%"></div></div><span class="pct">0.8%</span></div>
+      <div class="bar-h"><span class="name">老人/失能</span><div class="track"><div class="fill weak" style="width:3%"></div></div><span class="pct">0.8%</span></div>
+    </div>
+    <div class="tbl" style="margin-top:18px">
+      <table><thead><tr><th>场景</th><th>谁在用</th><th>代表信号</th><th>性质</th></tr></thead><tbody>
+        <tr><td>产后早期如厕清洁（排尿中同步冲）</td><td>顺产、侧切、撕裂、缝合及剖宫产后仍需恶露与外阴清洁的产妇</td><td>需求通常在产后第 0–14 天最集中，并可延续至第 3–4 周。顺产撕裂、侧切或缝合者对“排尿中同步冲洗”的需求更直接；剖宫产产妇主要是恶露、外阴清洁及活动不便。评论编码中产后／分娩伤口护理 524 条，占 25.9%</td><td><span class="status yes">核心高频</span></td></tr>
+        <tr><td>非产科术后行动受限清洁</td><td>盆底、肛肠、泌尿或妇科术后恢复者</td><td>非产科术后 65 条，占 3.2%；医生推荐、角度精准、减少弯腰</td><td><span class="status yes">高痛感延展</span></td></tr>
+        <tr><td>经期清洁与经期杯清洗</td><td>经期女性、月经杯使用者</td><td>41 条，占 2.0%；“经期清洁很好用”；“洗月经杯”</td><td><span class="status partial">真实延展</span></td></tr>
+        <tr><td>差旅/户外/露营/无水环境</td><td>旅行者、露营者、无自来水环境居住者及公厕使用者</td><td>253 条，占 12.5%；“露营必备”；“住在无自来水的木屋”</td><td><span class="status partial">真实延展</span></td></tr>
+        <tr><td>形体/年龄导致弯腰或触达困难</td><td>大体型用户、孕晚期女性、腰髋受限者及高龄长辈</td><td>“78 岁腰髋不好，擦不到”；“大体重女性”</td><td><span class="status partial">真实延展</span></td></tr>
+        <tr><td>照护辅助（婴幼儿/特殊人群）</td><td>婴幼儿家长、腹泻期儿童及特殊需要人群照护者</td><td>婴儿清洗 16 条，占 0.8%；“湿巾太刺激”；“孩子拉肚子时冲洗”</td><td><span class="status no">弱信号</span></td></tr>
+        <tr><td>宗教洁净/医疗检查前准备</td><td>穆斯林用户、肠镜准备者，以及少量造口或泌尿护理人群</td><td>宗教净礼 39 条，占 1.9%；结肠镜 4 条；造口/泌尿约 3 条</td><td><span class="status no">弱信号</span></td></tr>
+      </tbody></table>
+    </div>
+  </div></section>
+
+  <!-- 03 生命周期 -->
+  <section id="usemap"><div class="panel">
+    <div class="panel-head"><span class="num">03</span><h2>使用生命周期（水平时间轴）</h2><p>短窗口、高强度：活跃使用约 7–14 天，舒适期可延续到第 3–4 周。</p></div>
+    <div class="timeline">
+      <div class="step"><span class="dot"></span><h4>第 0–3 天</h4><p>医院首次如厕 · 痛感集中。首次排尿、伤口刺激与操作不确定集中；部分用户排尿中同步冲洗，医院基础瓶常登场。</p></div>
+      <div class="step"><span class="dot"></span><h4>第 3–14 天</h4><p>活跃使用高峰。伤口敏感、恶露与如厕清洁集中；尿中同步冲洗、水温、流量稳定与一次水量最影响体验。</p></div>
+      <div class="step"><span class="dot"></span><h4>第 2–4 周</h4><p>持续舒适期。随恢复出血减少，部分用户仍用于舒适清洁，频次通常下降。</p></div>
+      <div class="step"><span class="dot"></span><h4>第 4 周以后</h4><p>衰减或转化。多数产后专用需求减弱；少数转经期/旅行/日常便后水洗。</p></div>
+    </div>
+    <div class="deci"><strong>产品含义：</strong>这是一件<strong>一次购买、短期高强度使用</strong>的耐用品。首购转化靠“产后专精”信任（待产包、baby registry、礼赠）；复购通常等下次分娩，少数转经期/旅行/日常。营销重心应放<strong>首次购买转化</strong>，而非依赖高频复购。</div>
+  </div></section>
+
+  <!-- 04 手动 vs 电动 -->
+  <section id="compare"><div class="panel">
+    <div class="panel-head"><span class="num">04</span><h2>手动款 vs 电动款：选择矩阵</h2><p>对比“优质弯头手动会阴瓶”与“产后专用电动会阴瓶”。电动只有在持续水流与简化操作被感知时才形成升级价值。</p></div>
+    <div class="vhead"><div></div><div class="vh-man">优质弯头手动款</div><div class="vh-ele">产后专用电动款 ▸ 升级方向</div></div>
+    <div class="versus">
+      <div class="vrow"><div class="vdim"><span class="ic">＋</span>核心优点</div><div class="vcols"><div class="vman">价格低、重量轻、无需充电；结构简单、易清洗；手劲可即时控制压力</div><div class="vele">按键后持续出水；水流不依赖挤压节奏；可减少手部动作并降低操作协调要求</div></div><div class="vtip">电动必须让“持续、简单”在真实如厕任务中明显可感知</div></div>
+      <div class="vrow"><div class="vdim"><span class="ic">！</span>核心缺点</div><div class="vcols"><div class="vman">水流随手劲和瓶内余量变化；瓶身过硬、回弹慢或进气差时可能断流；仍需持续挤压</div><div class="vele">更贵、更重；存在充电、误触、噪声、漏水、泵故障、残水和清洁死角</div></div><div class="vtip">电动增加的复杂度不能抵消便利价值</div></div>
+      <div class="vrow"><div class="vdim"><span class="ic">≋</span>压力体验</div><div class="vcols"><div class="vman">用户可以边冲边改变手劲，敏感伤口处容易立即减压</div><div class="vele">由档位和泵控制；最低档、启动峰值及停水延迟决定安全感</div></div><div class="vtip">电动不能只追求恒压，还要做到真正低压和渐进启动</div></div>
+      <div class="vrow"><div class="vdim"><span class="ic">♀</span>最适合人群</div><div class="vcols"><div class="vman">价格敏感、使用期较短、手部操作正常，并看重简单可靠的产妇</div><div class="vele">愿为体验升级付费、重视连续水流与一键操作的产妇；手腕疼痛或握力受限者是强化亚组</div></div><div class="vtip">电动首发不能只依赖手部障碍小众人群，也要服务普通产妇</div></div>
+      <div class="vrow"><div class="vdim"><span class="ic">◎</span>最适合场景</div><div class="vcols"><div class="vman">医院待产包、产后短期使用、备用瓶、无需充电的旅行场景</div><div class="vele">产后早期排尿中同步冲洗、需要较长持续水流、希望减少操作步骤的家庭卫生间场景</div></div><div class="vtip">电动核心场景应锁定“坐厕＋单手＋尿中持续冲洗”</div></div>
+      <div class="vrow"><div class="vdim"><span class="ic">→</span>延展场景</div><div class="vcols"><div class="vman">经期、旅行、露营和偶发便后水洗，成本与便携性更有优势</div><div class="vele">恢复后的便后清洁、长期护理或多人家庭使用，但会与旅行电动洁身器竞争</div></div><div class="vtip">长期场景不能反向证明产后电动需求，但可延长产品生命周期</div></div>
+      <div class="vrow"><div class="vdim"><span class="ic">✕</span>不适合情形</div><div class="vcols"><div class="vman">瓶身很硬、用户确实挤压困难，或需要较长时间持续出水时体验较差</div><div class="vele">极度重视轻便、零维护、即时手动压力控制，或无法接受充电和电子故障者</div></div><div class="vtip">应允许用户根据恢复状态与容错偏好选择，而不是宣称电动全面替代手动</div></div>
+      <div class="vrow"><div class="vdim"><span class="ic">▦</span>产品门槛</div><div class="vcols"><div class="vman">弯头倒置、柔软快回弹、大口径、易拆洗和防漏已是成熟基线</div><div class="vele">除弯头外，还需低压水幕、渐进启动、一键启停、满水不坠手、可排空水路和高可靠性</div></div><div class="vtip">“手动瓶＋泵”不足以形成合格的产后电动产品</div></div>
+    </div>
+
+    <div class="deci"><strong>补充：产后手腕问题——它是电动款的增强获益因素，不是首发人群定义。</strong><br>不同研究中，自报手腕疼痛约为 35.2%–57.5%，但样本地区、观察时间和定义不同，不能直接当作产后 0–42 天的美国患病率。症状可在孕期或产后第 1 个月出现，也可能在第 1–2 个月后出现；高龄、初产和既往手腕疼痛是较一致的相关因素。电动款能减少持续挤压，但目前没有证据证明这些用户会因此购买电动会阴瓶，因此不能单独支撑首发定位。</div>
+
+    <div class="subhead"><h3>需求验证矩阵：痛点逐条校准（含手动／电动匹配度）</h3><p>把“电动优于手动”的每一项主张，对照 Amazon 真实声量、手动款现状与两方案匹配度，校准其实际驱动力。样本声量≠销量占比。</p></div>
+    <div class="tbl"><table>
+      <thead><tr><th>痛点 / 用户场景</th><th>真实声量</th><th>手动款：是否已解</th><th>电动款：是否真更好</th><th>手动↔电动 匹配度</th><th>对电动的驱动力</th></tr></thead><tbody>
+        <tr><td><b>手动挤压累／费手</b></td><td>低</td><td>软瓶已易挤，“好挤”仍是好评点</td><td>免挤压但仍需手持瞄准</td><td class="hl-red"><div class="match"><span class="status yes">手动 高</span><span class="status partial">电动 中</span></div></td><td class="hl-red"><span class="status weak">弱</span></td></tr>
+        <tr><td><b>产后手腕疼／妈妈手</b></td><td>极低</td><td>—</td><td>免挤（仅对已有手伤人群）</td><td class="hl-red"><div class="match"><span class="status weak">手动 低–中</span><span class="status yes">电动 高</span></div></td><td class="hl-red"><span class="status weak">弱</span></td></tr>
+        <tr><td><b>角度别扭／盲瞄</b></td><td>高</td><td>斜颈／倒置设计已解决</td><td>不必然更好（仍靠结构）</td><td><div class="match"><span class="status yes">手动 高</span><span class="status partial">电动 取决于设计</span></div></td><td><span class="status weak">已被市场解决</span></td></tr>
+        <tr><td><b>漏水</b></td><td>高</td><td>手动也漏（连 Frida Mom 33.9%）</td><td>电动密封更复杂，非更易防漏</td><td><div class="match"><span class="status partial">手动 中</span><span class="status partial">电动 中</span></div></td><td><span class="status weak">非卖点·质量门槛</span></td></tr>
+        <tr><td><b>水压弱／不稳</b></td><td>中</td><td>依赖手法，随握力衰减</td><td>恒压＝电动独有；是电动能否成为大众用品的<b>关键验证人群</b>；伤口敏感者仍偏好手动即时调压，需证明最低档与启动温和</td><td class="hl-red"><div class="match"><span class="status partial">手动 中</span><span class="status yes">电动 高潜力</span></div></td><td class="hl-red"><span class="status yes">强 ✓</span></td></tr>
+        <tr><td><b>首次排尿需同步冲</b></td><td>高（113 赞）</td><td>可单手完成</td><td>仍需手持瞄准</td><td><div class="match"><span class="status yes">手动 高</span><span class="status partial">电动 中</span></div></td><td><span class="status weak">中性</span></td></tr>
+        <tr><td><b>温水需求</b></td><td>中</td><td>需预温／保温（土办法多）</td><td>可加热</td><td><div class="match"><span class="status partial">手动 中</span><span class="status yes">电动 中至高</span></div></td><td><span class="status partial">中强（功能向量）</span></td></tr>
+        <tr><td><b>行动受限（剖腹产／手弱）</b></td><td>中</td><td>需弯腰或用力挤</td><td>一键操作减挤（强）；但弯腰触达靠喷杆，电机本身不解决</td><td class="hl-red"><div class="match"><span class="status weak">手动 低–中</span><span class="status yes">电动 高（细分）</span></div></td><td class="hl-red"><span class="status yes">强 ✓（细分）</span></td></tr>
+        <tr><td><b>免手自由（坐浴器候选）</b></td><td>中（少数派）</td><td>非免手</td><td>便携免挤压；坐浴器是更好候选，但产后被质疑</td><td><div class="match"><span class="status weak">手动 低</span><span class="status partial">电动 中</span></div></td><td><span class="status partial">坐浴器候选，但产后被质疑</span></td></tr>
+        <tr><td><b>极致便携（旅行／露营）</b></td><td>延展需求</td><td>手动更轻、更可靠、无需充电</td><td>仅当用户看重持续水流时占优</td><td><div class="match"><span class="status yes">手动 高</span><span class="status partial">电动 中</span></div></td><td><span class="status weak">弱（延展）</span></td></tr>
+      </tbody></table></div>
+    <div class="matrix-concl"><span class="tag">验证结论</span>「手动→电动是大众痛点驱动的必然升级」<b>只被部分验证</b>——广泛意义上的换机需求并不成立；真正成立的只有两个窄支点：<b>恒压一致性</b>与<b>行动受限人群</b>，外加一个次级功能向量（<b>温水</b>）。</div>
+  </div></section>
+
+  <!-- 05 市场验证 -->
+  <section id="amazon"><div class="panel">
+    <div class="panel-head"><span class="num">05</span><h2>Amazon 历史验证</h2><p>销量来自卖家精灵模型预测，非卖家后台订单；月购量级仅交叉验证。</p></div>
+    <div class="chart">
+      <div style="display:flex;justify-content:space-between;align-items:end;gap:18px;flex-wrap:wrap"><div><h3>Phanpy 月销量预测：曾跑通，随后明显衰退</h3><p>B0D6VR3KG8 · 2024-10—2026-09</p></div><span class="status partial">预测口径</span></div>
+      <div class="bars" aria-label="Phanpy monthly estimated sales">
+        <div class="bar" style="height:47%" data-tip="2024-10 · 192"><i>24-10</i></div><div class="bar" style="height:44%" data-tip="2024-11 · 179"><i>11</i></div><div class="bar" style="height:37%" data-tip="2024-12 · 151"><i>12</i></div><div class="bar" style="height:57%" data-tip="2025-01 · 233"><i>25-01</i></div><div class="bar" style="height:100%" data-tip="2025-02 · 408"><i>02</i></div><div class="bar" style="height:84%" data-tip="2025-03 · 344"><i>03</i></div><div class="bar" style="height:31%" data-tip="2025-04 · 125"><i>04</i></div><div class="bar" style="height:63%" data-tip="2025-05 · 255"><i>05</i></div><div class="bar" style="height:63%" data-tip="2025-06 · 259"><i>06</i></div><div class="bar" style="height:64%" data-tip="2025-07 · 261"><i>07</i></div><div class="bar" style="height:53%" data-tip="2025-08 · 215"><i>08</i></div><div class="bar" style="height:43%" data-tip="2025-09 · 177"><i>09</i></div><div class="bar" style="height:49%" data-tip="2025-10 · 201"><i>10</i></div><div class="bar" style="height:40%" data-tip="2025-11 · 165"><i>11</i></div><div class="bar" style="height:36%" data-tip="2025-12 · 147"><i>12</i></div><div class="bar" style="height:37%" data-tip="2026-01 · 149"><i>26-01</i></div><div class="bar" style="height:14%" data-tip="2026-02 · 57"><i>02</i></div><div class="bar" style="height:36%" data-tip="2026-03 · 147"><i>03</i></div><div class="bar" style="height:19%" data-tip="2026-04 · 79"><i>04</i></div><div class="bar" style="height:14%" data-tip="2026-05 · 58"><i>05</i></div><div class="bar" style="height:8%" data-tip="2026-06 · 34"><i>06</i></div><div class="bar" style="height:12%" data-tip="2026-07 · 47"><i>07</i></div><div class="bar" style="height:17%" data-tip="2026-08 · 70"><i>08</i></div><div class="bar" style="height:16%" data-tip="2026-09 · 65"><i>09</i></div>
+      </div>
+      <p style="margin:34px 0 0;color:#bad2d1;font-size:12px">评分同期由早期约 4.4–4.5 降至约 3.6–3.8。评论中故障/漏水/开裂/续航/压力问题或影响转化，但公开数据不能证明销量下降全由差评造成。</p>
+    </div>
+    <div class="grid4" style="margin-top:16px">
+      <div class="card"><div class="top"><h3>Phanpy</h3><span class="status yes">明确产后</span></div><p>14 oz、三模式、可调喷杆</p><div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)"><div><b style="font:900 18px/1 Georgia,serif;color:var(--teal)">3.7</b><span style="font-size:10px;color:var(--muted);display:block">106 评分</span></div><div style="text-align:right"><b style="font-size:14px">$24.99</b><span style="font-size:10px;color:var(--muted);display:block">主要价格</span></div></div><a href="https://www.amazon.com/dp/B0D6VR3KG8" target="_blank" rel="noopener" style="font-size:12px;color:var(--teal);font-weight:900">B0D6VR3KG8 ↗</a></div>
+      <div class="card"><div class="top"><h3>Sonmol</h3><span class="status yes">明确产后</span></div><p>三喷头、三模式、约 10.2 oz</p><div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)"><div><b style="font:900 18px/1 Georgia,serif;color:var(--teal)">4.4</b><span style="font-size:10px;color:var(--muted);display:block">31 评分</span></div><div style="text-align:right"><b style="font-size:14px">$34.99</b><span style="font-size:10px;color:var(--muted);display:block">主要价格</span></div></div><a href="https://www.amazon.com/dp/B0DZC36NJQ" target="_blank" rel="noopener" style="font-size:12px;color:var(--teal);font-weight:900">B0DZC36NJQ ↗</a></div>
+      <div class="card"><div class="top"><h3>AOVIKOOD</h3><span class="status partial">新品套装</span></div><p>电动+手动，兼顾旅行与产后</p><div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)"><div><b style="font:900 18px/1 Georgia,serif;color:var(--teal)">4.8</b><span style="font-size:10px;color:var(--muted);display:block">9 评分</span></div><div style="text-align:right"><b style="font-size:14px">$40–50</b><span style="font-size:10px;color:var(--muted);display:block">历史区间</span></div></div><a href="https://www.amazon.com/dp/B0H7929HGJ" target="_blank" rel="noopener" style="font-size:12px;color:var(--teal);font-weight:900">B0H7929HGJ ↗</a></div>
+      <div class="card"><div class="top"><h3>New-Star</h3><span class="status partial">邻近竞品</span></div><p>通用旅行洁身器，标题含产后</p><div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)"><div><b style="font:900 18px/1 Georgia,serif;color:var(--teal)">4.0</b><span style="font-size:10px;color:var(--muted);display:block">59 评分</span></div><div style="text-align:right"><b style="font-size:14px">$31–38</b><span style="font-size:10px;color:var(--muted);display:block">Buy Box</span></div></div><a href="https://www.amazon.com/dp/B0H6X3K3HT" target="_blank" rel="noopener" style="font-size:12px;color:var(--teal);font-weight:900">B0H6X3K3HT ↗</a></div>
+    </div>
+    <div class="caveat"><b>市场不能简单写成“小众且持续走弱”</b>　Phanpy 单品明确走弱，但更广泛的 electric peri 市场 Listing 增加、新品更替快且销量波动。大量商品同时服务旅行/便后/产后，无法把全部销量归入纯产后需求。</div>
+  </div></section>
+
+  <!-- 06 评论证据 -->
+  <section id="voice"><div class="panel">
+    <div class="panel-head"><span class="num">06</span><h2>评论：购买理由与失败原因</h2><p>评论只用于发现需求与问题，不代表人群比例。特别标注 Vine 与已验证购买结构。</p></div>
+    <div class="grid2">
+      <div class="card"><span class="status yes">被用户感知的价值</span>
+        <div class="quote"><p>不用持续挤压，只需按键；持续水流让产后最初几周更容易应对。</p><span>Phanpy 已验证购买评论共同主题，非逐字合并</span></div>
+        <div class="quote"><p>相比医院基础挤压瓶，可调角度、水量和自动水流更方便。</p><span>Phanpy 与 Sonmol 评论主题</span></div>
+        <div class="quote"><p>恢复后继续用于旅行、经期、手术后或日常便后清洁。</p><span>跨产品评论主题</span></div>
+      </div>
+      <div class="card"><span class="status no">抵消电动价值的问题</span>
+        <div class="quote"><p>最低档仍可能对有伤口产妇过强；另一部分又因水流太弱无法承担长期便后清洁。</p><span>产后模式与通用 bidet 模式存在矛盾</span></div>
+        <div class="quote"><p>泵停止工作、电池差、水箱开裂、底部漏水、档位失效。</p><span>Phanpy 低分评论高频主题</span></div>
+        <div class="quote"><p>产品笨重、按钮难找、开机误喷；部分用户最终认为手动瓶更简单便宜。</p><span>真实使用复杂性</span></div>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:14px">
+      <div class="card" style="text-align:center"><b style="font:900 40px/1 Georgia,serif;color:var(--teal)">74</b><h3 style="margin:8px 0 4px">Phanpy 评论</h3><p>约 45 条已验证购买、约 29 条 Vine；最适合识别真实问题</p></div>
+      <div class="card" style="text-align:center"><b style="font:900 40px/1 Georgia,serif;color:var(--teal)">31</b><h3 style="margin:8px 0 4px">Sonmol 评论</h3><p>仅约 1 条已验证购买、约 29 条 Vine；4.4 分不能当接受度证明</p></div>
+      <div class="card" style="text-align:center"><b style="font:900 40px/1 Georgia,serif;color:var(--teal)">9</b><h3 style="margin:8px 0 4px">AOVIKOOD 评论</h3><p>零已验证购买且时间集中，不能证明真实销售接受度</p></div>
+    </div>
+    <div class="ladder">
+      <div class="step"><b>需要冲洗</b><span>护理证据强</span></div>
+      <div class="step"><b>觉得电动方便</b><span>少量评论支持</span></div>
+      <div class="step gap"><b>明显优于优质手动瓶</b><span>待对比测试</span></div>
+      <div class="step gap"><b>愿意稳定支付溢价</b><span>待真实购买验证</span></div>
+    </div>
+  </div></section>
+
+  <!-- 07 产品定义 -->
+  <section id="definition"><div class="panel">
+    <div class="panel-head"><span class="num">07</span><h2>产品定义与关键规格</h2><p>合格产后专用电动款不能只是“手动瓶加一台泵”；机会来自产后适配与可靠性。</p></div>
+    <div>
+      <div class="spec"><b>真正低压</b><span>以宽而柔和的水幕服务敏感会阴，不以“高压”作主卖点</span><em>压力曲线实测</em></div>
+      <div class="spec"><b>渐进启动</b><span>先定位再出水，启动缓慢升压，避免第一下冲击伤口或误喷</span><em>启动峰值测试</em></div>
+      <div class="spec"><b>盲操作</b><span>一个大尺寸启停键，坐姿下无需低头寻找；停水响应明确</span><em>1 秒停水目标</em></div>
+      <div class="spec"><b>人体工学</b><span>喷杆长度与角度适合坐姿，满水重心靠近手掌，避免坠手</span><em>满水单手测试</em></div>
+      <div class="spec"><b>一次够用</b><span>容量由一次完整清洗的真实流量与时长决定，而非先规定 300–450 ml</span><em>任务法定容量</em></div>
+      <div class="spec"><b>可靠与卫生</b><span>水箱耐跌落、连接处不漏；泵/软管/喷头可排空、拆洗、晾干</span><em>循环与残水测试</em></div>
+      <div class="spec"><b>双阶段使用</b><span>产后柔和模式与恢复后便后清洁模式分开，避免一个压力档兼顾相反任务</span><em>场景分层</em></div>
+    </div>
+  </div></section>
+
+  <!-- 08 结论 -->
+  <section id="rationale"><div class="panel">
+    <div class="panel-head"><span class="num">08</span><h2>项目结论与开发建议</h2><p>区分“建议开发”与“已验证规模化”。</p></div>
+    <div class="grid4">
+      <div class="card"><div class="top"><span class="status yes">已验证</span></div><h3>产后冲洗需求真实</h3><p>产后早期会阴疼痛、排尿刺痛、恶露与外部清洁形成明确使用任务。</p></div>
+      <div class="card"><div class="top"><span class="status yes">已验证</span></div><h3>电动款存在付费</h3><p>Phanpy 约 $24.99 下，2025-02 卖家精灵预测约 408 件。</p></div>
+      <div class="card"><div class="top"><span class="status partial">部分验证</span></div><h3>电动便利可被感知</h3><p>评论提到无需挤压、持续水流、角度可调，但样本小且含较多 Vine。</p></div>
+      <div class="card"><div class="top"><span class="status partial">开发机会</span></div><h3>现有供给未成熟</h3><p>温和性/可靠性/产后适配仍有改进空间；大众升级规模尚待验证。</p></div>
+    </div>
+    <div class="tbl" style="margin-top:18px"><table>
+      <thead><tr><th>市场层级</th><th>人群</th><th>核心使用场景</th><th>电动款的作用</th><th>定位结论</th></tr></thead><tbody>
+        <tr><td><span class="status yes">首发核心</span></td><td><b>产后侧切／撕裂（缝合、明显会阴疼痛）</b>；<b>剖腹产行动不便（弯腰／触达困难、仍需恶露与外清洁）</b>；广义产后早期清洁人群（顺产轻微损伤等）作基础覆盖</td><td>产后 0–42 天坐厕时排尿中同步冲洗及尿后／便后外部清洁；高频集中于早期恢复，侧切／撕裂与剖腹产两类操作负担最重</td><td>一键启动持续柔和水流，减少挤压与操作步骤；对剖腹产行动不便者还需长喷杆／合理角度／低重心解决触达；须在温和性／停水响应／可靠性达产后专用标准</td><td class="winner">首发锚点落在高痛感、高操作负担的这两类产后人群，而非泛化为所有产妇都要换电动</td></tr>
+        <tr><td><span class="status partial">增强获益亚组</span></td><td>手腕痛/握力不足/挤压受限；大体型弯腰困难者</td><td>首发核心两类任务中额外存在的挤压/握持/触达/姿势负担</td><td>免持续挤压对手部问题更直接；长喷杆/角度/重心/盲操作对触达困难者比电机本身更重要</td><td>在首发核心之外进一步强化产品价值与设计要求</td></tr>
+        <tr><td><span class="status partial">生命周期延展</span></td><td>产后痔疮/肛裂者、经期女性、旅行露营用户、恢复后日常便后水洗者</td><td>产后需求下降后的经期清洁、便后水洗与无固定洁身器环境</td><td>持续水流增便利，但需与手动瓶/旅行电动 bidet/固定洁身器竞争</td><td>延长周期与内容传播，不作证明产后电动需求的核心依据</td></tr>
+        <tr><td><span class="status no">非首发/另案</span></td><td>老人/长期失能/卧床护理；婴幼儿照护者；宠物清洁/宗教净礼/医疗程序准备</td><td>长期照护、代操作或与成人产后清洁不同的对象流程</td><td>部分场景有单手/持续出水价值，但安全/卫生/触达/竞品结构不同</td><td>作后续独立验证方向，不应稀释产后专用首发定位</td></tr>
+      </tbody></table></div>
+    <div class="deci"><strong>结论：建议做，进入产品开发、样机与小批量验证阶段；暂不等同于大规模备货。</strong><br>用户购买电动款，并不是因为手动瓶不能清洗，而是愿意为<strong>坐厕时单手启动、持续柔和出水、减少挤压与操作协调</strong>购买更省事的产后清洁体验。产后任务明确、电动款已有实际付费，现有产品在低压温和、漏水、可靠性和产后人体工学上仍有改进空间；但大众产妇相对优质手动瓶的稳定偏好、可规模化溢价及持续销量尚未被充分验证。</div>
+  </div></section>
+
+  <!-- 09 来源 -->
+  <section id="sources" class="sources"><div class="panel" style="background:#eae8e1">
+    <div class="panel-head"><span class="num">09</span><h2>来源与数据口径</h2><p>外链可直接打开。卖家精灵数据为本次 MCP 查询快照，查询日期 2026-10-13。</p></div>
+    <p class="method">证据等级：护理/论文证明产后任务与身体问题；Amazon 评论发现 VOC；卖家精灵估算销量/价格/BSR/评论趋势。第三方销量均为预测，不能替代卖家后台订单。Reddit 为定性讨论，不用于推算患病率或市场规模。评论场景表采用提供的 Amazon 评论编码数据；按 524 条对应 25.9% 反推，总评论池约 2,023–2,024 条，正式外发前应补充 ASIN 范围、采样时间、去重方式、多标签规则及原始评论索引。</p>
+    <div class="source-list">
+      <a class="source" target="_blank" rel="noopener" href="https://www.cuh.nhs.uk/patient-information/perineum-care-after-childbirth/"><b>剑桥大学医院：产后会阴护理</b><span>临床指导 ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.mkuh.nhs.uk/patient-information-leaflet/perineal-care"><b>Milton Keynes 医院：会阴护理与缝线恢复</b><span>临床指导 ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.mayoclinic.org/healthy-lifestyle/labor-and-delivery/in-depth/postpartum-care/art-20047233"><b>Mayo Clinic：排尿时温水冲洗会阴</b><span>临床指导 ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://bmcpregnancychildbirth.biomedcentral.com/articles/10.1186/s12884-024-06618-5"><b>会阴疼痛与产后活动影响研究</b><span>BMC 全文 ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.jstage.jst.go.jp/article/jjam/31/1/31_16-16/_article/-char/en"><b>产后手与手腕疼痛及发生时间</b><span>J-STAGE ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/28727715/"><b>香港产后腕痛试点：2 个月随访</b><span>PubMed ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/29667315/"><b>产后前 6 个月腕痛：2,709 人纵向</b><span>PubMed ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/40746749/"><b>美国孕产期手腕软组织疾病诊断率</b><span>PubMed ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.reddit.com/r/pregnant/comments/1gfuh2i/"><b>Reddit：孕期手部疼痛与清洁</b><span>用户讨论 ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.reddit.com/r/BabyBumps/comments/xb7ueq/"><b>Reddit：会阴瓶软硬与挤压体验</b><span>用户讨论 ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.reddit.com/r/BabyBumps/comments/1litmk0/"><b>Reddit：排尿过程中同步冲洗</b><span>用户讨论 ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.reddit.com/r/BabyBumpsCanada/comments/1bkhs43/"><b>Reddit：使用时间从一天到数周</b><span>用户讨论 ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.reddit.com/r/BabyBumps/comments/1h4ndui/"><b>Reddit：产后弯腰与弯头瓶</b><span>用户讨论 ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.amazon.com/gp/bestsellers/hpc/13226756011/"><b>Amazon 美国：Douches &amp; Enemas 畅销类目</b><span>类目页 ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.amazon.com/dp/B0D6VR3KG8"><b>Phanpy 电动产后会阴瓶</b><span>Amazon ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.amazon.com/dp/B0DZC36NJQ"><b>Sonmol 电动产后会阴瓶</b><span>Amazon ↗</span></a>
+      <a class="source" target="_blank" rel="noopener" href="https://www.amazon.com/dp/B0H7929HGJ"><b>AOVIKOOD 电动+手动套装</b><span>Amazon ↗</span></a>
+    </div>
+  </div></section>
+
+  <!-- 11 附录 -->
+  <section id="glossary"><div class="panel">
+    <div class="panel-head"><span class="num">10</span><h2>缩略语与中英文对照</h2><p>正文保留品牌名与 ASIN 以便溯源；其余英文类目名与检索词在此对照。</p></div>
+    <div class="tbl"><table><thead><tr><th>类别</th><th>英文 / 缩写</th><th>中文释义</th></tr></thead><tbody>
+      <tr><td>缩略语</td><td>VOC</td><td>用户原声 / 买家声音（Voice of Customer），评论中提炼的需求与痛点</td></tr>
+      <tr><td>缩略语</td><td>BSR</td><td>畅销榜排名（Best Sellers Rank）</td></tr>
+      <tr><td>缩略语</td><td>Vine</td><td>亚马逊官方测评计划（Vine Voices），测评评论不计入自然购买验证</td></tr>
+      <tr><td>缩略语</td><td>ASIN</td><td>亚马逊标准识别码（Amazon Standard Identification Number）</td></tr>
+      <tr><td>类目/检索词</td><td>peri bottle / perineal bottle</td><td>会阴清洗瓶</td></tr>
+      <tr><td>类目/检索词</td><td>electric peri</td><td>电动会阴瓶（本次市场检索词）</td></tr>
+      <tr><td>类目/检索词</td><td>bidet</td><td>洁身器 / 智能冲洗座圈（含旅行电动款）</td></tr>
+      <tr><td>类目/检索词</td><td>Douches &amp; Enemas</td><td>阴道冲洗与灌肠（Amazon 美国站对应类目节点）</td></tr>
+      <tr><td>通用词</td><td>postpartum</td><td>产后</td></tr>
+      <tr><td>通用词</td><td>perineum</td><td>会阴（产道与肛门之间的区域）</td></tr>
+      <tr><td>通用词</td><td>baby registry</td><td>待产登记 / 礼物清单</td></tr>
+    </tbody></table></div>
+    <p class="method" style="margin-top:14px">说明：Phanpy、Sonmol、AOVIKOOD、New-Star 为竞品品牌名，依溯源需要在正文保留；其余英文术语统一以上表为准。</p>
+  </div></section>
+
+  <footer><div class="foot"><span>电动产后会阴清洗瓶｜决策看板（看板版）</span><span>版本：2026-10-14 · 用于产品决策，不构成医疗建议</span></div></footer>
+</main>
+</body>
+</html>
