@@ -1112,7 +1112,7 @@ function renderSidebar() {
 
   getTree().forEach(function(cat) {
     if (cat.children) {
-      var isExp = S.expanded[cat.id] !== false;
+      var isExp = S.expanded[cat.id] === true;
       var childCount = cat.children.reduce(function(acc, c) {
         return acc + all.filter(function(f) { return getFileCat(f.filename) === c.id; }).length;
       }, 0);
