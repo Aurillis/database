@@ -54,6 +54,13 @@
           "icon": "fas fa-folder",
           "parentId": "c-0z5spblc",
           "updatedAt": 1789120959939
+        },
+        {
+          "id": "intimate-rose-3ed861z5",
+          "name": "intimate rose品牌调研",
+          "icon": "fas fa-folder",
+          "parentId": "c-0z5spblc",
+          "updatedAt": 1795674264956
         }
       ]
     },
@@ -153,6 +160,13 @@
       "icon": "fas fa-folder",
       "parentId": "c-a0ag51w0",
       "updatedAt": 1793173634913
+    },
+    {
+      "id": "intimate-rose-3ed861z5",
+      "name": "intimate rose品牌调研",
+      "icon": "fas fa-folder",
+      "parentId": "c-0z5spblc",
+      "updatedAt": 1795674264956
     }
   ],
   "fileCats": {
