@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intimate Rose｜Instagram 合作网红统计报告</title>
+<style>
+:root{
+  --bg:#f6f7fb; --card:#ffffff; --ink:#1d2230; --muted:#667085; --line:#e6e7ef;
+  --brand:#6d47d9; --brand-soft:#f1edfd; --ok:#0f7b4f; --ok-bg:#e6f6ed;
+  --warn:#8a6100; --warn-bg:#fff4d6; --unk:#4f5563; --unk-bg:#eef0f5; --danger:#b42318;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif;font-size:14px;line-height:1.7}
+.wrap{max-width:1440px;margin:0 auto;padding:32px 28px 80px}
+header{border-bottom:3px solid var(--brand);padding-bottom:20px;margin-bottom:26px}
+h1{font-size:27px;margin:0 0 8px;letter-spacing:-.3px}
+.sub{color:var(--muted);font-size:14px;margin:0}
+.chips{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--brand-soft);color:var(--brand);border:1px solid #ded2fb;border-radius:20px;padding:3px 12px;font-size:12px;font-weight:600}
+.chip.gray{background:#f2f3f7;color:var(--muted);border-color:var(--line)}
+h2{font-size:19px;margin:38px 0 14px;padding-left:11px;border-left:4px solid var(--brand)}
+h3{font-size:15px;margin:22px 0 10px}
+p{margin:9px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:14px 0;box-shadow:0 1px 3px rgba(29,34,48,.04)}
+.notice{background:#fbfaff;border:1px solid #ded2fb;border-left:4px solid var(--brand)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:16px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:9px;padding:14px 16px}
+.kpi .n{font-size:24px;font-weight:700;color:var(--brand);line-height:1.2}
+.kpi .l{font-size:12px;color:var(--muted);margin-top:4px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:13px}
+th{background:#f3f0fd;color:#3b2c6b;text-align:left;font-weight:700;padding:11px 12px;border-bottom:2px solid #ddd2f8;white-space:nowrap}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr:nth-child(even){background:#fcfcff}
+td.num{white-space:nowrap;font-variant-numeric:tabular-nums}
+.avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid #ece7fb;display:block}
+.who{display:flex;align-items:center;gap:12px;min-width:190px}
+.who .id{font-weight:700;font-size:13px;word-break:break-all}
+.who .meta{font-size:11px;color:var(--muted);margin-top:2px}
+a{color:var(--brand);text-decoration:none}
+a:hover{text-decoration:underline}
+.b{display:inline-block;border-radius:5px;padding:1px 7px;font-size:11px;font-weight:700;white-space:nowrap;margin:1px 3px 1px 0}
+.b.ok{background:var(--ok-bg);color:var(--ok)}
+.b.warn{background:var(--warn-bg);color:var(--warn)}
+.b.unk{background:var(--unk-bg);color:var(--unk)}
+.b.brand{background:var(--brand-soft);color:var(--brand)}
+code{background:#f2f3f7;border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:11.5px;font-family:Consolas,"SF Mono",monospace;word-break:break-all}
+a[href*="instagram.com/p/"] code{background:var(--brand-soft);border-color:var(--brand);color:var(--brand);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+a[href*="instagram.com/p/"]:hover code{background:var(--brand);color:#fff;border-color:var(--brand)}
+.evidence{line-height:1.9}
+ul{margin:8px 0 8px 20px;padding:0}
+li{margin:4px 0}
+.small{font-size:12px;color:var(--muted)}
+.divider{height:1px;background:var(--line);margin:26px 0}
+.brandblock{border:1px solid var(--line);border-radius:10px;background:#fff;margin:16px 0;overflow:hidden}
+.brandblock>.hd{background:#faf9ff;border-bottom:1px solid var(--line);padding:12px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brandblock>.hd img{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid #ece7fb}
+.brandblock>.hd .t{font-weight:700;font-size:15px}
+.brandblock>.bd{padding:6px 18px 16px}
+.brandblock table{min-width:760px}
+footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+.formula{background:#f8f7fd;border:1px dashed #cfc2f5;border-radius:8px;padding:12px 16px;font-family:Consolas,"SF Mono",monospace;font-size:12.5px;color:#3b2c6b;margin:10px 0}
+@media(max-width:700px){.wrap{padding:20px 14px 60px}h1{font-size:22px}table{font-size:12px}}
+</style>
+
+<body>
+<div class="wrap">
+<header>
+  <h1>Intimate Rose｜Instagram 合作网红统计报告</h1>
+</header>
+
+
+<div class="kpis">
+  <div class="kpi"><div class="n">44,959</div><div class="l">@intimaterose 粉丝数（初始快照）</div></div>
+  <div class="kpi"><div class="n">5</div><div class="l">确证合作网红</div></div>
+  <div class="kpi"><div class="n">404</div><div class="l">内容合作帖（去重）</div></div>
+  <div class="kpi"><div class="n">8115</div><div class="l">去重后帖子样本</div></div>
+  <div class="kpi"><div class="n">481</div><div class="l">未署名5主网红的自发帖</div></div>
+  <div class="kpi"><div class="n">5</div><div class="l">已本地保存的头像</div></div>
+</div>
+<h2>1. 主表：合作网红（每位一行）</h2>
+<div class="tw">
+<table style="min-width:1500px">
+<thead>
+<tr>
+  <th style="width:70px">头像</th>
+  <th style="width:195px">Instagram ID / 用户名</th>
+  <th style="width:100px">粉丝 / 认证</th>
+  <th style="width:95px">内容合作帖数<br><span class="small">合拍＋署名</span></th>
+  <th style="width:115px">样本内首次<br>合作时间</th>
+  <th style="width:400px">合作证据（帖子线索）</th>
+  <th style="width:160px">发帖频率<br><span class="small">1,044 天窗口 日/周/月均</span></th>
+  <th style="width:195px">窗口内样本数 / 覆盖 / 口径</th>
+</tr>
+</thead>
+<tbody>
+    <tr>
+      <td><img class="avatar" src="ig_avatars/andrea.sexplains.it.all.jpg" alt="andrea.sexplains.it.all 头像"></td>
+      <td><div class="who"><div><div class="id"><a href="https://www.instagram.com/andrea.sexplains.it.all/" target="_blank">@andrea.sexplains.it.all</a></div><div class="meta">Andrea Martin, DNP｜更年期护理 NP</div><div class="meta"><a href="#avatars">头像原链接见 7.3</a></div></div></div></td>
+      <td class="num">18,592<br><span class="b ok">✅ 已认证</span></td>
+      <td class="num"><b>188</b> 条<br><span class="small">合拍 180 ＋ 署名 8</span></td>
+      <td class="num"><b>2024-08-15</b><br><span class="small">样本内首次</span></td>
+      <td class="evidence"><span class="b ok">✅ 合拍</span> <a href="https://www.instagram.com/p/C-shGhhvCmt/" target="_blank" title="在 Instagram 打开该帖子"><code>C-shGhhvCmt</code></a>（2024-08-15）、<a href="https://www.instagram.com/p/DDNGv4PPx_h/" target="_blank" title="在 Instagram 打开该帖子"><code>DDNGv4PPx_h</code></a>（2024-12-05）（最早）… <a href="https://www.instagram.com/p/DeRujaBgWnB/" target="_blank" title="在 Instagram 打开该帖子"><code>DeRujaBgWnB</code></a>（2026-10-09）、<a href="https://www.instagram.com/p/DfhqKZQAO18/" target="_blank" title="在 Instagram 打开该帖子"><code>DfhqKZQAO18</code></a>（2026-11-09）（最近）<br><span class="small">合作跨度约 2 年 3 个月；为本次样本中合作最密集的创作者</span></td>
+      <td class="num"><b>0.6935 / 4.8544 / 20.8046</b><br><span class="small">帖/日、帖/周、帖/月</span></td>
+      <td class="num">724 帖（本人主发 652）<br>覆盖 2022-04-25～2026-11-09</td>
+    </tr>
+    <tr>
+      <td><img class="avatar" src="ig_avatars/mypelvicfloormuscles.jpg" alt="mypelvicfloormuscles 头像"></td>
+      <td><div class="who"><div><div class="id"><a href="https://www.instagram.com/mypelvicfloormuscles/" target="_blank">@mypelvicfloormuscles</a></div><div class="meta">Jeanice｜盆底健康 / 脱垂科普</div><div class="meta"><a href="#avatars">头像原链接见 7.3</a></div></div></div></td>
+      <td class="num">120,506<br><span class="b ok">✅ 已认证</span></td>
+      <td class="num"><b>19</b> 条<br><span class="small">合拍 11 ＋ 署名 8</span></td>
+      <td class="num"><b>2024-02-19</b><br><span class="small">样本内首次</span></td>
+      <td class="evidence"><span class="b ok">✅ 合拍</span> <a href="https://www.instagram.com/p/C3grt_Aptqt/" target="_blank" title="在 Instagram 打开该帖子"><code>C3grt_Aptqt</code></a>（2024-02-19）、<a href="https://www.instagram.com/p/C30f2CJAHqN/" target="_blank" title="在 Instagram 打开该帖子"><code>C30f2CJAHqN</code></a>（2024-02-26）（最早）… <a href="https://www.instagram.com/p/DexGsXpEk3R/" target="_blank" title="在 Instagram 打开该帖子"><code>DexGsXpEk3R</code></a>（2026-10-21）、<a href="https://www.instagram.com/p/Dfcq510EagD/" target="_blank" title="在 Instagram 打开该帖子"><code>Dfcq510EagD</code></a>（2026-11-07）（最近）<br><span class="small">合作跨度约 2 年 9 个月</span></td>
+      <td class="num"><b>0.8956 / 6.2692 / 26.8678</b><br><span class="small">帖/日、帖/周、帖/月</span></td>
+      <td class="num">935 帖（本人主发 663）<br>覆盖 2018-02-23～2026-11-10</td>
+    </tr>
+    <tr>
+      <td><img class="avatar" src="ig_avatars/dr.allyyanny.jpg" alt="dr.allyyanny 头像"></td>
+      <td><div class="who"><div><div class="id"><a href="https://www.instagram.com/dr.allyyanny/" target="_blank">@dr.allyyanny</a></div><div class="meta">盆底物理治疗师｜孕产功能训练</div><div class="meta"><a href="#avatars">头像原链接见 7.3</a></div></div></div></td>
+      <td class="num">15,356<br><span class="b unk">未认证</span></td>
+      <td class="num"><b>22</b> 条<br><span class="small">合拍 20 ＋ 署名 2</span></td>
+      <td class="num"><b>2025-12-03</b><br><span class="small">样本内首次（署名帖）</span></td>
+      <td class="evidence"><span class="b ok">✅ 署名</span> <a href="https://www.instagram.com/p/DR0TlnKktnm/" target="_blank" title="在 Instagram 打开该帖子"><code>DR0TlnKktnm</code></a>（2025-12-03，品牌帖 Credit 署名）… <a href="https://www.instagram.com/p/DSKwd-KjVLJ/" target="_blank" title="在 Instagram 打开该帖子"><code>DSKwd-KjVLJ</code></a>（2025-12-12，最早合拍）、<a href="https://www.instagram.com/p/DSnp-5uAazy/" target="_blank" title="在 Instagram 打开该帖子"><code>DSnp-5uAazy</code></a>（2025-12-23）… <a href="https://www.instagram.com/p/DeSOKsMxe9o/" target="_blank" title="在 Instagram 打开该帖子"><code>DeSOKsMxe9o</code></a>（2026-10-09）、<a href="https://www.instagram.com/p/DfXwcKzxUrR/" target="_blank" title="在 Instagram 打开该帖子"><code>DfXwcKzxUrR</code></a>（2026-11-05）（最近）<br><span class="small">合作跨度约 11 个月</span></td>
+      <td class="num"><b>0.5038 / 3.5268 / 15.1149</b><br><span class="small">帖/日、帖/周、帖/月</span></td>
+      <td class="num">526 帖（本人主发 525）<br>覆盖 2016-10-10～2026-11-10</td>
+    </tr>
+    <tr>
+      <td><img class="avatar" src="ig_avatars/thepelvicdancefloor.jpg" alt="thepelvicdancefloor 头像"></td>
+      <td><div class="who"><div><div class="id"><a href="https://www.instagram.com/thepelvicdancefloor/" target="_blank">@thepelvicdancefloor</a></div><div class="meta">盆底 PT｜《POWER TO THE PELVIS》作者</div><div class="meta"><a href="#avatars">头像原链接见 7.3</a></div></div></div></td>
+      <td class="num">197,347<br><span class="b ok">✅ 已认证</span></td>
+      <td class="num"><b>89</b> 条<br><span class="small">合拍 7 ＋ 署名 82</span></td>
+      <td class="num"><b>2024-03-04</b><br><span class="small">样本内首次</span></td>
+      <td class="evidence"><span class="b ok">✅ 合拍</span> <a href="https://www.instagram.com/p/C4GpPJ_JPI_/" target="_blank" title="在 Instagram 打开该帖子"><code>C4GpPJ_JPI_</code></a>（2024-03-04）、<a href="https://www.instagram.com/p/C6bho_TgliO/" target="_blank" title="在 Instagram 打开该帖子"><code>C6bho_TgliO</code></a>（2024-05-01）（最早）… <a href="https://www.instagram.com/p/DfIqIV3CLyJ/" target="_blank" title="在 Instagram 打开该帖子"><code>DfIqIV3CLyJ</code></a>（2026-10-30）<br><span class="b ok">✅ 署名</span> 82 条品牌帖 Credit/署名，如 <a href="https://www.instagram.com/p/DaoH2qZS8q-/" target="_blank" title="在 Instagram 打开该帖子"><code>DaoH2qZS8q-</code></a>（2026-07-10）、<a href="https://www.instagram.com/p/Dff1SjAgn-J/" target="_blank" title="在 Instagram 打开该帖子"><code>Dff1SjAgn-J</code></a>（2026-11-08）<br><span class="small">合拍首次 2024-03-04；署名最早 <a href="https://www.instagram.com/p/C9c2cWlvtN8/" target="_blank" title="在 Instagram 打开该帖子"><code>C9c2cWlvtN8</code></a>（2024-07-15）</span></td>
+      <td class="num"><b>0.3621 / 2.5345 / 10.8621</b><br><span class="small">帖/日、帖/周、帖/月</span></td>
+      <td class="num">378 帖（本人主发 330）<br>覆盖 2020-03-28～2026-11-08</td>
+    </tr>
+    <tr>
+      <td><img class="avatar" src="ig_avatars/drkianaberry.jpg" alt="drkianaberry 头像"></td>
+      <td><div class="who"><div><div class="id"><a href="https://www.instagram.com/drkianaberry/" target="_blank">@drkianaberry</a></div><div class="meta">Dr. Kiana｜盆底 PT / 疼痛性亲密科普</div><div class="meta"><a href="#avatars">头像原链接见 7.3</a></div></div></div></td>
+      <td class="num">98,485<br><span class="b ok">✅ 已认证</span></td>
+      <td class="num"><b>86</b> 条<br><span class="small">合拍 52 ＋ 署名 34</span></td>
+      <td class="num"><b>2024-06-11</b><br><span class="small">样本内首次</span></td>
+      <td class="evidence"><span class="b ok">✅ 合拍</span> <a href="https://www.instagram.com/p/C8FXsqGPTRx/" target="_blank" title="在 Instagram 打开该帖子"><code>C8FXsqGPTRx</code></a>（2024-06-11）、<a href="https://www.instagram.com/p/C9chq91AXYQ/" target="_blank" title="在 Instagram 打开该帖子"><code>C9chq91AXYQ</code></a>（2024-07-15）（最早）… <a href="https://www.instagram.com/p/DctYKTpOW9g/" target="_blank" title="在 Instagram 打开该帖子"><code>DctYKTpOW9g</code></a>（2026-10-18）<br><span class="b ok">✅ 署名</span> 34 条品牌帖 Credit/署名，如 <a href="https://www.instagram.com/p/DamMhP3Awjg/" target="_blank" title="在 Instagram 打开该帖子"><code>DamMhP3Awjg</code></a>（2026-07-10）、<a href="https://www.instagram.com/p/DeumZD8hntg/" target="_blank" title="在 Instagram 打开该帖子"><code>DeumZD8hntg</code></a>（2026-10-20）<br><span class="small">署名最早 <a href="https://www.instagram.com/p/DSdnFSlEo6m/" target="_blank" title="在 Instagram 打开该帖子"><code>DSdnFSlEo6m</code></a>（2025-12-19）</span></td>
+      <td class="num"><b>1.3745 / 9.6216 / 41.2356</b><br><span class="small">帖/日、帖/周、帖/月</span></td>
+      <td class="num">1435 帖（本人主发 1404）<br>覆盖 2023-10-25～2026-11-09</td>
+    </tr>
+</tbody>
+</table>
+</div>
+<h2>2. 逐位网红主页：除 intimaterose 外的关联品牌互动（全量样本）</h2>
+
+<div class="brandblock">
+  <div class="hd"><img src="ig_avatars/andrea.sexplains.it.all.jpg" alt=""><div class="t">2.1 @andrea.sexplains.it.all</div><span class="b ok">✅ 已认证</span><span class="b brand">4 项品牌/机构</span><span class="b ok">188 条内容合作</span></div>
+  <div class="bd">
+    <div class="tw"><table>
+      <thead><tr><th style="width:180px">字段</th><th>可核实内容</th><th style="width:120px">判定</th></tr></thead>
+      <tbody>
+        <tr><td><b>账号名称</b></td><td><b>andrea.sexplains.it.all</b>；显示名「Andrea Martin, DNP｜更年期护理 NP」</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>平台链接</b></td><td><a href="https://www.instagram.com/andrea.sexplains.it.all/" target="_blank">https://www.instagram.com/andrea.sexplains.it.all/</a></td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>内容定位</b></td><td>更年期护理、女性荷尔蒙健康科普；以执业护理师（DNP/NP）身份发布可信度内容；常做免费社群与付费课程引导（如 "Hot Flash Hike + Strength Series" 直播/社群，$19/月、优惠码 HOTSTART）</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>受众或影响力特征</b></td><td>面向经历更年期/荷尔蒙变化的女性；粉丝 18,592、已认证</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>粉丝量</b></td><td><b>18,592</b>　<span class="b ok">✅ 已认证</span></td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>互动表现（窗口内样本）</b></td><td>统计窗口内 <b>724 条</b>帖子：点赞合计 <b>435,514</b>（均值 601.54、中位 65.5、最大 178,523），评论合计 <b>25,070</b>（均值 34.63、中位 10、最大 10,848）。按 18,592 粉丝计算，平均点赞/粉丝 ≈ <b>3.24%</b>、平均（赞+评）/粉丝 ≈ <b>3.42%</b>。</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>与 @intimaterose 的关系</b></td><td><b>已确证</b>：窗口内 <b>188 条</b>内容合作帖 = <b>180 条</b>官方合拍（最早 <a href="https://www.instagram.com/p/C-shGhhvCmt/" target="_blank" title="在 Instagram 打开该帖子"><code>C-shGhhvCmt</code></a> 2024-08-15、最近 <a href="https://www.instagram.com/p/DfhqKZQAO18/" target="_blank" title="在 Instagram 打开该帖子"><code>DfhqKZQAO18</code></a> 2026-11-09）＋ <b>8 条</b>品牌自发 Credit/@署名（最早 <a href="https://www.instagram.com/p/DHoobEZyJyB/" target="_blank" title="在 Instagram 打开该帖子"><code>DHoobEZyJyB</code></a> 2025-03-25、最近 <a href="https://www.instagram.com/p/De7yKZnAHpP/" target="_blank" title="在 Instagram 打开该帖子"><code>De7yKZnAHpP</code></a> 2026-10-25）</td><td><span class="b ok">✅ 确证</span></td></tr>
+        <tr><td><b>信息来源</b></td><td>Instagram 官方主页与帖子公开信息</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>信息日期</b></td><td>采集日期 <b>2026-11-10</b></td><td><span class="b ok">✅ 事实</span></td></tr>
+      </tbody>
+    </table></div>
+    <h3>2.1.1 关联品牌／机构合作明细（全量样本，283 个不同外部账号）</h3>
+    <p class="small">下表为具有品牌/机构性质的合作条目，<b>同行个人创作者（医生/护理师）的官方合拍不在此表</b>（见下方说明）。"帖子数" 为合拍+标签+@提及的合计。</p>
+    <div class="tw"><table>
+      <thead><tr><th style="width:200px">品牌 / 机构（去重）</th><th style="width:210px">互动形式</th><th style="width:78px">帖子数</th><th>帖子线索（样例 code）</th><th style="width:110px">判定</th></tr></thead>
+      <tbody>
+        <tr><td><b>The Q Spot Center</b><br><span class="small">@theqspotcenter</span></td><td>官方合拍（对方主发，coauthor 含本人）＋ #TheQSpot 标签；盆底健康课程机构</td><td class="num">4</td><td><a href="https://www.instagram.com/p/DfiJK94lKJF/" target="_blank"><code>DfiJK94lKJF</code></a> 11-09；<a href="https://www.instagram.com/p/DfaUG_glGMI/" target="_blank"><code>DfaUG_glGMI</code></a> 11-06；<a href="https://www.instagram.com/p/DfVKlRUFG1a/" target="_blank" title="在 Instagram 打开该帖子"><code>DfVKlRUFG1a</code></a> 11-04；<a href="https://www.instagram.com/p/DfSlyM6lOQs/" target="_blank" title="在 Instagram 打开该帖子"><code>DfSlyM6lOQs</code></a> 11-03</td><td><span class="b ok">✅ 确证</span></td></tr>
+        <tr><td><b>Lace Up with Lindsay</b><br><span class="small">@laceupwithlindsay</span></td><td>官方合拍 ＋ @提及 ＋ 图片标签；个人健身品牌/社群（Lace Up with Lindsay）</td><td class="num">5</td><td><a href="https://www.instagram.com/p/DfVQlo3hFOs/" target="_blank"><code>DfVQlo3hFOs</code></a> 11-04（对方主发，coauthor 含本人）；<a href="https://www.instagram.com/p/DfVINN-R492/" target="_blank" title="在 Instagram 打开该帖子"><code>DfVINN-R492</code></a> 11-04 鸣谢</td><td><span class="b ok">✅ 确证</span><br><span class="b warn">品牌/社群</span></td></tr>
+        <tr><td><b>NPWH（NPs in Women's Health）</b><br><span class="small">@npwh_official</span></td><td>官方合拍（机构）＋ @提及 ＋ 图片标签；女性健康执业护理师专业组织</td><td class="num">8</td><td><a href="https://www.instagram.com/p/Dd4rTnMF5Qk/" target="_blank" title="在 Instagram 打开该帖子"><code>Dd4rTnMF5Qk</code></a>；<a href="https://www.instagram.com/p/DaOJMh7GnO0/" target="_blank" title="在 Instagram 打开该帖子"><code>DaOJMh7GnO0</code></a>；<a href="https://www.instagram.com/p/DLFf3L6Ac14/" target="_blank" title="在 Instagram 打开该帖子"><code>DLFf3L6Ac14</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">专业机构</span></td></tr>
+        <tr><td> Dame Products<br><span class="small">@dameproducts</span></td><td>图片标签 / @提及（性健康用品品牌）；无合拍</td><td class="num">5</td><td><a href="https://www.instagram.com/p/DSnnfXGkiB7/" target="_blank" title="在 Instagram 打开该帖子"><code>DSnnfXGkiB7</code></a>；<a href="https://www.instagram.com/p/DPCCx4qjnpj/" target="_blank" title="在 Instagram 打开该帖子"><code>DPCCx4qjnpj</code></a>；<a href="https://www.instagram.com/p/DHLxtskpSA5/" target="_blank" title="在 Instagram 打开该帖子"><code>DHLxtskpSA5</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">全量样本共关联 <b>283 个不同外部账号</b>，其中 <b>67 个为官方合拍共同作者</b>，绝大多数为<b>同行医生/护理师个人创作者</b>（如 @drrachelrubin 89 次、@kellycaspersonmd 40 次、@christinehartkress_dnp 31 次、@drquailenp 28 次、@rachelfrankenthal 27 次、@jackiep_gynnp 26 次、@dr.amandaolson 21 次等），属非商业品牌主体，未逐一列出。其余多为一次性个人标签/抽奖鸣谢（如 Glow Health 抽奖活动等），均无法判定商业合作，未列入上表。</p>
+  </div>
+</div>
+
+<div class="brandblock">
+  <div class="hd"><img src="ig_avatars/mypelvicfloormuscles.jpg" alt=""><div class="t">2.2 @mypelvicfloormuscles</div><span class="b ok">✅ 已认证</span><span class="b brand">8 项品牌/机构</span><span class="b ok">19 条内容合作</span></div>
+  <div class="bd">
+    <div class="tw"><table>
+      <thead><tr><th style="width:180px">字段</th><th>可核实内容</th><th style="width:120px">判定</th></tr></thead>
+      <tbody>
+        <tr><td><b>账号名称</b></td><td><b>mypelvicfloormuscles</b>；显示名「Jeanice｜盆底健康 / 脱垂科普」</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>平台链接</b></td><td><a href="https://www.instagram.com/mypelvicfloormuscles/" target="_blank">https://www.instagram.com/mypelvicfloormuscles/</a></td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>内容定位</b></td><td>盆底健康、脱垂（prolapse）科普与个案叙事；常做自有产品/课程引导（myPelvicBra、myPFM 体系）</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>受众或影响力特征</b></td><td>面向经历盆底功能障碍/脱垂的女性；粉丝 120,506、已认证</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>粉丝量</b></td><td><b>120,506</b>　<span class="b ok">✅ 已认证</span></td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>互动表现（窗口内样本）</b></td><td>统计窗口内 <b>935 条</b>帖子：点赞合计 <b>135,863</b>（均值 145.31、中位 49、最大 22,901），评论合计 <b>9,722</b>（均值 10.40、中位 2、最大 433）。按 120,506 粉丝计算，平均点赞/粉丝 ≈ <b>0.12%</b>、平均（赞+评）/粉丝 ≈ <b>0.13%</b>。</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>与 @intimaterose 的关系</b></td><td><b>已确证</b>：窗口内 <b>19 条</b>内容合作帖 = <b>11 条</b>官方合拍（最早 <a href="https://www.instagram.com/p/C3grt_Aptqt/" target="_blank" title="在 Instagram 打开该帖子"><code>C3grt_Aptqt</code></a> 2024-02-19、最近 <a href="https://www.instagram.com/p/Dfcq510EagD/" target="_blank" title="在 Instagram 打开该帖子"><code>Dfcq510EagD</code></a> 2026-11-07）＋ <b>8 条</b>品牌自发 Credit/@署名（最早 <a href="https://www.instagram.com/p/C8UwkJ4vjJr/" target="_blank" title="在 Instagram 打开该帖子"><code>C8UwkJ4vjJr</code></a> 2024-06-17、最近 <a href="https://www.instagram.com/p/DbEh0t1yuCT/" target="_blank" title="在 Instagram 打开该帖子"><code>DbEh0t1yuCT</code></a> 2026-07-21）</td><td><span class="b ok">✅ 确证</span></td></tr>
+        <tr><td><b>信息来源</b></td><td>Instagram 官方主页与帖子公开信息</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>信息日期</b></td><td>采集日期 <b>2026-11-10</b></td><td><span class="b ok">✅ 事实</span></td></tr>
+      </tbody>
+    </table></div>
+    <h3>2.2.1 关联品牌／机构合作明细（全量样本，1,371 个不同外部账号）</h3>
+    <p class="small">下表覆盖具有品牌/机构性质的合作条目，同行个人创作者（如 @dr.stephanie.pt.dpt、@thewomensbladderdoctor、@vaginarehabdoctor 等）与疑似自有体系单列说明。</p>
+    <div class="tw"><table>
+      <thead><tr><th style="width:200px">品牌 / 机构（去重）</th><th style="width:210px">互动形式</th><th style="width:78px">帖子数</th><th>帖子线索（样例 code）</th><th style="width:110px">判定</th></tr></thead>
+      <tbody>
+        <tr><td><b>myPelvicBra</b><br><span class="small">@mypelvicbra</span></td><td>官方合拍（coauthor 421 次）＋ #myPelvicBra ＋ 图片标签 ＋ 客户证言；<b>疑为本人自有/关联产品线</b></td><td class="num">792</td><td><a href="https://www.instagram.com/p/Dfe3fYdR9QI/" target="_blank"><code>Dfe3fYdR9QI</code></a> 11-08；<a href="https://www.instagram.com/p/DfQAuR0lK2Z/" target="_blank"><code>DfQAuR0lK2Z</code></a> 11-02；<a href="https://www.instagram.com/p/DfDDiRDGU3W/" target="_blank" title="在 Instagram 打开该帖子"><code>DfDDiRDGU3W</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">⚠️ 主体不确定</span></td></tr>
+        <tr><td><b>Global Surgical Expedition</b><br><span class="small">@globalsurgicalexpedition</span></td><td>官方合拍（coauthor 26 次）＋ @提及 ＋ 图片标签 ＋ 文案明确合作「@myPFM partners with @GlobalSurgicalExpedition」；非营利医疗探险组织</td><td class="num">117</td><td><a href="https://www.instagram.com/p/DfiKYpQGe3s/" target="_blank"><code>DfiKYpQGe3s</code></a> 11-09；<a href="https://www.instagram.com/p/DfVKZo4n75Q/" target="_blank"><code>DfVKZo4n75Q</code></a> 11-04；<a href="https://www.instagram.com/p/DfEAbktuTfH/" target="_blank" title="在 Instagram 打开该帖子"><code>DfEAbktuTfH</code></a> 10-29</td><td><span class="b ok">✅ 确证</span><br><span class="b warn">非营利机构</span></td></tr>
+        <tr><td><b>myPFM</b><br><span class="small">@mypfm</span></td><td>官方合拍（coauthor 25 次）＋ @提及 ＋ 图片标签；<b>疑为本人自有非营利组织账号</b></td><td class="num">91</td><td><a href="https://www.instagram.com/p/DfiKYpQGe3s/" target="_blank" title="在 Instagram 打开该帖子"><code>DfiKYpQGe3s</code></a> 11-09；<a href="https://www.instagram.com/p/DfDDiRDGU3W/" target="_blank" title="在 Instagram 打开该帖子"><code>DfDDiRDGU3W</code></a>；<a href="https://www.instagram.com/p/DeaL6U-EjaN/" target="_blank" title="在 Instagram 打开该帖子"><code>DeaL6U-EjaN</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">⚠️ 主体不确定</span></td></tr>
+        <tr><td><b>myPFM Clinics</b><br><span class="small">@mypfm_clinics</span></td><td>官方合拍（coauthor 11 次）＋ @提及；<b>疑为本人自有诊所体系</b></td><td class="num">48</td><td><a href="https://www.instagram.com/p/C3qBpmspmH5/" target="_blank" title="在 Instagram 打开该帖子"><code>C3qBpmspmH5</code></a>；<a href="https://www.instagram.com/p/C1UhRvIgNnJ/" target="_blank" title="在 Instagram 打开该帖子"><code>C1UhRvIgNnJ</code></a>；<a href="https://www.instagram.com/p/C1L3NQFAjYa/" target="_blank" title="在 Instagram 打开该帖子"><code>C1L3NQFAjYa</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">⚠️ 主体不确定</span></td></tr>
+        <tr><td><b>Power Over Prolapse (myPFM)</b><br><span class="small">@poweroverprolapse.mypfm</span></td><td>官方合拍（coauthor 13 次）＋ 图片标签；<b>疑为本人自有脱垂课程账号</b></td><td class="num">30</td><td><a href="https://www.instagram.com/p/DE0A1cCJe79/" target="_blank" title="在 Instagram 打开该帖子"><code>DE0A1cCJe79</code></a>；<a href="https://www.instagram.com/p/DCK0Vj7Jpdu/" target="_blank" title="在 Instagram 打开该帖子"><code>DCK0Vj7Jpdu</code></a>；<a href="https://www.instagram.com/p/DBKs2RpJr61/" target="_blank" title="在 Instagram 打开该帖子"><code>DBKs2RpJr61</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">⚠️ 主体不确定</span></td></tr>
+        <tr><td><b>Integrity Rehab</b><br><span class="small">@integrityrehab</span></td><td>官方合拍（coauthor 61 次）＋ @提及 ＋ 图片标签；物理治疗诊所/执业机构</td><td class="num">225</td><td><a href="https://www.instagram.com/p/DfEAbktuTfH/" target="_blank" title="在 Instagram 打开该帖子"><code>DfEAbktuTfH</code></a> 10-29；<a href="https://www.instagram.com/p/De2QzP_H8Mw/" target="_blank" title="在 Instagram 打开该帖子"><code>De2QzP_H8Mw</code></a>；<a href="https://www.instagram.com/p/DexGsXpEk3R/" target="_blank" title="在 Instagram 打开该帖子"><code>DexGsXpEk3R</code></a> 10-21</td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">机构</span></td></tr>
+        <tr><td><b>Pelvic Flicks</b><br><span class="small">@pelvicflicks</span></td><td>官方合拍（coauthor 12 次）＋ 图片标签；盆底健康内容平台</td><td class="num">36</td><td><a href="https://www.instagram.com/p/DahAqhaujXP/" target="_blank" title="在 Instagram 打开该帖子"><code>DahAqhaujXP</code></a>；<a href="https://www.instagram.com/p/DaVJuSyRWNF/" target="_blank" title="在 Instagram 打开该帖子"><code>DaVJuSyRWNF</code></a>；<a href="https://www.instagram.com/p/DaOWnDsq4NU/" target="_blank" title="在 Instagram 打开该帖子"><code>DaOWnDsq4NU</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">平台/机构</span></td></tr>
+        <tr><td> SRC Health<br><span class="small">@srchealth</span></td><td>官方合拍（coauthor 6 次）＋ @提及 ＋ 图片标签；疑似生殖/盆底健康品牌或机构</td><td class="num">49</td><td><a href="https://www.instagram.com/p/DcFQMfyOrIZ/" target="_blank" title="在 Instagram 打开该帖子"><code>DcFQMfyOrIZ</code></a>；<a href="https://www.instagram.com/p/DaVJuSyRWNF/" target="_blank" title="在 Instagram 打开该帖子"><code>DaVJuSyRWNF</code></a>；<a href="https://www.instagram.com/p/DZtA63mJcG8/" target="_blank" title="在 Instagram 打开该帖子"><code>DZtA63mJcG8</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">⚠️ 待核实</span></td></tr>
+        <tr><td> EVB Sport<br><span class="small">@evbsport</span></td><td>图片标签 / @提及（运动支撑服饰）；无合拍</td><td class="num">48</td><td><a href="https://www.instagram.com/p/DC9tqM-JYjw/" target="_blank" title="在 Instagram 打开该帖子"><code>DC9tqM-JYjw</code></a>；<a href="https://www.instagram.com/p/C72k7asgyrC/" target="_blank" title="在 Instagram 打开该帖子"><code>C72k7asgyrC</code></a>；<a href="https://www.instagram.com/p/C7QHFCngDJI/" target="_blank" title="在 Instagram 打开该帖子"><code>C7QHFCngDJI</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td> Get Mom Strong<br><span class="small">@getmomstrong</span></td><td>图片标签 / @提及（孕产训练品牌）；无合拍</td><td class="num">35</td><td><a href="https://www.instagram.com/p/DOKZBv_EYz8/" target="_blank" title="在 Instagram 打开该帖子"><code>DOKZBv_EYz8</code></a>；<a href="https://www.instagram.com/p/C1lmU1igGlJ/" target="_blank" title="在 Instagram 打开该帖子"><code>C1lmU1igGlJ</code></a>；<a href="https://www.instagram.com/p/C1V2qCLg_FX/" target="_blank" title="在 Instagram 打开该帖子"><code>C1V2qCLg_FX</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td> Dr. Stephanie PT, DPT<br><span class="small">@dr.stephanie.pt.dpt</span></td><td>官方合拍（coauthor 10 次）＋ @提及；同行个人 PT</td><td class="num">49</td><td><a href="https://www.instagram.com/p/DfiKYpQGe3s/" target="_blank" title="在 Instagram 打开该帖子"><code>DfiKYpQGe3s</code></a> 11-09；<a href="https://www.instagram.com/p/DfEAbktuTfH/" target="_blank" title="在 Instagram 打开该帖子"><code>DfEAbktuTfH</code></a> 10-29；<a href="https://www.instagram.com/p/DfDDiRDGU3W/" target="_blank" title="在 Instagram 打开该帖子"><code>DfDDiRDGU3W</code></a></td><td><span class="b unk">❓ 非品牌主体</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">全量样本共关联 <b>1,371 个不同外部账号</b>，其中 <b>120 个为官方合拍共同作者</b>：包含大量<b>同行 PT/医生个人创作者</b>（@dr.stephanie.pt.dpt、@thewomensbladderdoctor 73 次、@vaginarehabdoctor 48 次 等）以及<b>疑似自有品牌体系</b>（myPelvicBra / myPFM / myPFM Clinics / Power Over Prolapse，合计 961 次互动）。除上表外，多为盆底健康同行创作者、服饰/训练品牌一次性标签（如 @dr.heatherjeffcoat、@mommy.labornurse 等），未逐一列出。</p>
+  </div>
+</div>
+
+<div class="brandblock">
+  <div class="hd"><img src="ig_avatars/dr.allyyanny.jpg" alt=""><div class="t">2.3 @dr.allyyanny</div><span class="b unk">未认证</span><span class="b ok">22 条内容合作</span><span class="b brand">16 项品牌</span><span class="b warn">服饰露出非品牌合拍；2 条为品牌 Credit 署名</span></div>
+  <div class="bd">
+    <div class="tw"><table>
+      <thead><tr><th style="width:180px">字段</th><th>可核实内容</th><th style="width:120px">判定</th></tr></thead>
+      <tbody>
+        <tr><td><b>账号名称</b></td><td><b>dr.allyyanny</b>；显示名「盆底物理治疗师｜孕产功能训练」</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>平台链接</b></td><td><a href="https://www.instagram.com/dr.allyyanny/" target="_blank">https://www.instagram.com/dr.allyyanny/</a></td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>内容定位</b></td><td>盆底物理治疗、孕产功能训练；以训练演示/穿搭内容为主，少见品牌合拍</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>受众或影响力特征</b></td><td>面向孕产及产后女性、健身人群；粉丝 15,356、未认证</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>粉丝量</b></td><td><b>15,356</b>　<span class="b unk">未认证</span></td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>互动表现（窗口内样本）</b></td><td>统计窗口内 <b>526 条</b>帖子：点赞合计 <b>75,412</b>（均值 143.37、中位 3、最大 73,020），评论合计 <b>4,343</b>（均值 8.26、中位 0、最大 2,174）。按 15,356 粉丝计算，平均点赞/粉丝 ≈ <b>0.93%</b>、平均（赞+评）/粉丝 ≈ <b>0.99%</b>。</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>与 @intimaterose 的关系</b></td><td><b>已确证</b>：窗口内 <b>22 条</b>内容合作帖 = <b>20 条</b>官方合拍（最早 <a href="https://www.instagram.com/p/DSKwd-KjVLJ/" target="_blank" title="在 Instagram 打开该帖子"><code>DSKwd-KjVLJ</code></a> 2025-12-12、最近 <a href="https://www.instagram.com/p/DfXwcKzxUrR/" target="_blank" title="在 Instagram 打开该帖子"><code>DfXwcKzxUrR</code></a> 2026-11-05）＋ <b>2 条</b>品牌自发 Credit/@署名（<a href="https://www.instagram.com/p/DR0TlnKktnm/" target="_blank" title="在 Instagram 打开该帖子"><code>DR0TlnKktnm</code></a> 2025-12-03、<a href="https://www.instagram.com/p/Dcev24dPejI/" target="_blank" title="在 Instagram 打开该帖子"><code>Dcev24dPejI</code></a> 2026-08-25）</td><td><span class="b ok">✅ 确证</span></td></tr>
+        <tr><td><b>信息来源</b></td><td>Instagram 官方主页与帖子公开信息</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>信息日期</b></td><td>采集日期 <b>2026-11-10</b></td><td><span class="b ok">✅ 事实</span></td></tr>
+      </tbody>
+    </table></div>
+    <h3>2.3.1 关联品牌／机构合作明细（全量样本，135 个不同外部账号）</h3>
+    <p class="small"><b>本账号无商业品牌官方合拍</b>（官方合拍共同作者仅 4 个，均为同行个人创作者/家庭账号）；下表为全量样本中出现的<b>服饰/零售品牌</b> @提及 与图片标签（均非合拍）。</p>
+    <div class="tw"><table>
+      <thead><tr><th style="width:200px">品牌（去重）</th><th style="width:170px">互动形式</th><th style="width:78px">帖子数</th><th>帖子线索（样例 code）</th><th style="width:110px">判定</th></tr></thead>
+      <tbody>
+        <tr><td><b>lululemon</b><br><span class="small">@lululemon</span></td><td>图片标签 / @提及（运动服饰）；无合拍</td><td class="num">179</td><td><a href="https://www.instagram.com/p/Dfitk-VNreM/" target="_blank"><code>Dfitk-VNreM</code></a> 11-09；<a href="https://www.instagram.com/p/DfaiCpaRhpr/" target="_blank" title="在 Instagram 打开该帖子"><code>DfaiCpaRhpr</code></a>；<a href="https://www.instagram.com/p/DfXwcKzxUrR/" target="_blank" title="在 Instagram 打开该帖子"><code>DfXwcKzxUrR</code></a> 11-05</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Nike Women</b><br><span class="small">@nikewomen</span></td><td>图片标签 / @提及（运动服饰）；无合拍</td><td class="num">161</td><td><a href="https://www.instagram.com/p/DfVbDmNRcv6/" target="_blank" title="在 Instagram 打开该帖子"><code>DfVbDmNRcv6</code></a> 11-04；<a href="https://www.instagram.com/p/DfAypQFxHby/" target="_blank" title="在 Instagram 打开该帖子"><code>DfAypQFxHby</code></a>；<a href="https://www.instagram.com/p/De0VWFvNF0n/" target="_blank" title="在 Instagram 打开该帖子"><code>De0VWFvNF0n</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Athleta</b><br><span class="small">@athleta</span></td><td>图片标签 / @提及（运动服饰）；无合拍</td><td class="num">131</td><td><a href="https://www.instagram.com/p/DfgMYuuNEXK/" target="_blank" title="在 Instagram 打开该帖子"><code>DfgMYuuNEXK</code></a> 11-09；<a href="https://www.instagram.com/p/DfVbDmNRcv6/" target="_blank" title="在 Instagram 打开该帖子"><code>DfVbDmNRcv6</code></a> 11-04；<a href="https://www.instagram.com/p/DfTLa_Kt08a/" target="_blank" title="在 Instagram 打开该帖子"><code>DfTLa_Kt08a</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Nike</b><br><span class="small">@nike</span></td><td>图片标签 / @提及（运动服饰）；无合拍</td><td class="num">111</td><td><a href="https://www.instagram.com/p/DfgMYuuNEXK/" target="_blank" title="在 Instagram 打开该帖子"><code>DfgMYuuNEXK</code></a> 11-09；<a href="https://www.instagram.com/p/DfTLa_Kt08a/" target="_blank" title="在 Instagram 打开该帖子"><code>DfTLa_Kt08a</code></a>；<a href="https://www.instagram.com/p/DfQMUB9Rs2K/" target="_blank" title="在 Instagram 打开该帖子"><code>DfQMUB9Rs2K</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Gap</b><br><span class="small">@gap</span></td><td>图片标签 / @提及（服饰零售）；无合拍</td><td class="num">27</td><td><a href="https://www.instagram.com/p/DdplQT4N8pK/" target="_blank" title="在 Instagram 打开该帖子"><code>DdplQT4N8pK</code></a>；<a href="https://www.instagram.com/p/Ddh6xwatXv7/" target="_blank" title="在 Instagram 打开该帖子"><code>Ddh6xwatXv7</code></a>；<a href="https://www.instagram.com/p/DczKgyOB9tZ/" target="_blank" title="在 Instagram 打开该帖子"><code>DczKgyOB9tZ</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>adidas</b><br><span class="small">@adidas</span></td><td>图片标签 / @提及（运动服饰）；无合拍</td><td class="num">25</td><td><a href="https://www.instagram.com/p/DfDgAwEx3fa/" target="_blank" title="在 Instagram 打开该帖子"><code>DfDgAwEx3fa</code></a>；<a href="https://www.instagram.com/p/De-jYiqRoHQ/" target="_blank" title="在 Instagram 打开该帖子"><code>De-jYiqRoHQ</code></a>；<a href="https://www.instagram.com/p/Dexq4GBtmdr/" target="_blank" title="在 Instagram 打开该帖子"><code>Dexq4GBtmdr</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Ann Taylor</b><br><span class="small">@anntaylor</span></td><td>图片标签 / @提及（服饰零售）；无合拍</td><td class="num">8</td><td><a href="https://www.instagram.com/p/De-jYiqRoHQ/" target="_blank" title="在 Instagram 打开该帖子"><code>De-jYiqRoHQ</code></a>；<a href="https://www.instagram.com/p/Deso82HtEqG/" target="_blank" title="在 Instagram 打开该帖子"><code>Deso82HtEqG</code></a>；<a href="https://www.instagram.com/p/DecuwYKRsvA/" target="_blank" title="在 Instagram 打开该帖子"><code>DecuwYKRsvA</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Carter's</b><br><span class="small">@carters</span></td><td>图片标签 / @提及（母婴服饰）；无合拍</td><td class="num">8</td><td><a href="https://www.instagram.com/p/DecuwYKRsvA/" target="_blank" title="在 Instagram 打开该帖子"><code>DecuwYKRsvA</code></a>；<a href="https://www.instagram.com/p/DdaKOGXNeoO/" target="_blank" title="在 Instagram 打开该帖子"><code>DdaKOGXNeoO</code></a>；<a href="https://www.instagram.com/p/DdR-P7sxQLd/" target="_blank" title="在 Instagram 打开该帖子"><code>DdR-P7sxQLd</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Momcozy</b><br><span class="small">@momcozy</span></td><td>图片标签 / @提及（母婴品牌）；无合拍</td><td class="num">14</td><td><a href="https://www.instagram.com/p/Dbre1satFz7/" target="_blank" title="在 Instagram 打开该帖子"><code>Dbre1satFz7</code></a>；<a href="https://www.instagram.com/p/DbRbj2QxCyv/" target="_blank" title="在 Instagram 打开该帖子"><code>DbRbj2QxCyv</code></a>；<a href="https://www.instagram.com/p/DZ8zA7JNmkd/" target="_blank" title="在 Instagram 打开该帖子"><code>DZ8zA7JNmkd</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Fabletics</b><br><span class="small">@fabletics</span></td><td>图片标签 / @提及（运动服饰）；无合拍</td><td class="num">6</td><td><a href="https://www.instagram.com/p/DeuwsvxBWLE/" target="_blank" title="在 Instagram 打开该帖子"><code>DeuwsvxBWLE</code></a>；<a href="https://www.instagram.com/p/Dd2mcWMtqtT/" target="_blank" title="在 Instagram 打开该帖子"><code>Dd2mcWMtqtT</code></a>；<a href="https://www.instagram.com/p/DUrlFrSjYDs/" target="_blank" title="在 Instagram 打开该帖子"><code>DUrlFrSjYDs</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>vuori clothing</b><br><span class="small">@vuoriclothing</span></td><td>图片标签 / @提及（运动服饰）；无合拍</td><td class="num">5</td><td><a href="https://www.instagram.com/p/DXVcvOQDZjI/" target="_blank" title="在 Instagram 打开该帖子"><code>DXVcvOQDZjI</code></a>；<a href="https://www.instagram.com/p/DVTrRNfDXgg/" target="_blank" title="在 Instagram 打开该帖子"><code>DVTrRNfDXgg</code></a>；<a href="https://www.instagram.com/p/DVND776jfSi/" target="_blank" title="在 Instagram 打开该帖子"><code>DVND776jfSi</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Evereve</b><br><span class="small">@evereveofficial</span></td><td>图片标签 / @提及（服饰零售）；无合拍</td><td class="num">5</td><td><a href="https://www.instagram.com/p/DYFkiotxtKx/" target="_blank" title="在 Instagram 打开该帖子"><code>DYFkiotxtKx</code></a>；<a href="https://www.instagram.com/p/DWNXYEJDRpa/" target="_blank" title="在 Instagram 打开该帖子"><code>DWNXYEJDRpa</code></a>；<a href="https://www.instagram.com/p/DVQ9s40jWFN/" target="_blank" title="在 Instagram 打开该帖子"><code>DVQ9s40jWFN</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td> Calia Fitness<br><span class="small">@caliafitness</span></td><td>图片标签（健身服饰）；无合拍</td><td class="num">4</td><td><a href="https://www.instagram.com/p/DVTrRNfDXgg/" target="_blank" title="在 Instagram 打开该帖子"><code>DVTrRNfDXgg</code></a>；<a href="https://www.instagram.com/p/DU9lpxeDboP/" target="_blank" title="在 Instagram 打开该帖子"><code>DU9lpxeDboP</code></a>；<a href="https://www.instagram.com/p/DURzEF5jSWW/" target="_blank" title="在 Instagram 打开该帖子"><code>DURzEF5jSWW</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td> Girlfriend Collective<br><span class="small">@girlfriend</span></td><td>图片标签 / @提及（服饰）；无合拍</td><td class="num">4</td><td><a href="https://www.instagram.com/p/DZdd0JjB2FB/" target="_blank" title="在 Instagram 打开该帖子"><code>DZdd0JjB2FB</code></a>；<a href="https://www.instagram.com/p/DXsEDV4Aajo/" target="_blank" title="在 Instagram 打开该帖子"><code>DXsEDV4Aajo</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td> Hoodies for Heroes<br><span class="small">@hoodies_for_heroes</span></td><td>图片标签 / @提及（公益小品牌）；无合拍</td><td class="num">2</td><td><a href="https://www.instagram.com/p/Dfitk-VNreM/" target="_blank" title="在 Instagram 打开该帖子"><code>Dfitk-VNreM</code></a> 11-09</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td> Target<br><span class="small">@target</span></td><td>图片标签 / @提及（综合零售）；无合拍</td><td class="num">6</td><td><a href="https://www.instagram.com/p/DbRbj2QxCyv/" target="_blank" title="在 Instagram 打开该帖子"><code>DbRbj2QxCyv</code></a>；<a href="https://www.instagram.com/p/DXxtgrwN0g5/" target="_blank" title="在 Instagram 打开该帖子"><code>DXxtgrwN0g5</code></a>；<a href="https://www.instagram.com/p/DVAFpSnjYys/" target="_blank" title="在 Instagram 打开该帖子"><code>DVAFpSnjYys</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">全量样本中 @lululemon 出现 179 次、@nikewomen 161 次、@athleta 131 次、@nike 111 次等，形态接近「穿搭标签/曝光」而非品牌合拍——与旧 4.3 结论一致：<b>不能据此认定存在付费或正式商业合作</b>。官方合拍共同作者仅 4 个（@evolpow 等同行/家庭账号），无商业品牌。</p>
+  </div>
+</div>
+
+<div class="brandblock">
+  <div class="hd"><img src="ig_avatars/thepelvicdancefloor.jpg" alt=""><div class="t">2.4 @thepelvicdancefloor</div><span class="b ok">✅ 已认证</span><span class="b brand">17 项品牌/机构</span><span class="b ok">89 条内容合作</span></div>
+  <div class="bd">
+    <div class="tw"><table>
+      <thead><tr><th style="width:180px">字段</th><th>可核实内容</th><th style="width:120px">判定</th></tr></thead>
+      <tbody>
+        <tr><td><b>账号名称</b></td><td><b>thepelvicdancefloor</b>；显示名「盆底 PT｜《POWER TO THE PELVIS》作者」</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>平台链接</b></td><td><a href="https://www.instagram.com/thepelvicdancefloor/" target="_blank">https://www.instagram.com/thepelvicdancefloor/</a></td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>内容定位</b></td><td>盆底 PT 科普 ＋ 舞蹈/运动；著有《POWER TO THE PELVIS》，常做书籍推广与读书活动</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>受众或影响力特征</b></td><td>面向盆底健康关注者、读书社群；粉丝 197,347、已认证</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>粉丝量</b></td><td><b>197,347</b>　<span class="b ok">✅ 已认证</span></td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>互动表现（窗口内样本）</b></td><td>统计窗口内 <b>378 条</b>帖子：点赞合计 <b>671,887</b>（均值 1,777.48、中位 580.5、最大 137,772），评论合计 <b>11,812</b>（均值 31.25、中位 14、最大 791）。按 197,347 粉丝计算，平均点赞/粉丝 ≈ <b>0.90%</b>、平均（赞+评）/粉丝 ≈ <b>0.92%</b>。</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>与 @intimaterose 的关系</b></td><td><b>已确证</b>：窗口内 <b>89 条</b>内容合作帖 = <b>7 条</b>官方合拍（最早 <a href="https://www.instagram.com/p/C4GpPJ_JPI_/" target="_blank" title="在 Instagram 打开该帖子"><code>C4GpPJ_JPI_</code></a> 2024-03-04、最近 <a href="https://www.instagram.com/p/DfIqIV3CLyJ/" target="_blank" title="在 Instagram 打开该帖子"><code>DfIqIV3CLyJ</code></a> 2026-10-30）＋ <b>82 条</b>品牌自发 Credit/@署名（最早 <a href="https://www.instagram.com/p/C9c2cWlvtN8/" target="_blank" title="在 Instagram 打开该帖子"><code>C9c2cWlvtN8</code></a> 2024-07-15、最近 <a href="https://www.instagram.com/p/Dff1SjAgn-J/" target="_blank" title="在 Instagram 打开该帖子"><code>Dff1SjAgn-J</code></a> 2026-11-08；另有 <a href="https://www.instagram.com/p/DaoH2qZS8q-/" target="_blank" title="在 Instagram 打开该帖子"><code>DaoH2qZS8q-</code></a> 2026-07-10）</td><td><span class="b ok">✅ 确证</span></td></tr>
+        <tr><td><b>信息来源</b></td><td>Instagram 官方主页与帖子公开信息</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>信息日期</b></td><td>采集日期 <b>2026-11-10</b></td><td><span class="b ok">✅ 事实</span></td></tr>
+      </tbody>
+    </table></div>
+    <h3>2.4.1 关联品牌／机构合作明细（全量样本，262 个不同外部账号）</h3>
+    <p class="small">下表覆盖具有品牌/机构性质的合作条目，同行个人创作者与影视/书籍合作项目单列说明。</p>
+    <div class="tw"><table>
+      <thead><tr><th style="width:200px">品牌 / 机构（去重）</th><th style="width:200px">互动形式</th><th style="width:78px">帖子数</th><th>帖子线索（样例 code）</th><th style="width:110px">判定</th></tr></thead>
+      <tbody>
+        <tr><td><b>Page Street Publishing</b><br><span class="small">@pagestreetpublishing</span></td><td>官方合拍（coauthor 5 次）＋ @提及 ＋ 图片标签；图书出版机构（《POWER TO THE PELVIS》出版方）</td><td class="num">24</td><td><a href="https://www.instagram.com/p/DVgZEofkf2G/" target="_blank"><code>DVgZEofkf2G</code></a>；<a href="https://www.instagram.com/p/DPjm0xzEXTJ/" target="_blank" title="在 Instagram 打开该帖子"><code>DPjm0xzEXTJ</code></a>；<a href="https://www.instagram.com/p/DJMskd8ATgk/" target="_blank" title="在 Instagram 打开该帖子"><code>DJMskd8ATgk</code></a></td><td><span class="b ok">✅ 确证</span><br><span class="b warn">出版机构</span></td></tr>
+        <tr><td><b>Reading on the Dancefloor</b><br><span class="small">@readingonthedancefloor</span></td><td>官方合拍（coauthor 11 次）＋ 图片标签；主页简介标注为本人 Booksta 账号</td><td class="num">20</td><td><a href="https://www.instagram.com/p/Dbg4rcXziq8/" target="_blank" title="在 Instagram 打开该帖子"><code>Dbg4rcXziq8</code></a>；<a href="https://www.instagram.com/p/DICGx5Rguna/" target="_blank" title="在 Instagram 打开该帖子"><code>DICGx5Rguna</code></a>；<a href="https://www.instagram.com/p/DGZW6xKyTOA/" target="_blank" title="在 Instagram 打开该帖子"><code>DGZW6xKyTOA</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">⚠️ 主体不确定（自有）</span></td></tr>
+        <tr><td><b>Mom Life Health</b><br><span class="small">@momlifehealth</span></td><td>官方合拍（coauthor 21 次）＋ @提及 ＋ 图片标签；母婴/女性健康品牌或社群</td><td class="num">68</td><td><a href="https://www.instagram.com/p/DHLmPTTA2DB/" target="_blank" title="在 Instagram 打开该帖子"><code>DHLmPTTA2DB</code></a>；<a href="https://www.instagram.com/p/DGN3f88AkJJ/" target="_blank" title="在 Instagram 打开该帖子"><code>DGN3f88AkJJ</code></a>；<a href="https://www.instagram.com/p/DDfXQUGpVBC/" target="_blank" title="在 Instagram 打开该帖子"><code>DDfXQUGpVBC</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">⚠️ 主体待核实</span></td></tr>
+        <tr><td><b>Bad Art Everyday</b><br><span class="small">@badarteveryday</span></td><td>官方合拍（coauthor 7 次）＋ 图片标签；创意/艺术合作账号</td><td class="num">17</td><td><a href="https://www.instagram.com/p/DaO_PiyHNbk/" target="_blank" title="在 Instagram 打开该帖子"><code>DaO_PiyHNbk</code></a>；<a href="https://www.instagram.com/p/DYpydJ7Dwzo/" target="_blank" title="在 Instagram 打开该帖子"><code>DYpydJ7Dwzo</code></a>；<a href="https://www.instagram.com/p/DJJlLZ8gGtK/" target="_blank" title="在 Instagram 打开该帖子"><code>DJJlLZ8gGtK</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b unk">❓ 非品牌主体</span></td></tr>
+        <tr><td><b>It's Pres Ro</b><br><span class="small">@itspresro</span></td><td>官方合拍（coauthor 6 次）＋ @提及；影视/创作合作</td><td class="num">15</td><td><a href="https://www.instagram.com/p/DJJlLZ8gGtK/" target="_blank" title="在 Instagram 打开该帖子"><code>DJJlLZ8gGtK</code></a>；<a href="https://www.instagram.com/p/DJHHZhTA4Jd/" target="_blank" title="在 Instagram 打开该帖子"><code>DJHHZhTA4Jd</code></a>；<a href="https://www.instagram.com/p/DJEYak4gdHC/" target="_blank" title="在 Instagram 打开该帖子"><code>DJEYak4gdHC</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b unk">❓ 非品牌主体</span></td></tr>
+        <tr><td><b>How To Be Patient</b><br><span class="small">@howtobepatient</span></td><td>官方合拍（coauthor 6 次）＋ @提及；影视/创作合作</td><td class="num">14</td><td><a href="https://www.instagram.com/p/DJJlLZ8gGtK/" target="_blank" title="在 Instagram 打开该帖子"><code>DJJlLZ8gGtK</code></a>；<a href="https://www.instagram.com/p/DJHHZhTA4Jd/" target="_blank" title="在 Instagram 打开该帖子"><code>DJHHZhTA4Jd</code></a>；<a href="https://www.instagram.com/p/DJEYak4gdHC/" target="_blank" title="在 Instagram 打开该帖子"><code>DJEYak4gdHC</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b unk">❓ 非品牌主体</span></td></tr>
+        <tr><td><b>Lady Parts Film</b><br><span class="small">@ladyparts_film</span></td><td>官方合拍（coauthor 5 次）＋ 图片标签；影视项目</td><td class="num">13</td><td><a href="https://www.instagram.com/p/DYA-_2PR6kQ/" target="_blank" title="在 Instagram 打开该帖子"><code>DYA-_2PR6kQ</code></a>；<a href="https://www.instagram.com/p/DW8wYkIEblD/" target="_blank" title="在 Instagram 打开该帖子"><code>DW8wYkIEblD</code></a>；<a href="https://www.instagram.com/p/DW7Z7IKEfyB/" target="_blank" title="在 Instagram 打开该帖子"><code>DW7Z7IKEfyB</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b unk">❓ 非品牌主体</span></td></tr>
+        <tr><td><b>The Pelvic People</b><br><span class="small">@thepelvicpeople</span></td><td>@提及 ＋ 图片标签；盆底健康社区/平台</td><td class="num">11</td><td><a href="https://www.instagram.com/p/DY7VWfQTpgI/" target="_blank" title="在 Instagram 打开该帖子"><code>DY7VWfQTpgI</code></a>；<a href="https://www.instagram.com/p/DUtFX5pjm8J/" target="_blank" title="在 Instagram 打开该帖子"><code>DUtFX5pjm8J</code></a>；<a href="https://www.instagram.com/p/DM6MzxrgwwE/" target="_blank" title="在 Instagram 打开该帖子"><code>DM6MzxrgwwE</code></a></td><td><span class="b warn">⚠️ 不确定（平台）</span></td></tr>
+        <tr><td><b>Pelvecon（官方活动）</b><br><span class="small">@pelvicon_official</span></td><td>@提及 ＋ 图片标签；盆底健康活动/机构</td><td class="num">6</td><td><a href="https://www.instagram.com/p/CxErkO2Ag61/" target="_blank" title="在 Instagram 打开该帖子"><code>CxErkO2Ag61</code></a>；<a href="https://www.instagram.com/p/Cw7bMQLg0Kx/" target="_blank" title="在 Instagram 打开该帖子"><code>Cw7bMQLg0Kx</code></a>；<a href="https://www.instagram.com/p/Ci_aUEBj4OG/" target="_blank" title="在 Instagram 打开该帖子"><code>Ci_aUEBj4OG</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Poise</b><br><span class="small">@poise</span></td><td>官方合拍（coauthor 2 次）＋ @提及；膀胱护理消费品牌（Essity）</td><td class="num">6</td><td><a href="https://www.instagram.com/p/DdpEa3oTkuW/" target="_blank" title="在 Instagram 打开该帖子"><code>DdpEa3oTkuW</code></a>；<a href="https://www.instagram.com/p/DZvE7vNzxjf/" target="_blank" title="在 Instagram 打开该帖子"><code>DZvE7vNzxjf</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">消费品牌</span></td></tr>
+        <tr><td> Squatty Potty<br><span class="small">@squattypotty</span></td><td>@提及（如厕姿态辅助品牌）；无合拍</td><td class="num">8</td><td><a href="https://www.instagram.com/p/C-pusE0JyDC/" target="_blank" title="在 Instagram 打开该帖子"><code>C-pusE0JyDC</code></a>；<a href="https://www.instagram.com/p/CluflRfpAMu/" target="_blank" title="在 Instagram 打开该帖子"><code>CluflRfpAMu</code></a>；<a href="https://www.instagram.com/p/CbVpAl7gNk1/" target="_blank" title="在 Instagram 打开该帖子"><code>CbVpAl7gNk1</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td> Ohnut Co.<br><span class="small">@ohanutco</span></td><td>@提及（性健康/盆底用品品牌）；无合拍</td><td class="num">8</td><td><a href="https://www.instagram.com/p/C-pusE0JyDC/" target="_blank" title="在 Instagram 打开该帖子"><code>C-pusE0JyDC</code></a>；<a href="https://www.instagram.com/p/CluflRfpAMu/" target="_blank" title="在 Instagram 打开该帖子"><code>CluflRfpAMu</code></a>；<a href="https://www.instagram.com/p/CYH3KvZh2qU/" target="_blank" title="在 Instagram 打开该帖子"><code>CYH3KvZh2qU</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td> Überlube<br><span class="small">@uberlube</span></td><td>@提及 / 图片标签（润滑品牌）；无合拍</td><td class="num">5</td><td><a href="https://www.instagram.com/p/DNYTlikAH6_/" target="_blank" title="在 Instagram 打开该帖子"><code>DNYTlikAH6_</code></a>；<a href="https://www.instagram.com/p/DM76d81gxh4/" target="_blank" title="在 Instagram 打开该帖子"><code>DM76d81gxh4</code></a>；<a href="https://www.instagram.com/p/CB1ytJIgYxe/" target="_blank" title="在 Instagram 打开该帖子"><code>CB1ytJIgYxe</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td> Barnes &amp; Noble<br><span class="small">@barnesandnoble</span></td><td>@提及 ＋ 图片标签（书店零售）；无合拍</td><td class="num">10</td><td><a href="https://www.instagram.com/p/DJbwGeSA5Pb/" target="_blank" title="在 Instagram 打开该帖子"><code>DJbwGeSA5Pb</code></a>；<a href="https://www.instagram.com/p/DIouEPWpGw4/" target="_blank" title="在 Instagram 打开该帖子"><code>DIouEPWpGw4</code></a>；<a href="https://www.instagram.com/p/DGwkkzHJnGk/" target="_blank" title="在 Instagram 打开该帖子"><code>DGwkkzHJnGk</code></a></td><td><span class="b warn">⚠️ 不确定（零售）</span></td></tr>
+        <tr><td> Dr. Karen Tang, MD<br><span class="small">@karentangmd</span></td><td>官方合拍（coauthor 3 次）＋ @提及；同行个人医生</td><td class="num">21</td><td><a href="https://www.instagram.com/p/DRzRfjwkfvR/" target="_blank" title="在 Instagram 打开该帖子"><code>DRzRfjwkfvR</code></a>；<a href="https://www.instagram.com/p/DMwCl1eAffT/" target="_blank" title="在 Instagram 打开该帖子"><code>DMwCl1eAffT</code></a>；<a href="https://www.instagram.com/p/DMu1JCQOMn7/" target="_blank" title="在 Instagram 打开该帖子"><code>DMu1JCQOMn7</code></a></td><td><span class="b unk">❓ 非品牌主体</span></td></tr>
+        <tr><td> DPTs with Anxiety<br><span class="small">@dpts_with_anxiety</span></td><td>官方合拍（coauthor 10 次）＋ @提及；同行/心理相关账号</td><td class="num">23</td><td><a href="https://www.instagram.com/p/DM76d81gxh4/" target="_blank" title="在 Instagram 打开该帖子"><code>DM76d81gxh4</code></a>；<a href="https://www.instagram.com/p/DM6BRofpXvo/" target="_blank" title="在 Instagram 打开该帖子"><code>DM6BRofpXvo</code></a>；<a href="https://www.instagram.com/p/DKXwgREpfBB/" target="_blank" title="在 Instagram 打开该帖子"><code>DKXwgREpfBB</code></a></td><td><span class="b unk">❓ 非品牌主体</span></td></tr>
+        <tr><td> mypelvicfloormuscles<br><span class="small">@mypelvicfloormuscles</span></td><td>官方合拍（coauthor 3 次）＋ @提及；同行网红</td><td class="num">8</td><td><a href="https://www.instagram.com/p/C3qBpmspmH5/" target="_blank" title="在 Instagram 打开该帖子"><code>C3qBpmspmH5</code></a>；<a href="https://www.instagram.com/p/C3Y9zlENmKX/" target="_blank" title="在 Instagram 打开该帖子"><code>C3Y9zlENmKX</code></a>；<a href="https://www.instagram.com/p/CxErkO2Ag61/" target="_blank" title="在 Instagram 打开该帖子"><code>CxErkO2Ag61</code></a></td><td><span class="b unk">❓ 非品牌主体</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">全量样本共关联 <b>262 个不同外部账号</b>，其中 <b>59 个为官方合拍共同作者</b>：含同行创作者、影视/书籍合作项目（Lady Parts Film、How To Be Patient、It's Pres Ro 等）及<b>疑似自有 Booksta 账号</b>（Reading on the Dancefloor，11 次合拍）。除上表外，多为盆底健康同行与书店/活动标签，未逐一列出。</p>
+  </div>
+</div>
+
+<div class="brandblock">
+  <div class="hd"><img src="ig_avatars/drkianaberry.jpg" alt=""><div class="t">2.5 @drkianaberry</div><span class="b ok">✅ 已认证</span><span class="b brand">17 项品牌/机构</span><span class="b ok">✅ 86 条内容合作</span></div>
+  <div class="bd">
+    <div class="tw"><table>
+      <thead><tr><th style="width:180px">字段</th><th>可核实内容</th><th style="width:120px">判定</th></tr></thead>
+      <tbody>
+        <tr><td><b>账号名称</b></td><td><b>drkianaberry</b>；显示名「Dr. Kiana | Pelvic Floor Coach For High Achieving Women」</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>平台链接</b></td><td><a href="https://www.instagram.com/drkianaberry/" target="_blank">https://www.instagram.com/drkianaberry/</a></td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>内容定位</b></td><td>盆底物理治疗 / 疼痛性亲密（painful intimacy）科普与个案叙事；以免费线上研讨会引导（"Comment WEBINAR"）与个案叙事为主，另有旅行、创业叙事</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>受众或影响力特征</b></td><td>面向经历疼痛性亲密 / 盆底功能困扰的女性；粉丝 98,485、已认证</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>粉丝量</b></td><td><b>98,485</b>　<span class="b ok">✅ 已认证</span></td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>互动表现（窗口内样本）</b></td><td>统计窗口内 <b>1,435 条</b>帖子：点赞合计 <b>1,495,305</b>（均值 1,042.02、中位 122、最大 298,108），评论合计 <b>27,181</b>（均值 18.94、中位 4、最大 7,772）。按 98,485 粉丝计算，平均点赞/粉丝 ≈ <b>1.06%</b>、平均（赞+评）/粉丝 ≈ <b>1.08%</b>。</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>与 @intimaterose 的关系</b></td><td><b>已确证</b>：窗口内 <b>86 条</b>内容合作帖 = <b>52 条</b>官方合拍（最早 <a href="https://www.instagram.com/p/C8FXsqGPTRx/" target="_blank" title="在 Instagram 打开该帖子"><code>C8FXsqGPTRx</code></a> 2024-06-11、最近 <a href="https://www.instagram.com/p/DctYKTpOW9g/" target="_blank" title="在 Instagram 打开该帖子"><code>DctYKTpOW9g</code></a> 2026-10-18；另有 <a href="https://www.instagram.com/p/DamMhP3Awjg/" target="_blank" title="在 Instagram 打开该帖子"><code>DamMhP3Awjg</code></a> 2026-07-10）＋ <b>34 条</b>品牌自发 Credit/@署名（最早 <a href="https://www.instagram.com/p/DSdnFSlEo6m/" target="_blank" title="在 Instagram 打开该帖子"><code>DSdnFSlEo6m</code></a> 2025-12-19、最近 <a href="https://www.instagram.com/p/DeumZD8hntg/" target="_blank" title="在 Instagram 打开该帖子"><code>DeumZD8hntg</code></a> 2026-10-20）。上一版因仅见最近 12 条（均无合拍）而标「待核实」，属<b>样本截断导致的漏判</b>；全量回溯后已更正，并正式并入第 1 章主表与 7.1 节统计</td><td><span class="b ok">✅ 确证</span></td></tr>
+        <tr><td><b>信息来源</b></td><td>Instagram 官方主页与帖子公开信息</td><td><span class="b ok">✅ 事实</span></td></tr>
+        <tr><td><b>信息日期</b></td><td>采集日期 <b>2026-11-10</b></td><td><span class="b ok">✅ 事实</span></td></tr>
+      </tbody>
+    </table></div>
+    <h3>2.5.1 关联品牌／机构合作明细（全量样本，211 个不同外部账号）</h3>
+    <p class="small">下表覆盖具有品牌/机构性质的合作条目，同行个人创作者（如 @chloelewisphysio）与疑似自有/关联账号（@veryberrybrown）单列说明。</p>
+    <div class="tw"><table>
+      <thead><tr><th style="width:200px">品牌 / 机构（去重）</th><th style="width:200px">互动形式</th><th style="width:78px">帖子数</th><th>帖子线索（样例 code）</th><th style="width:110px">判定</th></tr></thead>
+      <tbody>
+        <tr><td><b>Vwell（阴道健康品牌）</b><br><span class="small">@vwell_brand</span></td><td>官方合拍（coauthor 13 次）＋ @提及 ＋ 图片标签；阴道健康消费品牌</td><td class="num">46</td><td><a href="https://www.instagram.com/p/DblW77luCFZ/" target="_blank"><code>DblW77luCFZ</code></a>；<a href="https://www.instagram.com/p/DbW8HO1A7fH/" target="_blank" title="在 Instagram 打开该帖子"><code>DbW8HO1A7fH</code></a>；<a href="https://www.instagram.com/p/DbT3hL8gbyo/" target="_blank" title="在 Instagram 打开该帖子"><code>DbT3hL8gbyo</code></a></td><td><span class="b ok">✅ 确证</span><br><span class="b warn">消费品牌</span></td></tr>
+        <tr><td><b>My Eden Med Spa</b><br><span class="small">@myedenmedspa</span></td><td>官方合拍（coauthor 5 次）＋ 图片标签；医美/医疗水疗机构</td><td class="num">10</td><td><a href="https://www.instagram.com/p/DG3nV8fgdBb/" target="_blank" title="在 Instagram 打开该帖子"><code>DG3nV8fgdBb</code></a>；<a href="https://www.instagram.com/p/DGlVvDGAZv4/" target="_blank" title="在 Instagram 打开该帖子"><code>DGlVvDGAZv4</code></a>；<a href="https://www.instagram.com/p/DEf2y5uvyNe/" target="_blank" title="在 Instagram 打开该帖子"><code>DEf2y5uvyNe</code></a></td><td><span class="b ok">✅ 确证</span><br><span class="b warn">机构</span></td></tr>
+        <tr><td><b>Femelle Health</b><br><span class="small">@femellehealth_clt</span></td><td>官方合拍（coauthor 3 次）＋ 图片标签；女性健康诊所/品牌</td><td class="num">6</td><td><a href="https://www.instagram.com/p/DcUpu7yPK9R/" target="_blank" title="在 Instagram 打开该帖子"><code>DcUpu7yPK9R</code></a>；<a href="https://www.instagram.com/p/DJ9TpoOgIO-/" target="_blank" title="在 Instagram 打开该帖子"><code>DJ9TpoOgIO-</code></a>；<a href="https://www.instagram.com/p/DJ8frJOAiua/" target="_blank" title="在 Instagram 打开该帖子"><code>DJ8frJOAiua</code></a></td><td><span class="b ok">✅ 确证</span><br><span class="b warn">机构/品牌</span></td></tr>
+        <tr><td><b>Very Berry Brown</b><br><span class="small">@veryberrybrown</span></td><td>官方合拍（coauthor 65 次）＋ 图片标签；<b>频次极高，疑为本人自有品牌/关联店铺或常驻合作方</b></td><td class="num">131</td><td><a href="https://www.instagram.com/p/DbzT1UfjIrJ/" target="_blank" title="在 Instagram 打开该帖子"><code>DbzT1UfjIrJ</code></a>；<a href="https://www.instagram.com/p/DawRLYPgyHa/" target="_blank" title="在 Instagram 打开该帖子"><code>DawRLYPgyHa</code></a>；<a href="https://www.instagram.com/p/DaQrylFANdW/" target="_blank" title="在 Instagram 打开该帖子"><code>DaQrylFANdW</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">⚠️ 主体不确定</span></td></tr>
+        <tr><td><b>Ginismus（盆底产品）</b><br><span class="small">@ginismus</span></td><td>@提及 78 次（盆底按摩棒/产品）；无合拍；<b>疑为其推荐/联盟产品</b></td><td class="num">78</td><td><a href="https://www.instagram.com/p/DK-0iWdgVjf/" target="_blank" title="在 Instagram 打开该帖子"><code>DK-0iWdgVjf</code></a>；<a href="https://www.instagram.com/p/DKkz_ZGA24g/" target="_blank" title="在 Instagram 打开该帖子"><code>DKkz_ZGA24g</code></a>；<a href="https://www.instagram.com/p/DKkiIUhgzcz/" target="_blank" title="在 Instagram 打开该帖子"><code>DKkiIUhgzcz</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Legion（补剂品牌）</b><br><span class="small">@legion</span></td><td>图片标签 / @提及（运动营养补剂）；无合拍</td><td class="num">61</td><td><a href="https://www.instagram.com/p/DbUpjnVge4A/" target="_blank" title="在 Instagram 打开该帖子"><code>DbUpjnVge4A</code></a>；<a href="https://www.instagram.com/p/DY7oEEFgEvn/" target="_blank" title="在 Instagram 打开该帖子"><code>DY7oEEFgEvn</code></a>；<a href="https://www.instagram.com/p/DXFXGJ2gDAf/" target="_blank" title="在 Instagram 打开该帖子"><code>DXFXGJ2gDAf</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Gymshark</b><br><span class="small">@gymshark</span></td><td>图片标签 / @提及（运动服饰）；无合拍</td><td class="num">36</td><td><a href="https://www.instagram.com/p/DQJ1cAYALl2/" target="_blank" title="在 Instagram 打开该帖子"><code>DQJ1cAYALl2</code></a>；<a href="https://www.instagram.com/p/DOeqOv4gO56/" target="_blank" title="在 Instagram 打开该帖子"><code>DOeqOv4gO56</code></a>；<a href="https://www.instagram.com/p/DOZxOWaAGzD/" target="_blank" title="在 Instagram 打开该帖子"><code>DOZxOWaAGzD</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Gymshark Women</b><br><span class="small">@gymsharkwomen</span></td><td>图片标签（运动服饰）；无合拍</td><td class="num">27</td><td><a href="https://www.instagram.com/p/DOeqOv4gO56/" target="_blank" title="在 Instagram 打开该帖子"><code>DOeqOv4gO56</code></a>；<a href="https://www.instagram.com/p/DOZxOWaAGzD/" target="_blank" title="在 Instagram 打开该帖子"><code>DOZxOWaAGzD</code></a>；<a href="https://www.instagram.com/p/DNydLh3wPGQ/" target="_blank" title="在 Instagram 打开该帖子"><code>DNydLh3wPGQ</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>Vella Bioscience</b><br><span class="small">@vellabioscience</span></td><td>官方合拍（coauthor 3 次）＋ @提及；性健康/润滑品牌</td><td class="num">9</td><td><a href="https://www.instagram.com/p/DQFwRagAIZ9/" target="_blank" title="在 Instagram 打开该帖子"><code>DQFwRagAIZ9</code></a>；<a href="https://www.instagram.com/p/DKalGBAADJU/" target="_blank" title="在 Instagram 打开该帖子"><code>DKalGBAADJU</code></a>；<a href="https://www.instagram.com/p/DJCMU0AAxJv/" target="_blank" title="在 Instagram 打开该帖子"><code>DJCMU0AAxJv</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">⚠️ 待核实</span></td></tr>
+        <tr><td> lululemon<br><span class="small">@lululemon</span></td><td>图片标签（运动服饰）；无合拍</td><td class="num">9</td><td><a href="https://www.instagram.com/p/DNlXIOHgwjC/" target="_blank" title="在 Instagram 打开该帖子"><code>DNlXIOHgwjC</code></a>；<a href="https://www.instagram.com/p/DLfcPR4gm0w/" target="_blank" title="在 Instagram 打开该帖子"><code>DLfcPR4gm0w</code></a>；<a href="https://www.instagram.com/p/DK-T9CXgp6D/" target="_blank" title="在 Instagram 打开该帖子"><code>DK-T9CXgp6D</code></a></td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+        <tr><td><b>The Pelvic People</b><br><span class="small">@thepelvicpeople</span></td><td>官方合拍（coauthor 6 次）＋ 图片标签；盆底健康社区/平台</td><td class="num">13</td><td><a href="https://www.instagram.com/p/DbWcxrcAHJS/" target="_blank" title="在 Instagram 打开该帖子"><code>DbWcxrcAHJS</code></a>；<a href="https://www.instagram.com/p/DPNeVe-AFhL/" target="_blank" title="在 Instagram 打开该帖子"><code>DPNeVe-AFhL</code></a>；<a href="https://www.instagram.com/p/DEh_kqJP9_w/" target="_blank" title="在 Instagram 打开该帖子"><code>DEh_kqJP9_w</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">平台/社区</span></td></tr>
+        <tr><td> Chloe Lewis Physio<br><span class="small">@chloelewisphysio</span></td><td>官方合拍（coauthor 5 次）＋ 图片标签；同行个人 PT</td><td class="num">12</td><td><a href="https://www.instagram.com/p/DAHCEA9vscT/" target="_blank" title="在 Instagram 打开该帖子"><code>DAHCEA9vscT</code></a>；<a href="https://www.instagram.com/p/C_3YeR-gjwm/" target="_blank" title="在 Instagram 打开该帖子"><code>C_3YeR-gjwm</code></a>；<a href="https://www.instagram.com/p/C_yZ8zYAaAj/" target="_blank" title="在 Instagram 打开该帖子"><code>C_yZ8zYAaAj</code></a></td><td><span class="b unk">❓ 非品牌主体</span></td></tr>
+        <tr><td> The Pelvic Experts<br><span class="small">@thepelvicexperts</span></td><td>官方合拍（coauthor 2 次）＋ 图片标签；盆底健康从业者社区</td><td class="num">6</td><td><a href="https://www.instagram.com/p/DOPKQfrkcEU/" target="_blank" title="在 Instagram 打开该帖子"><code>DOPKQfrkcEU</code></a>；<a href="https://www.instagram.com/p/DHZDDW8AiDv/" target="_blank" title="在 Instagram 打开该帖子"><code>DHZDDW8AiDv</code></a>；<a href="https://www.instagram.com/p/DAjZKZiPV3a/" target="_blank" title="在 Instagram 打开该帖子"><code>DAjZKZiPV3a</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">社区</span></td></tr>
+        <tr><td> No Pelvis Left Behind<br><span class="small">@nopelvisleftbehind</span></td><td>官方合拍（coauthor 2 次）＋ 图片标签；盆底健康项目/社区</td><td class="num">9</td><td><a href="https://www.instagram.com/p/DB1jHK5PMBe/" target="_blank" title="在 Instagram 打开该帖子"><code>DB1jHK5PMBe</code></a>；<a href="https://www.instagram.com/p/DBzZSrnv50w/" target="_blank" title="在 Instagram 打开该帖子"><code>DBzZSrnv50w</code></a>；<a href="https://www.instagram.com/p/DBtmH2QJ2N9/" target="_blank" title="在 Instagram 打开该帖子"><code>DBtmH2QJ2N9</code></a></td><td><span class="b ok">✅ 合拍</span><br><span class="b warn">项目/社区</span></td></tr>
+        <tr><td> mypelvicfloormuscles<br><span class="small">@mypelvicfloormuscles</span></td><td>官方合拍（coauthor 7 次）＋ @提及；同行网红</td><td class="num">24</td><td><a href="https://www.instagram.com/p/DLVVVC8Jl2d/" target="_blank" title="在 Instagram 打开该帖子"><code>DLVVVC8Jl2d</code></a>；<a href="https://www.instagram.com/p/DH9BTdMgWsR/" target="_blank" title="在 Instagram 打开该帖子"><code>DH9BTdMgWsR</code></a>；<a href="https://www.instagram.com/p/DG8af0oA-be/" target="_blank" title="在 Instagram 打开该帖子"><code>DG8af0oA-be</code></a></td><td><span class="b unk">❓ 非品牌主体</span></td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">全量样本共关联 <b>211 个不同外部账号</b>，其中 <b>45 个为官方合拍共同作者</b>：含 vwell_brand、myedenmedspa、femellehealth_clt 等<b>明确的品牌/机构合拍</b>，以及 <b>veryberrybrown（65 次合拍，频次极高，疑为本人自有/关联账号或常驻合作方）</b>。@ginismus 以 78 次 @提及出现，疑为其推荐/联盟的盆底产品。其余多为同行创作者与运动服饰品牌标签，未逐一列出。</p>
+  </div>
+</div>
+
+
+<h3>2.6 其他高频合作创作者（≥8 条，除上述 5 位外）</h3>
+<div class="card">
+<p class="small">除第 1 章 5 位主网红外，另有 <b>11 个账号</b>与 <code>@intimaterose</code> 存在高频内容关联（窗口内 ≥8 条），列示如下。<b>粉丝数/简介未采集</b>，故不列；性质判定基于帖子文案与账号命名。表格按合作帖数降序。</p>
+<div class="tw"><table style="min-width:1250px">
+<thead><tr><th style="width:60px">#</th><th style="width:210px">账号</th><th style="width:200px">互动形式</th><th style="width:105px">合拍 / 署名 / 合并</th><th style="width:150px">窗口内首次～最近</th><th>证据 code（首 / 中 / 末）</th><th style="width:150px">性质判定</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><a href="https://www.instagram.com/drtaylorreyes/" target="_blank">@drtaylorreyes</a></td><td>品牌自发 Credit 署名（55）＋官方合拍（13）</td><td class="num">13 / 55 / <b>68</b></td><td class="num">2024-07-11～2026-10-21</td><td><a href="https://www.instagram.com/p/C9Sflp9pgZL/" target="_blank" title="在 Instagram 打开该帖子"><code>C9Sflp9pgZL</code></a> / <a href="https://www.instagram.com/p/DUrPDatkmQ1/" target="_blank" title="在 Instagram 打开该帖子"><code>DUrPDatkmQ1</code></a>、<a href="https://www.instagram.com/p/DUrEE_JCYIR/" target="_blank" title="在 Instagram 打开该帖子"><code>DUrEE_JCYIR</code></a> / <a href="https://www.instagram.com/p/DexE2SxP09N/" target="_blank" title="在 Instagram 打开该帖子"><code>DexE2SxP09N</code></a></td><td><span class="b ok">✅ 高频内容合作方</span><br><span class="small">盆底健康专业创作者</span></td></tr>
+<tr><td>2</td><td><a href="https://www.instagram.com/dr.amandaolson/" target="_blank">@dr.amandaolson</a></td><td>官方合拍（对方主发，coauthor 含品牌）</td><td class="num">41 / 0 / <b>41</b></td><td class="num">2024-01-05～2026-07-29</td><td><a href="https://www.instagram.com/p/C1uoM7uvj9l/" target="_blank" title="在 Instagram 打开该帖子"><code>C1uoM7uvj9l</code></a> / <a href="https://www.instagram.com/p/DGqlUCcJ7kO/" target="_blank" title="在 Instagram 打开该帖子"><code>DGqlUCcJ7kO</code></a>、<a href="https://www.instagram.com/p/DG3bbrDPhka/" target="_blank" title="在 Instagram 打开该帖子"><code>DG3bbrDPhka</code></a> / <a href="https://www.instagram.com/p/DbYtJoxiQO2/" target="_blank" title="在 Instagram 打开该帖子"><code>DbYtJoxiQO2</code></a></td><td><span class="b ok">✅ 高频合拍</span><br><span class="small">同行 PT/医生</span></td></tr>
+<tr><td>3</td><td><a href="https://www.instagram.com/iamcolleenconlon/" target="_blank">@iamcolleenconlon</a></td><td>官方合拍（38）＋品牌自发署名（1）</td><td class="num">38 / 1 / <b>39</b></td><td class="num">2025-08-05～2026-09-24</td><td><a href="https://www.instagram.com/p/DM_f9hzSHYA/" target="_blank" title="在 Instagram 打开该帖子"><code>DM_f9hzSHYA</code></a> / <a href="https://www.instagram.com/p/DVVBq5UjGE0/" target="_blank" title="在 Instagram 打开该帖子"><code>DVVBq5UjGE0</code></a>、<a href="https://www.instagram.com/p/DV_hh67iTwR/" target="_blank" title="在 Instagram 打开该帖子"><code>DV_hh67iTwR</code></a> / <a href="https://www.instagram.com/p/Ddr3ZFyPWwD/" target="_blank" title="在 Instagram 打开该帖子"><code>Ddr3ZFyPWwD</code></a></td><td><span class="b ok">✅ 高频合拍</span><br><span class="small">力量训练/盆底科普</span></td></tr>
+<tr><td>4</td><td><a href="https://www.instagram.com/womenwholiftweights/" target="_blank">@womenwholiftweights</a></td><td>官方合拍（多为 @iamcolleenconlon 主发的共同作者）</td><td class="num">23 / 0 / <b>23</b></td><td class="num">2025-08-05～2026-08-31</td><td><a href="https://www.instagram.com/p/DM_f9hzSHYA/" target="_blank" title="在 Instagram 打开该帖子"><code>DM_f9hzSHYA</code></a> / <a href="https://www.instagram.com/p/DS-8s9QD86m/" target="_blank" title="在 Instagram 打开该帖子"><code>DS-8s9QD86m</code></a>、<a href="https://www.instagram.com/p/DS8pnWxD0EB/" target="_blank" title="在 Instagram 打开该帖子"><code>DS8pnWxD0EB</code></a> / <a href="https://www.instagram.com/p/DctMraeOv6V/" target="_blank" title="在 Instagram 打开该帖子"><code>DctMraeOv6V</code></a></td><td><span class="b warn">⚠️ 社群/组织</span><br><span class="small">非个人创作者</span></td></tr>
+<tr><td>5</td><td><a href="https://www.instagram.com/ladyparts_film/" target="_blank">@ladyparts_film</a></td><td>官方合拍（17）＋品牌自发署名（2）</td><td class="num">17 / 2 / <b>19</b></td><td class="num">2024-04-11～2026-10-27</td><td><a href="https://www.instagram.com/p/C5oiNMGvNo3/" target="_blank" title="在 Instagram 打开该帖子"><code>C5oiNMGvNo3</code></a> / <a href="https://www.instagram.com/p/DRxTa5UEeRb/" target="_blank" title="在 Instagram 打开该帖子"><code>DRxTa5UEeRb</code></a>、<a href="https://www.instagram.com/p/DSS802_kcs1/" target="_blank" title="在 Instagram 打开该帖子"><code>DSS802_kcs1</code></a> / <a href="https://www.instagram.com/p/DfAqKRTH3mW/" target="_blank" title="在 Instagram 打开该帖子"><code>DfAqKRTH3mW</code></a></td><td><span class="b warn">⚠️ 影视项目</span><br><span class="small">非个人网红</span></td></tr>
+<tr><td>6</td><td><a href="https://www.instagram.com/shake_ur_bonbon/" target="_blank">@shake_ur_bonbon</a></td><td>官方合拍（多为 @ladyparts_film 主发的共同作者）</td><td class="num">15 / 0 / <b>15</b></td><td class="num">2024-10-01～2026-10-27</td><td><a href="https://www.instagram.com/p/DAmVtQ_RRR_/" target="_blank" title="在 Instagram 打开该帖子"><code>DAmVtQ_RRR_</code></a> / <a href="https://www.instagram.com/p/DSS802_kcs1/" target="_blank" title="在 Instagram 打开该帖子"><code>DSS802_kcs1</code></a>、<a href="https://www.instagram.com/p/DTi-l-Akblv/" target="_blank" title="在 Instagram 打开该帖子"><code>DTi-l-Akblv</code></a> / <a href="https://www.instagram.com/p/DfAqKRTH3mW/" target="_blank" title="在 Instagram 打开该帖子"><code>DfAqKRTH3mW</code></a></td><td><span class="b warn">⚠️ 项目关联账号</span><br><span class="small">非个人网红</span></td></tr>
+<tr><td>7</td><td><a href="https://www.instagram.com/mamastefit/" target="_blank">@mamastefit</a></td><td>官方合拍（11）＋品牌自发署名（2）</td><td class="num">11 / 2 / <b>13</b></td><td class="num">2025-08-20～2026-09-26</td><td><a href="https://www.instagram.com/p/DNk3eXigosz/" target="_blank" title="在 Instagram 打开该帖子"><code>DNk3eXigosz</code></a> / <a href="https://www.instagram.com/p/DWAHuxEkntM/" target="_blank" title="在 Instagram 打开该帖子"><code>DWAHuxEkntM</code></a>、<a href="https://www.instagram.com/p/DW6rzSNDX4v/" target="_blank" title="在 Instagram 打开该帖子"><code>DW6rzSNDX4v</code></a> / <a href="https://www.instagram.com/p/Ddv9p5VBU3a/" target="_blank" title="在 Instagram 打开该帖子"><code>Ddv9p5VBU3a</code></a></td><td><span class="b warn">⚠️ 孕产健身机构</span></td></tr>
+<tr><td>8</td><td><a href="https://www.instagram.com/becca_ironside/" target="_blank">@becca_ironside</a></td><td>品牌自发 Credit 署名（全部）</td><td class="num">0 / 13 / <b>13</b></td><td class="num">2025-08-04～2025-12-08</td><td><a href="https://www.instagram.com/p/DM83_yLSGiy/" target="_blank" title="在 Instagram 打开该帖子"><code>DM83_yLSGiy</code></a> / <a href="https://www.instagram.com/p/DOreLZtkthe/" target="_blank" title="在 Instagram 打开该帖子"><code>DOreLZtkthe</code></a>、<a href="https://www.instagram.com/p/DPXC6Zpgfqf/" target="_blank" title="在 Instagram 打开该帖子"><code>DPXC6Zpgfqf</code></a> / <a href="https://www.instagram.com/p/DSBKj6tEtGi/" target="_blank" title="在 Instagram 打开该帖子"><code>DSBKj6tEtGi</code></a></td><td><span class="b ok">✅ 署名内容合作方</span></td></tr>
+<tr><td>9</td><td><a href="https://www.instagram.com/vaginaplusme/" target="_blank">@vaginaplusme</a></td><td>品牌自发 Credit 署名（全部）</td><td class="num">0 / 12 / <b>12</b></td><td class="num">2024-10-15～2026-01-09</td><td><a href="https://www.instagram.com/p/DBJrZbCSiUF/" target="_blank" title="在 Instagram 打开该帖子"><code>DBJrZbCSiUF</code></a> / <a href="https://www.instagram.com/p/DJHvuMVSnJ2/" target="_blank" title="在 Instagram 打开该帖子"><code>DJHvuMVSnJ2</code></a>、<a href="https://www.instagram.com/p/DJ2ZleozvB4/" target="_blank" title="在 Instagram 打开该帖子"><code>DJ2ZleozvB4</code></a> / <a href="https://www.instagram.com/p/DTTnJ8OErM5/" target="_blank" title="在 Instagram 打开该帖子"><code>DTTnJ8OErM5</code></a></td><td><span class="b ok">✅ 署名内容合作方</span></td></tr>
+<tr><td>10</td><td><a href="https://www.instagram.com/modernphysicaltherapy/" target="_blank">@modernphysicaltherapy</a></td><td>官方合拍（对方主发，coauthor 含品牌）</td><td class="num">8 / 0 / <b>8</b></td><td class="num">2026-05-08～2026-09-25</td><td><a href="https://www.instagram.com/p/DYFdc6VtYDW/" target="_blank" title="在 Instagram 打开该帖子"><code>DYFdc6VtYDW</code></a> / <a href="https://www.instagram.com/p/DZvGtLYtmHh/" target="_blank" title="在 Instagram 打开该帖子"><code>DZvGtLYtmHh</code></a>、<a href="https://www.instagram.com/p/DaBsu9iP1Z9/" target="_blank" title="在 Instagram 打开该帖子"><code>DaBsu9iP1Z9</code></a> / <a href="https://www.instagram.com/p/DduXxhEyUtL/" target="_blank" title="在 Instagram 打开该帖子"><code>DduXxhEyUtL</code></a></td><td><span class="b warn">⚠️ 物理治疗机构</span></td></tr>
+<tr><td>11</td><td><a href="https://www.instagram.com/thedangerouswomenpodcast/" target="_blank">@thedangerouswomenpodcast</a></td><td>官方合拍（对方主发，coauthor 含品牌）</td><td class="num">8 / 0 / <b>8</b></td><td class="num">2024-06-08～2024-10-04</td><td><a href="https://www.instagram.com/p/C79KxohRVKu/" target="_blank" title="在 Instagram 打开该帖子"><code>C79KxohRVKu</code></a> / <a href="https://www.instagram.com/p/DAuCbdARkXR/" target="_blank" title="在 Instagram 打开该帖子"><code>DAuCbdARkXR</code></a>、<a href="https://www.instagram.com/p/DAuCP5FROda/" target="_blank" title="在 Instagram 打开该帖子"><code>DAuCP5FROda</code></a> / <a href="https://www.instagram.com/p/DAuBu-1RkqW/" target="_blank" title="在 Instagram 打开该帖子"><code>DAuBu-1RkqW</code></a></td><td><span class="b warn">⚠️ 播客节目</span></td></tr>
+</tbody>
+</table></div>
+<p class="small">本表为<b>发现性补充</b>，不并入第 1 章 5 位主网红与 404 条合计。"性质判定"中，个人专业创作者/内容合作方标 ✅，社群、影视项目、机构、播客等非个人网红标 ⚠️。低于 8 条门槛的账号多为一次性互动，未逐一列出。</p>
+</div>
+
+<h2>3. 去重品牌汇总（不含 intimaterose）</h2>
+<h3>3.1 人工核查汇总（初始 12 条样本，沿用上一版）</h3>
+<div class="tw"><table style="min-width:900px">
+  <thead><tr><th style="width:60px">#</th><th style="width:230px">品牌 / 机构</th><th style="width:230px">关联网红</th><th style="width:150px">最强互动形式</th><th>确定性</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>The Q Spot Center</td><td>andrea.sexplains.it.all</td><td>官方合拍（4 条）</td><td><span class="b ok">✅ 确证</span></td></tr>
+    <tr><td>2</td><td>Lace Up with Lindsay</td><td>andrea.sexplains.it.all</td><td>官方合拍 + 付费社群露出</td><td><span class="b ok">✅ 确证</span></td></tr>
+    <tr><td>3</td><td>Global Surgical Expedition</td><td>mypelvicfloormuscles</td><td>官方合拍 + "partners with"</td><td><span class="b ok">✅ 确证</span></td></tr>
+    <tr><td>4</td><td>myPelvicBra</td><td>mypelvicfloormuscles</td><td>官方合拍 + 客户证言</td><td><span class="b ok">✅ 合拍</span> <span class="b warn">主体不确定</span></td></tr>
+    <tr><td>5</td><td>Reading on the Dancefloor</td><td>thepelvicdancefloor</td><td>官方合拍</td><td><span class="b ok">✅ 合拍</span> <span class="b warn">主体不确定</span></td></tr>
+    <tr><td>6</td><td>Glow Health / Giveaway</td><td>andrea.sexplains.it.all</td><td>活动抽奖 + 话题标签</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>7</td><td>Braze Permanent Jewelry</td><td>andrea.sexplains.it.all</td><td>捐赠鸣谢 + 图片标签</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>8</td><td>Crown &amp; Cranium</td><td>andrea.sexplains.it.all</td><td>捐赠鸣谢 + 图片标签</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>9</td><td>Roman Bread Co.</td><td>andrea.sexplains.it.all</td><td>捐赠鸣谢 + 图片标签</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>10</td><td>Vella Bioscience</td><td>andrea.sexplains.it.all</td><td>产品鸣谢 + 图片标签</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>11</td><td>Überlube</td><td>andrea.sexplains.it.all</td><td>产品鸣谢 + 图片标签</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>12</td><td>Medicine Mama</td><td>andrea.sexplains.it.all</td><td>产品鸣谢 + 图片标签</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>13</td><td>My Plus One</td><td>andrea.sexplains.it.all</td><td>产品鸣谢 + 图片标签</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>14</td><td>Slippery Stuff</td><td>andrea.sexplains.it.all</td><td>纯文本产品鸣谢（无 @账号）</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>15</td><td>Penn Women</td><td>andrea.sexplains.it.all</td><td>活动/机构 @提及</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>16</td><td>Conferences for Women</td><td>andrea.sexplains.it.all</td><td>活动/机构 @提及</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>17</td><td>myPFM</td><td>mypelvicfloormuscles</td><td>@提及 + 图片标签（疑似自有）</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>18</td><td>lululemon</td><td>dr.allyyanny</td><td>@提及 + 图片标签（5 条）</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>19</td><td>Athleta</td><td>dr.allyyanny</td><td>@提及 + 图片标签（7 条）</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>20</td><td>Nike / Nike Women</td><td>dr.allyyanny</td><td>@提及 + 图片标签（4 条，账号合并）</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>21</td><td>adidas</td><td>dr.allyyanny</td><td>@提及 + 图片标签（1 条）</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>22</td><td>Hoodies for Heroes</td><td>dr.allyyanny</td><td>@提及 + 图片标签（1 条）</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>23</td><td>Wellest Pelvic Health</td><td>thepelvicdancefloor</td><td>仅主页简介 @提及</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+    <tr><td>24</td><td>Bubble Bath Boston</td><td>thepelvicdancefloor</td><td>活动场地 @提及</td><td><span class="b warn">⚠️ 不确定</span></td></tr>
+  </tbody>
+</table></div>
+<p class="small">合计 <b>24 项</b>品牌／机构条目（已去重、已排除 intimaterose），其中 5 项有官方合拍确证、19 项仅有 @提及 / 标签 / 鸣谢 / bio 线索。<b>另有 4 类非品牌主体单列</b>：@Iamnicholemch、@dr.stephanie.pt.dpt、政治人物与竞选团队、#acosh 书籍粉丝标签。<b>⚠️ 本表为初始 12 条样本的人工核查口径，未在全量样本上重做</b>，与 3.2 的自动提取结果不可直接比较或相加。</p>
+
+<h3>3.2 全量样本品牌提及自动提取概览（本版新增）</h3>
+<p class="small">对 5 位网红窗口内全部帖子（合计 3998 条窗口内样本）自动提取 <code>mentions</code>（文案 @）、<code>usertags</code>（图片标签）、<code>sponsor_tags</code>（付费标记），按账号去重后共 <b>915 个不同被提及账号</b>。下表为出现次数最多的 12 项，<b>仅为自动提取的线索，未逐条人工核实是否为商业合作</b>；账号可能为品牌、机构、个人创作者或自有小号，不能据此认定商业关系。</p>
+<div class="tw"><table style="min-width:900px">
+  <thead><tr><th style="width:60px">#</th><th style="width:240px">被提及账号</th><th style="width:110px">出现次数</th><th style="width:180px">提取到的形式</th><th style="width:200px">涉及的网红</th><th>帖子线索样例</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>@mypelvicbra</td><td class="num">297</td><td>图片标签 / @提及</td><td>mypelvicfloormuscles、drkianaberry</td><td><a href="https://www.instagram.com/p/Dfe3fYdR9QI/" target="_blank" title="在 Instagram 打开该帖子"><code>Dfe3fYdR9QI</code></a>（2026-11-08）</td></tr>
+    <tr><td>2</td><td>@lululemon</td><td class="num">112</td><td>@提及 / 图片标签</td><td>mypelvicfloormuscles、dr.allyyanny、drkianaberry</td><td><a href="https://www.instagram.com/p/De4jP2xRSlJ/" target="_blank" title="在 Instagram 打开该帖子"><code>De4jP2xRSlJ</code></a>（2026-10-24）</td></tr>
+    <tr><td>3</td><td>@nikewomen</td><td class="num">91</td><td>@提及 / 图片标签</td><td>dr.allyyanny</td><td><a href="https://www.instagram.com/p/DfVbDmNRcv6/" target="_blank" title="在 Instagram 打开该帖子"><code>DfVbDmNRcv6</code></a>（2026-11-04）</td></tr>
+    <tr><td>4</td><td>@ginismus</td><td class="num">78</td><td>@提及</td><td>drkianaberry</td><td><a href="https://www.instagram.com/p/DK-0iWdgVjf/" target="_blank" title="在 Instagram 打开该帖子"><code>DK-0iWdgVjf</code></a>（2025-06-17）</td></tr>
+    <tr><td>5</td><td>@athleta</td><td class="num">72</td><td>@提及 / 图片标签</td><td>dr.allyyanny</td><td><a href="https://www.instagram.com/p/DfgMYuuNEXK/" target="_blank" title="在 Instagram 打开该帖子"><code>DfgMYuuNEXK</code></a>（2026-11-09）</td></tr>
+    <tr><td>6</td><td>@nike</td><td class="num">68</td><td>@提及 / 图片标签</td><td>mypelvicfloormuscles、dr.allyyanny</td><td><a href="https://www.instagram.com/p/DRu7sVmkYgY/" target="_blank" title="在 Instagram 打开该帖子"><code>DRu7sVmkYgY</code></a>（2025-12-01）</td></tr>
+    <tr><td>7</td><td>@veryberrybrown</td><td class="num">66</td><td>图片标签</td><td>drkianaberry</td><td><a href="https://www.instagram.com/p/DbzT1UfjIrJ/" target="_blank" title="在 Instagram 打开该帖子"><code>DbzT1UfjIrJ</code></a>（2026-08-09）</td></tr>
+    <tr><td>8</td><td>@legion</td><td class="num">54</td><td>图片标签 / @提及</td><td>drkianaberry</td><td><a href="https://www.instagram.com/p/DbUpjnVge4A/" target="_blank" title="在 Instagram 打开该帖子"><code>DbUpjnVge4A</code></a>（2026-07-28）</td></tr>
+    <tr><td>9</td><td>@mypfm</td><td class="num">51</td><td>@提及 / 图片标签</td><td>mypelvicfloormuscles、thepelvicdancefloor</td><td><a href="https://www.instagram.com/p/DfiKYpQGe3s/" target="_blank" title="在 Instagram 打开该帖子"><code>DfiKYpQGe3s</code></a>（2026-11-09）</td></tr>
+    <tr><td>10</td><td>@integrityrehab</td><td class="num">51</td><td>@提及 / 图片标签</td><td>mypelvicfloormuscles</td><td><a href="https://www.instagram.com/p/DfEAbktuTfH/" target="_blank" title="在 Instagram 打开该帖子"><code>DfEAbktuTfH</code></a>（2026-10-29）</td></tr>
+    <tr><td>11</td><td>@globalsurgicalexpedition</td><td class="num">43</td><td>@提及 / 图片标签</td><td>mypelvicfloormuscles</td><td><a href="https://www.instagram.com/p/DfiKYpQGe3s/" target="_blank" title="在 Instagram 打开该帖子"><code>DfiKYpQGe3s</code></a>（2026-11-09）</td></tr>
+    <tr><td>12</td><td>@gymshark</td><td class="num">35</td><td>图片标签 / @提及</td><td>drkianaberry</td><td><a href="https://www.instagram.com/p/DQJ1cAYALl2/" target="_blank" title="在 Instagram 打开该帖子"><code>DQJ1cAYALl2</code></a>（2025-10-23）</td></tr>
+  </tbody>
+</table></div>
+<p class="small"><b>⚠️ 口径提示</b>：出现次数是「帖子数」而非「合作次数」；同一账号可在同一帖中同时被 @提及与图片标签，此处按账号去重计 1 次。自动提取未区分品牌主体与个人账号，也未判定是否存在付费关系，<b>不得作为「商业合作」结论使用</b>。完整 915 项明细见 <code>ig_v2_analysis.json</code>。</p>
+<h2>4. 不确定项单独标注</h2>
+<div class="card">
+  <table style="min-width:760px">
+    <thead><tr><th style="width:230px">不确定项</th><th>原因与处理方式</th></tr></thead>
+    <tbody>
+      <tr><td><b>品牌互动是否为商业合作</b></td><td>3.1 中 19 项仅有 @提及 / 图片标签 / 鸣谢 / 简介提及；3.2 的 915 项为自动提取线索。登录态现已能读取 <code>is_paid_partnership</code>，但<b>270 条与品牌的合拍帖中 0 条带此标记</b>，因此仍<b>不把任何一项写成「付费商业合作」</b>，只记录互动形式与官方合拍事实。</td></tr>
+      <tr><td><b>270 条合拍帖的商业性质</b></td><td>官方合拍字段只证明「共同作者」关系，不证明付费、合同或授权内容。文案中仅 <a href="https://www.instagram.com/p/Dfcq510EagD/" target="_blank" title="在 Instagram 打开该帖子"><code>Dfcq510EagD</code></a> 明确含 <code>#IntimateRosePartner</code>；其余合拍帖的商业条款<b>待核实</b>。</td></tr>
+      <tr><td><b>myPelvicBra / myPFM / Reading on the Dancefloor</b></td><td>有官方合拍字段，但从命名、简介与文案判断疑为创作者自有或关联账号/产品线，<b>是否独立第三方品牌无法确认</b>，已在表内双重标记。</td></tr>
+      <tr><td><b>「首次合作时间」是否为真实首次</b></td><td>v3 已取消页数上限、读取至账号无更多帖子；对原被 20 页封顶截断的账号，窗口前段帖子现已补回，表中日期现为<b>样本内（可见历史）首次</b>。仍受「已发布且仍可见」限制——已删除/隐藏的更早合拍不计入。</td></tr>
+      <tr><td><b>评论互动</b></td><td>用户最初要求的「评论互动」维度<b>仍无法按内容统计</b>：本次可读取 <code>comment_count</code> 数量，但未采集评论文本与评论者账号，不能判断品牌或竞品是否在评论区互动。</td></tr>
+      <tr><td><b>粉丝数与认证状态</b></td><td>登录态 SSR 未直接返回 <code>follower_count</code>；主表粉丝数/认证沿用 2026-11-10 未登录初始快照，与本次全量帖子样本<b>非同一时点字段</b>，属可用但需注明来源的快照值。</td></tr>
+      <tr><td><b>日期跨时区</b></td><td>本版统一 <code>taken_at</code> UTC 日期，与上一版 Instagram 展示日期口径可能有 ±1 天差异；跨版本比较日期时须注意。</td></tr>
+      <tr><td><b>政治人物 / 个人账号</b></td><td>@maura_healey、@kimdriscollma、@teamhealeydriscoll、@Iamnicholemch、@dr.stephanie.pt.dpt 等不属于商业品牌主体，单列不纳入去重品牌表。</td></tr>
+    </tbody>
+  </table>
+</div>
+<h2>5. 数据范围、采集方法与判定口径（附录）</h2>
+<div class="card">
+  <h3>5.1 实际可访问到什么</h3>
+  <table style="min-width:700px">
+    <thead><tr><th style="width:210px">数据项</th><th style="width:120px">可获得性</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>主页历史帖子 / 分页翻页</td><td><span class="b ok">✅ 可获取</span></td><td>登录态 <code>PolarisProfilePostsQuery</code> 主动携带 <code>after</code> 游标翻页；本次共 261 页、8,396 条（各主页求和，v3 全量至 END_OF_TIMELINE）</td></tr>
+      <tr><td>逐帖字段：发布时间、文案、主发账号、共同作者、图片标签、点赞/评论数</td><td><span class="b ok">✅ 可获取</span></td><td>直接来自 GraphQL 响应 <code>edges[].node</code>，无需逐帖访问详情页</td></tr>
+      <tr><td>Paid Partnership／付费合作官方标记</td><td><span class="b ok">✅ 可获取</span></td><td><code>is_paid_partnership</code> 字段现已返回；窗口内共 17 条帖带标记，<b>但 270 条合拍帖中 0 条带此标记</b>（见 6、7 节）</td></tr>
+      <tr><td>账号资料（用户名、简介、头像）</td><td><span class="b ok">✅ 可获取</span></td><td>头像已下载为本地文件；<b>粉丝数/认证沿用 2026-11-10 未登录初始快照</b>，登录态 SSR 未直接返回</td></tr>
+      <tr><td>评论内容 / 评论区互动</td><td><span class="b warn">⚠️ 不可得</span></td><td>可读取 <code>comment_count</code> 数量，但评论文本需另开评论区接口，本次未采集</td></tr>
+      <tr><td>Stories、Reels 播放/触达、Tagged 标签页、私信</td><td><span class="b warn">⚠️ 不可得</span></td><td>不在本次帖子时间线采集范围内</td></tr>
+      <tr><td>账号总发帖数 <code>media_count</code></td><td><span class="b warn">⚠️ 不可得</span></td><td><code>web_profile_info</code> 仍返回 404、<code>?__a=1&amp;__d=dis</code> 返回空；无法据此校验账号全生命周期总量</td></tr>
+    </tbody>
+  </table>
+
+  <h3>5.2 「内容合作」的判定规则（合拍 ＋ 品牌自发署名，按网红归并）</h3>
+  <ul>
+    <li><span class="b ok">✅ 确证① 官方合拍</span>：帖子的参与者集合 <code>{owner} ∪ coauthor_producers</code> 同时出现 <code>intimaterose</code> 与某创作者 —— Instagram 官方合拍（Collab），帖子会同时出现在双方主页。6 个主页 8,115 条去重帖中识别 <b>270 条</b>（网红主发 235、品牌主发 32、第三方主发且双方同为共同作者 3）。</li>
+    <li><span class="b ok">✅ 确证② 品牌自发署名</span>：<code>owner=intimaterose</code> 且 <code>coauthor_producers=[]</code>，但文案含 <code>Credit: @创作者</code> 或 <code>@创作者</code>，视为品牌采用该创作者内容并署名 → <b>归入该创作者名下</b>。窗口内识别 <b>134 条</b>（thepelvicdancefloor 82、drkianaberry 34、andrea 8、myPFM 8、dr.allyyanny 2）。<b>两类按 <code>code</code> 去重、一条帖只计一次（19 条兼具者按合拍优先归类），合计 404 条内容合作帖，本报告的「合作网红」以此为准。</b>例：<a href="https://www.instagram.com/p/DaoH2qZS8q-/" target="_blank" title="在 Instagram 打开该帖子"><code>DaoH2qZS8q-</code></a>（署名）归 thepelvicdancefloor，<a href="https://www.instagram.com/p/DamMhP3Awjg/" target="_blank" title="在 Instagram 打开该帖子"><code>DamMhP3Awjg</code></a>（合拍）归 drkianaberry。</li>
+    <li><span class="b ok">✅ 商业性质文本证据</span>：文案含 <code>#IntimateRosePartner</code>、<code>partners with</code>、<code>Follow @IntimateRose</code> 等，作为合作性质的补充佐证，不单独用于新增网红。</li>
+    <li><span class="b warn">⚠️ 不计为内容合作</span>：与<b>其他品牌/机构</b>之间单纯的 @提及、图片标签（usertags）、活动鸣谢/捐赠致谢 —— 单列于关联品牌明细，标注不确定。注意：本项仅针对关联品牌明细表；品牌账号对 5 位网红的 Credit/@署名已按上一条计入内容合作。</li>
+    <li><span class="b unk">❌ 明确排除</span>：<b>品牌自发、且文案未署名 5 位主网红的内容</b> = <code>owner=intimaterose</code>、<code>coauthor_producers=[]</code>、文案未 Credit/@提及 5 位网红。品牌主页窗口内 1094 条 = <b>615 条</b>自发帖 ＋ <b>479 条</b>含共同作者帖。615 条自发帖再拆：署名 5 位主网红 <b>134 条</b>（已计入第 1 章）、署名其他账号 <b>167 条</b>（见 2.6 高频创作者）、完全无 @ 署名 <b>314 条</b>（真正排除）。</li>
+    <li><b>日期口径变更</b>：登录态 GraphQL 响应不再提供图片 alt 展示日期，统一改用 <code>taken_at</code> 的 <b>UTC 日期</b>（<code>YYYY-MM-DD</code>）。与上一版「Instagram 展示日期」口径可能存在 ±1 天差异，本报告所有日期均为 UTC 口径，不再混用。</li>
+  </ul>
+
+  <h3>5.3 交叉核验路径</h3>
+  <p class="small">6 个主页（1 品牌 + 5 网红）分别做游标分页 → 汇总为全局 <code>Map&lt;code, post&gt;</code> 按帖子 code 去重（同一合拍帖会同时出现在双方主页）→ ①对每条帖计算参与者集合，识别含 <code>intimaterose</code> 与某网红的官方合拍（270 条）；②对品牌主发、coauthors 为空的自发帖，检查文案是否 Credit/@署名 5 位网红（134 条）→ 两类按 <code>code</code> 去重后归入同一网红名下（404 条）→ 统计条数、首次/末次日期与证据 code。无署名的品牌自发帖按 5.2 规则排除。所有结论均落到具体帖子 code，可逐条复核。</p>
+
+  <h3>5.4 账号帖子读取规则（v3，已落地）与各账号实际覆盖</h3>
+  <p class="small"><b>✅ 现行读取规则 v3（2026-11-10 起，实现见 <code>ig_collect_v2.js</code> 的 <code>READ_RULES</code>）</b>：每个账号统一读取<b>全部帖子</b>、覆盖所有分页——<b>无页数上限</b>（原「最多 20 页」封顶已取消）、<b>无时间范围</b>（不按日期筛选、截断或排除）；唯一正常终止条件为 <code>has_next_page=false</code> 或游标为空（账号已无更多帖子），仅同页重试耗尽、响应解析失败或游标不推进时可技术性终止以防无限循环；按 <code>code</code> 全局去重仅用于消除分页重叠与合拍帖跨主页重复，不触发提前结束。其余保持不变：每页 <code>count=50</code>、间隔 3 秒、首页 12 条预加载，按 <code>taken_at</code> 倒序输出。</p>
+  <p class="small"><b>数据口径</b>：下表及全报告统计数字均为 <b>2026-11-10 按 v3 规则</b>执行的采集结果；「连续起点」即该账号历史最早可见帖子，与「覆盖范围」起点不同是因存在少量孤立老帖（见「停止原因」列）。</p>
+  <div class="tw"><table style="min-width:900px">
+    <thead><tr><th>账号</th><th>抓取条数</th><th>页数</th><th>覆盖范围（UTC）</th><th>连续起点</th><th>到达窗口起点</th><th>停止原因</th></tr></thead>
+    <tbody>
+      <tr><td>@intimaterose（品牌）</td><td class="num">1965</td><td class="num">61</td><td class="num">2015-08-19 ～ 2026-11-09</td><td class="num">2016-05-24</td><td><span class="b ok">✅ 是</span></td><td>END_OF_TIMELINE；48 条孤立老帖</td></tr>
+      <tr><td>@andrea.sexplains.it.all</td><td class="num">1033</td><td class="num">32</td><td class="num">2022-04-25 ～ 2026-11-09</td><td class="num">2022-04-25</td><td><span class="b ok">✅ 是</span></td><td>END_OF_TIMELINE</td></tr>
+      <tr><td>@mypelvicfloormuscles</td><td class="num">2331</td><td class="num">72</td><td class="num">2018-02-23 ～ 2026-11-10</td><td class="num">2018-06-01</td><td><span class="b ok">✅ 是</span></td><td>END_OF_TIMELINE；1 条孤立老帖</td></tr>
+      <tr><td>@dr.allyyanny</td><td class="num">575</td><td class="num">19</td><td class="num">2016-10-10 ～ 2026-11-10</td><td class="num">2017-01-14</td><td><span class="b ok">✅ 是</span></td><td>END_OF_TIMELINE；3 条孤立老帖</td></tr>
+      <tr><td>@thepelvicdancefloor</td><td class="num">968</td><td class="num">30</td><td class="num">2020-03-28 ～ 2026-11-08</td><td class="num">2020-03-28</td><td><span class="b ok">✅ 是</span></td><td>END_OF_TIMELINE</td></tr>
+      <tr><td>@drkianaberry</td><td class="num">1524</td><td class="num">47</td><td class="num">2023-10-25 ～ 2026-11-09</td><td class="num">2023-10-25</td><td><span class="b ok">✅ 是</span></td><td>END_OF_TIMELINE</td></tr>
+    </tbody>
+  </table></div>
+</div>
+<h2>6. 数据范围与限制（务必连同结论一起引用）</h2>
+<div class="card">
+  <ul>
+    <li><b>✅ v3 覆盖缺口已消除</b>：6 个账号全部读取至 <code>has_next_page=false</code>（END_OF_TIMELINE），各账号实际覆盖起点与停止原因见 5.4 覆盖表。仅存的固有下限是<b>平台已删除/隐藏的帖子不可见</b>——本报告的覆盖与频率均基于「各账号可见历史」，不冒充账号全生命周期总量（<code>media_count</code> 仍不可得，无法校验）。</li>
+    <li><b>频率为可见历史窗口内的真实强度</b>：分母固定 1,044 天，分子为各账号实际可见的窗口内帖子；v3 全量后各账号频率横向可比，但仍非「账号全生命周期均值」（受可见性约束）。</li>
+    <li><b>「样本内首次合作时间」不等于真实首次</b>：受上述可见性限制，各账号在更早的已删除/隐藏合拍不在统计内；本报告不作推断。</li>
+    <li><b>合作创作者名单可能不完整</b>：品牌主页窗口内 1094 条中含共同作者的帖子，而本报告只核对其中的 5 位网红；品牌显然还与其他创作者合拍，<b>5 位不是品牌全部合作名单</b>。</li>
+    <li><b>品牌自发内容按署名判定</b>：品牌主页窗口内 1094 条中 615 条为 <code>owner=intimaterose</code> 且无共同作者的自发帖，其中 134 条署名 5 位主网红 → 计入第 1 章；167 条署名其他账号（含 2.6 的 11 位高频创作者）；314 条完全无 @ 署名，不计入任何网红合作。</li>
+    <li><b>仍不覆盖</b>：评论文本内容、Stories、Reels 播放/触达、Tagged 标签页、私信、已删除或已隐藏帖子、限时动态、故事提及。</li>
+    <li><b>付费合作标记可得但结论不变</b>：登录态返回 <code>is_paid_partnership</code>，窗口内 5 位网红共 17 条帖带标记，<b>但 270 条与品牌的合拍帖无一带此标记</b>。这只能说明平台标记未被使用，<b>不能反推不存在商业合作</b>。</li>
+    <li><b>时间敏感</b>：粉丝数、认证状态、头像、帖子可见性、点赞/评论数会随时间变化；本报告为 2026-11-10 的采集快照。</li>
+    <li><b>登录态采集的账号风险</b>：本次使用用户本人会话做只读访问，按低频慢速（3 秒间隔、无页数上限）控制；虽已取消页数上限，仍可能因请求总量触发平台风控，已在维持请求间隔的前提下评估。会话凭据仅存本机，未外传。<b>本次为 v3 读取规则落地执行，已取消页数上限，见 5.4。</b></li>
+    <li><b>推测与事实分离</b>：全文 <span class="b ok">✅</span> 标记才是有字段级证据的确定事实；<span class="b warn">⚠️</span> 为线索但性质未定；<span class="b unk">❓</span> 为非品牌主体或不可判定项。未使用任何外部推测补全名单或数字。</li>
+  </ul>
+</div>
+<h2>7. 证据索引</h2>
+<div class="card">
+<h3>7.1 内容合作帖汇总（404 条 = 合拍 270 ＋ 署名 134，按网红）</h3>
+  <div class="tw"><table style="min-width:900px">
+    <thead><tr><th style="width:190px">网红</th><th style="width:70px">合拍</th><th style="width:70px">署名</th><th style="width:75px">合并去重</th><th style="width:110px">样本内最早/最近</th><th>证据 code（合拍＋署名）</th></tr></thead>
+    <tbody>
+      <tr><td>@andrea.sexplains.it.all</td><td class="num">180</td><td class="num">8</td><td class="num"><b>188</b></td><td class="num">2024-08-15 / 2026-11-09</td><td>合拍 <a href="https://www.instagram.com/p/C-shGhhvCmt/" target="_blank" title="在 Instagram 打开该帖子"><code>C-shGhhvCmt</code></a>、<a href="https://www.instagram.com/p/DfhqKZQAO18/" target="_blank" title="在 Instagram 打开该帖子"><code>DfhqKZQAO18</code></a>；署名 <a href="https://www.instagram.com/p/DHoobEZyJyB/" target="_blank" title="在 Instagram 打开该帖子"><code>DHoobEZyJyB</code></a>、<a href="https://www.instagram.com/p/De7yKZnAHpP/" target="_blank" title="在 Instagram 打开该帖子"><code>De7yKZnAHpP</code></a></td></tr>
+      <tr><td>@mypelvicfloormuscles</td><td class="num">11</td><td class="num">8</td><td class="num"><b>19</b></td><td class="num">2024-02-19 / 2026-11-07</td><td>合拍 <a href="https://www.instagram.com/p/C3grt_Aptqt/" target="_blank" title="在 Instagram 打开该帖子"><code>C3grt_Aptqt</code></a>、<a href="https://www.instagram.com/p/Dfcq510EagD/" target="_blank" title="在 Instagram 打开该帖子"><code>Dfcq510EagD</code></a>；署名 <a href="https://www.instagram.com/p/C8UwkJ4vjJr/" target="_blank" title="在 Instagram 打开该帖子"><code>C8UwkJ4vjJr</code></a>、<a href="https://www.instagram.com/p/DbEh0t1yuCT/" target="_blank" title="在 Instagram 打开该帖子"><code>DbEh0t1yuCT</code></a></td></tr>
+      <tr><td>@dr.allyyanny</td><td class="num">20</td><td class="num">2</td><td class="num"><b>22</b></td><td class="num">2025-12-03 / 2026-11-05</td><td>合拍 <a href="https://www.instagram.com/p/DSKwd-KjVLJ/" target="_blank" title="在 Instagram 打开该帖子"><code>DSKwd-KjVLJ</code></a>、<a href="https://www.instagram.com/p/DfXwcKzxUrR/" target="_blank" title="在 Instagram 打开该帖子"><code>DfXwcKzxUrR</code></a>；署名 <a href="https://www.instagram.com/p/DR0TlnKktnm/" target="_blank" title="在 Instagram 打开该帖子"><code>DR0TlnKktnm</code></a>、<a href="https://www.instagram.com/p/Dcev24dPejI/" target="_blank" title="在 Instagram 打开该帖子"><code>Dcev24dPejI</code></a></td></tr>
+      <tr><td>@thepelvicdancefloor</td><td class="num">7</td><td class="num">82</td><td class="num"><b>89</b></td><td class="num">2024-03-04 / 2026-11-08</td><td>合拍 <a href="https://www.instagram.com/p/C4GpPJ_JPI_/" target="_blank" title="在 Instagram 打开该帖子"><code>C4GpPJ_JPI_</code></a>、<a href="https://www.instagram.com/p/DfIqIV3CLyJ/" target="_blank" title="在 Instagram 打开该帖子"><code>DfIqIV3CLyJ</code></a>；署名 <a href="https://www.instagram.com/p/C9c2cWlvtN8/" target="_blank" title="在 Instagram 打开该帖子"><code>C9c2cWlvtN8</code></a>、<a href="https://www.instagram.com/p/DaoH2qZS8q-/" target="_blank" title="在 Instagram 打开该帖子"><code>DaoH2qZS8q-</code></a>、<a href="https://www.instagram.com/p/Dff1SjAgn-J/" target="_blank" title="在 Instagram 打开该帖子"><code>Dff1SjAgn-J</code></a></td></tr>
+      <tr><td>@drkianaberry</td><td class="num">52</td><td class="num">34</td><td class="num"><b>86</b></td><td class="num">2024-06-11 / 2026-10-20</td><td>合拍 <a href="https://www.instagram.com/p/C8FXsqGPTRx/" target="_blank" title="在 Instagram 打开该帖子"><code>C8FXsqGPTRx</code></a>、<a href="https://www.instagram.com/p/DamMhP3Awjg/" target="_blank" title="在 Instagram 打开该帖子"><code>DamMhP3Awjg</code></a>、<a href="https://www.instagram.com/p/DctYKTpOW9g/" target="_blank" title="在 Instagram 打开该帖子"><code>DctYKTpOW9g</code></a>；署名 <a href="https://www.instagram.com/p/DSdnFSlEo6m/" target="_blank" title="在 Instagram 打开该帖子"><code>DSdnFSlEo6m</code></a>、<a href="https://www.instagram.com/p/DeumZD8hntg/" target="_blank" title="在 Instagram 打开该帖子"><code>DeumZD8hntg</code></a></td></tr>
+      <tr><td><b>合计</b></td><td class="num"><b>270</b></td><td class="num"><b>134</b></td><td class="num"><b>404</b></td><td colspan="2">两类互斥、按 <code>code</code> 全局去重后合计 404 条，已全部归入对应网红。合拍明细见 <code>ig_v2_analysis.json</code> 的 <code>collab_posts</code>；署名帖为 <code>owner=intimaterose</code>、<code>coauthors=[]</code>、文案含 <code>@网红</code> 的品牌自发帖。</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small">补充：品牌主页窗口内 1,094 条中，615 条为品牌官方自发帖（<b>其中 134 条署名 5 位主网红已计入第 1 章、167 条署名其他账号见 2.6、314 条完全无 @ 署名故排除</b>）、479 条含共同作者。由此，署名帖不再作为「无法判定商业合作的不确定项」，与官方合拍并列构成内容合作帖。</p>
+
+  <h3>7.2 采集量</h3>
+  <p class="small">登录态游标分页采集 <b>6 个主页</b>（1 品牌 + 5 网红）、合计 <b>261 页</b>、<b>8,396 条</b>帖子（各主页求和，v3 全量至 END_OF_TIMELINE），按 <code>code</code> 全局去重后 <b>8,115 条</b>；窗口内纳入 3998 条（5 位网红分子合计），窗口外排除 2433 条。识别官方合拍帖 <b>270 条</b>、品牌自发 Credit/@署名帖 <b>134 条</b>，合并去重后内容合作帖 <b>404 条</b>。头像 5 张已保存至 <code>ig_avatars/</code>。粉丝数/认证/简介/头像来自 2026-11-10 首次未登录采集快照；互动数、合拍字段、付费标记来自本次登录态分页响应。</p>
+<h3 id="avatars">7.3 头像文件与原始链接</h3>
+  <p class="small">下列本地文件随报告一同交付，可离线查看；Instagram CDN 直链带签名参数可能过期，若链接失效请访问对应主页查看。</p>
+  <div class="tw"><table style="min-width:700px">
+    <thead><tr><th style="width:210px">用户名</th><th style="width:300px">本地文件</th><th>抓取时头像 CDN 链接（截断显示）</th></tr></thead>
+    <tbody>
+      <tr><td>@andrea.sexplains.it.all</td><td><code>ig_avatars/andrea.sexplains.it.all.jpg</code></td><td><code>https://scontent-lax7-1.cdninstagram.com/v/t51.82787-19/608414512_…_n.jpg?stp=dst-jpg_s150x150…</code></td></tr>
+      <tr><td>@mypelvicfloormuscles</td><td><code>ig_avatars/mypelvicfloormuscles.jpg</code></td><td><code>https://scontent-lax3-2.cdninstagram.com/v/t51.2885-19/269994189_…_n.jpg?stp=dst-jpg_s150x150_tt…</code></td></tr>
+      <tr><td>@dr.allyyanny</td><td><code>ig_avatars/dr.allyyanny.jpg</code></td><td><code>https://scontent-lax3-2.cdninstagram.com/v/t51.2885-19/491445213_…_n.jpg?stp=dst-jpg_s150x150_tt…</code></td></tr>
+      <tr><td>@thepelvicdancefloor</td><td><code>ig_avatars/thepelvicdancefloor.jpg</code></td><td><code>https://scontent-lax3-2.cdninstagram.com/v/t51.2885-19/306563029_…_n.jpg?stp=dst-jpg_s150x150_t…</code></td></tr>
+      <tr><td>@drkianaberry</td><td><code>ig_avatars/drkianaberry.jpg</code></td><td><code>https://scontent-lax3-1.cdninstagram.com/v/t51.82787-19/768391236_…_n.jpg?stp=dst-jpg_s150x150…</code></td></tr>
+    </tbody>
+  </table></div>
+</div>
+
+<footer>
+  数据来源：Instagram 登录态公开网页视图（GraphQL 游标分页，v3 全量）＋ 2026-11-10 未登录初始快照 · 采集时间 2026-11-10（GMT+8）· 所有结论均附帖子 code 可逐条复核。<br>
+  本报告仅记录可核验事实，不对未公开的商业条款、付费金额、合作历史完整性与创意归属作推测；统计口径与覆盖限制见第 5.4、6 节。
+</footer>
+
+</div>
+</body>
+</html>
